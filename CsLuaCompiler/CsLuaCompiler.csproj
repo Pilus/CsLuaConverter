@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E1D96749-5BF9-4B04-81A1-9D4B3B1F6BF4}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>CsLuaCompiler</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <SolutionDir Condition="'$(SolutionDir)' == '' OR '$(SolutionDir)' == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <OutputPath>Binaries\$(Configuration)\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup Label="File References">
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.CodeAnalysis">
+      <HintPath>.\Microsoft.CodeAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp">
+      <HintPath>.\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces">
+      <HintPath>.\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces">
+      <HintPath>.\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>.\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq" />
+    <Reference Include="System.Reflection.Metadata">
+      <HintPath>.\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>D:\World of Warcraft\Interface\Dev\CsLuaCompiler\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>CsLuaCompiler</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddOn.cs" />
+    <Compile Include="CodeFile.cs" />
+    <Compile Include="CsProject.cs" />
+    <Compile Include="IDeployableAddOn.cs" />
+    <Compile Include="LuaAddOn.cs" />
+    <Compile Include="ResourceFile.cs" />
+    <Compile Include="SolutionHandler.cs" />
+    <Compile Include="SyntaxAnalysis\BaseList.cs" />
+    <Compile Include="SyntaxAnalysis\BracketedArgumentList.cs" />
+    <Compile Include="SyntaxAnalysis\ArgumentList.cs" />
+    <Compile Include="SyntaxAnalysis\ArrayCreation.cs" />
+    <Compile Include="SyntaxAnalysis\Attribute.cs" />
+    <Compile Include="SyntaxAnalysis\BinaryExpression.cs" />
+    <Compile Include="SyntaxAnalysis\Block.cs" />
+    <Compile Include="SyntaxAnalysis\Cast.cs" />
+    <Compile Include="SyntaxAnalysis\Class.cs" />
+    <Compile Include="SyntaxAnalysis\ClassElements\Constructors.cs" />
+    <Compile Include="SyntaxAnalysis\ClassElements\ElementType.cs" />
+    <Compile Include="SyntaxAnalysis\ClassElements\LuaFormatter.cs" />
+    <Compile Include="SyntaxAnalysis\ClassElements\Methods.cs" />
+    <Compile Include="SyntaxAnalysis\ClassElements\Properties.cs" />
+    <Compile Include="SyntaxAnalysis\ClassElements\Serializability.cs" />
+    <Compile Include="SyntaxAnalysis\ClassElements\Variables.cs" />
+    <Compile Include="SyntaxAnalysis\ClassVariable.cs" />
+    <Compile Include="SyntaxAnalysis\Constructor.cs" />
+    <Compile Include="SyntaxAnalysis\Delegate.cs" />
+    <Compile Include="SyntaxAnalysis\Else.cs" />
+    <Compile Include="SyntaxAnalysis\EnumElement.cs" />
+    <Compile Include="SyntaxAnalysis\ForeachLoop.cs" />
+    <Compile Include="SyntaxAnalysis\ForLoop.cs" />
+    <Compile Include="SyntaxAnalysis\FullNameProvider.cs" />
+    <Compile Include="SyntaxAnalysis\Generics.cs" />
+    <Compile Include="SyntaxAnalysis\IfStatement.cs" />
+    <Compile Include="SyntaxAnalysis\IFunction.cs" />
+    <Compile Include="SyntaxAnalysis\ILuaElement.cs" />
+    <Compile Include="SyntaxAnalysis\Initializer.cs" />
+    <Compile Include="SyntaxAnalysis\Interface.cs" />
+    <Compile Include="SyntaxAnalysis\LambdaExpression.cs" />
+    <Compile Include="SyntaxAnalysis\LuaElementHelper.cs" />
+    <Compile Include="SyntaxAnalysis\Lua\LuaHeader.cs" />
+    <Compile Include="SyntaxAnalysis\MainCode.cs" />
+    <Compile Include="SyntaxAnalysis\Method.cs" />
+    <Compile Include="SyntaxAnalysis\NameSpace.cs" />
+    <Compile Include="SyntaxAnalysis\NameSpacePart.cs" />
+    <Compile Include="SyntaxAnalysis\New.cs" />
+    <Compile Include="SyntaxAnalysis\Parameter.cs" />
+    <Compile Include="SyntaxAnalysis\ParameterList.cs" />
+    <Compile Include="SyntaxAnalysis\ParenthesizedLambdaExpression.cs" />
+    <Compile Include="SyntaxAnalysis\PlusPlus.cs" />
+    <Compile Include="SyntaxAnalysis\PredefinedType.cs" />
+    <Compile Include="SyntaxAnalysis\PredeterminedElement.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="SyntaxAnalysis\Property.cs" />
+    <Compile Include="SyntaxAnalysis\ReferencedVariableName.cs" />
+    <Compile Include="SyntaxAnalysis\Scope.cs" />
+    <Compile Include="SyntaxAnalysis\ScopeElement.cs" />
+    <Compile Include="SettingsReader.cs" />
+    <Compile Include="SyntaxAnalysis\Struct.cs" />
+    <Compile Include="SyntaxAnalysis\Switch.cs" />
+    <Compile Include="SyntaxAnalysis\SyntaxAnalyser.cs" />
+    <Compile Include="SyntaxAnalysis\This.cs" />
+    <Compile Include="SyntaxAnalysis\Throw.cs" />
+    <Compile Include="SyntaxAnalysis\TypeLookupException.cs" />
+    <Compile Include="SyntaxAnalysis\Var.cs" />
+    <Compile Include="SyntaxAnalysis\VariableName.cs" />
+    <Compile Include="SyntaxAnalysis\VariableType.cs" />
+    <Compile Include="SyntaxAnalysis\WhileLoop.cs" />
+    <Compile Include="WrappingException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SyntaxAnalysis\Lua\Header.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ImportGroup Label="Targets">
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

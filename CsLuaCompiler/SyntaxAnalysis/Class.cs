@@ -1,0 +1,242 @@
+﻿namespace CsToLua.SyntaxAnalysis
+{
+    using System;
+    using System.CodeDom.Compiler;
+    using System.Collections.Generic;
+    using System.Linq;
+    using ClassElements;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+    internal class Class : ILuaElement
+    {
+        private readonly List<Attribute> attributes;
+        private readonly List<BaseList> baseLists = new List<BaseList>();
+        private readonly List<Constructor> constructors = new List<Constructor>();
+        private readonly List<Method> methods = new List<Method>();
+        private readonly List<Property> properties = new List<Property>();
+        private readonly List<ClassVariable> variables = new List<ClassVariable>();
+        public bool IsStatic;
+        private Generics generics;
+        private string name;
+
+        public Class(List<Attribute> attributes)
+        {
+            this.attributes = attributes;
+        }
+
+        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        {
+            bool inheritsOtherClass = this.baseLists.Count > 0 && !this.baseLists[0].IsInterface(nameProvider);
+
+            List<ScopeElement> originalScope = nameProvider.CloneScope();
+            this.variables.ForEach(v => nameProvider.AddToScope(v.GetScopeElement()));
+            this.methods.ForEach(v => nameProvider.AddToScope(v.GetScopeElement()));
+            this.properties.ForEach(v => nameProvider.AddToScope(v.GetScopeElement()));
+            if (inheritsOtherClass)
+            {
+                this.baseLists[0].AddInheritiedMembers(nameProvider);
+            }
+
+            string fullName = nameProvider.LoopupFullName(this.name);
+
+            if (this.generics != null)
+            {
+                this.generics.AddToScope(nameProvider);
+            }
+
+            var elements = new List<ILuaElement>
+            {
+                new Variables(this.IsStatic, this.variables),
+                new Properties(this.IsStatic, this.properties),
+                new Methods(this.IsStatic, this.methods, this.name),
+                new Serializability(this.IsStatic, this.IsSerializable(), this.properties, this.variables, this.name),
+                new Constructors(this.IsStatic, this.IsSerializable(), this.constructors, this.name),
+            };
+
+            textWriter.Write("{0} = __CreateClass(", this.name);
+            LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>
+            {
+                {"name", this.name},
+                {"fullName", fullName},
+                {"isStatic", this.IsStatic},
+                {"hasGenerics", this.generics != null},
+                {
+                    "generics", new Action(() =>
+                    {
+                        if (this.generics == null)
+                        {
+                            textWriter.Write("nil");
+                        }
+                        else
+                        {
+                            this.generics.WriteLua(textWriter, nameProvider);
+                        }
+                    })
+                },
+                {"isSerializable", this.IsSerializable()},
+                {
+                    "inherits", new Action(() =>
+                    {
+                        if (inheritsOtherClass)
+                        {
+                            textWriter.Write("'{0}'",
+                                this.baseLists.First().name.LookupType(nameProvider).FullName.Split('`').First());
+                        }
+                        else
+                        {
+                            textWriter.Write("nil");
+                        }
+                    })
+                },
+                {
+                    "implements", new Action(() => textWriter.Write("{{{0}}}",
+                        string.Join(",", this.baseLists.Select(bl =>bl.GetFullNameString(nameProvider)))))
+                },
+                {
+                    "getElements", new Action(() =>
+                    {   
+                        textWriter.WriteLine("function(class) return {");
+                        textWriter.Indent++;
+                        elements.ForEach(e => e.WriteLua(textWriter, nameProvider));
+                        textWriter.Indent--;
+                        textWriter.Write("}; end");
+                    })
+                },
+            }, "),", null);
+
+            nameProvider.SetScope(originalScope);
+        }
+
+
+        public SyntaxToken Analyze(SyntaxToken token)
+        {
+            while (token.Parent is ClassDeclarationSyntax && token.Text != "{")
+            {
+                if (token.IsKind(SyntaxKind.IdentifierToken)) this.name = token.Text;
+                if (token.IsKind(SyntaxKind.StaticKeyword)) this.IsStatic = true;
+                token = token.GetNextToken();
+            }
+
+            if (token.Parent is TypeParameterListSyntax) // <
+            {
+                this.generics = new Generics();
+                token = this.generics.Analyze(token);
+            }
+
+            while (!(token.Parent is ClassDeclarationSyntax))
+            {
+                if (token.Parent is BaseListSyntax)
+                {
+                    token = this.AnalyseBaseList(token);
+                }
+
+                if (!(token.Parent is ClassDeclarationSyntax))
+                {
+                    token = token.GetNextToken();
+                }
+            }
+
+            if (this.name == null) throw new Exception("Classname not found.");
+
+            return this.AnalyzeContent(token);
+        }
+
+        private bool IsSerializable()
+        {
+            return
+                this.attributes.Any(
+                    a => a.attributeText.Equals("Serializable") || a.attributeText.Equals("System.Serializable"));
+        }
+
+        public void WriteMainCallLua(IndentedTextWriter writer, string nameSpace)
+        {
+            foreach (Method m in this.methods.Where(m => m.Name.Equals("Main") && m.Static))
+            {
+                writer.WriteLine("{0}.{1}().Main(nil);", nameSpace, this.name);
+            }
+        }
+
+        private SyntaxToken AnalyzeContent(SyntaxToken token)
+        {
+            while (!(token.Parent is ClassDeclarationSyntax && token.Text == "}"))
+            {
+                switch (token.Parent.GetType().Name)
+                {
+                    case "FieldDeclarationSyntax":
+                        token = this.AnalyzeFieldDeclaration(token);
+                        break;
+                    case "PropertyDeclarationSyntax":
+                        token = this.AnalyzePropertyDeclaration(token);
+                        break;
+                    case "MethodDeclarationSyntax":
+                        token = this.AnalyzeMethodDeclaration(token);
+                        break;
+                    case "ConstructorDeclarationSyntax":
+                        token = this.AnalyzeConstructorDeclaration(token);
+                        break;
+                    case "BaseListSyntax":
+                        token = this.AnalyseBaseList(token);
+                        break;
+                    case "ClassDeclarationSyntax":
+                        break;
+                    case "IndexerDeclarationSyntax":
+                        break;
+                    case "AttributeListSyntax":
+                        token = SkipAttributeListSyntax(token);
+                        break;
+                    default:
+                        throw new Exception(string.Format("Unexpeted token in class: {0}.", token.Parent.GetType().Name));
+                }
+                token = token.GetNextToken();
+            }
+            return token;
+        }
+
+        private static SyntaxToken SkipAttributeListSyntax(SyntaxToken token)
+        {
+            while (!(token.Parent is AttributeListSyntax) || token.Text != "]")
+            {
+                token = token.GetNextToken();
+            }
+            return token;
+        }
+
+        private SyntaxToken AnalyzeFieldDeclaration(SyntaxToken token)
+        {
+            var variable = new ClassVariable(this.name);
+            this.variables.Add(variable);
+            return variable.Analyze(token);
+        }
+
+        private SyntaxToken AnalyzePropertyDeclaration(SyntaxToken token)
+        {
+            var property = new Property(this.name);
+            this.properties.Add(property);
+            return property.Analyze(token);
+        }
+
+        private SyntaxToken AnalyzeMethodDeclaration(SyntaxToken token)
+        {
+            var method = new Method();
+            this.methods.Add(method);
+            return method.Analyze(token);
+        }
+
+        private SyntaxToken AnalyzeConstructorDeclaration(SyntaxToken token)
+        {
+            var cstor = new Constructor();
+            this.constructors.Add(cstor);
+            return cstor.Analyze(token);
+        }
+
+        private SyntaxToken AnalyseBaseList(SyntaxToken token)
+        {
+            var baseList = new BaseList();
+            token = baseList.Analyze(token);
+            this.baseLists.Add(baseList);
+            return token;
+        }
+    }
+}
