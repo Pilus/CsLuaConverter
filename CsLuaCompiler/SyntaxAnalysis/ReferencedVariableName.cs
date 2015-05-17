@@ -1,6 +1,7 @@
 ﻿namespace CsToLua.SyntaxAnalysis
 {
     using System.CodeDom.Compiler;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -8,7 +9,7 @@
     {
         private VariableName varName;
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             if (this.varName.Names.Count == 1 && this.varName.Names[0] == "Equals")
             {

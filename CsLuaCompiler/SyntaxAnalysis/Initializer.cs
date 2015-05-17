@@ -3,6 +3,7 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -18,7 +19,7 @@
             this.intializeClassWithoutContructor = intializeClassWithoutContructor;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             if (this.initializeClass)
             {

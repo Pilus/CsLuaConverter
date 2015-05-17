@@ -7,6 +7,7 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using SyntaxAnalysis;
 
@@ -19,12 +20,12 @@
 
         public readonly Dictionary<string, object> Settings;
         private readonly Compilation compilation;
-        private readonly FullNameProvider nameProvider;
+        private readonly INameAndTypeProvider nameProvider;
         private readonly Dictionary<string, NameSpace> nameSpaces;
         public readonly Project CodeProject;
         public string Name;
 
-        public CsProject(FullNameProvider nameProvider, Project project)
+        public CsProject(INameAndTypeProvider nameProvider, Project project)
         {
             this.Settings = SettingsReader.GetSettings(project);
             this.nameProvider = nameProvider;

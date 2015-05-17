@@ -2,6 +2,7 @@
 {
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -10,7 +11,7 @@
         private Block block;
         private IfStatement ifStatement;
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             if (this.ifStatement != null)
             {

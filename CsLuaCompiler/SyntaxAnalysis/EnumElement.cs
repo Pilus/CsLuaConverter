@@ -2,6 +2,7 @@
 {
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -10,7 +11,7 @@
         private string name;
         private List<string> values;
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             textWriter.WriteLine("{0} = {{", this.name);
             textWriter.Indent++;

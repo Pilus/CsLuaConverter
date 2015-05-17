@@ -4,6 +4,7 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
 
     internal static class LuaElementHelper
     {
@@ -35,7 +36,7 @@
         }
 
         public static void WriteLuaJoin(IList<ILuaElement> elements, IndentedTextWriter textWriter,
-            FullNameProvider nameProvider, string delimitar)
+            INameAndTypeProvider nameProvider, string delimitar)
         {
             for (int i = 0; i < elements.Count; i++)
             {
@@ -48,7 +49,7 @@
         }
 
         public static void WriteLuaJoin(IList<ILuaElement> elements, IndentedTextWriter textWriter,
-            FullNameProvider nameProvider)
+            INameAndTypeProvider nameProvider)
         {
             WriteLuaJoin(elements, textWriter, nameProvider, ",");
         }

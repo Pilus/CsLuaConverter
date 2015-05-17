@@ -1,11 +1,12 @@
-﻿namespace CsToLua.SyntaxAnalysis
+﻿namespace CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using CsToLua.SyntaxAnalysis;
 
-    internal class FullNameProvider
+    public class FullNameProvider : INameAndTypeProvider
     {
         private static readonly string[] AllowedSystemTypes = {"object", "int", "double", "string", "bool", "Action", "Func", "Array"};
         
@@ -77,9 +78,9 @@
             this.knownInCurrentScope.Add(element);
         }
 
-        public string LoopupFullName(string name)
+        public string LoopupFullNameOfType(string name)
         {
-            return this.LoopupFullName(new[] {name}, false);
+            return this.LoopupFullNameOfType(new[] {name}, false);
         }
 
 
@@ -202,16 +203,22 @@
             this.AddMembersToScope(type);
             if (type.BaseType.FullName != "System.Object")
             {
-                AddAllInheritedMembersToScope(type.BaseType);
+                this.AddAllInheritedMembersToScope(type.BaseType);
             }
         }
 
-        public string LoopupFullName(IEnumerable<string> names, bool chooseClassReference)
+
+        public string LookupVariableName(IEnumerable<string> names)
         {
-            return this.LoopupFullName(names, chooseClassReference, false);
+            return this.LoopupFullNameOfType(names, true);
         }
 
-        public string LoopupFullName(IEnumerable<string> names, bool chooseClassReference, bool chooseTypeName)
+        public string LoopupFullNameOfType(IEnumerable<string> names, bool chooseClassReference)
+        {
+            return this.LoopupFullNameOfType(names, chooseClassReference, false);
+        }
+
+        public string LoopupFullNameOfType(IEnumerable<string> names, bool chooseClassReference, bool chooseTypeName)
         {
             var fullName = string.Join(".", names);
             string firstName = names.First();
@@ -327,31 +334,16 @@
             
             return "nil";
         }
-    }
 
-    public class TypeResult
-    {
-        public string AdditionalString;
-        public Type Type;
 
-        private static string StripGenericsFromType(string name)
+        public void SetGenerics(IEnumerable<string> generics)
         {
-            return name.Split('`').First();
+            throw new NotImplementedException();
         }
 
-        public override string ToString()
+        public bool IsGeneric(string name)
         {
-            if (string.IsNullOrEmpty(this.AdditionalString))
-            {
-                return StripGenericsFromType(this.Type.FullName);
-            }
-
-            if (this.Type.IsEnum)
-            {
-                return this.Type.FullName + "." + this.AdditionalString;
-            }
-
-            return StripGenericsFromType(this.Type.FullName) + "." + this.AdditionalString;
+            throw new NotImplementedException();
         }
     }
 }

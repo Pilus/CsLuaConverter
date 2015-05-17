@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using ClassElements;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -26,7 +27,7 @@
             this.attributes = attributes;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             bool inheritsOtherClass = this.baseLists.Count > 0 && !this.baseLists[0].IsInterface(nameProvider);
 
@@ -39,7 +40,7 @@
                 this.baseLists[0].AddInheritiedMembers(nameProvider);
             }
 
-            string fullName = nameProvider.LoopupFullName(this.name);
+            string fullName = nameProvider.LoopupFullNameOfType(this.name);
 
             if (this.generics != null)
             {

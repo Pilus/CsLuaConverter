@@ -4,11 +4,12 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
 
     internal static class LuaFormatter
     {
 
-        public static void WriteMethodToLua(IndentedTextWriter textWriter, FullNameProvider nameProvider,
+        public static void WriteMethodToLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider,
             IEnumerable<IFunction> methods)
         {
 

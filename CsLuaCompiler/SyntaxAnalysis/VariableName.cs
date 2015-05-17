@@ -4,6 +4,7 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -27,7 +28,7 @@
             this.isClassVar = isClassVar;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             if (this.addToScope)
             {
@@ -42,12 +43,12 @@
                 if (this.Names.Count > 1 && this.Names.Last().Equals("Equals"))
                 {
                     textWriter.Write(
-                        nameProvider.LoopupFullName(this.Names.Take(this.Names.Count - 1), this.isClassVar,
+                        nameProvider.LoopupFullNameOfType(this.Names.Take(this.Names.Count - 1), this.isClassVar,
                             this.isInitialization) + " == ");
                     return;
                 }
 
-                textWriter.Write(nameProvider.LoopupFullName(this.Names, this.isClassVar, this.isInitialization));
+                textWriter.Write(nameProvider.LookupVariableName(this.Names));
                 return;
             }
             textWriter.Write(string.Join(".", this.Names));
@@ -104,7 +105,7 @@
             return token;
         }
 
-        public Type LookupType(FullNameProvider nameProvider)
+        public Type LookupType(INameAndTypeProvider nameProvider)
         {
             return nameProvider.LookupType(this.Names).Type;
         }

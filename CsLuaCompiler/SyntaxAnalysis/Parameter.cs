@@ -1,6 +1,7 @@
 ﻿namespace CsToLua.SyntaxAnalysis
 {
     using System.CodeDom.Compiler;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -9,7 +10,7 @@
         public VariableType Type;
         private string name;
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             nameProvider.AddToScope(new ScopeElement(this.name));
             textWriter.Write(this.name);

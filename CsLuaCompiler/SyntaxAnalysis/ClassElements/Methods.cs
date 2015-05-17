@@ -4,6 +4,7 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
 
     internal class Methods : ILuaElement
@@ -19,7 +20,7 @@
             this.methods = methods.Where(m => !m.IsAbstract).ToList();
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             List<string> methodNames =
                 this.methods.GroupBy(m => m.Name).Select(group => group.First()).Select(m => m.Name).ToList();

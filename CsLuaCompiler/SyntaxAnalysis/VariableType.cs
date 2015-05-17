@@ -4,6 +4,7 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -35,7 +36,7 @@
             this.initializationCall = initializationCall;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             if (this.variable != null)
             {
@@ -50,10 +51,10 @@
 
             if (this.initializationCall)
             {
-                textWriter.Write(nameProvider.LoopupFullName(this.GetTypeString()));
+                textWriter.Write(nameProvider.LoopupFullNameOfType(this.GetTypeString()));
                 return;
             }
-            textWriter.Write(nameProvider.LoopupFullName(this.type));
+            textWriter.Write(nameProvider.LoopupFullNameOfType(this.GetTypeString()));
         }
 
         public SyntaxToken Analyze(SyntaxToken token)
@@ -134,35 +135,40 @@
             return token;
         }
 
-        public string GetFullTypeName(FullNameProvider nameProvider)
+        public string GetFullTypeName(INameAndTypeProvider nameProvider)
         {
             if (this.variable != null)
             {
                 throw new Exception("Unknown scenario");
             }
-            string typeName = this.GetTypeString();
 
-            switch (typeName)
+            switch (this.type)
             {
+                case "object":
                 case "bool":
                 case "double":
                 case "int":
                 case "string":
-                    return typeName;
+                    return this.type;
                 default:
                     break;
             }
 
-            return nameProvider.LoopupFullName(typeName);
+            if (this.isArray)
+            {
+                return "Array<" + nameProvider.LoopupFullNameOfType(this.type) + ">";
+            }
+
+            if (nameProvider.IsGeneric(this.type))
+            {
+                return this.type;
+            }
+
+            return nameProvider.LoopupFullNameOfType(this.type);
         }
 
         public string GetTypeString()
         {
-            if (this.isArray)
-            {
-                return "Array<" + this.type + ">";
-            }
-
             string s = this.type;
             if (this.generics != null)
             {
@@ -178,7 +184,7 @@
             return '"' + this.GetTypeString() + '"';
         }
 
-        public string GetQuotedFullTypeString(FullNameProvider nameProvider)
+        public string GetQuotedFullTypeString(INameAndTypeProvider nameProvider)
         {
             return '"' + this.GetFullTypeName(nameProvider) + '"';
         }

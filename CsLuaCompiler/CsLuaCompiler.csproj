@@ -80,7 +80,6 @@
     <Compile Include="SyntaxAnalysis\EnumElement.cs" />
     <Compile Include="SyntaxAnalysis\ForeachLoop.cs" />
     <Compile Include="SyntaxAnalysis\ForLoop.cs" />
-    <Compile Include="SyntaxAnalysis\FullNameProvider.cs" />
     <Compile Include="SyntaxAnalysis\Generics.cs" />
     <Compile Include="SyntaxAnalysis\IfStatement.cs" />
     <Compile Include="SyntaxAnalysis\IFunction.cs" />
@@ -92,6 +91,14 @@
     <Compile Include="SyntaxAnalysis\Lua\LuaHeader.cs" />
     <Compile Include="SyntaxAnalysis\MainCode.cs" />
     <Compile Include="SyntaxAnalysis\Method.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\FullNameProvider.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\INameAndTypeProvider.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\LoadedNamespace.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\LoadedType.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\NameProviderException.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\RegistryBasedNameProvider.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\ScopeElement.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\TypeResult.cs" />
     <Compile Include="SyntaxAnalysis\NameSpace.cs" />
     <Compile Include="SyntaxAnalysis\NameSpacePart.cs" />
     <Compile Include="SyntaxAnalysis\New.cs" />
@@ -105,7 +112,6 @@
     <Compile Include="SyntaxAnalysis\Property.cs" />
     <Compile Include="SyntaxAnalysis\ReferencedVariableName.cs" />
     <Compile Include="SyntaxAnalysis\Scope.cs" />
-    <Compile Include="SyntaxAnalysis\ScopeElement.cs" />
     <Compile Include="SettingsReader.cs" />
     <Compile Include="SyntaxAnalysis\Struct.cs" />
     <Compile Include="SyntaxAnalysis\Switch.cs" />

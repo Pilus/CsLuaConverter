@@ -1,12 +1,13 @@
 ﻿namespace CsToLua.SyntaxAnalysis
 {
     using System.CodeDom.Compiler;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     internal class Cast : ILuaElement
     {
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
         }
 

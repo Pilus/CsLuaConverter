@@ -3,6 +3,7 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using ClassElements;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -23,7 +24,7 @@
             this.className = className;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             if (this.Expression != null)
             {

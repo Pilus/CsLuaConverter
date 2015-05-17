@@ -4,6 +4,7 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -15,7 +16,7 @@
         public string Name;
         private List<Attribute> currentAttributes = new List<Attribute>();
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             nameProvider.SetNamespaces(string.Join(".", this.FullName), this.usings);
 
@@ -47,7 +48,7 @@
             token = token.GetNextToken();
 
             this.Name = this.FullName.Last();
-            this.usings.Add(this.Name);
+            //this.usings.Add(this.Name);
 
             return this.AnalyzeContent(token);
         }

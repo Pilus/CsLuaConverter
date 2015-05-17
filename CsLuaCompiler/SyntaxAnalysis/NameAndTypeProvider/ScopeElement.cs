@@ -1,6 +1,6 @@
-﻿namespace CsToLua.SyntaxAnalysis
+﻿namespace CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider
 {
-    internal class ScopeElement
+    public class ScopeElement
     {
         public string ClassPrefix;
         public bool IsFromClass;

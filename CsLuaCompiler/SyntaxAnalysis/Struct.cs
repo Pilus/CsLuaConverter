@@ -3,6 +3,7 @@
     using System.Linq;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -11,7 +12,7 @@
         private string typeName;
         private string implements;
         
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             var type = nameProvider.LookupType(new List<string> {this.typeName,}).Type;
             var implements = type.GetInterfaces()

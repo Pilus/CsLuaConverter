@@ -3,6 +3,7 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -10,7 +11,7 @@
     {
         private readonly IList<ILuaElement> parameters = new List<ILuaElement>();
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             LuaElementHelper.WriteLuaJoin(this.parameters, textWriter, nameProvider);
         }
@@ -41,7 +42,7 @@
                 this.parameters.Select(parameter => ((Parameter) parameter).Type.GetQuotedTypeString()));
         }
 
-        public string FullTypesAsString(FullNameProvider nameProvider)
+        public string FullTypesAsString(INameAndTypeProvider nameProvider)
         {
             return string.Join(", ",
                 this.parameters.Select(parameter => ((Parameter)parameter).Type.GetQuotedFullTypeString(nameProvider)));

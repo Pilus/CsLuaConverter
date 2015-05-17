@@ -5,12 +5,13 @@
     using System.IO;
     using System.Linq;
     using System.Xml;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using SyntaxAnalysis;
 
     internal static class SolutionHandler
     {
-        public static IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, FullNameProvider nameProvider)
+        public static IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, INameAndTypeProvider nameProvider)
         {
             List<CsProject> csProjects =
                 solution.Projects.Select(project => new CsProject(nameProvider, project)).ToList();

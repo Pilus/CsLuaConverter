@@ -8,6 +8,7 @@
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.MSBuild;
     using SyntaxAnalysis;
@@ -56,8 +57,9 @@
             }
 
             Solution solution = GetSolution(solutionPath);
-            List<Assembly> assemblies = LoadAssembliesInSolution(solution);
-            var nameProvider = new FullNameProvider(assemblies);
+            //List<Assembly> assemblies = LoadAssembliesInSolution(solution);
+            //var nameProvider = new FullNameProvider(assemblies);
+            var nameProvider = new RegistryBasedNameProvider(solution);
             IEnumerable<IDeployableAddOn> addOns = SolutionHandler.GenerateAddOnsFromSolution(solution, nameProvider);
             SolutionHandler.DeployAddOns(wowPath, addOns);
 

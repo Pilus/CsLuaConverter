@@ -3,6 +3,7 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -10,7 +11,7 @@
     {
         public List<string> Names = new List<string>();
 
-        public void WriteLua(IndentedTextWriter textWriter, FullNameProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
         {
             textWriter.Write("{{{0}}}", string.Join(",", this.Names.Select(name => "'" + name + "'").ToArray()));
         }
@@ -30,12 +31,9 @@
             return token;
         }
 
-        public void AddToScope(FullNameProvider nameProvider)
+        public void AddToScope(INameAndTypeProvider nameProvider)
         {
-            foreach (var name in this.Names)
-            {
-                nameProvider.AddToScope(new ScopeElement(name));
-            }
+            nameProvider.SetGenerics(this.Names);
         }
     }
 }
