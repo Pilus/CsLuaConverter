@@ -22,7 +22,7 @@ local __GetByFullName = function(s, doNotThrow)
 	local n = {string.split(".",s)};
 	local o = _G[n[1]];
 	
-	if not(0) then
+	if not(o) then
 		if doNotThrow then
 			return;
 		else
@@ -33,7 +33,7 @@ local __GetByFullName = function(s, doNotThrow)
 	for i=2,#(n) do
 		o = o[n[i]];
 		
-		if not(0) then
+		if not(o) then
 			if doNotThrow then
 				return;
 			else
