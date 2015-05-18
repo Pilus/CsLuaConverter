@@ -1,4 +1,4 @@
-﻿namespace CsToLua.SyntaxAnalysis
+﻿namespace CsLuaCompiler.SyntaxAnalysis
 {
     internal enum Scope
     {

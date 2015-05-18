@@ -1,4 +1,4 @@
-﻿namespace CsToLua
+﻿namespace CsLuaCompiler
 {
     using System.Collections.Generic;
     using System.IO;
@@ -36,7 +36,7 @@
                 luaFile.DeployFile(addonPath);
             }
 
-            foreach (var resourceFile in resourceFiles)
+            foreach (var resourceFile in this.resourceFiles)
             {
                 resourceFile.DeployFile(addonPath);
             }

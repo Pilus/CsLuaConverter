@@ -1,11 +1,12 @@
-﻿namespace CsToLua.SyntaxAnalysis
+﻿namespace CsLuaCompiler.SyntaxAnalysis
 {
     using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
     using ClassElements;
-    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
+    using CsLuaCompiler.Providers;
+    using CsLuaCompiler.Providers.TypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -36,12 +37,15 @@
             this.methods.ForEach(v => providers.NameProvider.AddToScope(v.GetScopeElement()));
             this.properties.ForEach(v => providers.NameProvider.AddToScope(v.GetScopeElement()));
 
-            string fullName = providers.TypeProvider.LookupType(this.name).ToString();
+            var type = providers.TypeProvider.LookupType(this.name);
+            string fullName = type.ToString();
 
             if (this.generics != null)
             {
                 this.generics.AddToScope(providers);
             }
+
+            providers.NameProvider.AddAllInheritedMembersToScope(type.Type);
 
             var elements = new List<ILuaElement>
             {

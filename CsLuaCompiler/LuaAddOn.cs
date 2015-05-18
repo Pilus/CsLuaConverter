@@ -1,7 +1,6 @@
-﻿namespace CsToLua
+﻿namespace CsLuaCompiler
 {
     using System.IO;
-    using System.Linq;
 
     public class LuaAddOn : IDeployableAddOn
     {
@@ -22,8 +21,8 @@
         {
             var targetPath = path + "\\" + this.addonName;
 
-            foreach (string dirPath in Directory.GetDirectories(addonPath, "*", SearchOption.AllDirectories))
-                Directory.CreateDirectory(dirPath.Replace(addonPath, targetPath));
+            foreach (string dirPath in Directory.GetDirectories(this.addonPath, "*", SearchOption.AllDirectories))
+                Directory.CreateDirectory(dirPath.Replace(this.addonPath, targetPath));
 
             foreach (var ext in this.extensions)
             {

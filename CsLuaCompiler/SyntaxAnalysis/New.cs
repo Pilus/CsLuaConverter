@@ -1,8 +1,8 @@
 ﻿
-namespace CsToLua.SyntaxAnalysis
+namespace CsLuaCompiler.SyntaxAnalysis
 {
     using System.CodeDom.Compiler;
-    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
+    using CsLuaCompiler.Providers;
     using Microsoft.CodeAnalysis;
 
     internal class New : ILuaElement

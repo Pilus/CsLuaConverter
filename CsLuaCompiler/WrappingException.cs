@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CsToLua
+﻿namespace CsLuaCompiler
 {
+    using System;
+
     class WrappingException : Exception
     {
         public WrappingException(string message, Exception innerException) : base(message, innerException)

@@ -1,4 +1,4 @@
-﻿namespace CsToLua
+﻿namespace CsLuaCompiler
 {
     using System;
     using System.Collections.Generic;

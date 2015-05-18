@@ -1,7 +1,8 @@
-﻿namespace CsToLua.SyntaxAnalysis
+﻿namespace CsLuaCompiler.SyntaxAnalysis
 {
     using System.CodeDom.Compiler;
-    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
+    using CsLuaCompiler.Providers;
+    using CsLuaCompiler.Providers.TypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 

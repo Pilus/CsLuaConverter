@@ -1,13 +1,11 @@
-﻿namespace CsToLua
+﻿namespace CsLuaCompiler
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Xml;
-    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
+    using CsLuaCompiler.Providers;
     using Microsoft.CodeAnalysis;
-    using SyntaxAnalysis;
 
     internal static class SolutionHandler
     {

@@ -1,18 +1,18 @@
-﻿namespace CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider
+﻿namespace CsLuaCompiler.Providers.TypeProvider
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using Microsoft.CodeAnalysis;
-    using System.IO;
 
-    public class RegistryBasedNameProvider : ITypeProvider
+    public class TypeNameProvider : ITypeProvider
     {
         private readonly LoadedNamespace rootNamespace;
         private List<LoadedNamespace> refenrecedNamespaces;
 
-        public RegistryBasedNameProvider(Solution solution)
+        public TypeNameProvider(Solution solution)
         {
             this.rootNamespace = new LoadedNamespace(null);
             this.LoadSystemTypes();
@@ -23,6 +23,7 @@
         {
             this.LoadType(typeof(Action));
             this.LoadType(typeof(Func<int>));
+            this.LoadType(typeof(NotImplementedException));
         }
 
         private void LoadSolution(Solution solution)
@@ -53,7 +54,7 @@
 
             if (nameParts.Length < 2)
             {
-                throw new NameProviderException(string.Format("Type name does not have any namespace: {0}", type.FullName));
+                throw new ProviderException(string.Format("Type name does not have any namespace: {0}", type.FullName));
             }
 
             LoadedNamespace currentNamespace = null;
@@ -64,7 +65,7 @@
 
             if (currentNamespace == null)
             {
-                throw new NameProviderException("No namespace found.");
+                throw new ProviderException("No namespace found.");
             }
             currentNamespace.Upsert(type);
         }
@@ -99,7 +100,7 @@
                 }
                 if (found == false)
                 {
-                    throw new NameProviderException(String.Format("Could not find namespace: {0}.", ns));
+                    throw new ProviderException(String.Format("Could not find namespace: {0}.", ns));
                 }
             }
         }
@@ -124,7 +125,7 @@
                 }
             }
 
-            throw new NameProviderException(string.Format("Could not find a variable for {0}", firstName));
+            throw new ProviderException(string.Format("Could not find a variable for {0}", firstName));
         }
 
         public TypeResult LookupType(string name)
@@ -137,7 +138,7 @@
                     return refenrecedNamespace.Types[nameWithoutGenerics].GetTypeResult();
                 }
             }
-            throw new NameProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", name));
+            throw new ProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", name));
         }
 
         public TypeResult LookupType(IEnumerable<string> names)
@@ -171,7 +172,7 @@
                 }
             }
           
-            throw new NameProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", string.Join(".", names)));
+            throw new ProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", string.Join(".", names)));
         }
 
 

@@ -1,9 +1,12 @@
 ﻿
-namespace CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider
+namespace CsLuaCompiler.Providers
 {
+    using DefaultValueProvider;
+    using GenericsRegistry;
     using Microsoft.CodeAnalysis;
-    using System;
-    using System.Collections.Generic;
+    using NameProvider;
+    using SyntaxAnalysis.NameAndTypeProvider;
+    using TypeProvider;
 
     internal class Providers : IProviders
     {
@@ -14,10 +17,10 @@ namespace CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider
 
         public Providers(Solution solution)
         {
-            this.typeProvider = new RegistryBasedNameProvider(solution);
-            this.defaultValueProvider = new DefaultValueProvider(this.typeProvider);
-            this.genericsRegistry = new GenericsRegistry();
-            this.nameProvider = new NameProvider(this.typeProvider);
+            this.typeProvider = new TypeNameProvider(solution);
+            this.defaultValueProvider = new DefaultValueProvider.DefaultValueProvider(this.typeProvider);
+            this.genericsRegistry = new GenericsRegistry.GenericsRegistry();
+            this.nameProvider = new NameProvider.NameProvider(this.typeProvider);
         }
 
         public IDefaultValueProvider DefaultValueProvider

@@ -1,4 +1,4 @@
-﻿namespace CsToLua
+﻿namespace CsLuaCompiler
 {
     public interface IDeployableAddOn
     {

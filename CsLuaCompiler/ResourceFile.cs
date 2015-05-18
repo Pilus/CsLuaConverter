@@ -1,5 +1,5 @@
 ﻿
-namespace CsToLua
+namespace CsLuaCompiler
 {
     using System.IO;
 

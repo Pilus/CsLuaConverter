@@ -1,4 +1,4 @@
-﻿namespace CsToLua.SyntaxAnalysis.Lua
+﻿namespace CsLuaCompiler.SyntaxAnalysis.Lua
 {
     using System.IO;
 

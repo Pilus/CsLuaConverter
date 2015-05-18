@@ -57,6 +57,21 @@
     <Compile Include="CsProject.cs" />
     <Compile Include="IDeployableAddOn.cs" />
     <Compile Include="LuaAddOn.cs" />
+    <Compile Include="Providers\DefaultValueProvider\DefaultValueProvider.cs" />
+    <Compile Include="Providers\DefaultValueProvider\IDefaultValueProvider.cs" />
+    <Compile Include="Providers\GenericsRegistry\GenericsRegistry.cs" />
+    <Compile Include="Providers\GenericsRegistry\IGenericsRegistry.cs" />
+    <Compile Include="Providers\IProviders.cs" />
+    <Compile Include="Providers\NameProvider\INameProvider.cs" />
+    <Compile Include="Providers\NameProvider\NameProvider.cs" />
+    <Compile Include="Providers\ProviderException.cs" />
+    <Compile Include="Providers\Providers.cs" />
+    <Compile Include="Providers\TypeProvider\ITypeProvider.cs" />
+    <Compile Include="Providers\TypeProvider\LoadedNamespace.cs" />
+    <Compile Include="Providers\TypeProvider\LoadedType.cs" />
+    <Compile Include="Providers\TypeProvider\ScopeElement.cs" />
+    <Compile Include="Providers\TypeProvider\TypeNameProvider.cs" />
+    <Compile Include="Providers\TypeProvider\TypeResult.cs" />
     <Compile Include="ResourceFile.cs" />
     <Compile Include="SolutionHandler.cs" />
     <Compile Include="SyntaxAnalysis\BaseList.cs" />
@@ -93,22 +108,7 @@
     <Compile Include="SyntaxAnalysis\Lua\LuaHeader.cs" />
     <Compile Include="SyntaxAnalysis\MainCode.cs" />
     <Compile Include="SyntaxAnalysis\Method.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\DefaultValueProvider.cs" />
     <Compile Include="SyntaxAnalysis\NameAndTypeProvider\FullNameProvider.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\GenericsRegistry.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\IDefaultValueProvider.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\IGenericsRegistry.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\IProviders.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\INameProvider.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\ITypeProvider.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\LoadedNamespace.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\LoadedType.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\NameProvider.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\NameProviderException.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\Providers.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\RegistryBasedNameProvider.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\ScopeElement.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\TypeResult.cs" />
     <Compile Include="SyntaxAnalysis\NameSpace.cs" />
     <Compile Include="SyntaxAnalysis\NameSpacePart.cs" />
     <Compile Include="SyntaxAnalysis\New.cs" />
@@ -140,6 +140,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <ImportGroup Label="Targets">
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

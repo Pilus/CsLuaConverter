@@ -1,4 +1,4 @@
-﻿namespace CsToLua
+﻿namespace CsLuaCompiler
 {
     using System;
     using System.CodeDom.Compiler;
@@ -7,7 +7,7 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
-    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
+    using CsLuaCompiler.Providers;
     using Microsoft.CodeAnalysis;
     using SyntaxAnalysis;
 

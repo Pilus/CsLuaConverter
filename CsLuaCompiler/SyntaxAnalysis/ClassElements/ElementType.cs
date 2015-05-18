@@ -1,4 +1,4 @@
-﻿namespace CsToLua.SyntaxAnalysis.ClassElements
+﻿namespace CsLuaCompiler.SyntaxAnalysis.ClassElements
 {
     public enum ElementType
     {

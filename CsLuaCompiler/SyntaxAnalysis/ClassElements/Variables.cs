@@ -1,9 +1,9 @@
-﻿namespace CsToLua.SyntaxAnalysis.ClassElements
+﻿namespace CsLuaCompiler.SyntaxAnalysis.ClassElements
 {
     using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
-    using CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider;
+    using CsLuaCompiler.Providers;
     using Microsoft.CodeAnalysis;
 
     internal class Variables : ILuaElement

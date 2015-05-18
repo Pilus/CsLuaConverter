@@ -1,4 +1,4 @@
-﻿namespace CsToLua.SyntaxAnalysis
+﻿namespace CsLuaCompiler.SyntaxAnalysis
 {
     using System;
     using System.Collections.Generic;
@@ -11,18 +11,23 @@
 
     internal class SyntaxAnalyser
     {
+        private bool debugOutputFolderExists;
         private SyntaxToken token;
+
+
+        public SyntaxAnalyser()
+        {
+            this.debugOutputFolderExists = new DirectoryInfo("DebugOutput").Exists;
+        }
 
         public NameSpacePart AnalyseDocument(Document document)
         {
             SyntaxNode syntaxTreeRoot = this.GetSyntaxTreeRoot(document);
             this.token = syntaxTreeRoot.FindToken(syntaxTreeRoot.SpanStart);
-            try
+            
+            if (this.debugOutputFolderExists)
             {
                 this.PrintSyntaxTreeToFile(document.Name, this.token);
-            }
-            catch (Exception)
-            {
             }
 
             if (Debugger.IsAttached)

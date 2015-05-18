@@ -1,6 +1,6 @@
 ﻿
 
-namespace CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider
+namespace CsLuaCompiler.Providers.TypeProvider
 {
     using System.Collections.Generic;
 
