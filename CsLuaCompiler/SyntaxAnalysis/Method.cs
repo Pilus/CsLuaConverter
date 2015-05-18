@@ -19,19 +19,19 @@
         private ParameterList parameters;
 
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            List<ScopeElement> scopeBefore = nameProvider.CloneScope();
+            List<ScopeElement> scopeBefore = providers.NameProvider.CloneScope();
 
             textWriter.Write("function(");
-            this.parameters.WriteLua(textWriter, nameProvider);
+            this.parameters.WriteLua(textWriter, providers);
             textWriter.WriteLine(")");
             textWriter.Indent++;
-            this.block.WriteLua(textWriter, nameProvider);
+            this.block.WriteLua(textWriter, providers);
             textWriter.Indent--;
             textWriter.Write("end");
 
-            nameProvider.SetScope(scopeBefore);
+            providers.NameProvider.SetScope(scopeBefore);
         }
 
         public ParameterList GetParameters()

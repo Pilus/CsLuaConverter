@@ -10,13 +10,13 @@
         private Block block;
         private MainCode statement;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("while (");
-            this.statement.WriteLua(textWriter, nameProvider);
+            this.statement.WriteLua(textWriter, providers);
             textWriter.WriteLine(") do");
             textWriter.Indent++;
-            this.block.WriteLua(textWriter, nameProvider);
+            this.block.WriteLua(textWriter, providers);
             textWriter.Indent--;
             textWriter.WriteLine("end");
         }

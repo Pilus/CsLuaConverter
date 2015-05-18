@@ -16,13 +16,13 @@
         public string Name;
         private List<Attribute> currentAttributes = new List<Attribute>();
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            nameProvider.SetNamespaces(string.Join(".", this.FullName), this.usings);
+            providers.TypeProvider.SetNamespaces(string.Join(".", this.FullName), this.usings);
 
             foreach (ILuaElement element in this.elements)
             {
-                element.WriteLua(textWriter, nameProvider);
+                element.WriteLua(textWriter, providers);
             }
         }
 

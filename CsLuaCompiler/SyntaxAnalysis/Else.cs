@@ -11,20 +11,20 @@
         private Block block;
         private IfStatement ifStatement;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (this.ifStatement != null)
             {
                 textWriter.Write("else");
-                this.ifStatement.WriteLua(textWriter, nameProvider);
+                this.ifStatement.WriteLua(textWriter, providers);
                 return;
             }
             textWriter.WriteLine("else");
             textWriter.Indent++;
-            List<ScopeElement> scope = nameProvider.CloneScope();
-            this.block.WriteLua(textWriter, nameProvider);
+            List<ScopeElement> scope = providers.NameProvider.CloneScope();
+            this.block.WriteLua(textWriter, providers);
             textWriter.Indent--;
-            nameProvider.SetScope(scope);
+            providers.NameProvider.SetScope(scope);
             textWriter.WriteLine("end");
         }
 

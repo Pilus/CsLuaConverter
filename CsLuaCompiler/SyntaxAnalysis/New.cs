@@ -7,7 +7,7 @@ namespace CsToLua.SyntaxAnalysis
 
     internal class New : ILuaElement
     {
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             return;
         }

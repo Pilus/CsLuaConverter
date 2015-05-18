@@ -22,7 +22,7 @@
             this.AddPart(firstPart);
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (this.level == 1)
             {
@@ -33,12 +33,12 @@
             textWriter.Indent++;
             foreach (NameSpacePart part in this.parts)
             {
-                part.WriteLua(textWriter, nameProvider);
+                part.WriteLua(textWriter, providers);
             }
 
             foreach (var subPair in this.subNamespaces)
             {
-                subPair.Value.WriteLua(textWriter, nameProvider);
+                subPair.Value.WriteLua(textWriter, providers);
             }
 
             textWriter.Indent--;

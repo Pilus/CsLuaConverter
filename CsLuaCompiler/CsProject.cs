@@ -20,15 +20,15 @@
 
         public readonly Dictionary<string, object> Settings;
         private readonly Compilation compilation;
-        private readonly INameAndTypeProvider nameProvider;
+        private readonly IProviders providers;
         private readonly Dictionary<string, NameSpace> nameSpaces;
         public readonly Project CodeProject;
         public string Name;
 
-        public CsProject(INameAndTypeProvider nameProvider, Project project)
+        public CsProject(IProviders providers, Project project)
         {
             this.Settings = SettingsReader.GetSettings(project);
-            this.nameProvider = nameProvider;
+            this.providers = providers;
             this.CodeProject = project;
             this.compilation = project.GetCompilationAsync().Result;
             if (this.IsCsLuaAddOn())
@@ -85,7 +85,7 @@
                 foreach (var nameSpacePair in this.nameSpaces)
                 {
                     var textWriter = new StringWriter();
-                    nameSpacePair.Value.WriteLua(new IndentedTextWriter(textWriter), this.nameProvider);
+                    nameSpacePair.Value.WriteLua(new IndentedTextWriter(textWriter), this.providers);
                     files.Add(new CodeFile
                     {
                         FileName = nameSpacePair.Key + ".lua",

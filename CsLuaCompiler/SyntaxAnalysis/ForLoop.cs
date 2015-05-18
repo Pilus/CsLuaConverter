@@ -14,27 +14,27 @@
         private MainCode to;
         private string toBinaryExpression;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             string toSuffix = string.Empty;
             if (this.toBinaryExpression.Equals("<"))
             {
                 toSuffix = " - 1";
             }
-            List<ScopeElement> originalScope = nameProvider.CloneScope();
-            nameProvider.AddToScope(new ScopeElement(this.incrementerName));
+            List<ScopeElement> originalScope = providers.NameProvider.CloneScope();
+            providers.NameProvider.AddToScope(new ScopeElement(this.incrementerName));
 
             textWriter.Write("for {0} = ", this.incrementerName);
-            this.from.WriteLua(textWriter, nameProvider);
+            this.from.WriteLua(textWriter, providers);
             textWriter.Write(", ");
-            this.to.WriteLua(textWriter, nameProvider);
+            this.to.WriteLua(textWriter, providers);
             textWriter.WriteLine("{0} do", toSuffix);
             textWriter.Indent++;
-            this.block.WriteLua(textWriter, nameProvider);
+            this.block.WriteLua(textWriter, providers);
             textWriter.Indent--;
             textWriter.WriteLine("end");
 
-            nameProvider.SetScope(originalScope);
+            providers.NameProvider.SetScope(originalScope);
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

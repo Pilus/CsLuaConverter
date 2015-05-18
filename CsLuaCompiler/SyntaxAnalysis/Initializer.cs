@@ -19,7 +19,7 @@
             this.intializeClassWithoutContructor = intializeClassWithoutContructor;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (this.initializeClass)
             {
@@ -34,7 +34,7 @@
 
             for (int i = 0; i < this.elements.Count; i++)
             {
-                LuaElementHelper.WriteLuaJoin(this.elements[i].ToList(), textWriter, nameProvider, "");
+                LuaElementHelper.WriteLuaJoin(this.elements[i].ToList(), textWriter, providers, "");
                 if (i < this.elements.Count - 1)
                 {
                     textWriter.Write(",");

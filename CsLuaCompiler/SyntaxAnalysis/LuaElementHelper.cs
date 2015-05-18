@@ -36,11 +36,11 @@
         }
 
         public static void WriteLuaJoin(IList<ILuaElement> elements, IndentedTextWriter textWriter,
-            INameAndTypeProvider nameProvider, string delimitar)
+            IProviders providers, string delimitar)
         {
             for (int i = 0; i < elements.Count; i++)
             {
-                elements[i].WriteLua(textWriter, nameProvider);
+                elements[i].WriteLua(textWriter, providers);
                 if (i < elements.Count - 1)
                 {
                     textWriter.Write(delimitar);
@@ -49,9 +49,9 @@
         }
 
         public static void WriteLuaJoin(IList<ILuaElement> elements, IndentedTextWriter textWriter,
-            INameAndTypeProvider nameProvider)
+            IProviders providers)
         {
-            WriteLuaJoin(elements, textWriter, nameProvider, ",");
+            WriteLuaJoin(elements, textWriter, providers, ",");
         }
     }
 }

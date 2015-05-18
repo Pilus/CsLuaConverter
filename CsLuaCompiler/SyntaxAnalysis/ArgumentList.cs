@@ -10,10 +10,10 @@
     {
         public readonly List<ILuaElement> Arguments = new List<ILuaElement>();
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("(");
-            LuaElementHelper.WriteLuaJoin(this.Arguments, textWriter, nameProvider);
+            LuaElementHelper.WriteLuaJoin(this.Arguments, textWriter, providers);
             textWriter.Write(")");
         }
 

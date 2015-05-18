@@ -10,9 +10,9 @@
         public VariableType Type;
         private string name;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            nameProvider.AddToScope(new ScopeElement(this.name));
+            providers.NameProvider.AddToScope(new ScopeElement(this.name));
             textWriter.Write(this.name);
         }
 

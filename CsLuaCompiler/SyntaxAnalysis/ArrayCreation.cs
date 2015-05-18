@@ -10,10 +10,10 @@
     {
         private List<ILuaElement> codes;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("{[0]=");
-            LuaElementHelper.WriteLuaJoin(this.codes, textWriter, nameProvider);
+            LuaElementHelper.WriteLuaJoin(this.codes, textWriter, providers);
             textWriter.Write("}");
         }
 

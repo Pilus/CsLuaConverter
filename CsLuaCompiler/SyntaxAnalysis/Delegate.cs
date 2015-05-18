@@ -10,16 +10,16 @@
         private Block block;
         private ParameterList parameterList;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("function(");
             if (this.parameterList != null)
             { 
-                this.parameterList.WriteLua(textWriter, nameProvider);
+                this.parameterList.WriteLua(textWriter, providers);
             }
 
             textWriter.Write(") ");
-            this.block.WriteLua(textWriter, nameProvider);
+            this.block.WriteLua(textWriter, providers);
             textWriter.Write(" end");
         }
 

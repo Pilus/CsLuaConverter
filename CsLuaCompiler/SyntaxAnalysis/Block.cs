@@ -9,9 +9,9 @@
     {
         private MainCode code;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            this.code.WriteLua(textWriter, nameProvider);
+            this.code.WriteLua(textWriter, providers);
         }
 
 

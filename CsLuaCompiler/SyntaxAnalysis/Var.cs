@@ -9,10 +9,10 @@
     {
         private VariableName varName;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("local ");
-            this.varName.WriteLua(textWriter, nameProvider);
+            this.varName.WriteLua(textWriter, providers);
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

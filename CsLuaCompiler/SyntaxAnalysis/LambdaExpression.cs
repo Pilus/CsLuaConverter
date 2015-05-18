@@ -11,10 +11,10 @@
         private string argName;
         private ILuaElement content;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            List<ScopeElement> originalScope = nameProvider.CloneScope();
-            nameProvider.AddToScope(new ScopeElement(this.argName));
+            List<ScopeElement> originalScope = providers.NameProvider.CloneScope();
+            providers.NameProvider.AddToScope(new ScopeElement(this.argName));
 
             if (this.content is MainCode)
             { 
@@ -25,10 +25,10 @@
                 textWriter.WriteLine("function({0})", this.argName);
             }
 
-            this.content.WriteLua(textWriter, nameProvider);
+            this.content.WriteLua(textWriter, providers);
             textWriter.Write(" end");
 
-            nameProvider.SetScope(originalScope);
+            providers.NameProvider.SetScope(originalScope);
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

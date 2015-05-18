@@ -13,19 +13,20 @@ namespace CsLuaCompiler.SyntaxAnalysis.NameAndTypeProvider
             return name.Split('`').First();
         }
 
+        public string ToQuotedString()
+        {
+            return "'" + this.ToString() + "'";
+        }
+
         public override string ToString()
         {
+            var genericStrippedFullName = StripGenericsFromType(this.Type.FullName);
             if (string.IsNullOrEmpty(this.AdditionalString))
             {
-                return StripGenericsFromType(this.Type.FullName);
+                return genericStrippedFullName;
             }
 
-            if (this.Type.IsEnum)
-            {
-                return this.Type.FullName + "." + this.AdditionalString;
-            }
-
-            return StripGenericsFromType(this.Type.FullName) + "." + this.AdditionalString;
+            return genericStrippedFullName + "." + this.AdditionalString;
         }
     }
 }

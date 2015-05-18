@@ -9,7 +9,7 @@
     {
         public string attributeText = string.Empty;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
         }
 

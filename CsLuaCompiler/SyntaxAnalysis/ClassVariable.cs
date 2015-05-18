@@ -24,18 +24,18 @@
             this.className = className;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (this.Expression != null)
             {
                 LuaFormatter.WriteClassElement(textWriter, ElementType.Variable, this.Name, this.isStatic, false, 
-                    () => this.Expression.WriteLua(textWriter, nameProvider), this.className);
+                    () => this.Expression.WriteLua(textWriter, providers), this.className);
             }
             else
             {
                 string typeName = this.Type.GetTypeString();
                 LuaFormatter.WriteClassElement(textWriter, ElementType.Variable, this.Name, this.isStatic,
-                    nameProvider.GetDefaultValue(typeName, this.Type.IsNullable), this.className);
+                    providers.DefaultValueProvider.GetDefaultValue(typeName, this.Type.IsNullable), this.className);
             }
         }
 

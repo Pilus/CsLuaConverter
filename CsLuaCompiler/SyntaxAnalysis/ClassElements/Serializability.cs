@@ -25,7 +25,7 @@
             this.className = className;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (!this.isSerializable || this.isStatic)
             {

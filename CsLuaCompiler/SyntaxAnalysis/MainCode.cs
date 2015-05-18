@@ -136,9 +136,9 @@
             this.breakCondition = breakCondition;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            this.Elements.ForEach(element => element.WriteLua(textWriter, nameProvider));
+            this.Elements.ForEach(element => element.WriteLua(textWriter, providers));
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

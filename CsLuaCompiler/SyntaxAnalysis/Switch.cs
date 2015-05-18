@@ -19,7 +19,7 @@
             this.switchCases = new List<SwitchCase>();
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             foreach (SwitchCase switchCase in this.switchCases)
             {
@@ -49,9 +49,9 @@
 
                 for (int i = 0; i < switchCase.Cases.Count; i++)
                 {
-                    this.switchVariable.WriteLua(textWriter, nameProvider);
+                    this.switchVariable.WriteLua(textWriter, providers);
                     textWriter.Write(" == ");
-                    switchCase.Cases[i].WriteLua(textWriter, nameProvider);
+                    switchCase.Cases[i].WriteLua(textWriter, providers);
                     if (i < switchCase.Cases.Count - 1)
                     {
                         textWriter.Write(" or ");
@@ -64,7 +64,7 @@
                 }
 
                 textWriter.Indent++;
-                switchCase.Code.WriteLua(textWriter, nameProvider);
+                switchCase.Code.WriteLua(textWriter, providers);
                 textWriter.Indent--;
 
                 if (switchCase.Equals(this.switchCases.Last()))

@@ -59,8 +59,8 @@
             Solution solution = GetSolution(solutionPath);
             //List<Assembly> assemblies = LoadAssembliesInSolution(solution);
             //var nameProvider = new FullNameProvider(assemblies);
-            var nameProvider = new RegistryBasedNameProvider(solution);
-            IEnumerable<IDeployableAddOn> addOns = SolutionHandler.GenerateAddOnsFromSolution(solution, nameProvider);
+            var providers = new Providers(solution);
+            IEnumerable<IDeployableAddOn> addOns = SolutionHandler.GenerateAddOnsFromSolution(solution, providers);
             SolutionHandler.DeployAddOns(wowPath, addOns);
 
             Console.WriteLine("Lua converting successfull.");

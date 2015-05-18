@@ -9,10 +9,10 @@
     {
         public ILuaElement PreviousElement;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write(" = 1 + ");
-            this.PreviousElement.WriteLua(textWriter, nameProvider);
+            this.PreviousElement.WriteLua(textWriter, providers);
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

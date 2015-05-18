@@ -12,15 +12,15 @@
         private MainCode condition;
         private bool includeEnd = true;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            List<ScopeElement> scope = nameProvider.CloneScope();
+            List<ScopeElement> scope = providers.NameProvider.CloneScope();
 
             textWriter.Write("if (");
-            this.condition.WriteLua(textWriter, nameProvider);
+            this.condition.WriteLua(textWriter, providers);
             textWriter.WriteLine(") then");
             textWriter.Indent++;
-            this.content.WriteLua(textWriter, nameProvider);
+            this.content.WriteLua(textWriter, providers);
             textWriter.Indent--;
 
             if (this.includeEnd)
@@ -28,7 +28,7 @@
                 textWriter.WriteLine("end");
             }
 
-            nameProvider.SetScope(scope);
+            providers.NameProvider.SetScope(scope);
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

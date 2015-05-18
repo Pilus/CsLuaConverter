@@ -10,7 +10,7 @@
         private VariableType type;
         public ILuaElement PreviousElement;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             switch (this.Text)
             {
@@ -35,17 +35,17 @@
                     break;
                 case "is":
                     textWriter.Write(".__IsType('");
-                    this.type.WriteLua(textWriter, nameProvider);
+                    this.type.WriteLua(textWriter, providers);
                     textWriter.Write("')");
                     break;
                 case "+=":
                     textWriter.Write(" = ");
-                    this.PreviousElement.WriteLua(textWriter, nameProvider);
+                    this.PreviousElement.WriteLua(textWriter, providers);
                     textWriter.Write(" +add+ ");
                     break;
                 case "-=":
                     textWriter.Write(" = ");
-                    this.PreviousElement.WriteLua(textWriter, nameProvider);
+                    this.PreviousElement.WriteLua(textWriter, providers);
                     textWriter.Write(" - ");
                     break;
                 default:

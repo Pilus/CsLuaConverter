@@ -17,7 +17,7 @@
             {"string.IsNullOrEmpty", "IsStringNullOrEmpty"},
         };
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             string totalName = string.Join(".", this.names);
             if (mappings.ContainsKey(totalName))
@@ -29,7 +29,7 @@
             textWriter.Write("local ");
             if (this.variableName != null)
             {
-                this.variableName.WriteLua(textWriter, nameProvider);
+                this.variableName.WriteLua(textWriter, providers);
             }
         }
 

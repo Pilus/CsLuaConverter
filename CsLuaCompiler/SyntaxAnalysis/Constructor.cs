@@ -13,17 +13,17 @@
         private Block block;
         private ParameterList parameters;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("function(");
-            this.parameters.WriteLua(textWriter, nameProvider);
+            this.parameters.WriteLua(textWriter, providers);
             textWriter.WriteLine(")");
             textWriter.Indent++;
 
             if (this.baseCall != null)
             {
                 textWriter.Write(this.baseCallPrefix);
-                this.baseCall.WriteLua(textWriter, nameProvider);
+                this.baseCall.WriteLua(textWriter, providers);
                 textWriter.WriteLine(";");
             }
             else
@@ -31,7 +31,7 @@
                 textWriter.WriteLine("if class.__base then class.__base.__Cstor(); end");
             }
 
-            this.block.WriteLua(textWriter, nameProvider);
+            this.block.WriteLua(textWriter, providers);
             textWriter.Indent--;
             textWriter.WriteLine("end");
         }

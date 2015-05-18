@@ -25,14 +25,14 @@
             this.className = className;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (this.GotGet())
             {
                 if (this.useDefaultGet)
                 {
                     var typeName = this.Type.GetTypeString();
-                    LuaFormatter.WriteClassElement(textWriter, ElementType.PropertyGet, this.Name, this.isStatic, nameProvider.GetDefaultValue(typeName, this.Type.IsNullable), this.className);
+                    LuaFormatter.WriteClassElement(textWriter, ElementType.PropertyGet, this.Name, this.isStatic, providers.DefaultValueProvider.GetDefaultValue(typeName, this.Type.IsNullable), this.className);
                 }
                 else
                 {
@@ -40,9 +40,9 @@
                     {
                         textWriter.WriteLine("function()", this.Name);
                         textWriter.Indent++;
-                        List<ScopeElement> variableScope = nameProvider.CloneScope();
-                        this.getBlock.WriteLua(textWriter, nameProvider);
-                        nameProvider.SetScope(variableScope);
+                        List<ScopeElement> variableScope = providers.NameProvider.CloneScope();
+                        this.getBlock.WriteLua(textWriter, providers);
+                        providers.NameProvider.SetScope(variableScope);
                         textWriter.Indent--;
                         textWriter.Write("end");
                     }, this.className);
@@ -61,10 +61,10 @@
                     {
                         textWriter.WriteLine("function(value)", this.Name);
                         textWriter.Indent++;
-                        List<ScopeElement> variableScope = nameProvider.CloneScope();
-                        nameProvider.AddToScope(new ScopeElement("value"));
-                        this.getBlock.WriteLua(textWriter, nameProvider);
-                        nameProvider.SetScope(variableScope);
+                        List<ScopeElement> variableScope = providers.NameProvider.CloneScope();
+                        providers.NameProvider.AddToScope(new ScopeElement("value"));
+                        this.getBlock.WriteLua(textWriter, providers);
+                        providers.NameProvider.SetScope(variableScope);
                         textWriter.Indent--;
                         textWriter.Write("end");
                     }, this.className);

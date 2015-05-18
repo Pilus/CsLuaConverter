@@ -22,12 +22,12 @@
             this.className = className;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (this.constructors.Any())
             {
                 LuaFormatter.WriteClassElement(textWriter, ElementType.Constructor, "cstor", false, false, 
-                    () => LuaFormatter.WriteMethodToLua(textWriter, nameProvider, this.constructors), this.className);
+                    () => LuaFormatter.WriteMethodToLua(textWriter, providers, this.constructors), this.className);
             }
         }
 

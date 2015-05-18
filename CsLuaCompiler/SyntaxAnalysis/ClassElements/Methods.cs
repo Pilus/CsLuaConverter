@@ -20,7 +20,7 @@
             this.methods = methods.Where(m => !m.IsAbstract).ToList();
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             List<string> methodNames =
                 this.methods.GroupBy(m => m.Name).Select(group => group.First()).Select(m => m.Name).ToList();
@@ -39,7 +39,7 @@
                     if (methodsMatching.Any())
                     {
                         LuaFormatter.WriteClassElement(textWriter, ElementType.Method, methodName, methodsMatching.First().Static, methodsMatching.First().IsOverride, () =>
-                            LuaFormatter.WriteMethodToLua(textWriter, nameProvider, methodsMatching), this.className);
+                            LuaFormatter.WriteMethodToLua(textWriter, providers, methodsMatching), this.className);
                     }
                 }
             }

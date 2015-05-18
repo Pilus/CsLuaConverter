@@ -9,7 +9,7 @@
     internal static class LuaFormatter
     {
 
-        public static void WriteMethodToLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider,
+        public static void WriteMethodToLua(IndentedTextWriter textWriter, IProviders providers,
             IEnumerable<IFunction> methods)
         {
 
@@ -19,9 +19,9 @@
             {
                 textWriter.WriteLine("{");
                 textWriter.Indent++;
-                textWriter.WriteLine("types = {{{0}}},", method.GetParameters().FullTypesAsString(nameProvider));
+                textWriter.WriteLine("types = {{{0}}},", method.GetParameters().FullTypesAsString(providers));
                 textWriter.Write("func = ");
-                method.WriteLua(textWriter, nameProvider);
+                method.WriteLua(textWriter, providers);
                 textWriter.WriteLine(",");
                 textWriter.Indent--;
                 textWriter.WriteLine("},");

@@ -11,9 +11,9 @@
     {
         private readonly IList<ILuaElement> parameters = new List<ILuaElement>();
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            LuaElementHelper.WriteLuaJoin(this.parameters, textWriter, nameProvider);
+            LuaElementHelper.WriteLuaJoin(this.parameters, textWriter, providers);
         }
 
         public SyntaxToken Analyze(SyntaxToken token)
@@ -42,7 +42,7 @@
                 this.parameters.Select(parameter => ((Parameter) parameter).Type.GetQuotedTypeString()));
         }
 
-        public string FullTypesAsString(INameAndTypeProvider nameProvider)
+        public string FullTypesAsString(IProviders nameProvider)
         {
             return string.Join(", ",
                 this.parameters.Select(parameter => ((Parameter)parameter).Type.GetQuotedFullTypeString(nameProvider)));

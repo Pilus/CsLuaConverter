@@ -10,11 +10,10 @@
     internal class Struct : ILuaElement
     {
         private string typeName;
-        private string implements;
         
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            var type = nameProvider.LookupType(new List<string> {this.typeName,}).Type;
+            var type = providers.TypeProvider.LookupType(this.typeName).Type;
             var implements = type.GetInterfaces()
                 .Select(i => QuoteString(i.Name)).ToList();
 

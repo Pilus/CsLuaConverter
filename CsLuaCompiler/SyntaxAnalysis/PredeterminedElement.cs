@@ -23,11 +23,11 @@
             return token;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (this.scopeElement != null)
             {
-                nameProvider.AddToScope(this.scopeElement);
+                providers.NameProvider.AddToScope(this.scopeElement);
             }
 
             if (this.newLine)

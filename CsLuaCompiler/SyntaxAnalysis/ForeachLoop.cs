@@ -12,20 +12,20 @@
         private MainCode enumerable;
         private string iteratorName;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            List<ScopeElement> scope = nameProvider.CloneScope();
-            nameProvider.AddToScope(new ScopeElement(this.iteratorName));
+            List<ScopeElement> scope = providers.NameProvider.CloneScope();
+            providers.NameProvider.AddToScope(new ScopeElement(this.iteratorName));
 
             textWriter.Write("for _,{0} in __Foreach(", this.iteratorName);
-            this.enumerable.WriteLua(textWriter, nameProvider);
+            this.enumerable.WriteLua(textWriter, providers);
             textWriter.WriteLine(") do");
             textWriter.Indent++;
-            this.block.WriteLua(textWriter, nameProvider);
+            this.block.WriteLua(textWriter, providers);
             textWriter.Indent--;
             textWriter.WriteLine("end");
 
-            nameProvider.SetScope(scope);
+            providers.NameProvider.SetScope(scope);
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

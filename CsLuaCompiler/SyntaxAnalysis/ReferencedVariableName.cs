@@ -9,7 +9,7 @@
     {
         private VariableName varName;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (this.varName.Names.Count == 1 && this.varName.Names[0] == "Equals")
             {
@@ -17,7 +17,7 @@
                 return;
             }
             textWriter.Write(".");
-            this.varName.WriteLua(textWriter, nameProvider);
+            this.varName.WriteLua(textWriter, providers);
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

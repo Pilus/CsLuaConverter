@@ -11,7 +11,7 @@
         private string name;
         private List<string> values;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.WriteLine("{0} = {{", this.name);
             textWriter.Indent++;

@@ -4,14 +4,13 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using CsToLua.SyntaxAnalysis;
     using Microsoft.CodeAnalysis;
+    using System.IO;
 
-    public class RegistryBasedNameProvider : INameAndTypeProvider
+    public class RegistryBasedNameProvider : ITypeProvider
     {
         private readonly LoadedNamespace rootNamespace;
         private List<LoadedNamespace> refenrecedNamespaces;
-        private List<string> generics; 
 
         public RegistryBasedNameProvider(Solution solution)
         {
@@ -30,7 +29,13 @@
         {
             foreach (var project in solution.Projects)
             {
-                this.LoadAssembly(Assembly.LoadFrom(project.OutputFilePath));
+                try {
+                    this.LoadAssembly(Assembly.LoadFrom(project.OutputFilePath));
+                }
+                catch (FileNotFoundException)
+                {
+                    throw new CompilerException(string.Format("Could not find the file {0}. Please build or rebuild the {1} project.", project.OutputFilePath, project.Name));
+                }
             }
         }
 
@@ -99,32 +104,12 @@
             }
         }
 
-        private List<ScopeElement> currentScope = new List<ScopeElement>();
+        
 
-        public List<ScopeElement> CloneScope()
-        {
-            return this.currentScope;
-        }
-
-        public void SetScope(List<ScopeElement> scope)
-        {
-            this.currentScope = scope;
-        }
-
-        public void AddToScope(ScopeElement element)
-        {
-            this.currentScope.Add(element);
-        }
-
-        public string LookupVariableName(IEnumerable<string> names)
+        public string LookupStaticVariableName(IEnumerable<string> names)
         {
             var firstName = names.First();
-            var variable = this.currentScope.FirstOrDefault(element => element.Name.Equals(firstName));
-            if (variable != null)
-            {
-                return variable.Name;
-            }
-
+            
             foreach (var ns in this.refenrecedNamespaces)
             {
                 if (ns.Types.ContainsKey(firstName))
@@ -142,119 +127,61 @@
             throw new NameProviderException(string.Format("Could not find a variable for {0}", firstName));
         }
 
-        public string LoopupFullNameOfType(string name)
+        public TypeResult LookupType(string name)
         {
-            return StripGenerics(this.LookupType(new []{name}).Type.FullName);
+            var nameWithoutGenerics = StripGenerics(name);
+            foreach (var refenrecedNamespace in this.refenrecedNamespaces)
+            {
+                if (refenrecedNamespace.Types.ContainsKey(nameWithoutGenerics))
+                {
+                    return refenrecedNamespace.Types[nameWithoutGenerics].GetTypeResult();
+                }
+            }
+            throw new NameProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", name));
         }
 
         public TypeResult LookupType(IEnumerable<string> names)
         {
-            var firstName = StripGenerics(names.First());
+            var nameWithoutGenerics = StripGenerics(names.First());
             foreach (var refenrecedNamespace in this.refenrecedNamespaces)
             {
-                if (refenrecedNamespace.Types.ContainsKey(firstName))
+                if (refenrecedNamespace.Types.ContainsKey(nameWithoutGenerics))
                 {
-                    return refenrecedNamespace.Types[firstName].GetTypeResult();
+                    return refenrecedNamespace.Types[nameWithoutGenerics].GetTypeResult();
+                }
+                
+                if (names.Count() > 1 && refenrecedNamespace.SubNamespaces.ContainsKey(nameWithoutGenerics))
+                {
+                    var current = refenrecedNamespace.SubNamespaces[nameWithoutGenerics];
+                    foreach (var name in names.Skip(1).Select(StripGenerics))
+                    {
+                        if (current.Types.ContainsKey(name))
+                        {
+                            return current.Types[name].GetTypeResult();
+                        }
+                        else if (current.SubNamespaces.ContainsKey(name))
+                        {
+                            current = current.SubNamespaces[name];
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
                 }
             }
-
-            throw new System.NotImplementedException();
+          
+            throw new NameProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", string.Join(".", names)));
         }
+
 
         private static string StripGenerics(string name)
         {
             return name.Split('`').First();
         }
 
-        public void AddMembersToScope(Type type)
-        {
-            throw new System.NotImplementedException();
-        }
 
-        public void AddAllInheritedMembersToScope(Type type)
-        {
-            //throw new System.NotImplementedException();
-        }
+        
 
-        public string LoopupFullNameOfType(IEnumerable<string> names, bool chooseClassReference)
-        {
-            return StripGenerics(this.LookupType(names).Type.FullName);
-        }
-
-        public string LoopupFullNameOfType(IEnumerable<string> names, bool chooseClassReference, bool chooseTypeName)
-        {
-            return StripGenerics(this.LookupType(names).Type.FullName);
-        }
-
-
-        private readonly Dictionary<string, string> defaultValues = new Dictionary<string, string>
-        {
-            {"bool", "false"},
-            {"int", "0"},
-            {"float", "0"},
-            {"long", "0"},
-            {"double", "0"},
-            {"string", "\"\""},
-        };
-
-        private readonly List<string> typesWithNoDefaultValue = new List<string>
-        {
-            "Action",
-            "object",
-            "Func",
-        };
-
-        public string GetDefaultValue(string typeName, bool isNullable)
-        {
-            return isNullable ? "nil" : this.GetDefaultValue(typeName);
-        }
-
-        public string GetDefaultValue(string typeName)
-        {
-            var typeNameWithoutGenerics = StripGenerics(typeName);
-            if (this.defaultValues.ContainsKey(typeNameWithoutGenerics))
-            {
-                return this.defaultValues[typeNameWithoutGenerics];
-            }
-
-            if (typeName.StartsWith("Array<"))
-            {
-                return "nil";
-            }
-
-            if (this.typesWithNoDefaultValue.Contains(typeNameWithoutGenerics))
-            {
-                return "nil";
-            }
-
-            try
-            {
-                var type = this.LookupType(typeName.Split('.'));
-                if (type.Type.IsEnum)
-                {
-                    var values = Enum.GetValues(type.Type);
-                    foreach (var value in values)
-                    {
-                        return "'" + value + "'";
-                    }
-                }
-            }
-            catch (TypeLookupException)
-            {
-
-            }
-
-            return "nil";
-        }
-
-        public void SetGenerics(IEnumerable<string> generics)
-        {
-            this.generics = generics.ToList();
-        }
-
-        public bool IsGeneric(string name)
-        {
-            return this.generics != null && this.generics.Contains(name);
-        }
     }
 }

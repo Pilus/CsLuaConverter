@@ -11,16 +11,16 @@
         public ParameterList ParameterList;
         private ILuaElement expression;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            List<ScopeElement> scope = nameProvider.CloneScope();
+            List<ScopeElement> scope = providers.NameProvider.CloneScope();
 
             textWriter.Write("function(");
-            this.ParameterList.WriteLua(textWriter, nameProvider);
+            this.ParameterList.WriteLua(textWriter, providers);
             textWriter.Write(")");
-            this.expression.WriteLua(textWriter, nameProvider);
+            this.expression.WriteLua(textWriter, providers);
             textWriter.Write("end");
-            nameProvider.SetScope(scope);
+            providers.NameProvider.SetScope(scope);
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

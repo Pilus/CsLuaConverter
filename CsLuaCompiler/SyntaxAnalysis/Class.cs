@@ -27,24 +27,20 @@
             this.attributes = attributes;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            bool inheritsOtherClass = this.baseLists.Count > 0 && !this.baseLists[0].IsInterface(nameProvider);
+            bool inheritsOtherClass = this.baseLists.Count > 0 && !this.baseLists[0].IsInterface(providers);
 
-            List<ScopeElement> originalScope = nameProvider.CloneScope();
-            this.variables.ForEach(v => nameProvider.AddToScope(v.GetScopeElement()));
-            this.methods.ForEach(v => nameProvider.AddToScope(v.GetScopeElement()));
-            this.properties.ForEach(v => nameProvider.AddToScope(v.GetScopeElement()));
-            if (inheritsOtherClass)
-            {
-                this.baseLists[0].AddInheritiedMembers(nameProvider);
-            }
+            List<ScopeElement> originalScope = providers.NameProvider.CloneScope();
+            this.variables.ForEach(v => providers.NameProvider.AddToScope(v.GetScopeElement()));
+            this.methods.ForEach(v => providers.NameProvider.AddToScope(v.GetScopeElement()));
+            this.properties.ForEach(v => providers.NameProvider.AddToScope(v.GetScopeElement()));
 
-            string fullName = nameProvider.LoopupFullNameOfType(this.name);
+            string fullName = providers.TypeProvider.LookupType(this.name).ToString();
 
             if (this.generics != null)
             {
-                this.generics.AddToScope(nameProvider);
+                this.generics.AddToScope(providers);
             }
 
             var elements = new List<ILuaElement>
@@ -72,7 +68,7 @@
                         }
                         else
                         {
-                            this.generics.WriteLua(textWriter, nameProvider);
+                            this.generics.WriteLua(textWriter, providers);
                         }
                     })
                 },
@@ -83,7 +79,7 @@
                         if (inheritsOtherClass)
                         {
                             textWriter.Write("'{0}'",
-                                this.baseLists.First().name.LookupType(nameProvider).FullName.Split('`').First());
+                                this.baseLists.First().name.LookupType(providers).FullName.Split('`').First());
                         }
                         else
                         {
@@ -93,21 +89,21 @@
                 },
                 {
                     "implements", new Action(() => textWriter.Write("{{{0}}}",
-                        string.Join(",", this.baseLists.Select(bl =>bl.GetFullNameString(nameProvider)))))
+                        string.Join(",", this.baseLists.Select(bl =>bl.GetFullNameString(providers)))))
                 },
                 {
                     "getElements", new Action(() =>
                     {   
                         textWriter.WriteLine("function(class) return {");
                         textWriter.Indent++;
-                        elements.ForEach(e => e.WriteLua(textWriter, nameProvider));
+                        elements.ForEach(e => e.WriteLua(textWriter, providers));
                         textWriter.Indent--;
                         textWriter.Write("}; end");
                     })
                 },
             }, "),", null);
 
-            nameProvider.SetScope(originalScope);
+            providers.NameProvider.SetScope(originalScope);
         }
 
 

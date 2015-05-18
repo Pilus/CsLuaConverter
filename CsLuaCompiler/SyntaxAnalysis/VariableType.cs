@@ -36,25 +36,20 @@
             this.initializationCall = initializationCall;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (this.variable != null)
             {
                 if (this.initializationCall)
                 {
                     textWriter.Write("local ");
-                    this.variable.WriteLua(textWriter, nameProvider);
+                    this.variable.WriteLua(textWriter, providers);
                     return;
                 }
                 throw new Exception("Unknown scenario.");
             }
 
-            if (this.initializationCall)
-            {
-                textWriter.Write(nameProvider.LoopupFullNameOfType(this.GetTypeString()));
-                return;
-            }
-            textWriter.Write(nameProvider.LoopupFullNameOfType(this.GetTypeString()));
+            textWriter.Write(providers.TypeProvider.LookupType(this.type));
         }
 
         public SyntaxToken Analyze(SyntaxToken token)
@@ -135,7 +130,7 @@
             return token;
         }
 
-        public string GetFullTypeName(INameAndTypeProvider nameProvider)
+        public string GetFullTypeName(IProviders nameProvider)
         {
             if (this.variable != null)
             {
@@ -156,15 +151,15 @@
 
             if (this.isArray)
             {
-                return "Array<" + nameProvider.LoopupFullNameOfType(this.type) + ">";
+                return "Array<" + nameProvider.TypeProvider.LookupType(this.type).ToString() + ">";
             }
 
-            if (nameProvider.IsGeneric(this.type))
+            if (nameProvider.GenericsRegistry.IsGeneric(this.type))
             {
                 return this.type;
             }
 
-            return nameProvider.LoopupFullNameOfType(this.type);
+            return nameProvider.TypeProvider.LookupType(this.type).ToString();
         }
 
         public string GetTypeString()
@@ -184,7 +179,7 @@
             return '"' + this.GetTypeString() + '"';
         }
 
-        public string GetQuotedFullTypeString(INameAndTypeProvider nameProvider)
+        public string GetQuotedFullTypeString(IProviders nameProvider)
         {
             return '"' + this.GetFullTypeName(nameProvider) + '"';
         }
@@ -195,7 +190,7 @@
             {
                 return null;
             }
-            return "{" + string.Join(",", this.generics.Select(t => '"' + t.GetTypeString() + '"')) + "}";
+            return "{" + string.Join(",", this.generics.Select(t => t.GetQuotedTypeString())) + "}";
         }
     }
 }

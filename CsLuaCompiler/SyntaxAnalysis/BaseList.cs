@@ -10,11 +10,11 @@
     {
         public VariableName name;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            if (!this.IsInterface(nameProvider))
+            if (!this.IsInterface(providers))
             {
-                this.name.WriteLua(textWriter, nameProvider);
+                this.name.WriteLua(textWriter, providers);
             }
         }
 
@@ -26,29 +26,14 @@
             return this.name.Analyze(token);
         }
 
-        public bool IsInterface(INameAndTypeProvider nameProvider)
+        public bool IsInterface(IProviders providers)
         {
-            return this.name.LookupType(nameProvider).IsInterface;
+            return this.name.LookupType(providers).IsInterface;
         }
 
-        public void AddInheritiedMembers(INameAndTypeProvider nameProvider)
+        public string GetFullNameString(IProviders providers)
         {
-            nameProvider.AddAllInheritedMembersToScope(this.name.LookupType(nameProvider));
-        }
-
-        public string GetNameString(INameAndTypeProvider nameProvider)
-        {
-            return "'" + this.name.LookupType(nameProvider).Name.Split('`').First() + "'";
-        }
-
-        public string GetFullNameString(INameAndTypeProvider nameProvider)
-        {
-            return "'" + this.name.LookupType(nameProvider).FullName + "'";
-        }
-
-        public string GetName(INameAndTypeProvider nameProvider)
-        {
-            return this.name.LookupType(nameProvider).Name.Split('`').First();
+            return "'" + this.name.LookupType(providers).FullName + "'";
         }
     }
 }

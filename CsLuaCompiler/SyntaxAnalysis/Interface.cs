@@ -7,7 +7,7 @@
 
     internal class Interface : ILuaElement
     {
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
         }
 

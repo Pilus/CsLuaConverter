@@ -9,10 +9,10 @@
     {
         private MainCode innerCode;
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("__Throw(");
-            this.innerCode.WriteLua(textWriter, nameProvider);
+            this.innerCode.WriteLua(textWriter, providers);
             textWriter.WriteLine(");");
         }
 

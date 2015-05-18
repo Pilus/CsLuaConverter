@@ -11,7 +11,7 @@
     {
         public List<string> Names = new List<string>();
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("{{{0}}}", string.Join(",", this.Names.Select(name => "'" + name + "'").ToArray()));
         }
@@ -31,9 +31,9 @@
             return token;
         }
 
-        public void AddToScope(INameAndTypeProvider nameProvider)
+        public void AddToScope(IProviders providers)
         {
-            nameProvider.SetGenerics(this.Names);
+            providers.GenericsRegistry.SetGenerics(this.Names);
         }
     }
 }

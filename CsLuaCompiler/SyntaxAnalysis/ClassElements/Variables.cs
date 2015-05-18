@@ -17,9 +17,9 @@
             this.variables = variables;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            this.variables.ForEach(variable => variable.WriteLua(textWriter, nameProvider));
+            this.variables.ForEach(variable => variable.WriteLua(textWriter, providers));
         }
 
 

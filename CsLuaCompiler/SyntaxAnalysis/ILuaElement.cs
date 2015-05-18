@@ -6,7 +6,7 @@
 
     internal interface ILuaElement
     {
-        void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider);
+        void WriteLua(IndentedTextWriter textWriter, IProviders providers);
         SyntaxToken Analyze(SyntaxToken token);
     }
 }

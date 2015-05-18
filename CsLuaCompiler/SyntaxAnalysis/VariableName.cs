@@ -28,13 +28,13 @@
             this.isClassVar = isClassVar;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (this.addToScope)
             {
                 if (this.Names.Count != 1)
                     throw new Exception("Cannot add multi name variable to scope");
-                nameProvider.AddToScope(new ScopeElement(this.Names.First()));
+                providers.NameProvider.AddToScope(new ScopeElement(this.Names.First()));
             }
 
             string s = string.Empty;
@@ -43,12 +43,11 @@
                 if (this.Names.Count > 1 && this.Names.Last().Equals("Equals"))
                 {
                     textWriter.Write(
-                        nameProvider.LoopupFullNameOfType(this.Names.Take(this.Names.Count - 1), this.isClassVar,
-                            this.isInitialization) + " == ");
+                        providers.NameProvider.LookupVariableName(this.Names.Take(this.Names.Count - 1)) + " == ");
                     return;
                 }
 
-                textWriter.Write(nameProvider.LookupVariableName(this.Names));
+                textWriter.Write(providers.NameProvider.LookupVariableName(this.Names));
                 return;
             }
             textWriter.Write(string.Join(".", this.Names));
@@ -105,9 +104,9 @@
             return token;
         }
 
-        public Type LookupType(INameAndTypeProvider nameProvider)
+        public Type LookupType(IProviders providers)
         {
-            return nameProvider.LookupType(this.Names).Type;
+            return providers.TypeProvider.LookupType(this.Names).Type;
         }
     }
 }

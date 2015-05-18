@@ -6,7 +6,7 @@
     using System.Reflection;
     using CsToLua.SyntaxAnalysis;
 
-    public class FullNameProvider : INameAndTypeProvider
+    public class FullNameProvider
     {
         private static readonly string[] AllowedSystemTypes = {"object", "int", "double", "string", "bool", "Action", "Func", "Array"};
         

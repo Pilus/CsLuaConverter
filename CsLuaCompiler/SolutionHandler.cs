@@ -11,7 +11,7 @@
 
     internal static class SolutionHandler
     {
-        public static IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, INameAndTypeProvider nameProvider)
+        public static IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, IProviders nameProvider)
         {
             List<CsProject> csProjects =
                 solution.Projects.Select(project => new CsProject(nameProvider, project)).ToList();

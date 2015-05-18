@@ -35,7 +35,8 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>D:\World of Warcraft\Interface\Dev\CsLuaCompiler\</OutputPath>
+    <OutputPath>..\..\Gryphonheart\CsLuaCompiler\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
   </PropertyGroup>
@@ -52,6 +53,7 @@
   <ItemGroup>
     <Compile Include="AddOn.cs" />
     <Compile Include="CodeFile.cs" />
+    <Compile Include="CompilerException.cs" />
     <Compile Include="CsProject.cs" />
     <Compile Include="IDeployableAddOn.cs" />
     <Compile Include="LuaAddOn.cs" />
@@ -91,11 +93,19 @@
     <Compile Include="SyntaxAnalysis\Lua\LuaHeader.cs" />
     <Compile Include="SyntaxAnalysis\MainCode.cs" />
     <Compile Include="SyntaxAnalysis\Method.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\DefaultValueProvider.cs" />
     <Compile Include="SyntaxAnalysis\NameAndTypeProvider\FullNameProvider.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\INameAndTypeProvider.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\GenericsRegistry.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\IDefaultValueProvider.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\IGenericsRegistry.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\IProviders.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\INameProvider.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\ITypeProvider.cs" />
     <Compile Include="SyntaxAnalysis\NameAndTypeProvider\LoadedNamespace.cs" />
     <Compile Include="SyntaxAnalysis\NameAndTypeProvider\LoadedType.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\NameProvider.cs" />
     <Compile Include="SyntaxAnalysis\NameAndTypeProvider\NameProviderException.cs" />
+    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\Providers.cs" />
     <Compile Include="SyntaxAnalysis\NameAndTypeProvider\RegistryBasedNameProvider.cs" />
     <Compile Include="SyntaxAnalysis\NameAndTypeProvider\ScopeElement.cs" />
     <Compile Include="SyntaxAnalysis\NameAndTypeProvider\TypeResult.cs" />

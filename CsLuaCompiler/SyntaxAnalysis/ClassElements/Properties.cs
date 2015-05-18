@@ -17,11 +17,11 @@
             this.properties = properties;
         }
 
-        public void WriteLua(IndentedTextWriter textWriter, INameAndTypeProvider nameProvider)
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             foreach (Property property in this.properties)
             {
-                property.WriteLua(textWriter, nameProvider);
+                property.WriteLua(textWriter, providers);
             }
         }
 
