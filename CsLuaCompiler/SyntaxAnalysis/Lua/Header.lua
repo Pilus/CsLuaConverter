@@ -65,7 +65,6 @@ local __defaultValues = {
 	float = 0,
 	long = 0,
 	double = 0,
-	string = "",
 }
 
 local __GetDefaultValue = function(type, isNullable, generics)
@@ -73,7 +72,7 @@ local __GetDefaultValue = function(type, isNullable, generics)
 		return nil;
 	end
 
-	for _,v in generics do
+	for _,v in ipairs(generics) do
 		if v == type then
 			return nil;
 		end
@@ -175,14 +174,14 @@ local __ScoreFunction = function(types, signature, args, generic)
 	return nil;
 end
 
-local __GetMatchingFunction = function(functions, generic, ...)
+local __GetMatchingFunction = function(functions, generics, ...)
 	local argSignature = __GetSignatures(...);
 	local args = {...};
 
 	local bestFunc, bestScore;
 
 	for _, funcMeta in pairs(functions) do
-		local score = __ScoreFunction(funcMeta.types, argSignature, args, generic);
+		local score = __ScoreFunction(funcMeta.types, argSignature, args, generics);
 		if (score and (bestScore == nil or bestScore > score)) then
 			bestScore = score;
 			bestFunc = funcMeta.func;
@@ -216,9 +215,9 @@ local __CreateClass = function(info) -- fullName, name, getElements, inherits, i
 		end
 	end
 
-	local GenerateAmbigiousFunc = function(element, inheritiedClass, generic)
+	local GenerateAmbigiousFunc = function(element, inheritiedClass, generics)
 		return function(...)
-			local matchingFunc = __GetMatchingFunction(element.value, generic, ...);
+			local matchingFunc = __GetMatchingFunction(element.value, generics, ...);
 			if matchingFunc then
 				return matchingFunc(...);
 			elseif inheritiedClass then
@@ -271,11 +270,11 @@ local __CreateClass = function(info) -- fullName, name, getElements, inherits, i
 		return staticValues[key] or not(staticOverride == nil) and staticOverride[key] or nil;
 	end
 
-	local initializeClass = function(generic, overridingClass)
+	local initializeClass = function(generics, overridingClass)
 		local class = {};
 		local _, inheritiedClass, populateOverride;
 		if info.inherits then
-			_, inheritiedClass, populateOverride = __GetByFullName(info.inherits)(generic);
+			_, inheritiedClass, populateOverride = __GetByFullName(info.inherits)(generics);
 			if _ and not(inheritiedClass) then -- Adjust for objects returning only one variable. E.g. CsLuaList;
 			   inheritiedClass = _;
 			end
@@ -286,7 +285,7 @@ local __CreateClass = function(info) -- fullName, name, getElements, inherits, i
 		if info.isDictionary then dictionaryValues = {}; end
 		local nonStaticValues = {};
 
-		local elements = info.getElements(overridingClass or class, generic);
+		local elements = info.getElements(overridingClass or class, generics or {});
 		
 		local methods, nonStaticVariables, staticVariables, staticGetters, nonStaticGetters, staticSetters, nonStaticSetters = {}, {}, {}, {}, {}, {}, {};
 		local staticMethods = {};
@@ -295,7 +294,7 @@ local __CreateClass = function(info) -- fullName, name, getElements, inherits, i
 
 		local appliedGenerics = {};
 		if info.generics then
-			for i, appliedGenericVar in ipairs(generic) do
+			for i, appliedGenericVar in ipairs(generics) do
 				appliedGenerics[info.generics[i]] = appliedGenericVar;
 			end
 		end
@@ -498,9 +497,9 @@ local __CreateClass = function(info) -- fullName, name, getElements, inherits, i
 		return class, populateOverride;
 	end
 
-	local ClassWithOverride = function(generic)
+	local ClassWithOverride = function(generics)
 		local overriddenClass = {};
-		local class, populateParentOverrides = initializeClass(generic, overriddenClass);
+		local class, populateParentOverrides = initializeClass(generics, overriddenClass);
 
 		local overrides;
 

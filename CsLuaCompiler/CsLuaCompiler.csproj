@@ -57,8 +57,6 @@
     <Compile Include="CsProject.cs" />
     <Compile Include="IDeployableAddOn.cs" />
     <Compile Include="LuaAddOn.cs" />
-    <Compile Include="Providers\DefaultValueProvider\DefaultValueProvider.cs" />
-    <Compile Include="Providers\DefaultValueProvider\IDefaultValueProvider.cs" />
     <Compile Include="Providers\GenericsRegistry\GenericsRegistry.cs" />
     <Compile Include="Providers\GenericsRegistry\IGenericsRegistry.cs" />
     <Compile Include="Providers\IProviders.cs" />

@@ -35,7 +35,7 @@
             {
                 string typeName = this.Type.GetTypeString();
                 LuaFormatter.WriteClassElement(textWriter, ElementType.Variable, this.Name, this.isStatic,
-                    providers.DefaultValueProvider.GetDefaultValue(typeName, this.Type.IsNullable), this.className);
+                    string.Format("__GetDefaultValue(\"{0}\", {1}, generics)", typeName, this.Type.IsNullable ? "true" : "false"), this.className);
             }
         }
 

@@ -33,7 +33,8 @@
                 if (this.useDefaultGet)
                 {
                     var typeName = this.Type.GetTypeString();
-                    LuaFormatter.WriteClassElement(textWriter, ElementType.PropertyGet, this.Name, this.isStatic, providers.DefaultValueProvider.GetDefaultValue(typeName, this.Type.IsNullable), this.className);
+                    LuaFormatter.WriteClassElement(textWriter, ElementType.PropertyGet, this.Name, this.isStatic,
+                        string.Format("__GetDefaultValue(\"{0}\", {1}, generics)", typeName, this.Type.IsNullable ? "true" : "false"), this.className);
                 }
                 else
                 {

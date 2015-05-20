@@ -98,7 +98,7 @@
                 {
                     "getElements", new Action(() =>
                     {   
-                        textWriter.WriteLine("function(class) return {");
+                        textWriter.WriteLine("function(class, generics) return {");
                         textWriter.Indent++;
                         elements.ForEach(e => e.WriteLua(textWriter, providers));
                         textWriter.Indent--;
