@@ -59,6 +59,34 @@ local __EnumParse = function(typeName, value, doNotThrow)
 	end
 end
 
+local __defaultValues = {
+	bool = false,
+	int = 0,
+	float = 0,
+	long = 0,
+	double = 0,
+	string = "",
+}
+
+local __GetDefaultValue = function(type, isNullable, generics)
+	if isNullable then
+		return nil;
+	end
+
+	for _,v in generics do
+		if v == type then
+			return nil;
+		end
+	end
+
+	if not(__defaultValues[type] == nil) then
+		return __defaultValues[type];
+	end
+
+	--Handle eventual enum. Return nil if not an enum.
+	return __EnumParse(type, "__default", true);
+end
+
 local __IsType = function(obj, t)
 	if t == "object" then
 		return true;
@@ -207,7 +235,7 @@ local __CreateClass = function(info) -- fullName, name, getElements, inherits, i
 		end
 
 		staticValues = {};
-		local elements = info.getElements(namespaceElement);
+		local elements = info.getElements(namespaceElement, {});
 
 		for _, element in pairs(elements) do
 			if (element.static) then
@@ -258,7 +286,7 @@ local __CreateClass = function(info) -- fullName, name, getElements, inherits, i
 		if info.isDictionary then dictionaryValues = {}; end
 		local nonStaticValues = {};
 
-		local elements = info.getElements(overridingClass or class);
+		local elements = info.getElements(overridingClass or class, generic);
 		
 		local methods, nonStaticVariables, staticVariables, staticGetters, nonStaticGetters, staticSetters, nonStaticSetters = {}, {}, {}, {}, {}, {}, {};
 		local staticMethods = {};

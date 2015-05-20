@@ -32,12 +32,12 @@
 
             if (Debugger.IsAttached)
             {
-                return this.AnalyseDocumentContent();
+                return this.AnalyseDocumentContent(document);
             }
 
             try
             {
-                return this.AnalyseDocumentContent();
+                return this.AnalyseDocumentContent(document);
             }
             catch (Exception ex)
             {
@@ -74,7 +74,7 @@
             File.WriteAllText(fileName, s);
         }
 
-        private NameSpacePart AnalyseDocumentContent()
+        private NameSpacePart AnalyseDocumentContent(Document document)
         {
             while (this.token != null && this.token.Parent != null)
             {
@@ -84,7 +84,7 @@
                         this.token = this.IgnoreUsingDirective(this.token);
                         break;
                     case "NamespaceDeclarationSyntax":
-                        var ns = new NameSpacePart();
+                        var ns = new NameSpacePart(document.Name);
                         ns.Analyze(this.token);
                         return ns;
                     case "CompilationUnitSyntax":

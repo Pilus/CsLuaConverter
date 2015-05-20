@@ -7,6 +7,7 @@
     using CsLuaCompiler.Providers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using System.Diagnostics;
 
     internal class NameSpacePart : ILuaElement
     {
@@ -15,14 +16,39 @@
         public List<string> FullName = new List<string>();
         public string Name;
         private List<Attribute> currentAttributes = new List<Attribute>();
+        private string fileName;
 
-        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
+        public NameSpacePart(string fileName)
+        {
+            this.fileName = fileName;
+        }
+
+        private void WriteLuaInner(IndentedTextWriter textWriter, IProviders providers)
         {
             providers.TypeProvider.SetNamespaces(string.Join(".", this.FullName), this.usings);
 
             foreach (ILuaElement element in this.elements)
             {
                 element.WriteLua(textWriter, providers);
+            }
+        }
+
+        public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (Debugger.IsAttached)
+            {
+                this.WriteLuaInner(textWriter, providers);
+            }
+            else
+            {
+                try
+                {
+                    this.WriteLuaInner(textWriter, providers);
+                }
+                catch (Exception ex)
+                {
+                    throw new WrappingException(string.Format("In file: {0}.", fileName), ex);
+                }
             }
         }
 

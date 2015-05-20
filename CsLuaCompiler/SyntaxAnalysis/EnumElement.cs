@@ -2,6 +2,7 @@
 {
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
+    using System.Linq;
     using CsLuaCompiler.Providers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -15,9 +16,10 @@
         {
             textWriter.WriteLine("{0} = {{", this.name);
             textWriter.Indent++;
+            textWriter.WriteLine("__default = \"{0}\",", this.values.FirstOrDefault());
             foreach (string value in this.values)
             {
-                textWriter.WriteLine("[\"{0}\"] = \"{0}\";", value);
+                textWriter.WriteLine("[\"{0}\"] = \"{0}\",", value);
             }
             textWriter.Indent--;
             textWriter.WriteLine("},");

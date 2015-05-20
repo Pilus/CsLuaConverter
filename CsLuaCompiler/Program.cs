@@ -112,6 +112,12 @@
 
         private static Solution GetSolution(string path)
         {
+            var solutionFile = new FileInfo(path);
+            if (!solutionFile.Exists)
+            {
+                throw new CompilerException(string.Format("Could not load the solution file: {0}", solutionFile.FullName));
+            }
+
             MSBuildWorkspace workspace = MSBuildWorkspace.Create();
             Task<Solution> loadSolution = workspace.OpenSolutionAsync(path);
             loadSolution.Wait();

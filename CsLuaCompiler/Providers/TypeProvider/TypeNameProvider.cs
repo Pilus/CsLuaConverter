@@ -105,8 +105,7 @@
             }
         }
 
-        
-
+        [Obsolete("Use LookupType instead.")]
         public string LookupStaticVariableName(IEnumerable<string> names)
         {
             var firstName = names.First();
@@ -148,17 +147,22 @@
             {
                 if (refenrecedNamespace.Types.ContainsKey(nameWithoutGenerics))
                 {
-                    return refenrecedNamespace.Types[nameWithoutGenerics].GetTypeResult();
+                    return refenrecedNamespace.Types[nameWithoutGenerics].GetTypeResult(string.Join(".", names.Skip(1)));
                 }
                 
                 if (names.Count() > 1 && refenrecedNamespace.SubNamespaces.ContainsKey(nameWithoutGenerics))
                 {
                     var current = refenrecedNamespace.SubNamespaces[nameWithoutGenerics];
-                    foreach (var name in names.Skip(1).Select(StripGenerics))
+                    var remainingNames = names.Skip(1);
+                    
+                    while (remainingNames.Count() > 0)
                     {
+                        var name = StripGenerics(remainingNames.First());
+                        remainingNames = remainingNames.Skip(1);
+
                         if (current.Types.ContainsKey(name))
                         {
-                            return current.Types[name].GetTypeResult();
+                            return current.Types[name].GetTypeResult(string.Join(".", remainingNames));
                         }
                         else if (current.SubNamespaces.ContainsKey(name))
                         {

@@ -117,7 +117,7 @@
                 return variable.ToString() + additionalString;
             }
 
-            return this.typeProvider.LookupStaticVariableName(names);
+            return this.typeProvider.LookupType(names).ToString();
         }
     }
 }

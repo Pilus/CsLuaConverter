@@ -20,5 +20,14 @@
                 Type = this.Type,
             };
         }
+
+        public TypeResult GetTypeResult(string additionalString)
+        {
+            return new TypeResult()
+            {
+                Type = this.Type,
+                AdditionalString = additionalString,
+            };
+        }
     }
 }
