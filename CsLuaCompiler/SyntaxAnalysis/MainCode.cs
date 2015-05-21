@@ -130,6 +130,7 @@
                 }
                 return new PredeterminedElement("");
             }},
+            {typeof(TryStatementSyntax), token => new Try()}
         };
 
         public MainCode(Func<SyntaxToken, bool> breakCondition)

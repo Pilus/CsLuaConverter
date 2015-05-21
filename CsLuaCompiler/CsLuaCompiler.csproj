@@ -126,6 +126,7 @@
     <Compile Include="SyntaxAnalysis\SyntaxAnalyser.cs" />
     <Compile Include="SyntaxAnalysis\This.cs" />
     <Compile Include="SyntaxAnalysis\Throw.cs" />
+    <Compile Include="SyntaxAnalysis\Try.cs" />
     <Compile Include="SyntaxAnalysis\TypeLookupException.cs" />
     <Compile Include="SyntaxAnalysis\Var.cs" />
     <Compile Include="SyntaxAnalysis\VariableName.cs" />

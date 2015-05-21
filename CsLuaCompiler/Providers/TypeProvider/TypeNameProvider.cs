@@ -21,6 +21,7 @@
 
         private void LoadSystemTypes()
         {
+            this.LoadType(typeof(object));
             this.LoadType(typeof(Action));
             this.LoadType(typeof(Func<int>));
             this.LoadType(typeof(NotImplementedException));
@@ -50,7 +51,7 @@
 
         private void LoadType(Type type)
         {
-            var nameParts = type.FullName.Split('.');
+            var nameParts = StripGenerics(type.FullName).Split('.');
 
             if (nameParts.Length < 2)
             {
