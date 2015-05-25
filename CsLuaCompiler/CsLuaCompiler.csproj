@@ -90,6 +90,7 @@
     <Compile Include="SyntaxAnalysis\ClassElements\Variables.cs" />
     <Compile Include="SyntaxAnalysis\ClassVariable.cs" />
     <Compile Include="SyntaxAnalysis\Constructor.cs" />
+    <Compile Include="SyntaxAnalysis\Creator.cs" />
     <Compile Include="SyntaxAnalysis\Delegate.cs" />
     <Compile Include="SyntaxAnalysis\Else.cs" />
     <Compile Include="SyntaxAnalysis\EnumElement.cs" />

@@ -33,7 +33,7 @@
             }
             else
             {
-                string typeName = this.Type.GetTypeString();
+                string typeName = this.Type.GetFullTypeName(providers);
                 LuaFormatter.WriteClassElement(textWriter, ElementType.Variable, this.Name, this.isStatic,
                     string.Format("__GetDefaultValue(\"{0}\", {1}, generics)", typeName, this.Type.IsNullable ? "true" : "false"), this.className);
             }

@@ -25,6 +25,7 @@
             this.LoadType(typeof(Action));
             this.LoadType(typeof(Func<int>));
             this.LoadType(typeof(NotImplementedException));
+            this.LoadType(typeof(Enum));
         }
 
         private void LoadSolution(Solution solution)
@@ -79,7 +80,7 @@
             };
 
             var currentNamespaceNames = currentNamespace.Split('.');
-            for (var i = 1; i <= currentNamespaceNames.Count(); i++)
+            for (var i = currentNamespaceNames.Count(); i >= 1; i--)
             {
                 baseRefencedNamespaces.Add(this.rootNamespace.TryGetNamespace(currentNamespaceNames.Take(i).ToList()));
             }

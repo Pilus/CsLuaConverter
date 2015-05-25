@@ -130,7 +130,7 @@
             return token;
         }
 
-        public string GetFullTypeName(IProviders nameProvider)
+        public string GetFullTypeName(IProviders providers)
         {
             if (this.variable != null)
             {
@@ -144,6 +144,7 @@
                 case "double":
                 case "int":
                 case "string":
+                case "long":
                     return this.type;
                 default:
                     break;
@@ -151,25 +152,25 @@
 
             if (this.isArray)
             {
-                return "Array<" + nameProvider.TypeProvider.LookupType(this.type).ToString() + ">";
+                return "Array<" + providers.TypeProvider.LookupType(this.type).ToString() + ">";
             }
 
-            if (nameProvider.GenericsRegistry.IsGeneric(this.type))
+            if (providers.GenericsRegistry.IsGeneric(this.type))
             {
                 return this.type;
             }
 
-            return nameProvider.TypeProvider.LookupType(this.type).ToString();
+            return providers.TypeProvider.LookupType(this.type).ToString();
         }
 
         public string GetTypeString()
         {
             string s = this.type;
-            if (this.generics != null)
+            /*if (this.generics != null)
             {
                 //s += "<" + string.Join(",", this.innerTypes.Select( t => t.GetTypeString())) + ">";
                 s += "`" + this.generics.Count;
-            }
+            } */
 
             return s;
         }
@@ -179,18 +180,18 @@
             return '"' + this.GetTypeString() + '"';
         }
 
-        public string GetQuotedFullTypeString(IProviders nameProvider)
+        public string GetQuotedFullTypeString(IProviders providers)
         {
-            return '"' + this.GetFullTypeName(nameProvider) + '"';
+            return '"' + this.GetFullTypeName(providers) + '"';
         }
 
-        public string GetQuotedGenericTypeString()
+        public string GetQuotedGenericTypeString(IProviders providers)
         {
             if (this.generics == null)
             {
                 return null;
             }
-            return "{" + string.Join(",", this.generics.Select(t => t.GetQuotedTypeString())) + "}";
+            return "{" + string.Join(",", this.generics.Select(t => t.GetQuotedFullTypeString(providers))) + "}";
         }
     }
 }

@@ -199,19 +199,12 @@
                     {
                         if (twoLast.Last() is VariableType)
                         {
-                            var variableType = this.Elements.Last() as VariableType;
-                            var genericsString = variableType.GetQuotedGenericTypeString();
-                            if (genericsString == null)
-                            {
-                                genericsString = "";
-                            }
-
-                            this.Elements.Add(new PredeterminedElement(string.Format("({0}).__Cstor", genericsString)));
+                            this.Elements.Add(new Creator(this.Elements.Last() as VariableType));
                         }
                         else
                         {
-                            this.Elements.Add(new PredeterminedElement("().__Cstor"));
-                        }                        
+                            this.Elements.Add(new Creator(null));
+                        }
                     }
                 }
 

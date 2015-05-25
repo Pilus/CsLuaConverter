@@ -44,11 +44,11 @@
                 if (this.Names.Count > 1 && this.Names.Last().Equals("Equals"))
                 {
                     textWriter.Write(
-                        providers.NameProvider.LookupVariableName(this.Names.Take(this.Names.Count - 1)) + " == ");
+                        providers.NameProvider.LookupVariableName(this.Names.Take(this.Names.Count - 1), this.isClassVar) + " == ");
                     return;
                 }
 
-                textWriter.Write(providers.NameProvider.LookupVariableName(this.Names));
+                textWriter.Write(providers.NameProvider.LookupVariableName(this.Names, this.isClassVar));
                 return;
             }
             textWriter.Write(string.Join(".", this.Names));

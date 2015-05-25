@@ -10,7 +10,7 @@
     internal class NameProvider : INameProvider
     {
         private List<ScopeElement> currentScope;
-        private ITypeProvider typeProvider;
+        private readonly ITypeProvider typeProvider;
 
         public NameProvider(ITypeProvider typeProvider)
         {
@@ -104,9 +104,14 @@
 
         public string LookupVariableName(IEnumerable<string> names)
         {
+            return this.LookupVariableName(names, false);
+        }
+
+        public string LookupVariableName(IEnumerable<string> names, bool isClassVariable)
+        {
             var firstName = names.First();
 
-            var variable = this.currentScope.FirstOrDefault(element => element.Name.Equals(firstName));
+            var variable = this.currentScope.LastOrDefault(element => element.Name.Equals(firstName) && (!isClassVariable || element.IsFromClass));
             if (variable != null)
             {
                 var additionalString = string.Empty;

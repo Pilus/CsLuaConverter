@@ -12,5 +12,6 @@ namespace CsLuaCompiler.Providers.NameProvider
         void AddToScope(ScopeElement element);
         void AddAllInheritedMembersToScope(Type type);
         string LookupVariableName(IEnumerable<string> names);
+        string LookupVariableName(IEnumerable<string> names, bool isClassVariable);
     }
 }

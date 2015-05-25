@@ -1,6 +1,7 @@
 ﻿namespace CsLuaCompiler.SyntaxAnalysis
 {
     using System.CodeDom.Compiler;
+    using System.Linq;
     using CsLuaCompiler.Providers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -32,7 +33,12 @@
 
         public string GetFullNameString(IProviders providers)
         {
-            return "'" + this.name.LookupType(providers).FullName + "'";
+            return "'" + StripGenerics(this.name.LookupType(providers).FullName) + "'";
+        }
+
+        private static string StripGenerics(string name)
+        {
+            return name.Split('`').First();
         }
     }
 }
