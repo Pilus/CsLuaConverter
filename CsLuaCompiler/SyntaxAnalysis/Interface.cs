@@ -26,10 +26,13 @@
             
             textWriter.WriteLine("{0} = function(generics)", this.name);
             textWriter.Indent++;
+
+            this.WriteGenericsMapping(textWriter, providers);
+
             textWriter.WriteLine("return {");
             textWriter.Indent++;
             textWriter.WriteLine("__isInterface = true,");
-
+            
             this.WriteMethods(textWriter, providers);
             this.WriteProperties(textWriter, providers);
 
@@ -38,6 +41,19 @@
             textWriter.Indent--;
             textWriter.WriteLine("end,");
             providers.NameProvider.SetScope(originalScope);
+        }
+
+        private void WriteGenericsMapping(IndentedTextWriter textWriter, IProviders providers)
+        {
+            var dic = new Dictionary<string, object>();
+            textWriter.WriteLine("local genericsMapping = ");
+
+            foreach (var genericName in this.generics.Names)
+            {
+                
+            }
+
+            LuaFormatter.WriteDictionary(textWriter, dic);
         }
 
         private void WriteMethods(IndentedTextWriter textWriter, IProviders providers)

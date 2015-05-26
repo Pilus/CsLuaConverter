@@ -256,10 +256,13 @@ local __CreateClass = function(info)
 			if matchingFunc then
 				return matchingFunc(...);
 			elseif inheritiedClass then
-				return inheritiedClass[element.name](...);
-			else
-				error("No method found for key '"..element.name.."' matching the signature: '"..__SignatureToString(__GetSignatures(...)).."'");
+				local f = inheritiedClass[element.name];
+				if f then
+					return f(...);
+				end
 			end
+
+			error("No method found for key '"..element.name.."' matching the signature: '"..__SignatureToString(__GetSignatures(...)).."'");
 		end
 	end
 
