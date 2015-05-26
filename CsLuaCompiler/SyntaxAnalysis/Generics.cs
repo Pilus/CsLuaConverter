@@ -18,9 +18,9 @@
 
         public SyntaxToken Analyze(SyntaxToken token)
         {
-            while (!(token.Parent is TypeParameterListSyntax && token.Text.Equals(">")))
+            while (!((token.Parent is TypeParameterListSyntax || token.Parent is TypeArgumentListSyntax) && token.Text.Equals(">")))
             {
-                if (!(token.Parent is TypeParameterListSyntax))
+                if (!(token.Parent is TypeParameterListSyntax || token.Parent is TypeArgumentListSyntax))
                 {
                     this.Names.Add(token.Text);
                 }

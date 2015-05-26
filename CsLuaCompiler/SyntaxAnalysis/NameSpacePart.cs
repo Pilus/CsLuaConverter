@@ -117,6 +117,7 @@
                     case "InterfaceDeclarationSyntax":
                         var iface = new Interface();
                         token = iface.Analyze(token);
+                        this.elements.Add(iface);
                         break;
                     default:
                         throw new Exception(string.Format("Unexpeted token in namespace: {0}.",
