@@ -9,11 +9,11 @@
 
     internal class ParameterList : ILuaElement
     {
-        private readonly IList<ILuaElement> parameters = new List<ILuaElement>();
+        public readonly IList<ILuaElement> Parameters = new List<ILuaElement>();
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            LuaElementHelper.WriteLuaJoin(this.parameters, textWriter, providers);
+            LuaElementHelper.WriteLuaJoin(this.Parameters, textWriter, providers);
         }
 
         public SyntaxToken Analyze(SyntaxToken token)
@@ -25,7 +25,7 @@
             {
                 var parameter = new Parameter();
                 token = parameter.Analyze(token);
-                this.parameters.Add(parameter);
+                this.Parameters.Add(parameter);
 
                 if (token.Parent is ParameterListSyntax && token.Text == ",")
                 {
@@ -39,13 +39,13 @@
         public string TypesAsString()
         {
             return string.Join(", ",
-                this.parameters.Select(parameter => ((Parameter) parameter).Type.GetQuotedTypeString()));
+                this.Parameters.Select(parameter => ((Parameter) parameter).Type.GetQuotedTypeString()));
         }
 
         public string FullTypesAsString(IProviders nameProvider)
         {
             return string.Join(", ",
-                this.parameters.Select(parameter => ((Parameter)parameter).Type.GetQuotedFullTypeString(nameProvider)));
+                this.Parameters.Select(parameter => ((Parameter)parameter).Type.GetQuotedFullTypeString(nameProvider)));
         }
     }
 }

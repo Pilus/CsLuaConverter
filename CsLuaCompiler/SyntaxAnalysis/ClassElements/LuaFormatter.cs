@@ -66,7 +66,7 @@
                 {
                     textWriter.Write("'" + pair.Value + "'");
                 }
-                else if (pair.Value is bool)
+                else if (pair.Value is bool || pair.Value is int || pair.Value is float)
                 {
                     textWriter.Write(pair.Value.ToString().ToLower());
                 }

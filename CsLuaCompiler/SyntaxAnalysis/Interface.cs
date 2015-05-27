@@ -7,6 +7,7 @@
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using System.Collections.Generic;
     using CsLuaCompiler.SyntaxAnalysis.ClassElements;
+    using System.Linq;
 
     internal class Interface : ILuaElement
     {
@@ -45,15 +46,22 @@
 
         private void WriteGenericsMapping(IndentedTextWriter textWriter, IProviders providers)
         {
-            var dic = new Dictionary<string, object>();
-            textWriter.WriteLine("local genericsMapping = ");
+            var mapping = new Dictionary<string, object>();
+            textWriter.Write("local genericsMapping = ");
 
-            foreach (var genericName in this.generics.Names)
+            if (this.generics != null)
             {
-                
+                for (var i = 0; i < this.generics.Names.Count; i++)
+                {
+                    var name = this.generics.Names[i];
+                    mapping.Add(name, i + 1);
+                }
+                LuaFormatter.WriteDictionary(textWriter, mapping, ";", string.Empty);
             }
-
-            LuaFormatter.WriteDictionary(textWriter, dic);
+            else
+            {
+                textWriter.WriteLine("{};");
+            }            
         }
 
         private void WriteMethods(IndentedTextWriter textWriter, IProviders providers)
@@ -65,7 +73,16 @@
                 LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>()
                 {
                     { "name",  method.Name},
-                    { "signature", new Action(() => {  textWriter.Write("{{{0}}}", method.Paramters.FullTypesAsString(providers)); })  },
+                    { "signature", new Action(() => 
+                        {
+                            textWriter.Write("{");
+                            foreach (var parameter in method.ParameterList.Parameters)
+                            {
+                                textWriter.Write(DetermineTypeName(providers, new []{ ((Parameter) parameter).Type.GetTypeString()}) + ",");
+                            }
+                            textWriter.Write("}");
+                        })
+                    },
                     { "returnType", new Action(() =>
                         {
                             textWriter.Write(DetermineTypeName(providers, method.ReturnType.Names));
@@ -78,11 +95,11 @@
             textWriter.WriteLine("},");
         }
 
-        private static string DetermineTypeName(IProviders providers, List<string> names)
+        private static string DetermineTypeName(IProviders providers, ICollection<string> names)
         {
             if (names.Count == 1)
             {
-                var name = names[0];
+                var name = names.First();
                 switch (name)
                 {
                     case "object":
@@ -100,7 +117,7 @@
 
                 if (providers.GenericsRegistry.IsGeneric(name))
                 {
-                    return "'" + name + "'";
+                    return "generics[genericsMapping['" + name + "']]";
                 }
             }
             return "'" + providers.TypeProvider.LookupType(names) + "'";
@@ -112,7 +129,15 @@
             textWriter.Indent++;
             foreach (var property in this.properties)
             {
-
+                LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>()
+                {
+                    { "name",  property.Name},
+                    { "type", new Action(() =>
+                        {
+                            textWriter.Write(DetermineTypeName(providers, property.Type.Names));
+                        })
+                    },
+                }, ",", string.Empty);
             }
 
             textWriter.Indent--;
@@ -191,7 +216,7 @@
                     this.methods.Add(new InterfaceMethod()
                     {
                         Name = name,
-                        Paramters = parameters,
+                        ParameterList = parameters,
                         ReturnType = returnType,
                     });
 
@@ -236,7 +261,7 @@
     {
         public string Name;
         public VariableName ReturnType;
-        public ParameterList Paramters;
+        public ParameterList ParameterList;
     }
 
     internal struct InterfaceProperty
