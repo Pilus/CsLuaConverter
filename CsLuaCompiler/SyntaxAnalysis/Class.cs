@@ -93,7 +93,7 @@
                 },
                 {
                     "implements", new Action(() => textWriter.Write("{{{0}}}",
-                        string.Join(",", this.baseLists.Select(bl =>bl.GetFullNameString(providers)))))
+                        string.Join(",", this.baseLists.Skip(inheritsOtherClass ? 1 : 0).Select(bl =>bl.GetFullNameString(providers)))))
                 },
                 {
                     "getElements", new Action(() =>

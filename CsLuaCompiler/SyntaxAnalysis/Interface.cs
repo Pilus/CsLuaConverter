@@ -29,11 +29,13 @@
             textWriter.Indent++;
 
             this.WriteGenericsMapping(textWriter, providers);
+            this.WriteImplementedInterfaces(textWriter, providers);
 
             textWriter.WriteLine("return {");
             textWriter.Indent++;
             textWriter.WriteLine("__isInterface = true,");
-            
+
+            this.WriteAddImplementedSignatures(textWriter, providers);
             this.WriteMethods(textWriter, providers);
             this.WriteProperties(textWriter, providers);
 
@@ -42,6 +44,35 @@
             textWriter.Indent--;
             textWriter.WriteLine("end,");
             providers.NameProvider.SetScope(originalScope);
+        }
+
+        private void WriteImplementedInterfaces(IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.WriteLine("local implementedInterfaces = {");
+            textWriter.Indent++;
+
+            foreach (var baselist in this.baseLists)
+            {
+                var fullName = baselist.GetFullNameString(providers);
+                textWriter.WriteLine("__GetByFullName({0})(nil),", fullName);
+            }
+
+            textWriter.Indent--;
+            textWriter.WriteLine("};");
+        }
+
+        private void WriteAddImplementedSignatures(IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.WriteLine("__AddImplementedSignatures = function(signatures)"); 
+            textWriter.Indent++;
+            textWriter.WriteLine("for _, interface in ipairs(implementedInterfaces) do"); 
+            textWriter.Indent++;
+            textWriter.WriteLine("interface.__AddImplementedSignatures(signatures);"); 
+            textWriter.Indent--;
+            textWriter.WriteLine("end"); 
+            textWriter.WriteLine("table.insert(signatures, {0})", providers.TypeProvider.LookupType(this.name).ToQuotedString());
+            textWriter.Indent--;
+            textWriter.WriteLine("end,");
         }
 
         private void WriteGenericsMapping(IndentedTextWriter textWriter, IProviders providers)
