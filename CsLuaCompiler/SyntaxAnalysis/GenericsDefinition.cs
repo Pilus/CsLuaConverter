@@ -7,7 +7,7 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal class Generics : ILuaElement
+    internal class GenericsDefinition : ILuaElement
     {
         public List<string> Names = new List<string>();
 
@@ -15,11 +15,7 @@
         {
             textWriter.Write("{{{0}}}", string.Join(",", this.Names.Select(name =>
             {
-                if (providers.GenericsRegistry.IsGeneric(name))
-                {
-                    return "'" + name + "'";
-                }
-                return providers.TypeProvider.LookupType(name).ToQuotedString();
+                return "'" + name + "'";
             })));
         }
 

@@ -15,7 +15,7 @@
         private List<BaseList> baseLists = new List<BaseList>();
         private List<InterfaceMethod> methods = new List<InterfaceMethod>();
         private List<InterfaceProperty> properties = new List<InterfaceProperty>();
-        private Generics generics;
+        private GenericsDefinition generics;
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
@@ -35,6 +35,7 @@
             textWriter.Indent++;
             textWriter.WriteLine("isInterface = true,");
             textWriter.WriteLine("name = '{0}',", name);
+            textWriter.WriteLine("implementedInterfaces = implementedInterfaces,");
 
             this.WriteAddImplementedSignatures(textWriter, providers);
             this.WriteMethods(textWriter, providers);
@@ -131,25 +132,9 @@
         {
             if (names.Count == 1)
             {
-                var name = names.First();
-                switch (name)
+                if (providers.GenericsRegistry.IsGeneric(names.Single()))
                 {
-                    case "object":
-                    case "bool":
-                    case "double":
-                    case "int":
-                    case "string":
-                    case "long":
-                        return "'" + name + "'";
-                    case "void":
-                        return "nil";
-                    default:
-                        break;
-                }
-
-                if (providers.GenericsRegistry.IsGeneric(name))
-                {
-                    return "generics[genericsMapping['" + name + "']]";
+                    return "generics[genericsMapping['" + names.Single() + "']]";
                 }
             }
             return "'" + providers.TypeProvider.LookupType(names) + "'";
@@ -197,7 +182,7 @@
 
             if (token.Parent is TypeParameterListSyntax) // <
             {
-                this.generics = new Generics();
+                this.generics = new GenericsDefinition();
                 token = this.generics.Analyze(token);
             }
 

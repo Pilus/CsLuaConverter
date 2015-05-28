@@ -9,7 +9,7 @@
     internal class BaseList : ILuaElement
     {
         public VariableName name;
-        public Generics Generics;
+        public GenericsParsing Generics;
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
@@ -28,9 +28,8 @@
 
             if (token.GetNextToken().Parent is TypeArgumentListSyntax) // <
             {
-                this.Generics = new Generics();
+                this.Generics = new GenericsParsing();
                 token = this.Generics.Analyze(token.GetNextToken());
-                token = token.GetPreviousToken();
             }
 
             return token;

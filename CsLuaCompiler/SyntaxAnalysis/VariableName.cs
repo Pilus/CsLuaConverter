@@ -16,7 +16,7 @@
         private readonly bool isClassVar;
         private readonly bool resolveAsFullName;
         private bool isInitialization;
-        private Generics generics;
+        public GenericsParsing Generics;
 
         public VariableName(bool resolveAsFullName)
         {
@@ -51,10 +51,10 @@
 
                 textWriter.Write(providers.NameProvider.LookupVariableName(this.Names, this.isClassVar));
 
-                if (this.generics != null)
+                if (this.Generics != null)
                 {
                     textWriter.Write("[");
-                    this.generics.WriteLua(textWriter, providers);
+                    this.Generics.WriteLua(textWriter, providers);
                     textWriter.Write("]");
                 }
                 
@@ -94,12 +94,11 @@
                 token = token.GetNextToken();
             }
 
-            if (token.GetNextToken().Parent is TypeArgumentListSyntax) // <T>
+            if (token.GetNextToken().Parent is TypeArgumentListSyntax && token.GetNextToken().Text.Equals("<")) // <T>
             {
                 token = token.GetNextToken();
-                this.generics = new Generics();
-                token = this.generics.Analyze(token);
-                token = token.GetPreviousToken();
+                this.Generics = new GenericsParsing();
+                token = this.Generics.Analyze(token);
             }
 
             if (token.GetNextToken().Parent is TypeParameterConstraintClauseSyntax) // where

@@ -99,7 +99,8 @@
     <Compile Include="SyntaxAnalysis\EnumElement.cs" />
     <Compile Include="SyntaxAnalysis\ForeachLoop.cs" />
     <Compile Include="SyntaxAnalysis\ForLoop.cs" />
-    <Compile Include="SyntaxAnalysis\Generics.cs" />
+    <Compile Include="SyntaxAnalysis\GenericsDefinition.cs" />
+    <Compile Include="SyntaxAnalysis\GenericsParsing.cs" />
     <Compile Include="SyntaxAnalysis\IfStatement.cs" />
     <Compile Include="SyntaxAnalysis\IFunction.cs" />
     <Compile Include="SyntaxAnalysis\ILuaElement.cs" />

@@ -20,7 +20,7 @@
         private readonly List<Property> properties = new List<Property>();
         private readonly List<ClassVariable> variables = new List<ClassVariable>();
         public bool IsStatic;
-        private Generics generics;
+        private GenericsDefinition generics;
         private string name;
 
         public Class(List<Attribute> attributes)
@@ -122,7 +122,7 @@
 
             if (token.Parent is TypeParameterListSyntax) // <
             {
-                this.generics = new Generics();
+                this.generics = new GenericsDefinition();
                 token = this.generics.Analyze(token);
             }
 
