@@ -18,14 +18,14 @@
             while (true)
             {
                 CsProject mainProj = csProjects.FirstOrDefault(
-                    pj => pj.IsCsLuaAddOn() &&
+                    pj => pj.ProjectType.Equals(ProjectType.CsLuaAddOn) &&
                     pj.GetReferences()
                         .Select(name =>
                         {
                             CsProject proj =
                                 csProjects.FirstOrDefault(
                                     csProj => csProj.Name.Equals(name));
-                            return proj != null && proj.IsCsLuaAddOn();
+                            return proj != null && (proj.ProjectType.Equals(ProjectType.CsLuaAddOn) || proj.ProjectType.Equals(ProjectType.CsLuaLibrary));
                         })
                         .All(addon => addon != true));
 
@@ -62,7 +62,7 @@
 
             foreach (var csProject in csProjects)
             {
-                if (!csProject.IsCsLuaAddOn() && csProject.IsLuaAddOn())
+                if (csProject.ProjectType.Equals(ProjectType.LuaAddOn))
                 {
                     addOns.Add(new LuaAddOn(csProject.Name,csProject.GetProjectPath()));
                 }

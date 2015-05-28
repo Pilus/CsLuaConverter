@@ -33,7 +33,8 @@
 
             textWriter.WriteLine("return {");
             textWriter.Indent++;
-            textWriter.WriteLine("__isInterface = true,");
+            textWriter.WriteLine("isInterface = true,");
+            textWriter.WriteLine("name = '{0}',", name);
 
             this.WriteAddImplementedSignatures(textWriter, providers);
             this.WriteMethods(textWriter, providers);

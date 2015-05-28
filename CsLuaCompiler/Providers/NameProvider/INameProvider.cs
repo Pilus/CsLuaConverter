@@ -10,7 +10,7 @@ namespace CsLuaCompiler.Providers.NameProvider
         List<ScopeElement> CloneScope();
         void SetScope(List<ScopeElement> scope);
         void AddToScope(ScopeElement element);
-        void AddAllInheritedMembersToScope(Type type);
+        void AddAllInheritedMembersToScope(string typeName);
         string LookupVariableName(IEnumerable<string> names);
         string LookupVariableName(IEnumerable<string> names, bool isClassVariable);
     }

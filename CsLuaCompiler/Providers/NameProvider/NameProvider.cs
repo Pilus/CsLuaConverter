@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using SyntaxAnalysis.NameAndTypeProvider;
     using TypeProvider;
 
     internal class NameProvider : INameProvider
@@ -93,13 +92,19 @@
             }
         }
 
-        public void AddAllInheritedMembersToScope(Type type)
+        private void AddAllInheritedMembersToScope(Type type)
         {
             this.AddMembersToScope(type);
             if (type.BaseType.FullName != "System.Object")
             {
                 this.AddAllInheritedMembersToScope(type.BaseType);
             }
+        }
+
+        public void AddAllInheritedMembersToScope(string typeName)
+        {
+            var type = this.typeProvider.LookupType(typeName);
+            this.AddAllInheritedMembersToScope(type.GetTypeObject());
         }
 
         public string LookupVariableName(IEnumerable<string> names)
@@ -124,5 +129,8 @@
 
             return this.typeProvider.LookupType(names).ToString();
         }
+
+
+        
     }
 }

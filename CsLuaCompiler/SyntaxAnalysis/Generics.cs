@@ -13,7 +13,14 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("{{{0}}}", string.Join(",", this.Names.Select(name => "'" + name + "'").ToArray()));
+            textWriter.Write("{{{0}}}", string.Join(",", this.Names.Select(name =>
+            {
+                if (providers.GenericsRegistry.IsGeneric(name))
+                {
+                    return "'" + name + "'";
+                }
+                return providers.TypeProvider.LookupType(name).ToQuotedString();
+            })));
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

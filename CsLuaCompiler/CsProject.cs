@@ -10,6 +10,7 @@
     using CsLuaCompiler.Providers;
     using Microsoft.CodeAnalysis;
     using SyntaxAnalysis;
+    using SyntaxAnalysis.Lua;
 
     internal class CsProject
     {
@@ -24,14 +25,22 @@
         private readonly Dictionary<string, NameSpace> nameSpaces;
         public readonly Project CodeProject;
         public string Name;
+        private readonly IEnumerable<AttributeData> customAttributes;
+        public readonly ProjectType ProjectType;
 
         public CsProject(IProviders providers, Project project)
         {
+            this.Name = project.Name;
             this.Settings = SettingsReader.GetSettings(project);
             this.providers = providers;
             this.CodeProject = project;
             this.compilation = project.GetCompilationAsync().Result;
-            if (this.IsCsLuaAddOn())
+            this.customAttributes =
+                this.compilation.Assembly.GetAttributes().Where(data => data.ToString().StartsWith("CsLua.Attributes."));
+            this.ProjectType = this.DetermineProjectType();
+
+
+            if (this.ProjectType.Equals(ProjectType.CsLuaAddOn) || this.ProjectType.Equals(ProjectType.CsLuaLibrary))
             {
                 if (Debugger.IsAttached)
                 {
@@ -47,27 +56,31 @@
                     {
 
                         throw new WrappingException(string.Format("In project: {0}.", project.Name), ex);
-                    }    
-                }                                
+                    }
+                }
             }
-            this.Name = this.CodeProject.Name;
         }
 
-        public bool IsCsLuaAddOn()
+        private ProjectType DetermineProjectType()
         {
-            return this.Settings.ContainsKey("Interface");
+            if (this.Settings.ContainsKey("Interface"))
+            {
+                return ProjectType.CsLuaAddOn;
+            }
+            
+            if (this.customAttributes.Any(att => att.ToString().Equals("CsLua.Attributes.IsCsLuaLibrary")))
+            {
+                return ProjectType.CsLuaLibrary;
+            }
+
+            var fileInfo = new FileInfo(this.GetProjectPath() + "\\" + this.CodeProject.Name + ".toc");
+            return fileInfo.Exists ? ProjectType.LuaAddOn : ProjectType.LuaLibrary;
         }
 
         public string GetProjectPath()
         {
             var projectFile = new FileInfo(this.CodeProject.FilePath);
             return projectFile.Directory.FullName;
-        }
-
-        public bool IsLuaAddOn()
-        {
-            var fileInfo = new FileInfo(this.GetProjectPath() + "\\" + this.CodeProject.Name + ".toc");
-            return fileInfo.Exists;
         }
 
         public IEnumerable<string> GetReferences()
@@ -120,17 +133,28 @@
                         additionalFiles.FirstOrDefault(otherFile => otherFile.FileName.Equals(targetfileName));
                     if (targetFile == null)
                     {
-                        targetFile = new CodeFile {FileName = targetfileName, Content = file.Content};
+                        targetFile = new CodeFile {FileName = targetfileName, Content = file.Content.Substring(match.Length)};
                         additionalFiles.Add(targetFile);
                     }
                     else
                     {
-                        targetFile.Content += "\n" + file.Content;
+                        targetFile.Content += "\n" + file.Content.Substring(match.Length);
                     }
                     file.Ignore = true;
                 }
             });
             files.AddRange(additionalFiles);
+
+            if (this.customAttributes.Any(att => att.ToString().Equals("CsLua.Attributes.RequiresCsLuaHeader")))
+            {
+                var mainFile = files.FirstOrDefault(file => file.FileName.Equals(this.Name + ".lua"));
+                if (mainFile == null)
+                {
+                    throw new CompilerException(string.Format("Project {0} has a RequiresCsLuaHeader attribute, but does not have a file named {0}.lua to add it to.", this.Name));
+                }
+                mainFile.Content = LuaHeader.GetHeader() + "\n" + mainFile.Content;
+            }
+
             return files.Where(file => file.Ignore != true);
         }
 

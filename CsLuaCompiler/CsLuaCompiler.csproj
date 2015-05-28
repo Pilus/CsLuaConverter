@@ -57,6 +57,7 @@
     <Compile Include="CsProject.cs" />
     <Compile Include="IDeployableAddOn.cs" />
     <Compile Include="LuaAddOn.cs" />
+    <Compile Include="ProjectType.cs" />
     <Compile Include="Providers\GenericsRegistry\GenericsRegistry.cs" />
     <Compile Include="Providers\GenericsRegistry\IGenericsRegistry.cs" />
     <Compile Include="Providers\IProviders.cs" />
@@ -65,8 +66,10 @@
     <Compile Include="Providers\ProviderException.cs" />
     <Compile Include="Providers\Providers.cs" />
     <Compile Include="Providers\TypeProvider\ITypeProvider.cs" />
+    <Compile Include="Providers\TypeProvider\ITypeResult.cs" />
     <Compile Include="Providers\TypeProvider\LoadedNamespace.cs" />
     <Compile Include="Providers\TypeProvider\LoadedType.cs" />
+    <Compile Include="Providers\TypeProvider\NativeTypeResult.cs" />
     <Compile Include="Providers\TypeProvider\ScopeElement.cs" />
     <Compile Include="Providers\TypeProvider\TypeNameProvider.cs" />
     <Compile Include="Providers\TypeProvider\TypeResult.cs" />
@@ -107,7 +110,6 @@
     <Compile Include="SyntaxAnalysis\Lua\LuaHeader.cs" />
     <Compile Include="SyntaxAnalysis\MainCode.cs" />
     <Compile Include="SyntaxAnalysis\Method.cs" />
-    <Compile Include="SyntaxAnalysis\NameAndTypeProvider\FullNameProvider.cs" />
     <Compile Include="SyntaxAnalysis\NameSpace.cs" />
     <Compile Include="SyntaxAnalysis\NameSpacePart.cs" />
     <Compile Include="SyntaxAnalysis\New.cs" />

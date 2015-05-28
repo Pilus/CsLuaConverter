@@ -12,6 +12,18 @@
         private readonly LoadedNamespace rootNamespace;
         private List<LoadedNamespace> refenrecedNamespaces;
 
+        private List<ITypeResult> predefinedNativeTypeResults = new List<ITypeResult>()
+        {
+            new NativeTypeResult("int"),
+            new NativeTypeResult("object"),
+            new NativeTypeResult("string"),
+            new NativeTypeResult("bool"),
+            new NativeTypeResult("long"),
+            new NativeTypeResult("double"),
+            new NativeTypeResult("float"),
+            new NativeTypeResult("void"),
+        };
+
         public TypeNameProvider(Solution solution)
         {
             this.rootNamespace = new LoadedNamespace(null);
@@ -21,7 +33,6 @@
 
         private void LoadSystemTypes()
         {
-            this.LoadType(typeof(object));
             this.LoadType(typeof(Action));
             this.LoadType(typeof(Func<int>));
             this.LoadType(typeof(NotImplementedException));
@@ -129,8 +140,14 @@
             throw new ProviderException(string.Format("Could not find a variable for {0}", firstName));
         }
 
-        public TypeResult LookupType(string name)
+        public ITypeResult LookupType(string name)
         {
+            var nativeType = this.predefinedNativeTypeResults.FirstOrDefault(t => t.ToString().Equals(name));
+            if (nativeType != null)
+            {
+                return nativeType;
+            }
+
             var nameWithoutGenerics = StripGenerics(name);
             foreach (var refenrecedNamespace in this.refenrecedNamespaces)
             {
@@ -142,8 +159,13 @@
             throw new ProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", name));
         }
 
-        public TypeResult LookupType(IEnumerable<string> names)
+        public ITypeResult LookupType(IEnumerable<string> names)
         {
+            if (names.Count() == 1)
+            {
+                return this.LookupType(names.Single());
+            }
+
             var nameWithoutGenerics = StripGenerics(names.First());
             foreach (var refenrecedNamespace in this.refenrecedNamespaces)
             {
@@ -157,7 +179,7 @@
                     var current = refenrecedNamespace.SubNamespaces[nameWithoutGenerics];
                     var remainingNames = names.Skip(1);
                     
-                    while (remainingNames.Count() > 0)
+                    while (remainingNames.Any())
                     {
                         var name = StripGenerics(remainingNames.First());
                         remainingNames = remainingNames.Skip(1);

@@ -12,6 +12,8 @@
         
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
+            throw new CompilerException("Structs are currently not supported.");
+            /*
             var type = providers.TypeProvider.LookupType(this.typeName).Type;
             var implements = type.GetInterfaces()
                 .Select(i => QuoteString(i.Name)).ToList();
@@ -24,7 +26,7 @@
             textWriter.WriteLine(
                 "{0} = __Struct({1}, {{{2}}}),", this.typeName, 
                 QuoteString(type.Name),
-                string.Join(",", implements));
+                string.Join(",", implements)); */
         }
 
         private static string QuoteString(string str)

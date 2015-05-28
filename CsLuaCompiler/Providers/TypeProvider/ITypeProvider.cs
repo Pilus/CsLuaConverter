@@ -7,8 +7,8 @@ namespace CsLuaCompiler.Providers.TypeProvider
     internal interface ITypeProvider
     {
         void SetNamespaces(string currentNamespace, IEnumerable<string> namespaces);
-        TypeResult LookupType(IEnumerable<string> names);
-        TypeResult LookupType(string name);
+        ITypeResult LookupType(IEnumerable<string> names);
+        ITypeResult LookupType(string name);
         string LookupStaticVariableName(IEnumerable<string> names);
     }
 }

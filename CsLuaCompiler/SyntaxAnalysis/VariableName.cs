@@ -16,6 +16,7 @@
         private readonly bool isClassVar;
         private readonly bool resolveAsFullName;
         private bool isInitialization;
+        private Generics generics;
 
         public VariableName(bool resolveAsFullName)
         {
@@ -49,6 +50,14 @@
                 }
 
                 textWriter.Write(providers.NameProvider.LookupVariableName(this.Names, this.isClassVar));
+
+                if (this.generics != null)
+                {
+                    textWriter.Write("[");
+                    this.generics.WriteLua(textWriter, providers);
+                    textWriter.Write("]");
+                }
+                
                 return;
             }
             textWriter.Write(string.Join(".", this.Names));
@@ -87,11 +96,10 @@
 
             if (token.GetNextToken().Parent is TypeArgumentListSyntax) // <T>
             {
-                while (!(token.Parent is TypeArgumentListSyntax && token.Text.Equals(">")))
-                {
-                    token = token.GetNextToken();
-                }
-                //token = token.GetNextToken();
+                token = token.GetNextToken();
+                this.generics = new Generics();
+                token = this.generics.Analyze(token);
+                token = token.GetPreviousToken();
             }
 
             if (token.GetNextToken().Parent is TypeParameterConstraintClauseSyntax) // where
@@ -105,9 +113,9 @@
             return token;
         }
 
-        public Type LookupType(IProviders providers)
+        public ITypeResult GetTypeResult(IProviders providers)
         {
-            return providers.TypeProvider.LookupType(this.Names).Type;
+            return providers.TypeProvider.LookupType(this.Names);
         }
     }
 }

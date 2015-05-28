@@ -38,17 +38,12 @@
 
         public bool IsInterface(IProviders providers)
         {
-            return this.name.LookupType(providers).IsInterface;
+            return this.name.GetTypeResult(providers).IsInterface();
         }
 
         public string GetFullNameString(IProviders providers)
         {
-            return "'" + StripGenerics(this.name.LookupType(providers).FullName) + "'";
-        }
-
-        private static string StripGenerics(string name)
-        {
-            return name.Split('`').First();
+            return this.name.GetTypeResult(providers).ToQuotedString();
         }
     }
 }

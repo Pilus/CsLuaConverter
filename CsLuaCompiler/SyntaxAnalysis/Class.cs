@@ -45,7 +45,7 @@
                 this.generics.AddToScope(providers);
             }
 
-            providers.NameProvider.AddAllInheritedMembersToScope(type.Type);
+            providers.NameProvider.AddAllInheritedMembersToScope(this.name);
 
             var elements = new List<ILuaElement>
             {
@@ -82,8 +82,8 @@
                     {
                         if (inheritsOtherClass)
                         {
-                            textWriter.Write("'{0}'",
-                                this.baseLists.First().name.LookupType(providers).FullName.Split('`').First());
+                            textWriter.Write(
+                                this.baseLists.First().name.GetTypeResult(providers).ToQuotedString());
                         }
                         else
                         {

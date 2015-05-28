@@ -3,7 +3,7 @@ namespace CsLuaCompiler.Providers.TypeProvider
     using System;
     using System.Linq;
 
-    public class TypeResult
+    public class TypeResult : ITypeResult
     {
         public string AdditionalString;
         public Type Type;
@@ -27,6 +27,17 @@ namespace CsLuaCompiler.Providers.TypeProvider
             }
 
             return genericStrippedFullName + "." + this.AdditionalString;
+        }
+
+
+        public bool IsInterface()
+        {
+            return this.Type.IsInterface;
+        }
+
+        public Type GetTypeObject()
+        {
+            return this.Type;
         }
     }
 }

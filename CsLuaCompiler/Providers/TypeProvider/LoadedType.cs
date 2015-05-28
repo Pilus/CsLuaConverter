@@ -13,7 +13,7 @@
 
         public string Name;
 
-        public TypeResult GetTypeResult()
+        public ITypeResult GetTypeResult()
         {
             return new TypeResult()
             {
@@ -21,7 +21,7 @@
             };
         }
 
-        public TypeResult GetTypeResult(string additionalString)
+        public ITypeResult GetTypeResult(string additionalString)
         {
             return new TypeResult()
             {

@@ -84,17 +84,6 @@
             this.TypeName = new VariableType();
             token = this.TypeName.Analyze(token);
             token = token.GetNextToken();
-            /*
-            this.CheckType(
-                new[] {typeof(IdentifierNameSyntax), typeof(PredefinedTypeSyntax), typeof(GenericNameSyntax)},
-                token.Parent);
-            this.Type = token.Text;
-            token = token.GetNextToken();
-            if (token.Parent is ArrayRankSpecifierSyntax)
-            {
-                token = token.GetNextToken();
-                token = token.GetNextToken();
-            } // */
 
             LuaElementHelper.CheckType(typeof(MethodDeclarationSyntax), token.Parent);
             this.Name = token.Text;
