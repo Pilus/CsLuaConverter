@@ -115,7 +115,8 @@
                         this.elements.Add(_struct);
                         break;
                     case "InterfaceDeclarationSyntax":
-                        var iface = new Interface();
+                        var iface = new Interface(this.currentAttributes);
+                        this.currentAttributes = new List<Attribute>();
                         token = iface.Analyze(token);
                         this.elements.Add(iface);
                         break;

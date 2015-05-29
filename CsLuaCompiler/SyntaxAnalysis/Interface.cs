@@ -16,6 +16,17 @@
         private List<InterfaceMethod> methods = new List<InterfaceMethod>();
         private List<InterfaceProperty> properties = new List<InterfaceProperty>();
         private GenericsDefinition generics;
+        private List<Attribute> attributes;
+
+        public Interface(List<Attribute> attributes)
+        {
+            this.attributes = attributes;
+        }
+
+        private bool HasAttribute(string attributeName)
+        {
+            return this.attributes.Any(att => att.attributeText.Equals(attributeName) || att.attributeText.Equals(attributeName + "Attribute"));
+        }
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
@@ -36,6 +47,10 @@
             textWriter.WriteLine("isInterface = true,");
             textWriter.WriteLine("name = '{0}',", name);
             textWriter.WriteLine("implementedInterfaces = implementedInterfaces,");
+            if (this.HasAttribute("ProvideSelf"))
+            {
+                textWriter.WriteLine("provideSelf = true,");
+            }
 
             this.WriteAddImplementedSignatures(textWriter, providers);
             this.WriteMethods(textWriter, providers);
