@@ -215,10 +215,12 @@
                 var baseList = new BaseList();
                 token = baseList.Analyze(token);
                 this.baseLists.Add(baseList);
-                token = token.GetNextToken();
+                if (token.Text != "{") { 
+                    token = token.GetNextToken();
+                }
             }
 
-            if (token.Parent is TypeParameterConstraintClauseSyntax) // where (for generics)
+            if (token.Parent is TypeParameterConstraintClauseSyntax) // where (for generics, when there is no inheritance)
             {
                 while (!(token.Parent is InterfaceDeclarationSyntax))
                 {

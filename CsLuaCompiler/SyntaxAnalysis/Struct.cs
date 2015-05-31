@@ -27,12 +27,7 @@
                 "{0} = __Struct({1}, {{{2}}}),", this.typeName, 
                 QuoteString(type.Name),
                 string.Join(",", implements)); */
-        }
-
-        private static string QuoteString(string str)
-        {
-            return string.Format("'{0}'", str);
-        }
+        }   
 
         public SyntaxToken Analyze(SyntaxToken token)
         {

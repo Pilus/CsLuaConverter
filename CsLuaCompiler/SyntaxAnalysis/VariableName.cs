@@ -103,10 +103,10 @@
 
             if (token.GetNextToken().Parent is TypeParameterConstraintClauseSyntax) // where
             {
-                token = token.GetNextToken();
-                token = token.GetNextToken();
-                token = token.GetNextToken();
-                token = token.GetNextToken();
+                while (token.Text != "{")
+                {
+                    token = token.GetNextToken();
+                }
             }
 
             return token;
