@@ -10,11 +10,12 @@
     internal class GenericsParsing : ILuaElement
     {
         private readonly List<VariableName> names = new List<VariableName>();
+        public bool ParseGenericsWithMapping = false;
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             var first = true;
-            textWriter.Write("{");
+            textWriter.Write("__GenericsList(");
             foreach (var variableName in this.names)
             {
                 if (!first)
@@ -23,16 +24,25 @@
                 }
                 first = false;
 
-                textWriter.Write("{{name={0}", variableName.GetTypeResult(providers).ToQuotedString());
-                if (variableName.Generics != null)
+                textWriter.Write("__Generic(");
+                if (variableName.IsGenerics(providers))
                 {
-                    textWriter.Write(",");
-                    variableName.Generics.WriteLua(textWriter, providers);
+                    textWriter.Write("generics[genericsMapping[{0}]].name", variableName.GetTypeResult(providers).ToQuotedString());
+                }
+                else
+                {
+                    textWriter.Write(variableName.GetTypeResult(providers).ToQuotedString());
+                    if (variableName.Generics != null)
+                    {
+                        textWriter.Write(",");
+                        variableName.Generics.WriteLua(textWriter, providers);
+                    }
                 }
                 
-                textWriter.Write("}");
+                
+                textWriter.Write(")");
             }
-            textWriter.Write("}");
+            textWriter.Write(")");
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

@@ -71,7 +71,16 @@
             foreach (var baselist in this.baseLists)
             {
                 var fullName = baselist.GetFullNameString(providers);
-                textWriter.WriteLine("__GetByFullName({0})(nil),", fullName);
+                textWriter.Write("__GetByFullName({0})(", fullName);
+                if (baselist.Name.Generics != null)
+                {
+                    baselist.Name.Generics.WriteLua(textWriter, providers);
+                }
+                else
+                {
+                    textWriter.Write("nil");
+                }
+                textWriter.Write("),");
             }
 
             textWriter.Indent--;
@@ -149,7 +158,7 @@
             {
                 if (providers.GenericsRegistry.IsGeneric(names.Single()))
                 {
-                    return "generics[genericsMapping['" + names.Single() + "']]";
+                    return "generics[genericsMapping['" + names.Single() + "']].name";
                 }
             }
             return "'" + providers.TypeProvider.LookupType(names) + "'";

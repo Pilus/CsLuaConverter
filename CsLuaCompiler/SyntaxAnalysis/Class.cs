@@ -83,7 +83,7 @@
                         if (inheritsOtherClass)
                         {
                             textWriter.Write(
-                                this.baseLists.First().name.GetTypeResult(providers).ToQuotedString());
+                                this.baseLists.First().Name.GetTypeResult(providers).ToQuotedString());
                         }
                         else
                         {

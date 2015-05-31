@@ -112,9 +112,14 @@
             return token;
         }
 
+        public bool IsGenerics(IProviders providers)
+        {
+            return this.Names.Count == 1 && providers.GenericsRegistry.IsGeneric(this.Names.Single());
+        }
+
         public ITypeResult GetTypeResult(IProviders providers)
         {
-            return providers.TypeProvider.LookupType(this.Names);
+            return this.IsGenerics(providers) ? new NativeTypeResult(this.Names.Single()) : providers.TypeProvider.LookupType(this.Names);
         }
     }
 }

@@ -8,14 +8,14 @@
 
     internal class BaseList : ILuaElement
     {
-        public VariableName name;
-        public GenericsParsing Generics;
+        public VariableName Name;
+        //public GenericsParsing Generics;
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (!this.IsInterface(providers))
             {
-                this.name.WriteLua(textWriter, providers);
+                this.Name.WriteLua(textWriter, providers);
             }
         }
 
@@ -23,26 +23,27 @@
         {
             LuaElementHelper.CheckType(typeof(BaseListSyntax), token.Parent);
             token = token.GetNextToken();
-            this.name = new VariableName(true, false, false);
-            token = this.name.Analyze(token);
+            this.Name = new VariableName(true, false, false);
+            token = this.Name.Analyze(token);
 
+            /*
             if (token.GetNextToken().Parent is TypeArgumentListSyntax) // <
             {
                 this.Generics = new GenericsParsing();
                 token = this.Generics.Analyze(token.GetNextToken());
-            }
+            } */
 
             return token;
         }
 
         public bool IsInterface(IProviders providers)
         {
-            return this.name.GetTypeResult(providers).IsInterface();
+            return this.Name.GetTypeResult(providers).IsInterface();
         }
 
         public string GetFullNameString(IProviders providers)
         {
-            return this.name.GetTypeResult(providers).ToQuotedString();
+            return this.Name.GetTypeResult(providers).ToQuotedString();
         }
     }
 }
