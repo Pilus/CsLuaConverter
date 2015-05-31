@@ -22,7 +22,11 @@
 
         public void Upsert(Type type)
         {
-            this.Types.Add(StripGenerics(type.Name), new LoadedType(type));
+            var name = StripGenerics(type.Name);
+            if (!this.Types.ContainsKey(name))
+            {
+                this.Types.Add(name, new LoadedType(type));
+            }
         }
 
         private static string StripGenerics(string name)
