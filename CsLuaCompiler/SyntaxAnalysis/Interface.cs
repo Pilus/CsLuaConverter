@@ -11,12 +11,16 @@
 
     internal class Interface : ILuaElement
     {
+        private static Dictionary<string, Interface> firstPartials = new Dictionary<string, Interface>();
+
         private string name;
+        private bool isPartial;
         private List<BaseList> baseLists = new List<BaseList>();
         private List<InterfaceMethod> methods = new List<InterfaceMethod>();
         private List<InterfaceProperty> properties = new List<InterfaceProperty>();
         private GenericsDefinition generics;
         private List<Attribute> attributes;
+        private VariableName indexerType;
 
         public Interface(List<Attribute> attributes)
         {
@@ -30,6 +34,11 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
+            if (this.isPartial && firstPartials[this.name] != this)
+            {
+                return;
+            }
+
             var originalScope = providers.NameProvider.CloneScope();
             if (this.generics != null)
             {
@@ -50,6 +59,11 @@
             if (this.HasAttribute("ProvideSelf"))
             {
                 textWriter.WriteLine("provideSelf = true,");
+            }
+
+            if (this.indexerType != null)
+            {
+                textWriter.WriteLine("indexer = {0},", this.indexerType.GetTypeResult(providers).ToQuotedString());
             }
 
             this.WriteAddImplementedSignatures(textWriter, providers);
@@ -187,11 +201,18 @@
 
         public SyntaxToken Analyze(SyntaxToken token)
         {
+            var initialToken = token;
             LuaElementHelper.CheckType(typeof(InterfaceDeclarationSyntax), token.Parent);
             if (token.Text == "public" || token.Text == "private" || token.Text == "protected") // access modifier.
             {
                 token = token.GetNextToken();
                 LuaElementHelper.CheckType(typeof(InterfaceDeclarationSyntax), token.Parent);
+            }
+
+            if (token.Text == "partial")
+            {
+                this.isPartial = true;
+                token = token.GetNextToken();
             }
 
             if (token.Text != "interface")
@@ -202,6 +223,20 @@
 
             LuaElementHelper.CheckType(typeof(InterfaceDeclarationSyntax), token.Parent);
             this.name = token.Text;
+
+            if (this.isPartial)
+            {
+                if (!firstPartials.ContainsKey(this.name))
+                {
+                    firstPartials.Add(this.name, this);
+                }
+                else if (firstPartials[this.name] != this)
+                {
+                    return firstPartials[this.name].Analyze(initialToken);
+                }                               
+            }
+            
+
             token = token.GetNextToken();            
 
             if (token.Parent is TypeParameterListSyntax) // <
@@ -285,6 +320,18 @@
                 else if (token.Parent is AttributeListSyntax) // tags, such as Obsolete
                 {
                     while (!(token.Parent is AttributeListSyntax && token.Text == "]"))
+                    {
+                        token = token.GetNextToken();
+                    }
+                }
+                else if (token.Parent is IndexerDeclarationSyntax)
+                {
+                    token = token.GetNextToken();
+                    token = token.GetNextToken();
+                    this.indexerType = new VariableName(true);
+                    token = this.indexerType.Analyze(token);
+
+                    while (!(token.Parent is AccessorListSyntax && token.Text == "}"))
                     {
                         token = token.GetNextToken();
                     }

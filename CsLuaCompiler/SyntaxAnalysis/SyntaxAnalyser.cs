@@ -85,9 +85,13 @@
                         break;
                     case "NamespaceDeclarationSyntax":
                         var ns = new NameSpacePart(document.Name);
-                        ns.Analyze(this.token);
+                        this.token = ns.Analyze(this.token);
                         return ns;
                     case "CompilationUnitSyntax":
+                        break;
+                    case "AttributeListSyntax":
+                        var attributes = new Attribute();
+                        token = attributes.Analyze(token);
                         break;
                     default:
                         throw new Exception(string.Format("Unexpeted token in document: {0}.",
