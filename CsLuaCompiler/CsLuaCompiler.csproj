@@ -111,7 +111,7 @@
     <Compile Include="SyntaxAnalysis\IPartialLuaElement.cs" />
     <Compile Include="SyntaxAnalysis\LambdaExpression.cs" />
     <Compile Include="SyntaxAnalysis\LuaElementHelper.cs" />
-    <Compile Include="SyntaxAnalysis\Lua\LuaHeader.cs" />
+    <Compile Include="CsLuaMetaReader.cs" />
     <Compile Include="SyntaxAnalysis\MainCode.cs" />
     <Compile Include="SyntaxAnalysis\Method.cs" />
     <Compile Include="SyntaxAnalysis\NameSpace.cs" />
@@ -142,11 +142,13 @@
     <Compile Include="WrappingException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SyntaxAnalysis\Lua\Header.lua">
+    <None Include="CsLuaMeta.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SyntaxAnalysis\Lua\" />
+  </ItemGroup>
   <ImportGroup Label="Targets">
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

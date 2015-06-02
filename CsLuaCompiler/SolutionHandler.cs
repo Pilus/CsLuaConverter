@@ -34,8 +34,12 @@
             }
         }
 
+        public static IList<CsProject> GetReferenders(this CsProject project, IEnumerable<CsProject> projects)
+        {
+            return projects.Where(p => p.GetReferences().Contains(project.Name)).ToList();
+        }
 
-        public static void AddAddOnAndReferencesToList(CsProject project, IList<CsProject> nonDeployedProjects, IList<IDeployableAddOn> addOns)
+        public static void AddAddOnAndReferencesToList(CsProject project, IList<CsProject> nonDeployedProjects, IList<IDeployableAddOn> addOns, List<CodeFile> additionalFiles)
         {
             if (!project.IsAddOn())
             {
@@ -50,7 +54,8 @@
 
             nonDeployedProjects.Remove(project);
 
-            var luaFiles = project.GetLuaFiles();
+            var luaFiles = additionalFiles ?? new List<CodeFile>();
+            luaFiles.AddRange(project.GetLuaFiles());
             AddXmlToCodeFiles(project, luaFiles);
             var resources = GetResourceFiles(project.CodeProject);
 
@@ -68,19 +73,9 @@
                 
                 switch (refProject.ProjectType)
                 {
-                    case ProjectType.CsLuaAddOn:
-                        AddAddOnAndReferencesToList(refProject, nonDeployedProjects, addOns);
-                        break;
                     case ProjectType.CsLuaLibrary:
                         luaFiles.AddRange(refProject.GetLuaFiles());
                         AddXmlToCodeFiles(refProject, luaFiles);
-                        break;
-                    case ProjectType.LuaAddOn:
-                        if (!addOns.Any(addon => addon.Name.Equals(refProject.Name)))
-                        {
-                            addOns.Add(new LuaAddOn(refProject.Name, refProject.GetProjectPath()));
-                        }
-                        
                         break;
                     case ProjectType.LuaLibrary:
                         luaFiles.AddRange(refProject.GetLuaFiles());
@@ -90,8 +85,29 @@
                         throw new System.Exception("Unknown project type.");
                 }
 
-                luaFiles.AddRange(refProject.GetLuaFiles());
                 nonDeployedProjects.Remove(refProject);
+            }
+
+            foreach (var referender in project.GetReferenders(nonDeployedProjects))
+            {
+                switch (referender.ProjectType)
+                {
+                    case ProjectType.CsLuaAddOn:
+                        AddAddOnAndReferencesToList(referender, nonDeployedProjects, addOns, null);
+                        break;
+                    case ProjectType.LuaAddOn:
+                        if (!addOns.Any(addon => addon.Name.Equals(referender.Name)))
+                        {
+                            addOns.Add(new LuaAddOn(referender.Name, referender.GetProjectPath()));
+                        }
+
+                        break;
+                    case ProjectType.LuaLibrary:
+                    case ProjectType.CsLuaLibrary:
+                        break;
+                    default:
+                        throw new System.Exception("Unknown project type.");
+                }
             }
 
             addOns.Add(new AddOn(project.Name, project.Settings, luaFiles, resources));
@@ -107,7 +123,7 @@
             var rootAddOnProjects = GetRootProjects(csProjects);
             foreach (var rootProject in rootAddOnProjects)
             {
-                AddAddOnAndReferencesToList(rootProject, csProjects.ToList(), addOns);
+                AddAddOnAndReferencesToList(rootProject, csProjects.ToList(), addOns, new List<CodeFile>() { CsLuaMetaReader.GetMetaFile() });
             }
 
             return addOns;

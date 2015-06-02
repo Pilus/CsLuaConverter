@@ -10,7 +10,6 @@
     using CsLuaCompiler.Providers;
     using Microsoft.CodeAnalysis;
     using SyntaxAnalysis;
-    using SyntaxAnalysis.Lua;
 
     internal class CsProject
     {
@@ -152,7 +151,7 @@
                 {
                     throw new CompilerException(string.Format("Project {0} has a RequiresCsLuaHeader attribute, but does not have a file named {0}.lua to add it to.", this.Name));
                 }
-                mainFile.Content = LuaHeader.GetHeader() + "\n" + mainFile.Content;
+                mainFile.Content = CsLuaMetaReader.GetReferenceString() + "\n" + mainFile.Content;
             }
 
             return files.Where(file => file.Ignore != true).ToList();

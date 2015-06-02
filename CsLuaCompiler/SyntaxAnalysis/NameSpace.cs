@@ -5,7 +5,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using CsLuaCompiler.Providers;
-    using Lua;
     using Microsoft.CodeAnalysis;
 
     internal class NameSpace : ILuaElement
@@ -101,7 +100,7 @@
 
         private static void WriteHeaders(IndentedTextWriter writer)
         {
-            writer.WriteLine(LuaHeader.GetHeader());
+            writer.WriteLine(CsLuaMetaReader.GetReferenceString());
         }
     }
 }
