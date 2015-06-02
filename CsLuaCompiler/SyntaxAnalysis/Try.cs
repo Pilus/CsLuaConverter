@@ -62,7 +62,7 @@ namespace CsLuaCompiler.SyntaxAnalysis
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.WriteLine("__Try(function()");
+            textWriter.WriteLine("CsLuaMeta.Try(function()");
             textWriter.Indent++;
             textWriter.Indent++;
             this.tryBlock.WriteLua(textWriter, providers);

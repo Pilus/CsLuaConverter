@@ -55,9 +55,7 @@
             nonDeployedProjects.Remove(project);
 
             var luaFiles = additionalFiles ?? new List<CodeFile>();
-            luaFiles.AddRange(project.GetLuaFiles());
-            AddXmlToCodeFiles(project, luaFiles);
-            var resources = GetResourceFiles(project.CodeProject);
+            
 
             IEnumerable<CsProject> refProjects = project.GetReferences()
                 .Select(name => nonDeployedProjects.GetProjectByName(name))
@@ -88,6 +86,10 @@
                 nonDeployedProjects.Remove(refProject);
             }
 
+            luaFiles.AddRange(project.GetLuaFiles());
+            AddXmlToCodeFiles(project, luaFiles);
+            var resources = GetResourceFiles(project.CodeProject);
+
             foreach (var referender in project.GetReferenders(nonDeployedProjects))
             {
                 switch (referender.ProjectType)
@@ -110,7 +112,15 @@
                 }
             }
 
-            addOns.Add(new AddOn(project.Name, project.Settings, luaFiles, resources));
+            if (project.ProjectType.Equals(ProjectType.CsLuaAddOn))
+            {
+                addOns.Add(new AddOn(project.Name, project.Settings, luaFiles, resources));
+            }
+            else
+            {
+                addOns.Add(new LuaAddOn(project.Name, project.GetProjectPath()));
+            }
+            
         }
 
         public static IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, IProviders nameProvider)

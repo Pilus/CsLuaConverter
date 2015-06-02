@@ -15,7 +15,7 @@
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             var first = true;
-            textWriter.Write("__GenericsList(");
+            textWriter.Write("CsLuaMeta.GenericsList(");
             foreach (var variableName in this.names)
             {
                 if (!first)
@@ -24,7 +24,7 @@
                 }
                 first = false;
 
-                textWriter.Write("__Generic(");
+                textWriter.Write("CsLuaMeta.Generic(");
                 if (variableName.IsGenerics(providers))
                 {
                     textWriter.Write("generics[genericsMapping[{0}]].name", variableName.GetTypeResult(providers).ToQuotedString());

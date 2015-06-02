@@ -11,7 +11,7 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("__Throw(");
+            textWriter.Write("CsLuaMeta.Throw(");
             this.innerCode.WriteLua(textWriter, providers);
             textWriter.WriteLine(");");
         }

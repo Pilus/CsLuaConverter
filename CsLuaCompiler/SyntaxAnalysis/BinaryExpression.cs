@@ -31,7 +31,7 @@
                     textWriter.Write(" = ");
                     break;
                 case "+":
-                    textWriter.Write(" +add+ ");
+                    textWriter.Write(" +CsLuaMeta.add+ ");
                     break;
                 case "is":
                     textWriter.Write(".__IsType('");
@@ -41,7 +41,7 @@
                 case "+=":
                     textWriter.Write(" = ");
                     this.PreviousElement.WriteLua(textWriter, providers);
-                    textWriter.Write(" +add+ ");
+                    textWriter.Write(" +CsLuaMeta.add+ ");
                     break;
                 case "-=":
                     textWriter.Write(" = ");

@@ -39,7 +39,7 @@
                     {
                         return new PredeterminedElement(token.Text);
                     }
-                    return new PredeterminedElement("__not+");
+                    return new PredeterminedElement("CsLuaMeta._not+");
                 }
             },
             {typeof(ElseClauseSyntax), token => new Else()},

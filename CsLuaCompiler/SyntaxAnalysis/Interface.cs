@@ -86,7 +86,7 @@
             foreach (var baselist in this.baseLists)
             {
                 var fullName = baselist.GetFullNameString(providers);
-                textWriter.Write("__GetByFullName({0})(", fullName);
+                textWriter.Write("CsLuaMeta.GetByFullName({0})(", fullName);
                 if (baselist.Name.Generics != null)
                 {
                     baselist.Name.Generics.WriteLua(textWriter, providers);

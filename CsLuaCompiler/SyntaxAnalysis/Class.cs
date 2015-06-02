@@ -56,7 +56,7 @@
                 new Constructors(this.IsStatic, this.IsSerializable(), this.constructors, this.name),
             };
 
-            textWriter.Write("{0} = __CreateClass(", this.name);
+            textWriter.Write("{0} = CsLuaMeta.CreateClass(", this.name);
             LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>
             {
                 {"name", this.name},
