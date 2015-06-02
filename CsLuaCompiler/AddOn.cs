@@ -6,19 +6,27 @@
 
     internal class AddOn : IDeployableAddOn
     {
-        private readonly List<CodeFile> luaFiles;
+        private readonly IList<CodeFile> luaFiles;
         private readonly string name;
-        private readonly Dictionary<string, object> settings;
+        private readonly IDictionary<string, object> settings;
         private readonly CodeFile tocFile;
         private readonly IEnumerable<ResourceFile> resourceFiles;
 
-        public AddOn(string name, Dictionary<string, object> settings, List<CodeFile> luaFiles, IEnumerable<ResourceFile> resourceFiles)
+        public AddOn(string name, Dictionary<string, object> settings, IList<CodeFile> luaFiles, IEnumerable<ResourceFile> resourceFiles)
         {
             this.name = name;
             this.settings = settings;
             this.luaFiles = luaFiles;
             this.resourceFiles = resourceFiles;
             this.tocFile = new CodeFile {FileName = this.name + ".toc", Content = this.GetTocFileContent()};
+        }
+
+        public string Name
+        {
+            get
+            {
+                return this.name;
+            }
         }
 
         public void DeployAddOn(string path)

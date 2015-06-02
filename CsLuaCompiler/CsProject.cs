@@ -89,7 +89,7 @@
                 .Where(name => !name.Contains("\\Reference Assemblies\\"));
         }
 
-        public IEnumerable<CodeFile> GetLuaFiles()
+        public IList<CodeFile> GetLuaFiles()
         {
             var files = new List<CodeFile>();
 
@@ -155,7 +155,7 @@
                 mainFile.Content = LuaHeader.GetHeader() + "\n" + mainFile.Content;
             }
 
-            return files.Where(file => file.Ignore != true);
+            return files.Where(file => file.Ignore != true).ToList();
         }
 
         private static Dictionary<string, NameSpace> GetNameSpaces(Project project)

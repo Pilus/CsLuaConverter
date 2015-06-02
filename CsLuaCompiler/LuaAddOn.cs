@@ -16,6 +16,13 @@
             this.addonPath = addonPath;
         }
 
+        public string Name
+        {
+            get
+            {
+                return this.addonName;
+            }
+        }
 
         public void DeployAddOn(string path)
         {

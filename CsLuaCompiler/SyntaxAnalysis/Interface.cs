@@ -233,11 +233,11 @@
                 else if (firstPartials[this.name] != this)
                 {
                     return firstPartials[this.name].Analyze(initialToken);
-                }                               
+                }
             }
             
 
-            token = token.GetNextToken();            
+            token = token.GetNextToken();
 
             if (token.Parent is TypeParameterListSyntax) // <
             {
