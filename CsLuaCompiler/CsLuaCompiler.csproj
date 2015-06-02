@@ -63,6 +63,8 @@
     <Compile Include="Providers\IProviders.cs" />
     <Compile Include="Providers\NameProvider\INameProvider.cs" />
     <Compile Include="Providers\NameProvider\NameProvider.cs" />
+    <Compile Include="Providers\PartialElementRegistry\IPartialElementRegistry.cs" />
+    <Compile Include="Providers\PartialElementRegistry\PartialElementRegistry.cs" />
     <Compile Include="Providers\ProviderException.cs" />
     <Compile Include="Providers\Providers.cs" />
     <Compile Include="Providers\TypeProvider\ITypeProvider.cs" />
@@ -106,6 +108,7 @@
     <Compile Include="SyntaxAnalysis\ILuaElement.cs" />
     <Compile Include="SyntaxAnalysis\Initializer.cs" />
     <Compile Include="SyntaxAnalysis\Interface.cs" />
+    <Compile Include="SyntaxAnalysis\IPartialLuaElement.cs" />
     <Compile Include="SyntaxAnalysis\LambdaExpression.cs" />
     <Compile Include="SyntaxAnalysis\LuaElementHelper.cs" />
     <Compile Include="SyntaxAnalysis\Lua\LuaHeader.cs" />

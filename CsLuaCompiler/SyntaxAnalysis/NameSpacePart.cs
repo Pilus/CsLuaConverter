@@ -25,11 +25,19 @@
 
         private void WriteLuaInner(IndentedTextWriter textWriter, IProviders providers)
         {
-            providers.TypeProvider.SetNamespaces(string.Join(".", this.FullName), this.usings);
+            var fullNamespaceName = string.Join(".", this.FullName);
+            providers.TypeProvider.SetNamespaces(fullNamespaceName, this.usings);
 
             foreach (ILuaElement element in this.elements)
             {
-                element.WriteLua(textWriter, providers);
+                if (element is IPartialLuaElement && ((IPartialLuaElement)element).IsPartial)
+                {
+                    providers.PartialElementRegistry.Register((IPartialLuaElement)element, fullNamespaceName, this.usings);
+                }
+                else
+                {
+                    element.WriteLua(textWriter, providers);
+                }
             }
         }
 

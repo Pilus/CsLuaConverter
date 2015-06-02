@@ -9,18 +9,19 @@
     using CsLuaCompiler.SyntaxAnalysis.ClassElements;
     using System.Linq;
 
-    internal class Interface : ILuaElement
+    internal class Interface : IPartialLuaElement
     {
         private static Dictionary<string, Interface> firstPartials = new Dictionary<string, Interface>();
 
-        private string name;
-        private bool isPartial;
         private List<BaseList> baseLists = new List<BaseList>();
         private List<InterfaceMethod> methods = new List<InterfaceMethod>();
         private List<InterfaceProperty> properties = new List<InterfaceProperty>();
         private GenericsDefinition generics;
         private List<Attribute> attributes;
         private VariableName indexerType;
+
+        public string Name { get; private set; }
+        public bool IsPartial { get; private set; }
 
         public Interface(List<Attribute> attributes)
         {
@@ -34,7 +35,7 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            if (this.isPartial && firstPartials[this.name] != this)
+            if (this.IsPartial && firstPartials[this.Name] != this)
             {
                 return;
             }
@@ -45,7 +46,7 @@
                 this.generics.AddToScope(providers);
             }
             
-            textWriter.WriteLine("{0} = function(generics)", this.name);
+            textWriter.WriteLine("{0} = function(generics)", this.Name);
             textWriter.Indent++;
 
             this.WriteGenericsMapping(textWriter, providers);
@@ -54,7 +55,7 @@
             textWriter.WriteLine("return {");
             textWriter.Indent++;
             textWriter.WriteLine("isInterface = true,");
-            textWriter.WriteLine("name = '{0}',", name);
+            textWriter.WriteLine("name = '{0}',", Name);
             textWriter.WriteLine("implementedInterfaces = implementedInterfaces,");
             if (this.HasAttribute("ProvideSelf"))
             {
@@ -110,7 +111,7 @@
             textWriter.WriteLine("interface.__AddImplementedSignatures(signatures);"); 
             textWriter.Indent--;
             textWriter.WriteLine("end"); 
-            textWriter.WriteLine("table.insert(signatures, {0})", providers.TypeProvider.LookupType(this.name).ToQuotedString());
+            textWriter.WriteLine("table.insert(signatures, {0})", providers.TypeProvider.LookupType(this.Name).ToQuotedString());
             textWriter.Indent--;
             textWriter.WriteLine("end,");
         }
@@ -211,7 +212,7 @@
 
             if (token.Text == "partial")
             {
-                this.isPartial = true;
+                this.IsPartial = true;
                 token = token.GetNextToken();
             }
 
@@ -222,17 +223,17 @@
             token = token.GetNextToken();
 
             LuaElementHelper.CheckType(typeof(InterfaceDeclarationSyntax), token.Parent);
-            this.name = token.Text;
+            this.Name = token.Text;
 
-            if (this.isPartial)
+            if (this.IsPartial)
             {
-                if (!firstPartials.ContainsKey(this.name))
+                if (!firstPartials.ContainsKey(this.Name))
                 {
-                    firstPartials.Add(this.name, this);
+                    firstPartials.Add(this.Name, this);
                 }
-                else if (firstPartials[this.name] != this)
+                else if (firstPartials[this.Name] != this)
                 {
-                    return firstPartials[this.name].Analyze(initialToken);
+                    return firstPartials[this.Name].Analyze(initialToken);
                 }
             }
             

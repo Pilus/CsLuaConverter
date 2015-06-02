@@ -1,6 +1,7 @@
 ﻿
 namespace CsLuaCompiler.Providers
 {
+    using PartialElementRegistry;
     using GenericsRegistry;
     using Microsoft.CodeAnalysis;
     using NameProvider;
@@ -11,12 +12,14 @@ namespace CsLuaCompiler.Providers
         private IGenericsRegistry genericsRegistry;
         private ITypeProvider typeProvider;
         private INameProvider nameProvider;
+        private IPartialElementRegistry partialElementRegistry;
 
         public Providers(Solution solution)
         {
             this.typeProvider = new TypeNameProvider(solution);
             this.genericsRegistry = new GenericsRegistry.GenericsRegistry();
             this.nameProvider = new NameProvider.NameProvider(this.typeProvider);
+            this.partialElementRegistry = new PartialElementRegistry.PartialElementRegistry();
         }
 
         public IGenericsRegistry GenericsRegistry
@@ -40,6 +43,14 @@ namespace CsLuaCompiler.Providers
             get
             {
                 return this.typeProvider;
+            }
+        }
+
+        public IPartialElementRegistry PartialElementRegistry
+        {
+            get
+            {
+                return this.partialElementRegistry;
             }
         }
     }

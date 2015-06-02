@@ -36,6 +36,8 @@
                 part.WriteLua(textWriter, providers);
             }
 
+            providers.PartialElementRegistry.WriteLua(textWriter, providers);
+
             foreach (var subPair in this.subNamespaces)
             {
                 subPair.Value.WriteLua(textWriter, providers);
