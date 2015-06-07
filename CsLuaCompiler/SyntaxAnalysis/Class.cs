@@ -49,6 +49,7 @@
 
             var elements = new List<ILuaElement>
             {
+                new Interfaces(this.baseLists.Skip(inheritsOtherClass ? 1 : 0).ToList(), this.generics),
                 new Variables(this.IsStatic, this.variables),
                 new Properties(this.IsStatic, this.properties),
                 new Methods(this.IsStatic, this.methods, this.name),
@@ -56,7 +57,7 @@
                 new Constructors(this.IsStatic, this.IsSerializable(), this.constructors, this.name),
             };
 
-            textWriter.Write("{0} = CsLuaMeta.CreateClass(", this.name);
+            textWriter.WriteLine("{0} = CsLuaMeta.CreateClass(", this.name);
             LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>
             {
                 {"name", this.name},
@@ -90,24 +91,52 @@
                             textWriter.Write("nil");
                         }
                     })
-                },
+                }, /*
                 {
-                    "implements", new Action(() => textWriter.Write("{{{0}}}",
+                    "interfaces", new Action(() => textWriter.Write("{{{0}}}",
                         string.Join(",", this.baseLists.Skip(inheritsOtherClass ? 1 : 0).Select(bl =>bl.GetFullNameString(providers)))))
-                },
+                }, //*/
                 {
                     "getElements", new Action(() =>
-                    {   
-                        textWriter.WriteLine("function(class, generics) return {");
+                    {
+                        textWriter.WriteLine("function(class, generics)");
+                        textWriter.Indent++;
+                        this.WriteGenericsMapping(textWriter, providers);
+                        textWriter.WriteLine("return {");
                         textWriter.Indent++;
                         elements.ForEach(e => e.WriteLua(textWriter, providers));
                         textWriter.Indent--;
-                        textWriter.Write("}; end");
+                        textWriter.WriteLine("};");
+                        textWriter.Indent--;
+                        textWriter.WriteLine("end");
                     })
                 },
-            }, "),", null);
+            }, null, null);
+
+            textWriter.Indent--;
+            textWriter.WriteLine("),");
 
             providers.NameProvider.SetScope(originalScope);
+        }
+
+        private void WriteGenericsMapping(IndentedTextWriter textWriter, IProviders providers)
+        {
+            var mapping = new Dictionary<string, object>();
+            textWriter.Write("local genericsMapping = ");
+
+            if (this.generics != null)
+            {
+                for (var i = 0; i < this.generics.Names.Count; i++)
+                {
+                    var name = this.generics.Names[i];
+                    mapping.Add(name, i + 1);
+                }
+                LuaFormatter.WriteDictionary(textWriter, mapping, ";", string.Empty);
+            }
+            else
+            {
+                textWriter.WriteLine("{};");
+            }
         }
 
 

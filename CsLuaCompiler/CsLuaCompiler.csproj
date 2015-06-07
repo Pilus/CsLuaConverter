@@ -88,6 +88,7 @@
     <Compile Include="SyntaxAnalysis\Class.cs" />
     <Compile Include="SyntaxAnalysis\ClassElements\Constructors.cs" />
     <Compile Include="SyntaxAnalysis\ClassElements\ElementType.cs" />
+    <Compile Include="SyntaxAnalysis\ClassElements\Interfaces.cs" />
     <Compile Include="SyntaxAnalysis\ClassElements\LuaFormatter.cs" />
     <Compile Include="SyntaxAnalysis\ClassElements\Methods.cs" />
     <Compile Include="SyntaxAnalysis\ClassElements\Properties.cs" />
@@ -146,9 +147,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SyntaxAnalysis\Lua\" />
-  </ItemGroup>
+  <ItemGroup />
   <ImportGroup Label="Targets">
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
