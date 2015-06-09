@@ -45,5 +45,15 @@
         {
             return this.Name.GetTypeResult(providers).ToQuotedString();
         }
+
+        public string GetFullName(IProviders providers)
+        {
+            return this.Name.GetTypeResult(providers).ToString();
+        }
+
+        public string GetName(IProviders providers)
+        {
+            return this.Name.GetTypeResult(providers).GetTypeObject().Name;
+        }
     }
 }

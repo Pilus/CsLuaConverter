@@ -130,11 +130,20 @@
             return token;
         }
 
+        public bool IsGeneric(IProviders providers)
+        {
+            return providers.GenericsRegistry.IsGeneric(this.type);
+        }
+
         public string GetFullTypeName(IProviders providers)
         {
             if (this.variable != null)
             {
                 throw new Exception("Unknown scenario");
+            }
+            else if (this.IsGeneric(providers))
+            {
+                throw new CompilerException("Cannot get full type name of generic.");
             }
 
             switch (this.type)
@@ -153,11 +162,6 @@
             if (this.isArray)
             {
                 return "Array<" + providers.TypeProvider.LookupType(this.type).ToString() + ">";
-            }
-
-            if (providers.GenericsRegistry.IsGeneric(this.type))
-            {
-                return this.type;
             }
 
             return providers.TypeProvider.LookupType(this.type).ToString();
@@ -182,6 +186,11 @@
 
         public string GetQuotedFullTypeString(IProviders providers)
         {
+            if (this.IsGeneric(providers))
+            {
+                return "generics[genericsMapping['" + this.type + "']].name";
+            }
+
             return '"' + this.GetFullTypeName(providers) + '"';
         }
 
@@ -191,7 +200,7 @@
             {
                 return null;
             }
-            return "{" + string.Join(",", this.generics.Select(t => t.GetQuotedFullTypeString(providers))) + "}";
+            return "{" + string.Join(",", this.generics.Select(t => "CsLuaMeta.Generic(" + t.GetQuotedFullTypeString(providers) + ")")) + "}";
         }
     }
 }

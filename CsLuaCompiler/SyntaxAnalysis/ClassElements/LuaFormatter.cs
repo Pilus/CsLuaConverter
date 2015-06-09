@@ -18,7 +18,7 @@
             {
                 textWriter.WriteLine("{");
                 textWriter.Indent++;
-                textWriter.WriteLine("types = {{{0}}},", method.GetParameters().FullTypesAsString(providers));
+                textWriter.WriteLine("types = {{{0}}},", method.GetParameters().FullTypesAsStringAndGenerics(providers));
                 textWriter.Write("func = ");
                 method.WriteLua(textWriter, providers);
                 textWriter.WriteLine(",");

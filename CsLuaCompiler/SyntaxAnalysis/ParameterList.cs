@@ -36,13 +36,8 @@
             return token;
         }
 
-        public string TypesAsString()
-        {
-            return string.Join(", ",
-                this.Parameters.Select(parameter => ((Parameter) parameter).Type.GetQuotedTypeString()));
-        }
 
-        public string FullTypesAsString(IProviders nameProvider)
+        public string FullTypesAsStringAndGenerics(IProviders nameProvider)
         {
             return string.Join(", ",
                 this.Parameters.Select(parameter => ((Parameter)parameter).Type.GetQuotedFullTypeString(nameProvider)));

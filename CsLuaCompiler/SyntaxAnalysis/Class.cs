@@ -113,7 +113,6 @@
                 },
             }, null, null);
 
-            textWriter.Indent--;
             textWriter.WriteLine("),");
 
             providers.NameProvider.SetScope(originalScope);
