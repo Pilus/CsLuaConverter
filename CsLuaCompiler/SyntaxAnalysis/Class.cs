@@ -58,6 +58,7 @@
             };
 
             textWriter.WriteLine("{0} = CsLuaMeta.CreateClass(", this.name);
+            textWriter.Indent++;
             LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>
             {
                 {"name", this.name},
@@ -113,6 +114,7 @@
                 },
             }, null, null);
 
+            textWriter.Indent--;
             textWriter.WriteLine("),");
 
             providers.NameProvider.SetScope(originalScope);
