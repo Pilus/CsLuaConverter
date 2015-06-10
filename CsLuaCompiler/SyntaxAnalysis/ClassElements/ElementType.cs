@@ -7,6 +7,7 @@
         Method,
         PropertyGet,
         PropertySet,
+        PropertyAuto,
         Constructor,
         Serialization,
     }

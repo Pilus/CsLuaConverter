@@ -32,7 +32,7 @@
             {
                 if (this.useDefaultGet)
                 {
-                    LuaFormatter.WriteClassElement(textWriter, ElementType.PropertyGet, this.Name, this.isStatic,
+                    LuaFormatter.WriteClassElement(textWriter, ElementType.PropertyAuto, this.Name, this.isStatic,
                         string.Format("CsLuaMeta.GetDefaultValue({0}, {1}, generics)", this.Type.GetQuotedFullTypeString(providers), this.Type.IsNullable ? "true" : "false"), this.className);
                 }
                 else
@@ -54,7 +54,7 @@
             {
                 if (this.useDefaultSet)
                 {
-                    LuaFormatter.WriteClassElement(textWriter, ElementType.PropertySet, this.Name, this.isStatic, "nil", this.className);
+                    //LuaFormatter.WriteClassElement(textWriter, ElementType.PropertySet, this.Name, this.isStatic, "nil", this.className);
                 }
                 else
                 {
