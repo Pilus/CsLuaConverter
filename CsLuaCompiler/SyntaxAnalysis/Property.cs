@@ -64,7 +64,7 @@
                         textWriter.Indent++;
                         List<ScopeElement> variableScope = providers.NameProvider.CloneScope();
                         providers.NameProvider.AddToScope(new ScopeElement("value"));
-                        this.getBlock.WriteLua(textWriter, providers);
+                        this.setBlock.WriteLua(textWriter, providers);
                         providers.NameProvider.SetScope(variableScope);
                         textWriter.Indent--;
                         textWriter.Write("end");
