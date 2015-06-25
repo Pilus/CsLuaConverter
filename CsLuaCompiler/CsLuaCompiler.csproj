@@ -147,7 +147,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\CsLuaAttributes\CsLuaAttributes.csproj">
+      <Project>{3ec1fd14-1402-4adc-bbd0-07cf30e3a654}</Project>
+      <Name>CsLuaAttributes</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ImportGroup Label="Targets">
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
