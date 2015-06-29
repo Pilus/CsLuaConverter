@@ -6,5 +6,6 @@
         CsLuaLibrary,
         LuaAddOn,
         LuaLibrary,
+        Ignored,
     }
 }

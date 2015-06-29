@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Reflection;
     using Microsoft.CodeAnalysis;
+    using CsLuaAttributes;
 
     public class TypeNameProvider : ITypeProvider
     {
@@ -37,6 +38,7 @@
             this.LoadType(typeof(Func<int>));
             this.LoadType(typeof(NotImplementedException));
             this.LoadType(typeof(Enum));
+            this.LoadType(typeof(ICsLuaAddOn));
         }
 
         private void LoadSolution(Solution solution)
@@ -67,7 +69,7 @@
 
             if (nameParts.Length < 2)
             {
-                throw new ProviderException(string.Format("Type name does not have any namespace: {0}", type.FullName));
+                return;
             }
 
             LoadedNamespace currentNamespace = null;

@@ -11,6 +11,7 @@
     {
         public static bool IsAddOn(this CsProject project)
         {
+            if (project == null) return false;
             return project.ProjectType.Equals(ProjectType.CsLuaAddOn) || project.ProjectType.Equals(ProjectType.LuaAddOn);
         }
 

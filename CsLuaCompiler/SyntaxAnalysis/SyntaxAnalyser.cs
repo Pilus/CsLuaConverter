@@ -13,7 +13,7 @@
     {
         private bool debugOutputFolderExists;
         private SyntaxToken token;
-
+        private readonly List<string> usings = new List<string>();
 
         public SyntaxAnalyser()
         {
@@ -81,10 +81,10 @@
                 switch (this.token.Parent.GetType().Name)
                 {
                     case "UsingDirectiveSyntax":
-                        this.token = this.IgnoreUsingDirective(this.token);
+                        this.token = this.AnalyzeUsingDirective(this.token);
                         break;
                     case "NamespaceDeclarationSyntax":
-                        var ns = new NameSpacePart(document.Name);
+                        var ns = new NameSpacePart(document.Name, this.usings);
                         this.token = ns.Analyze(this.token);
                         return ns;
                     case "CompilationUnitSyntax":
@@ -102,22 +102,42 @@
             throw new Exception("No namespace found in file.");
         }
 
-        private SyntaxToken IgnoreUsingDirective(SyntaxToken token)
+        private SyntaxToken AnalyzeUsingDirective(SyntaxToken token)
         {
-            this.CheckType(typeof(UsingDirectiveSyntax), token.Parent); // using
+            LuaElementHelper.CheckType(typeof(UsingDirectiveSyntax), token.Parent); // using
             token = token.GetNextToken();
-            this.CheckType(typeof(IdentifierNameSyntax), token.Parent); // x
+            LuaElementHelper.CheckType(typeof(IdentifierNameSyntax), token.Parent); // x
+            string name = token.Text;
 
-            while (token.GetNextToken().Parent.GetType().Equals(typeof(QualifiedNameSyntax)))
+            while (token.GetNextToken().Parent is QualifiedNameSyntax)
             {
                 token = token.GetNextToken();
-                this.CheckType(typeof(QualifiedNameSyntax), token.Parent); // .
+                LuaElementHelper.CheckType(typeof(QualifiedNameSyntax), token.Parent); // .
+                name += token.Text;
+
                 token = token.GetNextToken();
-                this.CheckType(typeof(IdentifierNameSyntax), token.Parent); // x                              
+                LuaElementHelper.CheckType(typeof(IdentifierNameSyntax), token.Parent); // x  
+                name += token.Text;
             }
+            this.usings.Add(name);
 
             token = token.GetNextToken();
-            this.CheckType(typeof(UsingDirectiveSyntax), token.Parent); // ;
+            if (token.Parent is NameEqualsSyntax) // = 
+            {
+                token = token.GetNextToken();
+                LuaElementHelper.CheckType(typeof(IdentifierNameSyntax), token.Parent); // x
+
+                while (token.GetNextToken().Parent is QualifiedNameSyntax)
+                {
+                    token = token.GetNextToken();
+                    LuaElementHelper.CheckType(typeof(QualifiedNameSyntax), token.Parent); // .
+                    token = token.GetNextToken();
+                    LuaElementHelper.CheckType(typeof(IdentifierNameSyntax), token.Parent);
+                    // x                              
+                }
+                token = token.GetNextToken();
+            }
+            LuaElementHelper.CheckType(typeof(UsingDirectiveSyntax), token.Parent); // ;
 
             return token;
         }

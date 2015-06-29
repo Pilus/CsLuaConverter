@@ -12,15 +12,16 @@
     internal class NameSpacePart : ILuaElement
     {
         private readonly List<ILuaElement> elements = new List<ILuaElement>();
-        private readonly List<string> usings = new List<string>();
+        private readonly List<string> usings;
         public List<string> FullName = new List<string>();
         public string Name;
         private List<Attribute> currentAttributes = new List<Attribute>();
         private string fileName;
 
-        public NameSpacePart(string fileName)
+        public NameSpacePart(string fileName, List<string> usings)
         {
             this.fileName = fileName;
+            this.usings = usings;
         }
 
         private void WriteLuaInner(IndentedTextWriter textWriter, IProviders providers)
