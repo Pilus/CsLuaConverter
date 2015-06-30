@@ -55,6 +55,7 @@
                     throw new WrappingException(string.Format("In project: {0}.", project.Name), ex);
                 }
             }
+            return null;
         }
 
         // TODO: Move this

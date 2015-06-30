@@ -52,10 +52,10 @@
                 return ProjectType.CsLuaAddOn;
             }
 
-            var fileInfo = new FileInfo(this.GetProjectPath() + "\\" + project.Name + ".toc");
+            var fileInfo = new FileInfo(projectPath + "\\" + project.Name + ".toc");
             if (fileInfo.Exists) return ProjectType.LuaAddOn;
 
-            var dir = new DirectoryInfo(this.GetProjectPath());
+            var dir = new DirectoryInfo(projectPath);
             return dir.GetFiles("*.lua", SearchOption.AllDirectories).Length > 0 ? ProjectType.LuaLibrary : ProjectType.Ignored;
         }
 
