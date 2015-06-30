@@ -1,12 +1,13 @@
 ﻿namespace CsLuaCompiler.Providers.TypeProvider
 {
+    using CsLuaAttributes;
+    using Microsoft.CodeAnalysis;
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Microsoft.CodeAnalysis;
-    using CsLuaAttributes;
 
     public class TypeNameProvider : ITypeProvider
     {
@@ -36,9 +37,14 @@
         {
             this.LoadType(typeof(Action));
             this.LoadType(typeof(Func<int>));
+            this.LoadType(typeof(Exception));
             this.LoadType(typeof(NotImplementedException));
             this.LoadType(typeof(Enum));
             this.LoadType(typeof(ICsLuaAddOn));
+            this.LoadType(typeof(IDictionary));
+            this.LoadType(typeof(IDictionary<object, object>));
+            this.LoadType(typeof(IList));
+            this.LoadType(typeof(IList<object>));
         }
 
         private void LoadSolution(Solution solution)

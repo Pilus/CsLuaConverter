@@ -107,6 +107,7 @@
                         break;
                     case ProjectType.LuaLibrary:
                     case ProjectType.CsLuaLibrary:
+                    case ProjectType.Ignored:
                         break;
                     default:
                         throw new System.Exception("Unknown project type.");
