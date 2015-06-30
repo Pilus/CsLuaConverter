@@ -6,33 +6,34 @@
     using System.Xml;
     using CsLuaCompiler.Providers;
     using Microsoft.CodeAnalysis;
+    using SolutionAnalysis;
+    using ProjectInfo = SolutionAnalysis.ProjectInfo;
 
     internal static class SolutionHandler
     {
-        private static bool IsAddOn(this CsProject project)
-        {
-            if (project == null) return false;
-            return project.ProjectType.Equals(ProjectType.CsLuaAddOn) || project.ProjectType.Equals(ProjectType.LuaAddOn);
-        }
 
-        private static CsProject GetProjectByName(this IEnumerable<CsProject> projects, string name)
+        private static ProjectInfo GetProjectByName(this IEnumerable<ProjectInfo> projects, string name)
         {
             return projects.FirstOrDefault(project => project.Name.Equals(name));
         }
 
-        private static IEnumerable<CsProject> GetRootProjects(IEnumerable<CsProject> projects)
+        private static IEnumerable<ProjectInfo> GetRootProjects(IEnumerable<ProjectInfo> projects)
         {
             return projects.Where(project =>
-                IsAddOn(project) &&
-                !project.GetReferences().Any(referenceName => IsAddOn(GetProjectByName(projects, referenceName))));
+                project.IsAddOn() &&
+                !project.ReferencedProjects.Any(referenceName =>
+                {
+                    var p = GetProjectByName(projects, referenceName);
+                    return p != null && p.IsAddOn();
+                }));
         }
 
-        private static IList<CsProject> GetReferenders(this CsProject project, IEnumerable<CsProject> projects)
+        private static IList<ProjectInfo> GetReferenders(this ProjectInfo project, IEnumerable<ProjectInfo> projects)
         {
-            return projects.Where(p => p.GetReferences().Contains(project.Name)).ToList();
+            return projects.Where(p => p.ReferencedProjects.Contains(project.Name)).ToList();
         }
 
-        private static void AddAddOnAndReferencesToList(CsProject project, IList<CsProject> nonDeployedProjects, IList<IDeployableAddOn> addOns, List<CodeFile> additionalFiles, IProviders providers)
+        private static void AddAddOnAndReferencesToList(ProjectInfo project, IList<ProjectInfo> nonDeployedProjects, IList<IDeployableAddOn> addOns, List<CodeFile> additionalFiles, IProviders providers)
         {
             if (!project.IsAddOn())
             {
@@ -50,7 +51,7 @@
             var luaFiles = additionalFiles ?? new List<CodeFile>();
             
 
-            foreach (var refName in project.GetReferences())
+            foreach (var refName in project.ReferencedProjects)
             {
                 var refProject = nonDeployedProjects.GetProjectByName(refName);
                 if (refProject == null)
@@ -61,11 +62,11 @@
                 switch (refProject.ProjectType)
                 {
                     case ProjectType.CsLuaLibrary:
-                        luaFiles.AddRange(LuaFileWriter.GetLuaFiles(CsProject.GetStructuredSyntaxTree(refProject.ProjectType, refProject.CodeProject), providers, refProject.Name, refProject.RequiresCsLuaMetaHeader(), refProject.GetProjectPath()));
+                        luaFiles.AddRange(LuaFileWriter.GetLuaFiles(CsProject.GetStructuredSyntaxTree(refProject.ProjectType, refProject.Project), providers, refProject.Name, refProject.RequiresCsLuaMetaHeader, refProject.ProjectPath));
                         AddXmlToCodeFiles(refProject, luaFiles);
                         break;
                     case ProjectType.LuaLibrary:
-                        luaFiles.AddRange(LuaFileWriter.GetLuaFiles(CsProject.GetStructuredSyntaxTree(refProject.ProjectType, refProject.CodeProject), providers, refProject.Name, refProject.RequiresCsLuaMetaHeader(), refProject.GetProjectPath()));
+                        luaFiles.AddRange(LuaFileWriter.GetLuaFiles(CsProject.GetStructuredSyntaxTree(refProject.ProjectType, refProject.Project), providers, refProject.Name, refProject.RequiresCsLuaMetaHeader, refProject.ProjectPath));
                         AddXmlToCodeFiles(refProject, luaFiles);
                         break;
                     default:
@@ -75,9 +76,9 @@
                 nonDeployedProjects.Remove(refProject);
             }
 
-            luaFiles.AddRange(LuaFileWriter.GetLuaFiles(CsProject.GetStructuredSyntaxTree(project.ProjectType, project.CodeProject), providers, project.Name, project.RequiresCsLuaMetaHeader(), project.GetProjectPath()));
+            luaFiles.AddRange(LuaFileWriter.GetLuaFiles(CsProject.GetStructuredSyntaxTree(project.ProjectType, project.Project), providers, project.Name, project.RequiresCsLuaMetaHeader, project.ProjectPath));
             AddXmlToCodeFiles(project, luaFiles);
-            var resources = GetResourceFiles(project.CodeProject);
+            var resources = GetResourceFiles(project.Project);
 
             foreach (var referender in project.GetReferenders(nonDeployedProjects))
             {
@@ -89,7 +90,7 @@
                     case ProjectType.LuaAddOn:
                         if (!addOns.Any(addon => addon.Name.Equals(referender.Name)))
                         {
-                            addOns.Add(new LuaAddOn(referender.Name, referender.GetProjectPath()));
+                            addOns.Add(new LuaAddOn(referender.Name, referender.ProjectPath));
                         }
 
                         break;
@@ -108,22 +109,22 @@
             }
             else
             {
-                addOns.Add(new LuaAddOn(project.Name, project.GetProjectPath()));
+                addOns.Add(new LuaAddOn(project.Name, project.ProjectPath));
             }
             
         }
 
         public static IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, IProviders providers)
         {
-            List<CsProject> csProjects =
-                solution.Projects.Select(project => new CsProject(project)).ToList();
+            var csProjects =
+                solution.Projects.Select(project => ProjectAnalyser.AnalyzeProject(project)).ToList();
 
             var addOns = new List<IDeployableAddOn>();
 
             var rootAddOnProjects = GetRootProjects(csProjects);
-            foreach (var rootProject in rootAddOnProjects)
+            foreach (var rootProject in rootAddOnProjects.ToList())
             {
-                AddAddOnAndReferencesToList(rootProject, csProjects.ToList(), addOns, new List<CodeFile>() { CsLuaMetaReader.GetMetaFile() }, providers);
+                AddAddOnAndReferencesToList(rootProject, csProjects, addOns, new List<CodeFile>() { CsLuaMetaReader.GetMetaFile() }, providers);
             }
 
             return addOns;
@@ -147,9 +148,9 @@
                 .ToList();
         }
 
-        private static void AddXmlToCodeFiles(CsProject project, IList<CodeFile> codeFiles)
+        private static void AddXmlToCodeFiles(ProjectInfo project, IList<CodeFile> codeFiles)
         {
-            var projectDir = new FileInfo(project.CodeProject.FilePath).Directory;
+            var projectDir = new FileInfo(project.Project.FilePath).Directory;
             var xmlFiles = projectDir.GetFiles("*.xml", SearchOption.AllDirectories)
                 .Where(info => !info.FullName.StartsWith(projectDir.FullName + "\\bin\\"))
                 .Where(info => !info.FullName.StartsWith(projectDir.FullName + "\\obj\\"));

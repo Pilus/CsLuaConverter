@@ -22,7 +22,7 @@
             {
                 Name = project.Name,
                 Project = project,
-                ProjectType = DetermineProjectType(project, assembly, csLuaAddOnAttribute, projectPath),
+                ProjectType = DetermineProjectType(project.Name, assembly, csLuaAddOnAttribute, projectPath),
                 RequiresCsLuaMetaHeader = RequiresCsLuaMetaHeader(assembly),
                 CsLuaAddOnAttribute = csLuaAddOnAttribute,
                 ProjectPath = projectPath,
@@ -36,23 +36,19 @@
                 .Select(t => System.Attribute.GetCustomAttribute(t, typeof(CsLuaAddOnAttribute)) as CsLuaAddOnAttribute).FirstOrDefault(att => att != null);
         }
 
-        private static ProjectType DetermineProjectType(Project project, Assembly assembly, CsLuaAddOnAttribute csLuaAddOnAttribute, string projectPath)
+        private static ProjectType DetermineProjectType(string projectName, Assembly assembly, CsLuaAddOnAttribute csLuaAddOnAttribute, string projectPath)
         {
-            
-            var customAttributes = assembly.CustomAttributes
-                .Where(att => att.AttributeType.Namespace.Equals("CsLuaAttributes")).ToList();
-            if (customAttributes.Any(att => att.AttributeType == typeof(CsLuaLibraryAttribute)))
+            if (assembly.CustomAttributes.Any(att => att.AttributeType == typeof(CsLuaLibraryAttribute)))
             {
                 return ProjectType.CsLuaLibrary;
             }
-
 
             if (csLuaAddOnAttribute != null)
             {
                 return ProjectType.CsLuaAddOn;
             }
 
-            var fileInfo = new FileInfo(projectPath + "\\" + project.Name + ".toc");
+            var fileInfo = new FileInfo(projectPath + "\\" + projectName + ".toc");
             if (fileInfo.Exists) return ProjectType.LuaAddOn;
 
             var dir = new DirectoryInfo(projectPath);

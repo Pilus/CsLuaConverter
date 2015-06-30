@@ -14,5 +14,10 @@
         public string ProjectPath { get; set; }
         public bool RequiresCsLuaMetaHeader { get; set; }
         public IList<string> ReferencedProjects {get; set; }
+
+        public bool IsAddOn()
+        {
+            return this.ProjectType == ProjectType.CsLuaAddOn || this.ProjectType == ProjectType.LuaAddOn;
+        }
     }
 }
