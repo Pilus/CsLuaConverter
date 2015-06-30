@@ -9,38 +9,30 @@
 
     internal static class SolutionHandler
     {
-        public static bool IsAddOn(this CsProject project)
+        private static bool IsAddOn(this CsProject project)
         {
             if (project == null) return false;
             return project.ProjectType.Equals(ProjectType.CsLuaAddOn) || project.ProjectType.Equals(ProjectType.LuaAddOn);
         }
 
-        public static CsProject GetProjectByName(this IEnumerable<CsProject> projects, string name)
+        private static CsProject GetProjectByName(this IEnumerable<CsProject> projects, string name)
         {
             return projects.FirstOrDefault(project => project.Name.Equals(name));
         }
 
-        public static IEnumerable<CsProject> GetRootProjects(IEnumerable<CsProject> projects)
+        private static IEnumerable<CsProject> GetRootProjects(IEnumerable<CsProject> projects)
         {
             return projects.Where(project =>
                 IsAddOn(project) &&
                 !project.GetReferences().Any(referenceName => IsAddOn(GetProjectByName(projects, referenceName))));
         }
 
-        public static void AddRange<T>(this IList<T> list, IList<T> range)
-        {
-            foreach (var item in range)
-            {
-                list.Add(item);
-            }
-        }
-
-        public static IList<CsProject> GetReferenders(this CsProject project, IEnumerable<CsProject> projects)
+        private static IList<CsProject> GetReferenders(this CsProject project, IEnumerable<CsProject> projects)
         {
             return projects.Where(p => p.GetReferences().Contains(project.Name)).ToList();
         }
 
-        public static void AddAddOnAndReferencesToList(CsProject project, IList<CsProject> nonDeployedProjects, IList<IDeployableAddOn> addOns, List<CodeFile> additionalFiles)
+        private static void AddAddOnAndReferencesToList(CsProject project, IList<CsProject> nonDeployedProjects, IList<IDeployableAddOn> addOns, List<CodeFile> additionalFiles, IProviders providers)
         {
             if (!project.IsAddOn())
             {
@@ -58,10 +50,6 @@
             var luaFiles = additionalFiles ?? new List<CodeFile>();
             
 
-            IEnumerable<CsProject> refProjects = project.GetReferences()
-                .Select(name => nonDeployedProjects.GetProjectByName(name))
-                .Where(proj => proj != null);
-
             foreach (var refName in project.GetReferences())
             {
                 var refProject = nonDeployedProjects.GetProjectByName(refName);
@@ -73,11 +61,11 @@
                 switch (refProject.ProjectType)
                 {
                     case ProjectType.CsLuaLibrary:
-                        luaFiles.AddRange(refProject.GetLuaFiles());
+                        luaFiles.AddRange(LuaFileWriter.GetLuaFiles(CsProject.GetStructuredSyntaxTree(refProject.ProjectType, refProject.CodeProject), providers, refProject.Name, refProject.RequiresCsLuaMetaHeader(), refProject.GetProjectPath()));
                         AddXmlToCodeFiles(refProject, luaFiles);
                         break;
                     case ProjectType.LuaLibrary:
-                        luaFiles.AddRange(refProject.GetLuaFiles());
+                        luaFiles.AddRange(LuaFileWriter.GetLuaFiles(CsProject.GetStructuredSyntaxTree(refProject.ProjectType, refProject.CodeProject), providers, refProject.Name, refProject.RequiresCsLuaMetaHeader(), refProject.GetProjectPath()));
                         AddXmlToCodeFiles(refProject, luaFiles);
                         break;
                     default:
@@ -87,7 +75,7 @@
                 nonDeployedProjects.Remove(refProject);
             }
 
-            luaFiles.AddRange(project.GetLuaFiles());
+            luaFiles.AddRange(LuaFileWriter.GetLuaFiles(CsProject.GetStructuredSyntaxTree(project.ProjectType, project.CodeProject), providers, project.Name, project.RequiresCsLuaMetaHeader(), project.GetProjectPath()));
             AddXmlToCodeFiles(project, luaFiles);
             var resources = GetResourceFiles(project.CodeProject);
 
@@ -96,7 +84,7 @@
                 switch (referender.ProjectType)
                 {
                     case ProjectType.CsLuaAddOn:
-                        AddAddOnAndReferencesToList(referender, nonDeployedProjects, addOns, null);
+                        AddAddOnAndReferencesToList(referender, nonDeployedProjects, addOns, null, providers);
                         break;
                     case ProjectType.LuaAddOn:
                         if (!addOns.Any(addon => addon.Name.Equals(referender.Name)))
@@ -116,7 +104,7 @@
 
             if (project.ProjectType.Equals(ProjectType.CsLuaAddOn))
             {
-                addOns.Add(new AddOn(project.Name, project.Settings, luaFiles, resources));
+                addOns.Add(new AddOn(luaFiles, resources, project.CsLuaAddOnAttribute));
             }
             else
             {
@@ -125,17 +113,17 @@
             
         }
 
-        public static IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, IProviders nameProvider)
+        public static IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, IProviders providers)
         {
             List<CsProject> csProjects =
-                solution.Projects.Select(project => new CsProject(nameProvider, project)).ToList();
+                solution.Projects.Select(project => new CsProject(project)).ToList();
 
             var addOns = new List<IDeployableAddOn>();
 
             var rootAddOnProjects = GetRootProjects(csProjects);
             foreach (var rootProject in rootAddOnProjects)
             {
-                AddAddOnAndReferencesToList(rootProject, csProjects.ToList(), addOns, new List<CodeFile>() { CsLuaMetaReader.GetMetaFile() });
+                AddAddOnAndReferencesToList(rootProject, csProjects.ToList(), addOns, new List<CodeFile>() { CsLuaMetaReader.GetMetaFile() }, providers);
             }
 
             return addOns;
@@ -202,14 +190,6 @@
                 Content = xmlContent,
                 FileName = project.Name + ".xml"
             });
-        }
-
-        public static void DeployAddOns(string path, IEnumerable<IDeployableAddOn> addOns)
-        {
-            foreach (var addon in addOns)
-            {
-                addon.DeployAddOn(path);
-            }
         }
     }
 }
