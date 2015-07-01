@@ -1,4 +1,4 @@
-﻿namespace CsLuaCompiler.SolutionAnalysis
+﻿namespace CsLuaCompiler.ProjectAnalysis
 {
     using System;
     using System.Collections.Generic;

@@ -17,7 +17,73 @@
 
         public SyntaxAnalyser()
         {
-            this.debugOutputFolderExists = new DirectoryInfo("DebugOutput").Exists;
+            var debugOutput = new DirectoryInfo("DebugOutput");
+            this.debugOutputFolderExists = debugOutput.Exists;
+            if (debugOutput.Exists)
+            {
+                foreach (FileInfo file in debugOutput.GetFiles())
+                {
+                    try
+                    {
+                        file.Delete();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+            }
+        }
+
+        public AnalyzedProjectInfo AnalyzeProject(ProjectAnalysis.ProjectInfo projectInfo)
+        {
+            return new AnalyzedProjectInfo()
+            {
+                Info = projectInfo,
+                Namespaces = projectInfo.IsCsLua() ? this.GetNamespaces(projectInfo.Project) : null,
+            };
+        }
+
+        public Dictionary<string, NameSpace> GetNamespaces(Project project)
+        {
+            if (Debugger.IsAttached)
+            {
+                return this.GetNamespacesFromProject(project);
+            }
+
+            try
+            {
+                return this.GetNamespacesFromProject(project);
+            }
+            catch (Exception ex)
+            {
+
+                throw new WrappingException(string.Format("In project: {0}.", project.Name), ex);
+            }
+        }
+
+
+        private Dictionary<string, NameSpace> GetNamespacesFromProject(Project project)
+        {
+            IEnumerable<Document> docs = project.Documents
+                .Where(doc => doc.Folders.FirstOrDefault() != "Properties"
+                              && !doc.FilePath.EndsWith("AssemblyAttributes.cs")
+                );
+
+            var nameSpaces = new Dictionary<string, NameSpace>();
+            foreach (Document document in docs)
+            {
+                NameSpacePart nameSpacePart = this.AnalyseDocument(document);
+                if (nameSpaces.ContainsKey(nameSpacePart.FullName.First()))
+                {
+                    nameSpaces[nameSpacePart.FullName.First()].AddPart(nameSpacePart);
+                }
+                else
+                {
+                    nameSpaces[nameSpacePart.FullName.First()] = new NameSpace(nameSpacePart, 1);
+                }
+            }
+            return nameSpaces;
         }
 
         public NameSpacePart AnalyseDocument(Document document)

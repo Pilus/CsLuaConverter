@@ -1,4 +1,4 @@
-﻿namespace CsLuaCompiler.SolutionAnalysis
+﻿namespace CsLuaCompiler.ProjectAnalysis
 {
     using System.Collections.Generic;
     using CsLuaAttributes;
@@ -18,6 +18,11 @@
         public bool IsAddOn()
         {
             return this.ProjectType == ProjectType.CsLuaAddOn || this.ProjectType == ProjectType.LuaAddOn;
+        }
+
+        public bool IsCsLua()
+        {
+            return this.ProjectType == ProjectType.CsLuaAddOn || this.ProjectType == ProjectType.CsLuaLibrary;
         }
     }
 }

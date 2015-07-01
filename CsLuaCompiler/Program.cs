@@ -39,22 +39,6 @@
 
         private static void Convert(string solutionPath, string wowPath)
         {
-            var debugOutput = new DirectoryInfo("DebugOutput");
-            if (debugOutput.Exists)
-            {
-                foreach (FileInfo file in debugOutput.GetFiles())
-                {
-                    try
-                    {
-                        file.Delete();
-                    }
-                    catch (Exception)
-                    {
-                        
-                    }
-                }
-            }
-
             var solution = GetSolution(solutionPath);
             var providers = new Providers.Providers(solution);
             var addOns = SolutionHandler.GenerateAddOnsFromSolution(solution, providers);

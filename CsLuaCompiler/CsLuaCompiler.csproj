@@ -77,9 +77,10 @@
     <Compile Include="Providers\TypeProvider\TypeNameProvider.cs" />
     <Compile Include="Providers\TypeProvider\TypeResult.cs" />
     <Compile Include="Deployment\ResourceFile.cs" />
-    <Compile Include="SolutionAnalysis\ProjectAnalyser.cs" />
-    <Compile Include="SolutionAnalysis\ProjectInfo.cs" />
+    <Compile Include="ProjectAnalysis\ProjectAnalyser.cs" />
+    <Compile Include="ProjectAnalysis\ProjectInfo.cs" />
     <Compile Include="SolutionHandler.cs" />
+    <Compile Include="SyntaxAnalysis\AnalyzedProjectInfo.cs" />
     <Compile Include="SyntaxAnalysis\BaseList.cs" />
     <Compile Include="SyntaxAnalysis\BracketedArgumentList.cs" />
     <Compile Include="SyntaxAnalysis\ArgumentList.cs" />

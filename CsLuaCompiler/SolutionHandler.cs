@@ -6,8 +6,9 @@
     using System.Xml;
     using CsLuaCompiler.Providers;
     using Microsoft.CodeAnalysis;
-    using SolutionAnalysis;
-    using ProjectInfo = SolutionAnalysis.ProjectInfo;
+    using ProjectAnalysis;
+    using ProjectInfo = ProjectAnalysis.ProjectInfo;
+    using CsLuaCompiler.SyntaxAnalysis;
 
     internal static class SolutionHandler
     {
@@ -116,15 +117,21 @@
 
         public static IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, IProviders providers)
         {
-            var csProjects =
-                solution.Projects.Select(project => ProjectAnalyser.AnalyzeProject(project)).ToList();
+            var projects = solution.Projects.Select(project => ProjectAnalyser.AnalyzeProject(project))
+                .Where(project => !project.ProjectType.Equals(ProjectType.Ignored))
+                .ToList();
+
+            var syntaxAnalyser = new SyntaxAnalyser();
+            var analyzedProjects = projects.Select(project => syntaxAnalyser.AnalyzeProject(project));
+
+
 
             var addOns = new List<IDeployableAddOn>();
 
-            var rootAddOnProjects = GetRootProjects(csProjects);
+            var rootAddOnProjects = GetRootProjects(projects);
             foreach (var rootProject in rootAddOnProjects.ToList())
             {
-                AddAddOnAndReferencesToList(rootProject, csProjects, addOns, new List<CodeFile>() { CsLuaMetaReader.GetMetaFile() }, providers);
+                AddAddOnAndReferencesToList(rootProject, projects, addOns, new List<CodeFile>() { CsLuaMetaReader.GetMetaFile() }, providers);
             }
 
             return addOns;
