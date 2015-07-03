@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Deployment\AddOn.cs" />
+    <Compile Include="Deployment\AddOnStructurer.cs" />
     <Compile Include="Deployment\CodeFile.cs" />
     <Compile Include="CompilerException.cs" />
     <Compile Include="CsProject.cs" />
@@ -79,6 +80,9 @@
     <Compile Include="Deployment\ResourceFile.cs" />
     <Compile Include="ProjectAnalysis\ProjectAnalyser.cs" />
     <Compile Include="ProjectAnalysis\ProjectInfo.cs" />
+    <Compile Include="ReferenceAnalysis\HostGraphNodeType.cs" />
+    <Compile Include="ReferenceAnalysis\HostGraphNode.cs" />
+    <Compile Include="ReferenceAnalysis\ReferenceAnalyzer.cs" />
     <Compile Include="SolutionHandler.cs" />
     <Compile Include="SyntaxAnalysis\AnalyzedProjectInfo.cs" />
     <Compile Include="SyntaxAnalysis\BaseList.cs" />

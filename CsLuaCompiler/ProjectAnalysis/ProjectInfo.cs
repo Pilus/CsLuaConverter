@@ -24,5 +24,11 @@
         {
             return this.ProjectType == ProjectType.CsLuaAddOn || this.ProjectType == ProjectType.CsLuaLibrary;
         }
+
+        public bool IsLibrary()
+        {
+            return this.ProjectType == ProjectType.CsLuaLibrary || this.ProjectType == ProjectType.LuaLibrary;
+        }
+
     }
 }
