@@ -1,5 +1,5 @@
 ﻿
-namespace CsLuaCompiler
+namespace CsLuaCompiler.AddOnConstruction
 {
     using System.IO;
 

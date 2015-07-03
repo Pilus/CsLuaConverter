@@ -21,7 +21,7 @@
         public NameSpacePart(string fileName, List<string> usings)
         {
             this.fileName = fileName;
-            this.usings = usings;
+            this.usings = usings.ToList();
         }
 
         private void WriteLuaInner(IndentedTextWriter textWriter, IProviders providers)

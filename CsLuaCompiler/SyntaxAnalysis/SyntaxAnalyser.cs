@@ -142,6 +142,7 @@
 
         private NameSpacePart AnalyseDocumentContent(Document document)
         {
+            this.usings.Clear();
             while (this.token != null && this.token.Parent != null)
             {
                 switch (this.token.Parent.GetType().Name)

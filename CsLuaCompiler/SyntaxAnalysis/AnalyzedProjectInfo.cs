@@ -7,11 +7,16 @@ namespace CsLuaCompiler.SyntaxAnalysis
 
     class AnalyzedProjectInfo
     {
+        public AnalyzedProjectInfo()
+        {
+            this.HostOf = new List<AnalyzedProjectInfo>();
+        }
+
         public ProjectInfo Info { get; set; }
         public Dictionary<string, NameSpace> Namespaces { get; set; }
         public List<AnalyzedProjectInfo> Referenders { get; private set; }
         public List<AnalyzedProjectInfo> RequiredAddOns { get; private set; }
-        public List<AnalyzedProjectInfo> Hosts { get; set; }
+        public List<AnalyzedProjectInfo> HostOf { get; private set; }
 
         public void PopulateReferences(List<AnalyzedProjectInfo> projects)
         {
@@ -25,6 +30,11 @@ namespace CsLuaCompiler.SyntaxAnalysis
                     .Where(project => project != null)
                     .ToList();
             }
+        }
+
+        public void SetHosts(List<AnalyzedProjectInfo> hosts)
+        {
+            hosts.ForEach(host => host.HostOf.Add(this));
         }
     }
 }

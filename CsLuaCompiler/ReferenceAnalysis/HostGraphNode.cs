@@ -1,6 +1,7 @@
 ﻿
 namespace CsLuaCompiler.ReferenceAnalysis
 {
+    using System.Collections.Generic;
     using CsLuaCompiler.SyntaxAnalysis;
 
     class HostGraphNode
@@ -9,11 +10,13 @@ namespace CsLuaCompiler.ReferenceAnalysis
         {
             this.ProjectInfo = projectInfo;
             this.Type = projectInfo.Info.IsAddOn() ? HostGraphNodeType.AddOn : HostGraphNodeType.Library;
+            this.Children = new List<HostGraphNode>();
+            this.Parents = new List<HostGraphNode>();
         }
 
         public AnalyzedProjectInfo ProjectInfo { get; private set; }
-        public HostGraphNode[] Children { get; set; }
-        public HostGraphNode[] Parents { get; set; }
+        public List<HostGraphNode> Children { get; set; }
+        public List<HostGraphNode> Parents { get; set; }
         public HostGraphNodeType Type { get; private set; }
     }
 }

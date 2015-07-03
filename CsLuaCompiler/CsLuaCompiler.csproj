@@ -51,13 +51,13 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Deployment\AddOn.cs" />
-    <Compile Include="Deployment\AddOnStructurer.cs" />
-    <Compile Include="Deployment\CodeFile.cs" />
+    <Compile Include="AddOnConstruction\AddOn.cs" />
+    <Compile Include="AddOnConstruction\AddOnConstructor.cs" />
+    <Compile Include="AddOnConstruction\CodeFile.cs" />
     <Compile Include="CompilerException.cs" />
     <Compile Include="CsProject.cs" />
-    <Compile Include="Deployment\IDeployableAddOn.cs" />
-    <Compile Include="Deployment\LuaAddOn.cs" />
+    <Compile Include="AddOnConstruction\IDeployableAddOn.cs" />
+    <Compile Include="AddOnConstruction\LuaAddOn.cs" />
     <Compile Include="LuaFileWriter.cs" />
     <Compile Include="ProjectType.cs" />
     <Compile Include="Providers\GenericsRegistry\GenericsRegistry.cs" />
@@ -77,7 +77,7 @@
     <Compile Include="Providers\TypeProvider\ScopeElement.cs" />
     <Compile Include="Providers\TypeProvider\TypeNameProvider.cs" />
     <Compile Include="Providers\TypeProvider\TypeResult.cs" />
-    <Compile Include="Deployment\ResourceFile.cs" />
+    <Compile Include="AddOnConstruction\ResourceFile.cs" />
     <Compile Include="ProjectAnalysis\ProjectAnalyser.cs" />
     <Compile Include="ProjectAnalysis\ProjectInfo.cs" />
     <Compile Include="ReferenceAnalysis\HostGraphNodeType.cs" />
@@ -147,7 +147,7 @@
     <Compile Include="SyntaxAnalysis\VariableName.cs" />
     <Compile Include="SyntaxAnalysis\VariableType.cs" />
     <Compile Include="SyntaxAnalysis\WhileLoop.cs" />
-    <Compile Include="Deployment\TocBuilder.cs" />
+    <Compile Include="AddOnConstruction\TocBuilder.cs" />
     <Compile Include="WrappingException.cs" />
   </ItemGroup>
   <ItemGroup>

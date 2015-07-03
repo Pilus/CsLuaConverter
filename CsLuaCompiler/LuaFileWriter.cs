@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using AddOnConstruction;
     using Providers;
     using SyntaxAnalysis;
 

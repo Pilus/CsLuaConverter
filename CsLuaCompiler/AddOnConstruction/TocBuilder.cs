@@ -1,8 +1,7 @@
-﻿namespace CsLuaCompiler
+﻿namespace CsLuaCompiler.AddOnConstruction
 {
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using CsLuaAttributes;
 
     class TocBuilder

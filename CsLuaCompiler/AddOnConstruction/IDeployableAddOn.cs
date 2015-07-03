@@ -1,4 +1,4 @@
-﻿namespace CsLuaCompiler
+﻿namespace CsLuaCompiler.AddOnConstruction
 {
     public interface IDeployableAddOn
     {

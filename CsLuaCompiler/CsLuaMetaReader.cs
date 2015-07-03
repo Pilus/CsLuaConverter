@@ -1,6 +1,7 @@
 ﻿namespace CsLuaCompiler
 {
     using System.IO;
+    using AddOnConstruction;
 
     internal static class CsLuaMetaReader
     {
