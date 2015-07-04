@@ -55,7 +55,6 @@
     <Compile Include="AddOnConstruction\AddOnConstructor.cs" />
     <Compile Include="AddOnConstruction\CodeFile.cs" />
     <Compile Include="CompilerException.cs" />
-    <Compile Include="CsProject.cs" />
     <Compile Include="AddOnConstruction\IDeployableAddOn.cs" />
     <Compile Include="AddOnConstruction\LuaAddOn.cs" />
     <Compile Include="LuaFileWriter.cs" />

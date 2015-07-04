@@ -187,6 +187,11 @@
             {
                 writer.WriteLine("{0}.{1}().Main(nil);", nameSpace, this.name);
             }
+
+            if (this.attributes.Any(att => att.attributeText.StartsWith("CsLuaAddOn(")))
+            {
+                writer.WriteLine("{0}.{1}().Execute();", nameSpace, this.name);
+            }
         }
 
         private SyntaxToken AnalyzeContent(SyntaxToken token)

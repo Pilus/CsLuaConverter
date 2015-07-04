@@ -15,6 +15,7 @@
         {
             {"string.Empty", "\"\""},
             {"string.IsNullOrEmpty", "IsStringNullOrEmpty"},
+            {"string.Format", "Lua.Strings.format"},
         };
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
