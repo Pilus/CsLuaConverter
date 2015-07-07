@@ -124,9 +124,13 @@
             {typeof(EmptyStatementSyntax), token => new PredeterminedElement("")},
             {typeof(TypeOfExpressionSyntax), token =>
             {
-                if (token.Text == "(" || token.Text == ")")
+                if (token.Text == "(")
                 {
-                    return new PredeterminedElement("'");
+                    return new PredeterminedElement("System.Type(\"");
+                }
+                else if (token.Text == ")")
+                {
+                    return new PredeterminedElement("\")");
                 }
                 return new PredeterminedElement("");
             }},

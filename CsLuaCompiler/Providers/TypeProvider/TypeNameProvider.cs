@@ -35,6 +35,7 @@
 
         private void LoadSystemTypes()
         {
+            this.LoadType(typeof(Type));
             this.LoadType(typeof(Action));
             this.LoadType(typeof(Func<int>));
             this.LoadType(typeof(Exception));

@@ -35,8 +35,6 @@
             {
                 this.codeFiles.AddRange(LuaFileWriter.GetLuaFiles(hostedProject.Namespaces, providers, hostedProject.Info.Name, false, hostedProject.Info.ProjectPath));
             }
-            
-            this.codeFiles.AddRange(LuaFileWriter.GetLuaFiles(projectInfo.Namespaces, providers, this.Name, false, projectPath));
 
             var xmlFile = GetXmlCodeFile(projectPath, this.name);
             if (xmlFile != null)
@@ -44,6 +42,8 @@
                 this.codeFiles.Add(xmlFile);
             }
 
+            this.codeFiles.AddRange(LuaFileWriter.GetLuaFiles(projectInfo.Namespaces, providers, this.Name, false, projectPath));
+            
             this.resourceFiles = GetResourceFiles(projectPath);
 
             var tocBuilder = new TocBuilder(this.codeFiles, projectInfo.Info.CsLuaAddOnAttribute);
