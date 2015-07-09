@@ -86,11 +86,7 @@
             {typeof(PredefinedTypeSyntax), token => new PredefinedType()},
             {typeof(GenericNameSyntax), token => new VariableType(true, true)},
             {typeof(ParenthesizedExpressionSyntax), token => new PredeterminedElement(token.Text)},
-            {
-                typeof(LiteralExpressionSyntax),
-                token =>
-                    token.Text.Equals("null") ? new PredeterminedElement("nil") : new PredeterminedElement(token.Text)
-            },
+            {typeof(LiteralExpressionSyntax), token => new LiteralExpression()},
             {typeof(VariableDeclaratorSyntax), token => new PredeterminedElement(token.Text)},
             {typeof(TypeArgumentListSyntax), token => new PredeterminedElement("")},
             {typeof(ThrowStatementSyntax), token => new Throw()},

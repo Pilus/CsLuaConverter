@@ -118,6 +118,7 @@
     <Compile Include="SyntaxAnalysis\Interface.cs" />
     <Compile Include="SyntaxAnalysis\IPartialLuaElement.cs" />
     <Compile Include="SyntaxAnalysis\LambdaExpression.cs" />
+    <Compile Include="SyntaxAnalysis\LiteralExpression.cs" />
     <Compile Include="SyntaxAnalysis\LuaElementHelper.cs" />
     <Compile Include="CsLuaMetaReader.cs" />
     <Compile Include="SyntaxAnalysis\MainCode.cs" />
