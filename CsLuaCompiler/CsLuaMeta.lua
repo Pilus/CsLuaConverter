@@ -670,6 +670,17 @@ System.Type = function(name)
 	return class;
 end
 
+System.Collections = {
+	Generic = {
+		IDictionary = function()
+			return {
+				isInterface = true,
+				name = "IDictionary",
+			}
+		end
+	}
+}
+
 
 CsLuaAttributes = { 
 	ICsLuaAddOn = function() return null; end
