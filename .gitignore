@@ -10,3 +10,9 @@
 /CsLuaCompiler/bin/Debug
 /CsLuaCompiler.suo
 /CsLuaCompiler.v11.suo
+/CsLuaConverter/CsLuaAttributes/bin/Debug
+/CsLuaConverter/CsLuaAttributes/obj/Debug
+/CsLuaConverter/CsLuaConverter/bin/Debug
+/CsLuaConverter/CsLuaConverter/obj/Debug
+/CsLuaConverter/.vs/CsLuaConverter/v14/.suo
+/CsLuaConverter/CsLuaConverter/CsLuaConverter.csproj.user
