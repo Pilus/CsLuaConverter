@@ -10,6 +10,7 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Providers.GenericsRegistry;
 
     internal class Class : ILuaElement
     {
@@ -42,7 +43,7 @@
 
             if (this.generics != null)
             {
-                this.generics.AddToScope(providers);
+                providers.GenericsRegistry.SetGenerics(this.generics.Names, GenericScope.Class);
             }
 
             providers.NameProvider.AddAllInheritedMembersToScope(this.name);
@@ -117,6 +118,7 @@
             textWriter.Indent--;
             textWriter.WriteLine("),");
 
+            providers.GenericsRegistry.ClearScope(GenericScope.Class);
             providers.NameProvider.SetScope(originalScope);
         }
 

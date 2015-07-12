@@ -6,9 +6,11 @@
     using CsLuaConverter.Providers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Providers.GenericsRegistry;
 
     internal class ParameterList : ILuaElement
     {
+        public GenericsDefinition Generics;
         public readonly IList<ILuaElement> Parameters = new List<ILuaElement>();
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
@@ -18,6 +20,12 @@
 
         public SyntaxToken Analyze(SyntaxToken token)
         {
+            if (token.Parent is TypeParameterListSyntax)
+            {
+                this.Generics = new GenericsDefinition();
+                token = this.Generics.Analyze(token);
+            }
+
             LuaElementHelper.CheckType(typeof(ParameterListSyntax), token.Parent);
             token = token.GetNextToken();
 

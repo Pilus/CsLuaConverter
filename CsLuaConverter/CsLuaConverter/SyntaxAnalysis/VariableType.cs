@@ -7,6 +7,7 @@
     using CsLuaConverter.Providers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Providers.GenericsRegistry;
 
     internal class VariableType : ILuaElement
     {
@@ -188,7 +189,11 @@
         {
             if (this.IsGeneric(providers))
             {
-                return "generics[genericsMapping['" + this.type + "']].name";
+                if (providers.GenericsRegistry.GetGenericScope(this.type) == GenericScope.Class)
+                {
+                    return "generics[genericsMapping['" + this.type + "']].name";
+                }
+                return "((methodGenerics or {})['" + this.type + "'] or {}).name";
             }
 
             return '"' + this.GetFullTypeName(providers) + '"';

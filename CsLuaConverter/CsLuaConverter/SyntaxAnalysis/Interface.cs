@@ -8,6 +8,7 @@
     using System.Collections.Generic;
     using CsLuaConverter.SyntaxAnalysis.ClassElements;
     using System.Linq;
+    using Providers.GenericsRegistry;
 
     internal class Interface : IPartialLuaElement
     {
@@ -43,7 +44,7 @@
             var originalScope = providers.NameProvider.CloneScope();
             if (this.generics != null)
             {
-                this.generics.AddToScope(providers);
+                providers.GenericsRegistry.SetGenerics(this.generics.Names, GenericScope.Class);
             }
             
             textWriter.WriteLine("{0} = function(generics)", this.Name);
@@ -76,6 +77,7 @@
             textWriter.Indent--;
             textWriter.WriteLine("end,");
             providers.NameProvider.SetScope(originalScope);
+            providers.GenericsRegistry.ClearScope(GenericScope.Class);
         }
 
         private void WriteImplementedInterfaces(IndentedTextWriter textWriter, IProviders providers)

@@ -11,12 +11,11 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            if (this.varName.Names.Count == 1 && this.varName.Names[0] == "Equals")
+            if (!this.varName.IsCallToTypeBasedMethod() || this.varName.Names.Count > 1)
             {
-                textWriter.Write(" == ");
-                return;
+                textWriter.Write(".");
             }
-            textWriter.Write(".");
+            
             this.varName.WriteLua(textWriter, providers);
         }
 

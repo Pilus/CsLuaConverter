@@ -5,7 +5,9 @@ namespace CsLuaConverter.Providers.GenericsRegistry
 
     internal interface IGenericsRegistry
     {
-        void SetGenerics(IEnumerable<string> generics);
+        void SetGenerics(IEnumerable<string> generics, GenericScope scope);
         bool IsGeneric(string name);
+        GenericScope GetGenericScope(string name);
+        void ClearScope(GenericScope scope);
     }
 }

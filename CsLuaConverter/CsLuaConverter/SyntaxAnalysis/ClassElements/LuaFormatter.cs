@@ -4,6 +4,7 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using CsLuaConverter.Providers;
+    using Providers.GenericsRegistry;
 
     internal static class LuaFormatter
     {
@@ -12,21 +13,32 @@
             IEnumerable<IFunction> methods)
         {
 
-            textWriter.WriteLine("{");
+            textWriter.WriteLine("function(methodGenerics) return {");
             textWriter.Indent++;
             foreach (var method in methods)
             {
                 textWriter.WriteLine("{");
                 textWriter.Indent++;
-                textWriter.WriteLine("types = {{{0}}},", method.GetParameters().FullTypesAsStringAndGenerics(providers));
+                var parameters = method.GetParameters();
+                if (parameters.Generics != null)
+                {
+                    providers.GenericsRegistry.SetGenerics(parameters.Generics.Names, GenericScope.Method);
+                    textWriter.Write("generics = ");
+                    parameters.Generics.WriteLua(textWriter, providers);
+                    textWriter.WriteLine(",");
+                }
+
+                textWriter.WriteLine("types = {{{0}}},", parameters.FullTypesAsStringAndGenerics(providers));
                 textWriter.Write("func = ");
                 method.WriteLua(textWriter, providers);
                 textWriter.WriteLine(",");
                 textWriter.Indent--;
                 textWriter.WriteLine("},");
+
+                providers.GenericsRegistry.ClearScope(GenericScope.Method);
             }
             textWriter.Indent--;
-            textWriter.WriteLine("}");
+            textWriter.Write("} end");
         }
 
         public static void WriteClassElement(IndentedTextWriter textWriter, ElementType type, string name, bool isStatic, bool isOverride,

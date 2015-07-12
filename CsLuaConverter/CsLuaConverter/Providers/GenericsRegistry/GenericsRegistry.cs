@@ -6,16 +6,26 @@ namespace CsLuaConverter.Providers.GenericsRegistry
 
     internal class GenericsRegistry : IGenericsRegistry
     {
-        private List<string> generics;
-
-        public void SetGenerics(IEnumerable<string> generics)
-        {
-            this.generics = generics.ToList();
-        }
+        private readonly Dictionary<GenericScope, IEnumerable<string>> generics = new Dictionary<GenericScope, IEnumerable<string>>();
 
         public bool IsGeneric(string name)
         {
-            return this.generics != null && this.generics.Contains(name);
+            return this.generics.Any(genByScope => genByScope.Value.Any(n => n == name));
+        }
+
+        public void SetGenerics(IEnumerable<string> generics, GenericScope scope)
+        {
+            this.generics[scope] = generics;
+        }
+
+        public GenericScope GetGenericScope(string name)
+        {
+            return this.generics.FirstOrDefault(genByScope => genByScope.Value.Any(n => n == name)).Key;
+        }
+
+        public void ClearScope(GenericScope scope)
+        {
+            this.generics[scope] = new List<string>();
         }
     }
 }

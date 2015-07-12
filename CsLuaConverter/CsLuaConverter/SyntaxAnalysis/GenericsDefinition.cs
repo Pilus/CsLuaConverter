@@ -6,6 +6,7 @@
     using CsLuaConverter.Providers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Providers.GenericsRegistry;
 
     internal class GenericsDefinition : ILuaElement
     {
@@ -32,11 +33,6 @@
             token = token.GetNextToken();
 
             return token;
-        }
-
-        public void AddToScope(IProviders providers)
-        {
-            providers.GenericsRegistry.SetGenerics(this.Names);
         }
     }
 }

@@ -50,7 +50,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\..\Gryphonheart\CsLuaConveter\</OutputPath>
+    <OutputPath>..\..\..\Gryphonheart\CsLuaConverter\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -74,6 +74,7 @@
     <Compile Include="AddOnConstruction\LuaAddOn.cs" />
     <Compile Include="LuaFileWriter.cs" />
     <Compile Include="ProjectType.cs" />
+    <Compile Include="Providers\GenericsRegistry\GenericScope.cs" />
     <Compile Include="Providers\GenericsRegistry\GenericsRegistry.cs" />
     <Compile Include="Providers\GenericsRegistry\IGenericsRegistry.cs" />
     <Compile Include="Providers\IProviders.cs" />
