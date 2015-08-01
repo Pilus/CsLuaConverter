@@ -66,8 +66,7 @@ namespace CsLuaConverter.ReferenceAnalysis
         {
             return node.Type.Equals(HostGraphNodeType.AddOn) && 
                 node.Children.Count == 0 && 
-                node.Parents.Count == 1 && 
-                node.Parents[0].Type.Equals(HostGraphNodeType.AddOn);
+                node.Parents.Count(p => p.Type.Equals(HostGraphNodeType.AddOn)).Equals(1);
         }
 
         private static bool FittingAddOnHost(HostGraphNode node)

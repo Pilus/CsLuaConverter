@@ -13,7 +13,7 @@
     {
         public static IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, IProviders providers)
         {
-            var projects = solution.Projects.Select(project => ProjectAnalyser.AnalyzeProject(project))
+            var projects = solution.Projects.Select(ProjectAnalyser.AnalyzeProject)
                 .Where(project => !project.ProjectType.Equals(ProjectType.Ignored))
                 .ToList();
 

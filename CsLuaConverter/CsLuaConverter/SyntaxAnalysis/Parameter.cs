@@ -19,6 +19,11 @@
 
         public SyntaxToken Analyze(SyntaxToken token)
         {
+            if (token.Text.Equals("params"))
+            {
+                token = token.GetNextToken();
+            }
+
             if (!(token.Parent is ParameterSyntax))
             {
                 this.Type = new VariableType();
