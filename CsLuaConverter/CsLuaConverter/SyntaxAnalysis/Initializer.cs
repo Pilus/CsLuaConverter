@@ -31,6 +31,7 @@
             }
 
             textWriter.WriteLine("{");
+            textWriter.WriteLine("Length={0}, __IsArray=true,", this.elements.Count);
 
             for (int i = 0; i < this.elements.Count; i++)
             {

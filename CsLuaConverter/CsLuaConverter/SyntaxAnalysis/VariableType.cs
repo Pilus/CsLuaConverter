@@ -94,13 +94,7 @@
                 token.Parent);
             this.type = token.Text;
             token = token.GetNextToken();
-
-            while (token.Parent is ArrayRankSpecifierSyntax)
-            {
-                token = token.GetNextToken();
-                this.isArray = true;
-            }
-
+            
             if (token.Parent is TypeArgumentListSyntax && token.Text.Equals("<")) // <
             {
                 this.generics = new List<VariableType>();
@@ -113,6 +107,12 @@
                     this.generics.Add(generic);
                 }
                 token = token.GetNextToken();
+            }
+
+            while (token.Parent is ArrayRankSpecifierSyntax)
+            {
+                token = token.GetNextToken();
+                this.isArray = true;
             }
 
             if (token.Parent is NullableTypeSyntax) // 'type?'
@@ -155,7 +155,7 @@
                 case "int":
                 case "string":
                 case "long":
-                    return this.type;
+                    return this.isArray ? $"Array<{this.type}>" : this.type;
                 default:
                     break;
             }
@@ -171,11 +171,11 @@
         public string GetTypeString()
         {
             string s = this.type;
-            /*if (this.generics != null)
+
+            if (this.isArray)
             {
-                //s += "<" + string.Join(",", this.innerTypes.Select( t => t.GetTypeString())) + ">";
-                s += "`" + this.generics.Count;
-            } */
+                s = "Array<" + s + ">";
+            }
 
             return s;
         }

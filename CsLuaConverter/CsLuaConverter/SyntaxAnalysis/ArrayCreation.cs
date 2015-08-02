@@ -8,12 +8,19 @@
 
     internal class ArrayCreation : ILuaElement
     {
+        private VariableType type;
         private List<ILuaElement> codes;
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("{[0]=");
-            LuaElementHelper.WriteLuaJoin(this.codes, textWriter, providers);
+            textWriter.Write("{{Length={0}, __IsArray=true,__Type={1},", this.codes.Count, this.type.GetQuotedTypeString());
+            if (this.codes.Count > 0)
+            {
+                textWriter.Write("[0]=");
+                LuaElementHelper.WriteLuaJoin(this.codes, textWriter, providers);
+            }
+            
+            
             textWriter.Write("}");
         }
 
@@ -21,12 +28,14 @@
         {
             LuaElementHelper.CheckType(typeof(ArrayCreationExpressionSyntax), token.Parent);
             token = token.GetNextToken();
-            LuaElementHelper.CheckType(typeof(PredefinedTypeSyntax), token.Parent);
-            token = token.GetNextToken();
-            LuaElementHelper.CheckType(typeof(ArrayRankSpecifierSyntax), token.Parent);
-            token = token.GetNextToken();
-            LuaElementHelper.CheckType(typeof(ArrayRankSpecifierSyntax), token.Parent);
-            token = token.GetNextToken();
+
+            this.type = new VariableType();
+            token = this.type.Analyze(token);
+
+            while (token.Parent is ArrayRankSpecifierSyntax)
+            {
+                token = token.GetNextToken();
+            }
 
             this.codes = new List<ILuaElement>();
 

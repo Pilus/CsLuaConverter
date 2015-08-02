@@ -122,7 +122,7 @@
                 }
                 if (found == false)
                 {
-                    throw new ProviderException(String.Format("Could not find namespace: {0}.", ns));
+                    throw new ProviderException($"Could not find namespace: {ns}.");
                 }
             }
         }

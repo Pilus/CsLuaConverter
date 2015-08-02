@@ -48,7 +48,10 @@
         public string FullTypesAsStringAndGenerics(IProviders nameProvider)
         {
             return string.Join(", ",
-                this.Parameters.Select(parameter => ((Parameter)parameter).Type.GetQuotedFullTypeString(nameProvider)));
+                this.Parameters.Select(parameter =>
+                    "{" +
+                    ((Parameter)parameter).Type.GetQuotedFullTypeString(nameProvider) + "," +
+                    ((Parameter)parameter).Type.GetQuotedGenericTypeString(nameProvider) + "}"));
         }
     }
 }
