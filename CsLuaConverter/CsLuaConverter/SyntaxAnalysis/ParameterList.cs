@@ -57,5 +57,11 @@
                     return s;
                 }));
         }
+
+        public bool LastParameterHasParamKeyword()
+        {
+            var last = this.Parameters.LastOrDefault();
+            return last != null && ((Parameter)last).IsParam;
+        }
     }
 }

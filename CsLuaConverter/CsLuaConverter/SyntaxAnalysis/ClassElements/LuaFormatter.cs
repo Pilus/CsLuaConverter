@@ -32,6 +32,12 @@
                 textWriter.Write("func = ");
                 method.WriteLua(textWriter, providers);
                 textWriter.WriteLine(",");
+
+                if (parameters.LastParameterHasParamKeyword())
+                {
+                    textWriter.WriteLine("hasParamKeyword = true,");
+                }
+
                 textWriter.Indent--;
                 textWriter.WriteLine("},");
 

@@ -10,6 +10,7 @@
     {
         public VariableType Type;
         private string name;
+        public bool IsParam;
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
@@ -22,6 +23,7 @@
             if (token.Text.Equals("params"))
             {
                 token = token.GetNextToken();
+                this.IsParam = true;
             }
 
             if (!(token.Parent is ParameterSyntax))
