@@ -16,7 +16,7 @@
         {
             if (this.variableType != null)
             {
-                textWriter.Write("({0}).__Cstor", this.variableType.GetQuotedGenericTypeString(providers) ?? "");
+                textWriter.Write("({0}).__Cstor", this.variableType.GetGenericsList(providers) ?? "");
             }
             else
             {

@@ -199,13 +199,13 @@
             return '"' + this.GetFullTypeName(providers) + '"';
         }
 
-        public string GetQuotedGenericTypeString(IProviders providers)
+        public string GetGenericsList(IProviders providers)
         {
             if (this.generics == null)
             {
                 return null;
             }
-            return "{" + string.Join(",", this.generics.Select(t => "CsLuaMeta.Generic(" + t.GetQuotedFullTypeString(providers) + ")")) + "}";
+            return "CsLuaMeta.GenericsList(" + string.Join(",", this.generics.Select(t => "CsLuaMeta.Generic(" + t.GetQuotedFullTypeString(providers) + ")")) + ")";
         }
     }
 }
