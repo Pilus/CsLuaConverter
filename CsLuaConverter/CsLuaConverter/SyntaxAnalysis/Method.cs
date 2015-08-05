@@ -2,6 +2,7 @@
 {
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
+    using System.Linq;
     using CsLuaConverter.Providers;
     using CsLuaConverter.Providers.TypeProvider;
     using Microsoft.CodeAnalysis;
@@ -26,8 +27,20 @@
 
             textWriter.Write("function(");
             this.parameters.WriteLua(textWriter, providers);
-            textWriter.WriteLine(")");
-            textWriter.Indent++;
+
+            if (this.parameters.LastParameterHasParamKeyword())
+            {
+                textWriter.WriteLine(",...)");
+                var last = (Parameter) this.parameters.Parameters.Last();
+                textWriter.Indent++;
+                textWriter.WriteLine("{0} = {{{0}, ..., Length=select('#', ...)+({0}==nil and 0 or 1), __IsArray=true,__Type={1}}}", last.Name, last.Type.GetQuotedTypeString());
+            }
+            else
+            {
+                textWriter.WriteLine(")");
+                textWriter.Indent++;
+            }
+            
             this.block.WriteLua(textWriter, providers);
             textWriter.Indent--;
             textWriter.Write("end");

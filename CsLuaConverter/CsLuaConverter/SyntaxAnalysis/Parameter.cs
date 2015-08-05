@@ -9,13 +9,13 @@
     internal class Parameter : ILuaElement
     {
         public VariableType Type;
-        private string name;
+        public string Name;
         public bool IsParam;
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            providers.NameProvider.AddToScope(new ScopeElement(this.name));
-            textWriter.Write(this.name);
+            providers.NameProvider.AddToScope(new ScopeElement(this.Name));
+            textWriter.Write(this.Name);
         }
 
         public SyntaxToken Analyze(SyntaxToken token)
@@ -35,7 +35,7 @@
 
             // ParameterSyntax
             LuaElementHelper.CheckType(typeof(ParameterSyntax), token.Parent);
-            this.name = token.Text;
+            this.Name = token.Text;
             return token.GetNextToken();
         }
     }
