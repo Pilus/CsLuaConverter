@@ -155,14 +155,15 @@
                 case "int":
                 case "string":
                 case "long":
-                    return this.isArray ? $"Array<{this.type}>" : this.type;
+                    return this.isArray ? "System.Array" : this.type;
                 default:
                     break;
             }
 
             if (this.isArray)
             {
-                return "Array<" + providers.TypeProvider.LookupType(this.type).ToString() + ">";
+                //return "Array<" + providers.TypeProvider.LookupType(this.type).ToString() + ">";
+                return "System.Array";
             }
 
             return providers.TypeProvider.LookupType(this.type).ToString();
@@ -174,7 +175,7 @@
 
             if (this.isArray)
             {
-                s = "Array<" + s + ">";
+                s = "System.Array";
             }
 
             return s;

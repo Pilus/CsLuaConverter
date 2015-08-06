@@ -13,15 +13,15 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("{{Length={0}, __IsArray=true,__Type={1},", this.codes.Count, this.type.GetQuotedTypeString());
+            textWriter.Write("System.Array({{{0}}}).__Cstor({{", this.type.GetQuotedTypeString());
+
             if (this.codes.Count > 0)
             {
-                textWriter.Write("[0]=");
                 LuaElementHelper.WriteLuaJoin(this.codes, textWriter, providers);
             }
             
             
-            textWriter.Write("}");
+            textWriter.Write("})");
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

@@ -113,7 +113,7 @@
             textWriter.WriteLine("interface.__AddImplementedSignatures(signatures);"); 
             textWriter.Indent--;
             textWriter.WriteLine("end"); 
-            textWriter.WriteLine("table.insert(signatures, {0})", providers.TypeProvider.LookupType(this.Name).ToQuotedString());
+            textWriter.WriteLine("table.insert(signatures, {{{0}}})", providers.TypeProvider.LookupType(this.Name).ToQuotedString());
             textWriter.Indent--;
             textWriter.WriteLine("end,");
         }
@@ -152,7 +152,7 @@
                             textWriter.Write("{");
                             foreach (var parameter in method.ParameterList.Parameters)
                             {
-                                textWriter.Write(DetermineTypeName(providers, new []{ ((Parameter) parameter).Type.GetTypeString()}) + ",");
+                                textWriter.Write("{"+ DetermineTypeName(providers, new []{ ((Parameter) parameter).Type.GetTypeString()}) + "},");
                             }
                             textWriter.Write("}");
                         })
