@@ -30,8 +30,7 @@
                 textWriter.Write("().__Initialize(");
             }
 
-            textWriter.WriteLine("{");
-            textWriter.WriteLine("Length={0}, __IsArray=true,", this.elements.Count);
+            textWriter.Write("System.Array(nil).__Cstor({");
 
             for (int i = 0; i < this.elements.Count; i++)
             {
@@ -41,7 +40,7 @@
                     textWriter.Write(",");
                 }
             }
-            textWriter.WriteLine("}");
+            textWriter.WriteLine("})");
 
             if (this.initializeClass || this.intializeClassWithoutContructor)
             {

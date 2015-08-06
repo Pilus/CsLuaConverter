@@ -33,7 +33,7 @@
                 textWriter.WriteLine(",...)");
                 var last = (Parameter) this.parameters.Parameters.Last();
                 textWriter.Indent++;
-                textWriter.WriteLine("{0} = {{{0}, ..., Length=select('#', ...)+({0}==nil and 0 or 1), __IsArray=true,__Type={1}}}", last.Name, last.Type.GetQuotedTypeString());
+                textWriter.WriteLine("{0} = System.Array(CsLuaMeta.Generic({1},{2})).__Cstor({{...}});", last.Name, last.Type.GetQuotedFullTypeString(providers), last.Type.GetGenericsList(providers) ?? "nil");
             }
             else
             {
