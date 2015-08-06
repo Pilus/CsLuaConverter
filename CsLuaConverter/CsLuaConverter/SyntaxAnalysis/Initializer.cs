@@ -23,14 +23,16 @@
         {
             if (this.initializeClass)
             {
-                textWriter.Write(".__Initialize(");
+                textWriter.Write(".__Initialize({");
             }
             else if (this.intializeClassWithoutContructor)
             {
-                textWriter.Write("().__Initialize(");
+                textWriter.Write("().__Initialize({");
             }
-
-            textWriter.Write("System.Array(nil).__Cstor({");
+            else
+            {
+                textWriter.Write("System.Array(nil).__Cstor({");
+            }
 
             for (int i = 0; i < this.elements.Count; i++)
             {
@@ -41,11 +43,6 @@
                 }
             }
             textWriter.WriteLine("})");
-
-            if (this.initializeClass || this.intializeClassWithoutContructor)
-            {
-                textWriter.Write(")");
-            }
         }
 
         public SyntaxToken Analyze(SyntaxToken token)
