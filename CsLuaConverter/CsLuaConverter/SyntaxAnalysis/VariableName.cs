@@ -57,7 +57,7 @@
                         providers.NameProvider.LookupVariableName(this.Names.Take(this.Names.Count - 1),
                             this.isClassVar));
                 }
-                textWriter.Write("+CsLuaMeta." + this.Names.Last());
+                textWriter.Write("*CsLuaMeta." + this.Names.Last() + "");
                 return;
             }
 

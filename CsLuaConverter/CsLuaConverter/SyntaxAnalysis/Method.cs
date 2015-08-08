@@ -33,7 +33,7 @@
                 textWriter.WriteLine(",...)");
                 var last = (Parameter) this.parameters.Parameters.Last();
                 textWriter.Indent++;
-                textWriter.WriteLine("{0} = System.Array(CsLuaMeta.Generic({1},{2})).__Cstor({{...}});", last.Name, last.Type.GetQuotedFullTypeString(providers), last.Type.GetGenericsList(providers) ?? "nil");
+                textWriter.WriteLine("if not(type({0}) == 'table' and {0}.__fullTypeName == 'System.Array') or select('#', ...) > 0 then {0} = System.Array(CsLuaMeta.Generic({1},{2})).__Cstor({{{0},...}}); end", last.Name, last.Type.GetQuotedFullTypeString(providers), last.Type.GetGenericsList(providers) ?? "nil");
             }
             else
             {

@@ -26,7 +26,7 @@
                     textWriter.Write("generics = ");
                     parameters.Generics.WriteLua(textWriter, providers);
                     textWriter.WriteLine(",");
-                }
+                }   
 
                 textWriter.WriteLine("types = {{{0}}},", parameters.FullTypesAsStringAndGenerics(providers));
                 textWriter.Write("func = ");

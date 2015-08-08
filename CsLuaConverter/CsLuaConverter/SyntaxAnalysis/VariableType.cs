@@ -136,6 +136,23 @@
             return providers.GenericsRegistry.IsGeneric(this.type);
         }
 
+
+        private string GetBasicType()
+        {
+            switch (this.type)
+            {
+                case "object":
+                case "bool":
+                case "double":
+                case "int":
+                case "string":
+                case "long":
+                    return this.type;
+                default:
+                    return null;
+            }
+        }
+
         public string GetFullTypeName(IProviders providers)
         {
             if (this.variable != null)
@@ -147,26 +164,7 @@
                 throw new ConverterException("Cannot get full type name of generic.");
             }
 
-            switch (this.type)
-            {
-                case "object":
-                case "bool":
-                case "double":
-                case "int":
-                case "string":
-                case "long":
-                    return this.isArray ? "System.Array" : this.type;
-                default:
-                    break;
-            }
-
-            if (this.isArray)
-            {
-                //return "Array<" + providers.TypeProvider.LookupType(this.type).ToString() + ">";
-                return "System.Array";
-            }
-
-            return providers.TypeProvider.LookupType(this.type).ToString();
+            return this.isArray ? "System.Array" : this.GetBasicType() ?? providers.TypeProvider.LookupType(this.type).ToString();
         }
 
         public string GetTypeString()
@@ -202,6 +200,12 @@
 
         public string GetGenericsList(IProviders providers)
         {
+            if (this.isArray)
+            {
+                return "CsLuaMeta.GenericsList(CsLuaMeta.Generic(\"" + (this.GetBasicType() ?? providers.TypeProvider.LookupType(this.type).ToString()) + "\",nil))"; // TODO: Generic
+            }
+
+
             if (this.generics == null)
             {
                 return null;
