@@ -17,6 +17,7 @@
 
             if (this.codes.Count > 0)
             {
+                textWriter.Write("[0]=");
                 LuaElementHelper.WriteLuaJoin(this.codes, textWriter, providers);
             }
             

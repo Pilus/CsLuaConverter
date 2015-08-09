@@ -18,9 +18,15 @@
 
             textWriter.Write("function(");
             this.ParameterList.WriteLua(textWriter, providers);
-            textWriter.Write(")");
+            textWriter.Write(") ");
+
+            if (this.expression is MainCode)
+            {
+                textWriter.Write("return ");
+            }
+
             this.expression.WriteLua(textWriter, providers);
-            textWriter.Write("end");
+            textWriter.Write(" end");
             providers.NameProvider.SetScope(scope);
         }
 

@@ -33,7 +33,7 @@ local typeBasedMethods = {
 		return tostring(obj);
 	end,
 	Equals = function(obj, otherObj)
-		return obj == otherObj;
+		return obj == otherObj or (type(obj) == "table" and type(otherObj) == "table" and obj.__obj == otherObj.__obj);
 	end
 }
 
@@ -859,10 +859,10 @@ System.Array = function(generic)
 		signature = {{"object"}, { "System.Array", genericsList}};
 	end
 
-	local cstor = function(oneBasedArray)
-		class.Length = #(oneBasedArray);
-		for i=1,#(oneBasedArray) do
-			class[i-1] = oneBasedArray[i];
+	local cstor = function(zeroBasedArray)
+		class.Length = #(zeroBasedArray) > 0 and #(zeroBasedArray) + 1 or (zeroBasedArray[0] and 1 or 0);
+		for i=0,class.Length-1 do
+			class[i] = zeroBasedArray[i];
 		end
 		initializeSignature();
 	end;
