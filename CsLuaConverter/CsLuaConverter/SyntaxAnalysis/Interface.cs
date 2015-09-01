@@ -58,10 +58,23 @@
             textWriter.WriteLine("isInterface = true,");
             textWriter.WriteLine("name = '{0}',", Name);
             textWriter.WriteLine("implementedInterfaces = implementedInterfaces,");
+            textWriter.WriteLine("ShouldProvideSelf = function()");
+            textWriter.Indent++;
             if (this.HasAttribute("ProvideSelf"))
             {
-                textWriter.WriteLine("provideSelf = true,");
+                textWriter.WriteLine("return true;");
             }
+            else
+            {
+                textWriter.WriteLine("for _, interface in ipairs(implementedInterfaces) do");
+                textWriter.Indent++;
+                textWriter.WriteLine("if interface.ShouldProvideSelf() then return true; end");
+                textWriter.Indent--;
+                textWriter.WriteLine("end");
+                textWriter.WriteLine("return false;");
+            }
+            textWriter.Indent--;
+            textWriter.WriteLine("end,");
 
             if (this.indexerType != null)
             {
