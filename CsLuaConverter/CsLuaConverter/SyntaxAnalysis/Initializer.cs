@@ -69,6 +69,10 @@
                 var code = new MainCode(t => t.Parent is InitializerExpressionSyntax && (t.Text == "," || t.Text == "}"));
                 token = code.Analyze(token);
 
+                if (first && code.Elements.Count == 0 && token.Parent is InitializerExpressionSyntax && token.Text == "}")
+                {
+                    return token;
+                }
                 this.elements.Add(firstElement != null ? new[] {firstElement, code} : new[] {code});
                 first = false;
             }
