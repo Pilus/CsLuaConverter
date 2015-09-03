@@ -20,6 +20,7 @@
         private readonly bool addToScope;
         private readonly bool isClassVar;
         private readonly bool resolveAsFullName;
+        private readonly bool isTypeReference;
         private bool isInitialization;
         public GenericsParsing Generics;
 
@@ -35,6 +36,14 @@
             this.isClassVar = isClassVar;
         }
 
+        public VariableName(bool resolveAsFullName, bool addToScope, bool isClassVar, bool isTypeReference)
+        {
+            this.addToScope = addToScope;
+            this.resolveAsFullName = resolveAsFullName;
+            this.isClassVar = isClassVar;
+            this.isTypeReference = isTypeReference;
+        }
+
         public bool IsCallToTypeBasedMethod()
         {
             return TypeBasedMethods.Contains(this.Names.LastOrDefault() ?? "");
@@ -42,6 +51,12 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
+            if (this.isTypeReference)
+            {
+                textWriter.Write(providers.TypeProvider.LookupType(this.Names));
+                return;
+            }
+
             if (this.addToScope)
             {
                 if (this.Names.Count != 1)

@@ -192,23 +192,6 @@
                     (element as BinaryExpression).PreviousElement = this.Elements.Last();
                 }
 
-                if ((element is ArgumentList || element is Initializer) && this.Elements.Count() >= 2)
-                {
-                    var twoLast = this.Elements.Skip(this.Elements.Count - 2);
-                    if (twoLast.First() is New && (twoLast.Last() is VariableType || twoLast.Last() is VariableName))
-                    {
-                        if (twoLast.Last() is VariableType)
-                        {
-                            this.Elements.Add(new Creator(this.Elements.Last() as VariableType));
-                        }
-                        else
-                        {
-                            this.Elements.Add(new Creator(null));
-                        }
-                    }
-                }
-
-
                 if (element != null)
                 {
                     token = element.Analyze(token);
