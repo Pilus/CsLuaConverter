@@ -55,6 +55,11 @@
 
         public SyntaxToken Analyze(SyntaxToken token)
         {
+            if ((token.Parent is FieldDeclarationSyntax || token.Parent is PropertyDeclarationSyntax) && token.Text == "new")
+            {
+                token = token.GetNextToken();
+            }
+
             if (token.Parent is FieldDeclarationSyntax && token.Text == "readonly")
             {
                 token = token.GetNextToken();

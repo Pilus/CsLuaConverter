@@ -57,7 +57,6 @@
         {
             LuaElementHelper.CheckType(typeof(MethodDeclarationSyntax), token.Parent);
 
-
             if (token.Text.Equals("static"))
             {
                 this.Static = true;
@@ -71,6 +70,11 @@
                     text = "Private";
                 }
                 this.Scope = (Scope) System.Enum.Parse(typeof(Scope), text);
+                token = token.GetNextToken();
+            }
+
+            if (token.Text.Equals("new"))
+            {
                 token = token.GetNextToken();
             }
             if (token.Text.Equals("static"))
