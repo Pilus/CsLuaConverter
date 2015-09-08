@@ -11,6 +11,7 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.MSBuild;
     using Providers;
+    using System.Timers;
 
     internal class Program
     {
@@ -39,6 +40,8 @@
 
         private static void Convert(string solutionPath, string wowPath)
         {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
             var solution = GetSolution(solutionPath);
             var providers = new Providers.Providers(solution);
             var addOns = SolutionHandler.GenerateAddOnsFromSolution(solution, providers);
@@ -48,7 +51,9 @@
                 addon.DeployAddOn(wowPath);
             }
 
-            Console.WriteLine("Lua converting successfull.");
+            stopWatch.Stop();
+            
+            Console.WriteLine("Lua converting successfull. Time: {0}.{1} sec.", stopWatch.Elapsed.Seconds, stopWatch.Elapsed.Milliseconds);
         }
 
         private static Solution GetSolution(string path)
