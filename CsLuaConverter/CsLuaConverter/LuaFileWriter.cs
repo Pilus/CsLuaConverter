@@ -21,21 +21,6 @@
         {
             var files = new List<CodeFile>();
 
-            if (nameSpaces != null)
-            {
-                foreach (var nameSpacePair in nameSpaces)
-                {
-                    var textWriter = new StringWriter();
-                    nameSpacePair.Value.WriteLua(new IndentedTextWriter(textWriter), providers);
-                    files.Add(new CodeFile
-                    {
-                        FileName = nameSpacePair.Key + ".lua",
-                        Content = textWriter.ToString(),
-                        Header = CsLuaFileHeader
-                    });
-                }
-            }
-
             string[] luaFiles = Directory.GetFiles(projectPath, "*.lua", SearchOption.AllDirectories);
 
             foreach (string luaDoc in luaFiles)
@@ -70,6 +55,21 @@
                 file.Ignore = true;
             });
             files.AddRange(additionalFiles);
+
+            if (nameSpaces != null)
+            {
+                foreach (var nameSpacePair in nameSpaces)
+                {
+                    var textWriter = new StringWriter();
+                    nameSpacePair.Value.WriteLua(new IndentedTextWriter(textWriter), providers);
+                    files.Add(new CodeFile
+                    {
+                        FileName = nameSpacePair.Key + ".lua",
+                        Content = textWriter.ToString(),
+                        Header = CsLuaFileHeader
+                    });
+                }
+            }
 
             if (requiresCsLuaMetaHeader)
             {
