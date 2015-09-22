@@ -13,7 +13,7 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("System.Array(CsLuaMeta.Generic({0},{1})).__Cstor({{", this.type.GetQuotedFullTypeString(providers), this.type.GetGenericsList(providers) ?? "nil");
+            textWriter.Write("System.Array({1}).__Cstor({{", this.type.GetQuotedFullTypeString(providers), this.type.GetGenericsList(providers) ?? "nil");
 
             if (this.codes.Count > 0)
             {

@@ -42,22 +42,24 @@
 
             LuaFormatter.WriteClassElement(textWriter, ElementType.Serialization, "serialize", false, false, () =>
             {
-                textWriter.WriteLine("function(info)");
+                textWriter.WriteLine("function(f, t)");
                 textWriter.Indent++;
                 foreach (var element in serializeableElements)
                 {
-                    textWriter.WriteLine("info.AddValue(class, '{0}', class.{0}, '{1}');", element.Key, element.Value);
+                    textWriter.WriteLine("t['{0}'] = f(class['{0}']);", element.Key);
                 }
+                textWriter.WriteLine("t.__type = class.__fullTypeName;");
+                textWriter.WriteLine("if generic then t.__generic = generic; end");
                 textWriter.Indent--;
                 textWriter.Write("end");
             }, this.className);
             LuaFormatter.WriteClassElement(textWriter, ElementType.Serialization, "deserialize", false, false, () =>
             {
-                textWriter.WriteLine("function(info)");
+                textWriter.WriteLine("function(f, t)");
                 textWriter.Indent++;
                 foreach (var element in serializeableElements)
                 {
-                    textWriter.WriteLine("class.{0} = info.GetValue(class, '{0}', '{1}');", element.Key, element.Value);
+                    textWriter.WriteLine("class.{0} = f(t['{0}']);", element.Key);
                 }
                 textWriter.Indent--;
                 textWriter.Write("end");
