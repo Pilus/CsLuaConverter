@@ -133,7 +133,7 @@
 
             if (token.GetNextToken().Parent is TypeParameterConstraintClauseSyntax) // where
             {
-                while (token.Text != "{")
+                while (token.Text != "{" && token.Text != ";")
                 {
                     token = token.GetNextToken();
                 }

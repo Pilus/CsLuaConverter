@@ -115,6 +115,14 @@
                 return token;
             }
 
+            if (token.Text == "where")
+            {
+                while (!(token.Parent is BlockSyntax))
+                {
+                    token = token.GetNextToken();
+                }
+            }
+
             this.block = new Block();
             token = this.block.Analyze(token);
 
