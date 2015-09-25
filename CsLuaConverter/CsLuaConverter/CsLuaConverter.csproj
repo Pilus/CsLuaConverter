@@ -61,6 +61,13 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>powershell -file "$(SolutionDir)CsLuaConverter\CopyLuaToOutput.ps1" "$(SolutionDir)CsLuaConverter"</PostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -167,9 +174,8 @@
     <Compile Include="WrappingException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="CsLuaMeta.lua">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="CopyLuaToOutput.ps1" />
+    <None Include="Lua\CsLuaMeta.lua" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CsLuaAttributes\CsLuaAttributes.csproj">

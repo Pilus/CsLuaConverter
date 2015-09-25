@@ -5,13 +5,6 @@ VisualStudioVersion = 14.0.22823.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsLuaConverter", "CsLuaConverter\CsLuaConverter.csproj", "{E1D96749-5BF9-4B04-81A1-9D4B3B1F6BF4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4FC3E110-0117-42DD-9315-ABB036C04F62}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0AAEC515-00D6-47B9-92E3-3F38D43B7927}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsLuaAttributes", "CsLuaAttributes\CsLuaAttributes.csproj", "{3EC1FD14-1402-4ADC-BBD0-07CF30E3A654}"
