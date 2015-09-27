@@ -6,9 +6,8 @@ param (
 )
 $outputFile = (Get-Location).Path + "\CsLuaMeta.lua";
 
-echo "Copying: $projectPath => $outputPath" 
+echo "Copying: $projectPath => $outputFile" 
 
-$Dir = get-childitem $projectPath -recurse
-$List = $Dir | where {$_.extension -eq ".lua"}
-$List |ft fullname |out $X
-
+$LuaFiles = @()
+get-childitem $projectPath -recurse | where {$_.extension -eq ".lua"} | % { $LuaFiles += $_.fullname }
+cat $LuaFiles > $outputFile
