@@ -11,11 +11,6 @@
 
     internal class VariableName : ILuaElement
     {
-        private static string[] TypeBasedMethods =
-        {
-            "Equals", "ToString",
-        };
-
         public readonly List<string> Names = new List<string>();
         private readonly bool addToScope;
         private readonly bool isClassVar;
@@ -44,11 +39,6 @@
             this.isTypeReference = isTypeReference;
         }
 
-        public bool IsCallToTypeBasedMethod()
-        {
-            return TypeBasedMethods.Contains(this.Names.LastOrDefault() ?? "");
-        }
-
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             if (this.isTypeReference)
@@ -64,22 +54,24 @@
                 providers.NameProvider.AddToScope(new ScopeElement(this.Names.First()));
             }
 
-            if (this.IsCallToTypeBasedMethod())
-            {
-                if (this.Names.Count > 1)
-                {
-                    textWriter.Write(
-                        providers.NameProvider.LookupVariableName(this.Names.Take(this.Names.Count - 1),
-                            this.isClassVar));
-                }
-                textWriter.Write("*CsLuaMeta." + this.Names.Last() + "");
-                return;
-            }
-
             string s = string.Empty;
             if (this.resolveAsFullName)
             {
-                textWriter.Write(providers.NameProvider.LookupVariableName(this.Names, this.isClassVar));
+                var fullRef = providers.NameProvider.LookupVariableName(this.Names, this.isClassVar);
+                var dotCount = fullRef.Split('.').Length -1;
+                if (dotCount > 0)
+                {
+                    textWriter.Write(
+                        //"(" +
+                        new string('(', dotCount) +
+                        fullRef.Replace(".", "%CsLuaMeta.dot).") //+
+                        //")" 
+                    );
+                }
+                else
+                {
+                    textWriter.Write(fullRef);
+                }
 
                 if (this.Generics != null)
                 {

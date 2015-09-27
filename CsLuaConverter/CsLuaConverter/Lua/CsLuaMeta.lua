@@ -19,6 +19,21 @@ CsLuaMeta._not = setmetatable({}, { __add = function(_, value)
 	return not(value);
 end});
 
+local DotMeta = function(f1, f2) 
+	return setmetatable({}, {
+		__mod = function(obj, _) 
+			return setmetatable({}, {
+				__index = function(_, index)
+					return f1(obj,index);
+				end,
+				__newindex = function(_, index, value)
+					return f2(obj,index, value);
+				end,
+			})
+		end
+	});
+end
+
 local typeBasedMethods = {
 	ToString = function(obj)
 		if type(obj) == "table" and obj.__fullTypeName then
@@ -50,6 +65,29 @@ for i,v in pairs(typeBasedMethods) do
 		});
 	 end;
 end
+
+CsLuaMeta.dot = DotMeta(
+	function(obj, index)  -- useage:  a%CsLuaMeta.dot%b
+		if type(obj) == "table" then
+			local value = obj[index];
+
+			if value then
+				return value;
+			end
+		end
+		if typeBasedMethods[index] then
+			return function(...)
+				return typeBasedMethods[index](obj, ...);
+			end
+		end
+	end, 
+	function(obj, index, value)
+		if type(obj) == "table" then
+			obj[index] = value;
+		end
+	end
+);
+
 
 int = {
 	Parse = function(value)
@@ -844,11 +882,7 @@ System.Enum = {
 }
 System.NotImplementedException = function(...) return CsLua.NotImplementedException(...) end;
 System.Exception = function(...) return CsLua.CsException(...) end;
-System.Type = function(name, generics)
-	local class = { FullName = name };
-	CsLua.CreateSimpleClass(class, class, "Type", "System.Type");
-	return class;
-end
+
 
 System.Array = function(generic)
 	local class = {};

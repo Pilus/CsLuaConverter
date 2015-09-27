@@ -176,6 +176,7 @@
   <ItemGroup>
     <None Include="CopyLuaToOutput.ps1" />
     <None Include="Lua\CsLuaMeta.lua" />
+    <None Include="Lua\System.Type.lua" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CsLuaAttributes\CsLuaAttributes.csproj">

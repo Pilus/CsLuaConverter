@@ -11,11 +11,7 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            if (!this.varName.IsCallToTypeBasedMethod() || this.varName.Names.Count > 1)
-            {
-                textWriter.Write(".");
-            }
-            
+            textWriter.Write(".");
             this.varName.WriteLua(textWriter, providers);
         }
 

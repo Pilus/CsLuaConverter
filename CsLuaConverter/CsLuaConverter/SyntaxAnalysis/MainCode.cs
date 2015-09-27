@@ -192,6 +192,23 @@
                     (element as BinaryExpression).PreviousElement = this.Elements.Last();
                 }
 
+                if (element is ReferencedVariableName)
+                {
+                    var last = this.Elements.Last();
+                    var secondLast = this.Elements.Skip(this.Elements.Count - 2).First();
+
+                    if (last is PredeterminedElement && (last as PredeterminedElement).Text.Equals(")"))
+                    {
+                        last = secondLast;
+                    }
+
+                    if (last is LiteralExpression)
+                    {
+                        this.Elements.Insert(this.Elements.IndexOf(last), new PredeterminedElement("("));
+                        this.Elements.Add(new PredeterminedElement("%CsLuaMeta.dot)"));
+                    }
+                }
+
                 if (element != null)
                 {
                     token = element.Analyze(token);
