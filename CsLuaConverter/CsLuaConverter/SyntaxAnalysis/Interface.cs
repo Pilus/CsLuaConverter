@@ -157,6 +157,11 @@
             textWriter.Indent++;
             foreach (var method in this.methods)
             {
+                if (method.ParameterList.Generics != null)
+                {
+                    providers.GenericsRegistry.SetGenerics(method.ParameterList.Generics.Names, GenericScope.Method);
+                }
+                
                 LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>()
                 {
                     { "name",  method.Name},
@@ -176,6 +181,8 @@
                         })
                     },
                 }, ",", string.Empty);
+
+                providers.GenericsRegistry.ClearScope(GenericScope.Method);
             }
 
             textWriter.Indent--;
@@ -186,9 +193,16 @@
         {
             if (names.Count == 1)
             {
-                if (providers.GenericsRegistry.IsGeneric(names.Single()))
+                var name = names.Single();
+                if (providers.GenericsRegistry.IsGeneric(name))
                 {
-                    return "generics[genericsMapping['" + names.Single() + "']].name";
+                    if (providers.GenericsRegistry.GetGenericScope(name) == GenericScope.Method)
+                    {
+                        // TODO: Find a way to do generic mappings for method generics in interfaces.
+                        return "object";
+                    }
+
+                    return "generics[genericsMapping['" + name + "']].name";
                 }
             }
             return "'" + providers.TypeProvider.LookupType(names) + "'";

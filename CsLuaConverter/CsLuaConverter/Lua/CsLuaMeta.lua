@@ -71,7 +71,7 @@ CsLuaMeta.dot = DotMeta(
 		if type(obj) == "table" then
 			local value = obj[index];
 
-			if value then
+			if not(value == nil) then
 				return value;
 			end
 		end

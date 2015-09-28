@@ -131,6 +131,11 @@
                 }
             }
 
+            if (token.GetNextToken().Parent is NullableTypeSyntax && token.GetNextToken().Text == "?")
+            {
+                token = token.GetNextToken();
+            }
+
             return token;
         }
 

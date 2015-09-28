@@ -34,9 +34,9 @@
                     textWriter.Write(" +CsLuaMeta.add+ ");
                     break;
                 case "is":
-                    textWriter.Write(".__IsType('");
-                    this.type.WriteLua(textWriter, providers);
-                    textWriter.Write("')");
+                    textWriter.Write(".__IsType(");
+                    textWriter.Write(this.type.GetQuotedFullTypeString(providers));
+                    textWriter.Write(")");
                     break;
                 case "+=":
                     textWriter.Write(" = ");

@@ -50,6 +50,11 @@
                 throw new Exception("Unknown scenario.");
             }
 
+            if (providers.GenericsRegistry.IsGeneric(this.type))
+            {
+                throw new Exception("Attempting to write type for generic");
+            }
+
             textWriter.Write(providers.TypeProvider.LookupType(this.type));
         }
 
