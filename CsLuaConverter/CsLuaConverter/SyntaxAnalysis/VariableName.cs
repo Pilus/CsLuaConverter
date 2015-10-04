@@ -8,6 +8,7 @@
     using CsLuaConverter.Providers.TypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Providers.GenericsRegistry;
 
     internal class VariableName : ILuaElement
     {
@@ -41,6 +42,21 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
+            if (this.IsGenerics(providers))
+            {
+                var type = this.Names.Single();
+                if (providers.GenericsRegistry.GetGenericScope(type) == GenericScope.Class)
+                {
+                    textWriter.Write("generics[genericsMapping['" + type + "']].name");
+                }
+                else
+                {
+                    textWriter.Write("((methodGenerics or {})['" + type + "'] or {}).name");
+                }
+                return;
+            }
+
+
             if (this.isTypeReference)
             {
                 textWriter.Write(providers.TypeProvider.LookupType(this.Names));

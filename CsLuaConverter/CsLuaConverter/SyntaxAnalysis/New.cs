@@ -21,7 +21,16 @@ namespace CsLuaConverter.SyntaxAnalysis
             }
             else
             {
-                this.type.WriteLua(textWriter, providers);
+                if (this.type.IsGenerics(providers))
+                {
+                    textWriter.Write("CsLuaMeta.GetByFullName(");
+                    this.type.WriteLua(textWriter, providers);
+                    textWriter.Write(")");
+                }
+                else
+                {
+                    this.type.WriteLua(textWriter, providers);
+                }
                 textWriter.Write("().__Cstor");
             }
         }
