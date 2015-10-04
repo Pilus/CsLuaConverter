@@ -575,9 +575,9 @@ CsLuaMeta.CreateClass = function(info)
 			if (element.type == "Interface") then
 				table.insert(interfaces, element.value);
 			elseif (element.type == "Method") then
-				local func, methodValue = GenerateAmbigiousFunc(element, inheritiedClass, appliedGenerics);
+				local func;
 
-				if (methodValue[1].generics) then
+				if (element.generics) then
 					func = CsLuaMeta.GenericsMethod(function(generics,...)
 						local methodGenerics = {};
 						for i,v in ipairs(generics) do
@@ -586,6 +586,8 @@ CsLuaMeta.CreateClass = function(info)
 						local innerFunc = GenerateAmbigiousFunc(element, inheritiedClass, appliedGenerics, methodGenerics);
 						return innerFunc(...);
 					end);
+				else
+					func, methodValue = GenerateAmbigiousFunc(element, inheritiedClass, appliedGenerics);
 				end
 
 				methods[element.name] = func;

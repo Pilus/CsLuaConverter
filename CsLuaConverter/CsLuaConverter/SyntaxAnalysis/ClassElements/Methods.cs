@@ -6,6 +6,7 @@
     using System.Linq;
     using CsLuaConverter.Providers;
     using Microsoft.CodeAnalysis;
+    using Providers.GenericsRegistry;
 
     internal class Methods : ILuaElement
     {
@@ -38,8 +39,20 @@
 
                     if (methodsMatching.Any())
                     {
-                        LuaFormatter.WriteClassElement(textWriter, ElementType.Method, methodName, methodsMatching.First().Static, methodsMatching.First().IsOverride, () =>
-                            LuaFormatter.WriteMethodToLua(textWriter, providers, methodsMatching), this.className);
+                        var method = methodsMatching.First();
+                        LuaFormatter.WriteClassElement(textWriter, ElementType.Method, methodName, method.Static, method.IsOverride, () =>
+                            LuaFormatter.WriteMethodToLua(textWriter, providers, methodsMatching), this.className, new KeyValuePair<string,Action>("generics",
+                                () =>
+                                {
+                                    var parameters = method.GetParameters();
+                                    if (parameters.Generics != null)
+                                    {
+                                        providers.GenericsRegistry.SetGenerics(parameters.Generics.Names, GenericScope.Method);
+                                        textWriter.Write("generics = ");
+                                        parameters.Generics.WriteLua(textWriter, providers);
+                                        textWriter.WriteLine(",");
+                                    }
+                                }));
                     }
                 }
             }

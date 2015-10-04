@@ -20,13 +20,11 @@
                 textWriter.WriteLine("{");
                 textWriter.Indent++;
                 var parameters = method.GetParameters();
+
                 if (parameters.Generics != null)
                 {
                     providers.GenericsRegistry.SetGenerics(parameters.Generics.Names, GenericScope.Method);
-                    textWriter.Write("generics = ");
-                    parameters.Generics.WriteLua(textWriter, providers);
-                    textWriter.WriteLine(",");
-                }   
+                }
 
                 textWriter.WriteLine("types = {{{0}}},", parameters.FullTypesAsStringAndGenerics(providers));
                 textWriter.Write("func = ");
@@ -48,22 +46,36 @@
         }
 
         public static void WriteClassElement(IndentedTextWriter textWriter, ElementType type, string name, bool isStatic, bool isOverride,
-            Action writeValue, string className)
+            Action writeValue, string className, KeyValuePair<string, Action>? additionalValue)
         {
-            WriteDictionary(textWriter, new Dictionary<string, object>
+            var dictionary = new Dictionary<string, object>
             {
                 {"type", type},
                 {"name", name},
                 {"static", isStatic},
                 {"value", writeValue},
                 {"override", isOverride},
-            }, ",", string.Format("{0}.{1}", className, name));
+            };
+
+            if (additionalValue != null)
+            {
+                var additionalValuePair = (KeyValuePair<string,Action>)additionalValue;
+                  dictionary.Add(additionalValuePair.Key, additionalValuePair.Value);
+            }
+
+            WriteDictionary(textWriter, dictionary, ",", string.Format("{0}.{1}", className, name));
         }
 
         public static void WriteClassElement(IndentedTextWriter textWriter, ElementType type, string name, bool isStatic,
             string value, string className)
         {
-            WriteClassElement(textWriter, type, name, isStatic, false, () => textWriter.Write(value), className);
+            WriteClassElement(textWriter, type, name, isStatic, false, () => textWriter.Write(value), className, null);
+        }
+
+        public static void WriteClassElement(IndentedTextWriter textWriter, ElementType type, string name, bool isStatic,
+            bool isOverride, Action writeValue, string className)
+        {
+            WriteClassElement(textWriter, type, name, isStatic, isOverride, writeValue, className, null);
         }
 
         public static void WriteDictionary(IndentedTextWriter textWriter, IDictionary<string, object> dict)
