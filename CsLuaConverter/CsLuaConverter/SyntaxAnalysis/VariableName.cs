@@ -51,7 +51,7 @@
                 }
                 else
                 {
-                    textWriter.Write("((methodGenerics or {})['" + type + "'] or {}).name");
+                    textWriter.Write("methodGenerics['" + type + "'].name");
                 }
                 return;
             }

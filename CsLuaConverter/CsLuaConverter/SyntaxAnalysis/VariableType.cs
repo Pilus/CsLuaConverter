@@ -202,7 +202,7 @@
                 {
                     return "generics[genericsMapping['" + this.type + "']].name";
                 }
-                return "((methodGenerics or {})['" + this.type + "'] or {}).name";
+                return "methodGenerics['" + this.type + "'].name";
             }
 
             return '"' + this.GetFullTypeName(providers) + '"';
