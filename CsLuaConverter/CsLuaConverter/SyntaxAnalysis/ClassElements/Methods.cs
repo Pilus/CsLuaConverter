@@ -48,9 +48,11 @@
                                     if (parameters.Generics != null)
                                     {
                                         providers.GenericsRegistry.SetGenerics(parameters.Generics.Names, GenericScope.Method);
-                                        textWriter.Write("generics = ");
                                         parameters.Generics.WriteLua(textWriter, providers);
-                                        textWriter.WriteLine(",");
+                                    }
+                                    else
+                                    {
+                                        textWriter.Write("nil");
                                     }
                                 }));
                     }
