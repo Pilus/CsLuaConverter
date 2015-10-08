@@ -164,5 +164,25 @@
         {
             return this.IsGenerics(providers) ? new NativeTypeResult(this.Names.Single()) : providers.TypeProvider.LookupType(this.Names);
         }
+
+        public void WriteSystemType(IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (this.IsGenerics(providers))
+            {
+                textWriter.Write("generics[genericsMapping['{0}']]", this.Names.Single());
+            }
+            else
+            {
+                var type = (System.Reflection.TypeInfo)this.GetTypeResult(providers).GetTypeObject();
+                textWriter.Write("System.Type('{0}','{1}'", this.Names.Last(), type.Namespace);
+                if (this.Generics != null)
+                {
+                    textWriter.Write(",{0},", type.GenericTypeParameters.Count());
+                    this.Generics.WriteLua(textWriter, providers);
+                }
+
+                textWriter.Write(")");
+            }
+        }
     }
 }

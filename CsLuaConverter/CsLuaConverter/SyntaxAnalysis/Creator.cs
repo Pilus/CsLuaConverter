@@ -6,8 +6,8 @@
 
     internal class Creator : ILuaElement
     {
-        private readonly VariableType variableType;
-        public Creator(VariableType variableType)
+        private readonly VariableDefinition variableType;
+        public Creator(VariableDefinition variableType)
         {
             this.variableType = variableType;
         }

@@ -9,29 +9,30 @@
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers.GenericsRegistry;
 
-    internal class VariableType : ILuaElement
+    [Obsolete("User type reference instead.")]
+    internal class VariableDefinition : ILuaElement
     {
         private readonly bool includeVariableName;
-        private List<VariableType> generics;
+        private List<VariableDefinition> generics;
         public bool initializationCall;
         private bool isArray;
         private string type;
         private VariableName variable;
         public bool IsNullable;
 
-        public VariableType()
+        public VariableDefinition()
         {
             this.includeVariableName = false;
             this.initializationCall = false;
         }
 
-        public VariableType(bool includeVariableName)
+        public VariableDefinition(bool includeVariableName)
         {
             this.includeVariableName = includeVariableName;
             this.initializationCall = false;
         }
 
-        public VariableType(bool includeVariableName, bool initializationCall)
+        public VariableDefinition(bool includeVariableName, bool initializationCall)
         {
             this.includeVariableName = includeVariableName;
             this.initializationCall = initializationCall;
@@ -107,11 +108,11 @@
             
             if (token.Parent is TypeArgumentListSyntax && token.Text.Equals("<")) // <
             {
-                this.generics = new List<VariableType>();
+                this.generics = new List<VariableDefinition>();
                 while (!(token.Parent is TypeArgumentListSyntax && token.Text == ">"))
                 {
                     token = token.GetNextToken();
-                    var generic = new VariableType();
+                    var generic = new VariableDefinition();
                     token = generic.Analyze(token);
                     token = token.GetNextToken();
                     this.generics.Add(generic);
@@ -200,9 +201,9 @@
             {
                 if (providers.GenericsRegistry.GetGenericScope(this.type) == GenericScope.Class)
                 {
-                    return "generics[genericsMapping['" + this.type + "']].name";
+                    return "generics[genericsMapping['" + this.type + "']].FullName";
                 }
-                return "methodGenerics['" + this.type + "'].name";
+                return "methodGenerics['" + this.type + "'].FullName";
             }
 
             return '"' + this.GetFullTypeName(providers) + '"';

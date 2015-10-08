@@ -8,7 +8,7 @@
 
     internal class Parameter : ILuaElement
     {
-        public VariableType Type;
+        public VariableDefinition Type;
         public string Name;
         public bool IsParam;
 
@@ -28,7 +28,7 @@
 
             if (!(token.Parent is ParameterSyntax))
             {
-                this.Type = new VariableType();
+                this.Type = new VariableDefinition();
                 token = this.Type.Analyze(token);
                 token = token.GetNextToken();
             }

@@ -23,7 +23,21 @@
 
         public System.Type GetTypeObject()
         {
-            throw new TypeLookupException("Cannot lookup the type of a native type result.");
+            switch (this.name)
+            {
+                case "bool":
+                    return typeof(bool);
+                case "string":
+                    return typeof(string);
+                case "int":
+                    return typeof(int);
+                case "double":
+                    return typeof(double);
+                case "float":
+                    return typeof(float);
+                default:
+                    throw new TypeLookupException(string.Format("Unknown native type: {0}.", this.name));
+            }
         }
 
         public override string ToString()

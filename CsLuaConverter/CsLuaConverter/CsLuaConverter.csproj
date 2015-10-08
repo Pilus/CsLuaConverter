@@ -168,7 +168,7 @@
     <Compile Include="SyntaxAnalysis\TypeLookupException.cs" />
     <Compile Include="SyntaxAnalysis\Var.cs" />
     <Compile Include="SyntaxAnalysis\VariableName.cs" />
-    <Compile Include="SyntaxAnalysis\VariableType.cs" />
+    <Compile Include="SyntaxAnalysis\VariableDefinition.cs" />
     <Compile Include="SyntaxAnalysis\WhileLoop.cs" />
     <Compile Include="AddOnConstruction\TocBuilder.cs" />
     <Compile Include="WrappingException.cs" />

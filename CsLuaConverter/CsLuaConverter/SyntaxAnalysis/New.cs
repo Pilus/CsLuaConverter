@@ -8,7 +8,7 @@ namespace CsLuaConverter.SyntaxAnalysis
 
     internal class New : ILuaElement
     {
-        private VariableType typeWithgeneric;
+        private VariableDefinition typeWithgeneric;
         private VariableName type;
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
@@ -41,7 +41,7 @@ namespace CsLuaConverter.SyntaxAnalysis
 
             if (token.Parent is GenericNameSyntax)
             {
-                this.typeWithgeneric = new VariableType(true, true);
+                this.typeWithgeneric = new VariableDefinition(true, true);
                 token = this.typeWithgeneric.Analyze(token);
             }
             else

@@ -11,7 +11,7 @@
     internal class Property : ILuaElement
     {
         public string Name;
-        public VariableType Type;
+        public VariableDefinition Type;
         private Block getBlock;
         private bool isStatic;
         private Scope scope;
@@ -87,7 +87,7 @@
                 this.isStatic = true;
                 token = token.GetNextToken();
             }
-            this.Type = new VariableType(); // return type
+            this.Type = new VariableDefinition(); // return type
             token = this.Type.Analyze(token);
             token = token.GetNextToken();
             this.Name = token.Text; // Name

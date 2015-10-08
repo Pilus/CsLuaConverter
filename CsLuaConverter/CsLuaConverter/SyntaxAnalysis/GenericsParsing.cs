@@ -15,7 +15,7 @@
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             var first = true;
-            textWriter.Write("CsLuaMeta.GenericsList(");
+            textWriter.Write("{");
             foreach (var variableName in this.names)
             {
                 if (!first)
@@ -24,25 +24,9 @@
                 }
                 first = false;
 
-                textWriter.Write("CsLuaMeta.Generic(");
-                if (variableName.IsGenerics(providers))
-                {
-                    textWriter.Write("generics[genericsMapping[{0}]].name", variableName.GetTypeResult(providers).ToQuotedString());
-                }
-                else
-                {
-                    textWriter.Write(variableName.GetTypeResult(providers).ToQuotedString());
-                    if (variableName.Generics != null)
-                    {
-                        textWriter.Write(",");
-                        variableName.Generics.WriteLua(textWriter, providers);
-                    }
-                }
-                
-                
-                textWriter.Write(")");
+                variableName.WriteSystemType(textWriter, providers);
             }
-            textWriter.Write(")");
+            textWriter.Write("}");
         }
 
         public SyntaxToken Analyze(SyntaxToken token)

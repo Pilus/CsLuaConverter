@@ -14,7 +14,7 @@
         public ILuaElement Expression;
         public string Name;
         public Scope Scope = Scope.Private;
-        public VariableType Type;
+        public VariableDefinition Type;
         private bool isStatic;
 
         private readonly string className;
@@ -57,7 +57,7 @@
 
             while (true)
             {
-                this.Type = new VariableType();
+                this.Type = new VariableDefinition();
                 token = this.Type.Analyze(token);
                 token = token.GetNextToken();
 

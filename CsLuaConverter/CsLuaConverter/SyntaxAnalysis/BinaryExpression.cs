@@ -7,7 +7,7 @@
     internal class BinaryExpression : ILuaElement
     {
         public string Text;
-        private VariableType type;
+        private VariableDefinition type;
         public ILuaElement PreviousElement;
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
@@ -60,7 +60,7 @@
             if (this.Text.Equals("as") || this.Text.Equals("is"))
             {
                 token = token.GetNextToken();
-                this.type = new VariableType();
+                this.type = new VariableDefinition();
                 token = this.type.Analyze(token);
             }
 

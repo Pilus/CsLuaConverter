@@ -16,7 +16,7 @@
         public string Name;
         public Scope Scope;
         public bool Static;
-        private VariableType TypeName;
+        private VariableDefinition TypeName;
         private Block block;
         private ParameterList parameters;
 
@@ -98,7 +98,7 @@
                 token = token.GetNextToken();
             }
 
-            this.TypeName = new VariableType();
+            this.TypeName = new VariableDefinition();
             token = this.TypeName.Analyze(token);
             token = token.GetNextToken();
 

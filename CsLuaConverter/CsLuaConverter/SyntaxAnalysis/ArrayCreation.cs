@@ -8,7 +8,7 @@
 
     internal class ArrayCreation : ILuaElement
     {
-        private VariableType type;
+        private VariableDefinition type;
         private List<ILuaElement> codes;
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
@@ -30,7 +30,7 @@
             LuaElementHelper.CheckType(typeof(ArrayCreationExpressionSyntax), token.Parent);
             token = token.GetNextToken();
 
-            this.type = new VariableType();
+            this.type = new VariableDefinition();
             token = this.type.Analyze(token);
 
             while (token.Parent is ArrayRankSpecifierSyntax)

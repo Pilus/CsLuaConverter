@@ -7,7 +7,7 @@
 
     internal class Cast : ILuaElement
     {
-        private VariableType type;
+        private VariableDefinition type;
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("CsLuaMeta.Cast({0})+", this.type.GetQuotedFullTypeString(providers));
@@ -17,7 +17,7 @@
         {
             LuaElementHelper.CheckType(typeof(CastExpressionSyntax), token.Parent); // (
             token = token.GetNextToken();
-            this.type = new VariableType();
+            this.type = new VariableDefinition();
             token = this.type.Analyze(token);
             token = token.GetNextToken();
             LuaElementHelper.CheckType(typeof(CastExpressionSyntax), token.Parent); // )

@@ -84,7 +84,7 @@
                 }
             },
             {typeof(PredefinedTypeSyntax), token => new PredefinedType()},
-            {typeof(GenericNameSyntax), token => new VariableType(true, true)},
+            {typeof(GenericNameSyntax), token => new VariableDefinition(true, true)},
             {typeof(ParenthesizedExpressionSyntax), token => new PredeterminedElement(token.Text)},
             {typeof(LiteralExpressionSyntax), token => new LiteralExpression()},
             {typeof(VariableDeclaratorSyntax), token => new PredeterminedElement(token.Text)},
