@@ -581,13 +581,13 @@ CsLuaMeta.CreateClass = function(info)
 					func = CsLuaMeta.GenericsMethod(function(generics,...)
 						local methodGenerics = {};
 						for i,v in ipairs(generics) do
-							methodGenerics[methodValue[1].generics[i]] = { name = v.name };
+							methodGenerics[element.generics[i]] = { name = v.name };
 						end
 						local innerFunc = GenerateAmbigiousFunc(element, inheritiedClass, appliedGenerics, methodGenerics);
 						return innerFunc(...);
 					end);
 				else
-					func, methodValue = GenerateAmbigiousFunc(element, inheritiedClass, appliedGenerics);
+					func, _ = GenerateAmbigiousFunc(element, inheritiedClass, appliedGenerics);
 				end
 
 				methods[element.name] = func;
