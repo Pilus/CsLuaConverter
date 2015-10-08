@@ -202,7 +202,7 @@
                         return "object";
                     }
 
-                    return "generics[genericsMapping['" + name + "']].name";
+                    return "generics[genericsMapping['" + name + "']]";
                 }
             }
             return "'" + providers.TypeProvider.LookupType(names) + "'";

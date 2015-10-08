@@ -9,6 +9,8 @@ local hashString = function(str, hash)
 end
 
 local typeType;
+local objectType;
+
 local meta = {
 	__index = function(self, index)
 		if index == "GetType" then
@@ -27,6 +29,8 @@ local meta = {
 			return self.name;
 		elseif index == "Namespace" then
 			return self.namespace;
+		elseif index == "BaseType" then
+			return self.baseType;
 		elseif index == "FullName" then
 			local generic = "";
 			if self.numberOfGenerics > 1 then
@@ -50,7 +54,9 @@ local getHash = function(name, namespace, numberOfGenerics, generics)
 end
 
 local typeCache = {};
-System.Type = function(name, namespace, numberOfGenerics, generics)
+
+
+local typeCall = function(name, namespace, baseType, numberOfGenerics, generics)
 	numberOfGenerics = numberOfGenerics or 0;
 	local hash = getHash(name, namespace, numberOfGenerics, generics);
 	if typeCache[hash] then
@@ -63,10 +69,17 @@ System.Type = function(name, namespace, numberOfGenerics, generics)
 		numberOfGenerics = numberOfGenerics,
 		hash = hash,
 		generics = generics,
+		baseType = baseType,
 	};
 	
 	setmetatable(self, meta);
 	typeCache[hash] = self;
 	return self;
 end
-typeType = System.Type("Type", "System", 1);
+
+objectType = typeCall("Object", "System");
+typeType = typeCall("Type", "System", objectType);
+
+System.Type = BasicClass(typeCall, null, null, name, namespace, null, 0)
+
+

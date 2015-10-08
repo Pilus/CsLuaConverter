@@ -47,11 +47,11 @@
                 var type = this.Names.Single();
                 if (providers.GenericsRegistry.GetGenericScope(type) == GenericScope.Class)
                 {
-                    textWriter.Write("generics[genericsMapping['" + type + "']].name");
+                    textWriter.Write("generics[genericsMapping['" + type + "']]");
                 }
                 else
                 {
-                    textWriter.Write("methodGenerics['" + type + "'].name");
+                    textWriter.Write("methodGenerics['" + type + "']");
                 }
                 return;
             }

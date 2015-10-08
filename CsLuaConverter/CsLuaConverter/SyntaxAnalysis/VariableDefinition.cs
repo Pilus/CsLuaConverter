@@ -201,9 +201,9 @@
             {
                 if (providers.GenericsRegistry.GetGenericScope(this.type) == GenericScope.Class)
                 {
-                    return "generics[genericsMapping['" + this.type + "']].FullName";
+                    return "generics[genericsMapping['" + this.type + "']]";
                 }
-                return "methodGenerics['" + this.type + "'].FullName";
+                return "methodGenerics['" + this.type + "']";
             }
 
             return '"' + this.GetFullTypeName(providers) + '"';
