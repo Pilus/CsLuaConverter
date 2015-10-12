@@ -80,6 +80,6 @@ end
 objectType = typeCall("Object", "System");
 typeType = typeCall("Type", "System", objectType);
 
-System.Type = BasicClass(typeCall, null, null, name, namespace, null, 0)
+System.Type = typeCall;
 
 
