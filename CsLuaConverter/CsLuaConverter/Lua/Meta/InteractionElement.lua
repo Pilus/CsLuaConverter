@@ -10,7 +10,7 @@ local InteractionElement = function(metaProvider, generics)
 	
 	local staticValues = {};
 
-	local typeObject, statics, nonStatics = metaProvider(generics, staticValues);
+	local typeObject, statics, nonStatics, defaultValuePopulator, constructor, initializer = metaProvider(generics, staticValues);
 	
 	local meta = {
 		__typeof = typeObject,
@@ -35,7 +35,7 @@ local InteractionElement = function(metaProvider, generics)
 			return staticValues[key];
 		end,
 		__call = function(...)
-			
+			local defaultValueProvider
 		end,
 	});
 
