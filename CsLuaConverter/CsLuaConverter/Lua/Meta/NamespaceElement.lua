@@ -10,11 +10,11 @@ local getHashOfGenerics = function(generics)
 end
 
 local isGenericsTable = function(value)
-	if not(type(value) == "table")
+	if not(type(value) == "table") then
 		return false;
 	end
 	
-	for _,v ipairs(value) do
+	for _,v in ipairs(value) do
 		if not(type(v) == "table") or not(System.Type.__is(value)) then
 			return false;
 		end
@@ -29,7 +29,7 @@ local NamespaceElement = function(metaProviders)
 		generics = generics or {};
 		local hash = getHashOfGenerics(generics);
 		if not(interactionElements[hash]) then
-			interactionElements[hash] = _M.IE(metaProviders[numOfGenerics], generics);
+			interactionElements[hash] = _M.IE(metaProviders[#(generics)], generics);
 		end
 		
 		return interactionElements[hash];

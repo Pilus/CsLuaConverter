@@ -41,13 +41,16 @@
             var type = providers.TypeProvider.LookupType(this.name);
             string fullName = type.ToString();
 
+            var numberOfGenerics = 0;
             if (this.generics != null)
             {
+                numberOfGenerics = this.generics.Names.Count;
                 providers.GenericsRegistry.SetGenerics(this.generics.Names, GenericScope.Class);
             }
 
             providers.NameProvider.AddAllInheritedMembersToScope(this.name);
 
+            /*
             var elements = new List<ILuaElement>
             {
                 new Interfaces(this.baseLists.Skip(inheritsOtherClass ? 1 : 0).ToList(), this.generics),
@@ -56,67 +59,37 @@
                 new Methods(this.IsStatic, this.methods, this.name),
                 new Serializability(this.IsStatic, this.IsSerializable(), this.properties, this.variables, this.name),
                 new Constructors(this.IsStatic, this.IsSerializable(), this.constructors, this.name),
-            };
+            }; */
 
-            textWriter.WriteLine("{0} = CsLuaMeta.CreateClass(", this.name);
+            var typeObject = type.GetTypeObject();
+
+            textWriter.WriteLine("{0} = _M.NE({{[{1}] = function(generics, staticValues)", this.name, numberOfGenerics);
             textWriter.Indent++;
-            LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>
-            {
-                {"name", this.name},
-                {"fullName", fullName},
-                {"isStatic", this.IsStatic},
-                {"hasGenerics", this.generics != null},
-                {
-                    "generics", new Action(() =>
-                    {
-                        if (this.generics == null)
-                        {
-                            textWriter.Write("nil");
-                        }
-                        else
-                        {
-                            this.generics.WriteLua(textWriter, providers);
-                        }
-                    })
-                },
-                {"isSerializable", this.IsSerializable()},
-                {
-                    "inherits", new Action(() =>
-                    {
-                        if (inheritsOtherClass)
-                        {
-                            textWriter.Write(
-                                this.baseLists.First().Name.GetTypeResult(providers).ToQuotedString());
-                        }
-                        else
-                        {
-                            textWriter.Write("nil");
-                        }
-                    })
-                }, /*
-                {
-                    "interfaces", new Action(() => textWriter.Write("{{{0}}}",
-                        string.Join(",", this.baseLists.Skip(inheritsOtherClass ? 1 : 0).Select(bl =>bl.GetFullNameString(providers)))))
-                }, //*/
-                {
-                    "getElements", new Action(() =>
-                    {
-                        textWriter.WriteLine("function(class, generics)");
-                        textWriter.Indent++;
-                        this.WriteGenericsMapping(textWriter, providers);
-                        textWriter.WriteLine("return {");
-                        textWriter.Indent++;
-                        elements.ForEach(e => e.WriteLua(textWriter, providers));
-                        textWriter.Indent--;
-                        textWriter.WriteLine("};");
-                        textWriter.Indent--;
-                        textWriter.WriteLine("end");
-                    })
-                },
-            }, null, null);
+            // Expected: typeObject, statics, nonStatics, constructors, defaultValueProvider 
+            this.WriteGenericsMapping(textWriter, providers);
 
+            textWriter.Write("local baseTypeObject, statics, nonStatics, baseConstructors, _ = ");
+            textWriter.Write("{0}.{1}", typeObject.BaseType.Namespace, typeObject.BaseType.Name);
+            if (inheritsOtherClass && this.baseLists[0].Name.Generics != null)
+            {
+                textWriter.Write("[{");
+                this.baseLists[0].Name.Generics.WriteLua(textWriter, providers);
+                textWriter.Write("}]");
+            }
+            textWriter.WriteLine(".__meta();");
+            textWriter.WriteLine("local implements = {};");
+            textWriter.WriteLine(
+                "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements);",
+                typeObject.Name, typeObject.Namespace, numberOfGenerics);
+
+            //textWriter.WriteLine("local typeObject, constructors, defaultValueProvider;")
+            //var staticElements = elements.Where(e => e.)
+            //elements.ForEach(e => e.WriteLua(textWriter, providers));
+
+            textWriter.WriteLine("return  typeObject, statics, nonStatics, constructors, defaultValueProvider;");
+            
             textWriter.Indent--;
-            textWriter.WriteLine("),");
+            textWriter.WriteLine("end}),");
 
             providers.GenericsRegistry.ClearScope(GenericScope.Class);
             providers.NameProvider.SetScope(originalScope);

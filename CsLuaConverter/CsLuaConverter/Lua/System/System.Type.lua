@@ -11,6 +11,32 @@ end
 local typeType;
 local objectType;
 
+local GetMatchScore = function(self, otherType)
+	if otherType.GetHashCode() == self.hash then
+		return self.level;
+	end
+	
+	if self.implements then
+		local bestScore;
+		for _,interfaceType in ipairs(self.implements) do
+			local score = interfaceType.GetMatchScore(otherType);
+			if score then
+				bestScore = bestScore and math.max(bestScore, score) or score;
+			end
+		end
+		
+		if bestScore then
+			return math.min(bestScore, self.Level-1);
+		end
+	end
+	
+	if self.baseType then
+		return self.baseType.GetMatchScore(otherType);
+	end
+	
+	return nil;
+end
+
 local meta = {
 	__index = function(self, index)
 		if index == "GetType" then
@@ -31,6 +57,10 @@ local meta = {
 			return self.namespace;
 		elseif index == "BaseType" then
 			return self.baseType;
+		elseif index == "Level" then
+			return self.level;
+		elseif index == "GetMatchScore" then
+			return function(otherType) return GetMatchScore(self, otherType); end;
 		elseif index == "FullName" then
 			local generic = "";
 			if self.numberOfGenerics > 1 then
@@ -56,7 +86,7 @@ end
 local typeCache = {};
 
 
-local typeCall = function(name, namespace, baseType, numberOfGenerics, generics)
+local typeCall = function(name, namespace, baseType, numberOfGenerics, generics, implements)
 	numberOfGenerics = numberOfGenerics or 0;
 	local hash = getHash(name, namespace, numberOfGenerics, generics);
 	if typeCache[hash] then
@@ -70,6 +100,8 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics)
 		hash = hash,
 		generics = generics,
 		baseType = baseType,
+		level = (baseType and baseType.Level or 0) + 1,
+		implements = implements,
 	};
 	
 	setmetatable(self, meta);
@@ -81,5 +113,4 @@ objectType = typeCall("Object", "System");
 typeType = typeCall("Type", "System", objectType);
 
 System.Type = typeCall;
-
 
