@@ -1,7 +1,7 @@
 ﻿
 System = System or {};
-System.Object = _M.NE({[0] = function(element)
-	local typeObject = System.Type('Object','System');
+System.String = _M.NE({[0] = function()
+	local typeObject = System.Type('String','System');
 	local nonStatics = {
 		-- TOOD: Add non static object members
 	};

@@ -22,7 +22,7 @@ end
 local SelectMatchingByTypes = function(list, args)
 	local argTypes = {};
 	for i,arg in ipairs(args) do
-		argTypes[i] = arg.GetType(); -- TODO: Use  %_M.DOT% 
+		argTypes[i] = (arg%_M.DOT).GetType();
 	end
 	
 	local bestMatch, bestScore;

@@ -177,8 +177,10 @@
     <None Include="CopyLuaToOutput.ps1" />
     <None Include="Lua\CsLuaMeta.lua" />
     <None Include="Lua\Meta\ArgumentMatching.lua" />
+    <None Include="Lua\Meta\Dot.lua" />
     <None Include="Lua\Meta\InteractionElement.lua" />
     <None Include="Lua\Meta\NamespaceElement.lua" />
+    <None Include="Lua\System\System.String.lua" />
     <None Include="Lua\System\System.Object.lua" />
     <None Include="Lua\System\System.Type.lua" />
   </ItemGroup>

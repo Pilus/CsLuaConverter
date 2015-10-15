@@ -61,6 +61,8 @@ local meta = {
 			return self.level;
 		elseif index == "GetMatchScore" then
 			return function(otherType) return GetMatchScore(self, otherType); end;
+        elseif index == "InteractionElement" then
+            return self.interactionElement;
 		elseif index == "FullName" then
 			local generic = "";
 			if self.numberOfGenerics > 1 then
@@ -86,7 +88,7 @@ end
 local typeCache = {};
 
 
-local typeCall = function(name, namespace, baseType, numberOfGenerics, generics, implements)
+local typeCall = function(name, namespace, baseType, numberOfGenerics, generics, implements, interactionElement)
 	numberOfGenerics = numberOfGenerics or 0;
 	local hash = getHash(name, namespace, numberOfGenerics, generics);
 	if typeCache[hash] then
@@ -102,6 +104,7 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
 		baseType = baseType,
 		level = (baseType and baseType.Level or 0) + 1,
 		implements = implements,
+        interactionElement = interactionElement,
 	};
 	
 	setmetatable(self, meta);

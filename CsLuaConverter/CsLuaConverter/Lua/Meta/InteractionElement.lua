@@ -7,20 +7,42 @@ local expectOneElement = function(elements, key)
 end
 
 local InteractionElement = function(metaProvider, generics)
-	
+	local element = {};
 	local staticValues = {};
 
-	local typeObject, statics, nonStatics, constructors, defaultValueProvider = metaProvider(generics, staticValues);
+	local typeObject, statics, nonStatics, constructors, defaultValueProvider = metaProvider(element, generics, staticValues);
 	
+
+    local index = function(self, key)
+        if statics[key] then
+            local element = statics[key][1];
+            if element.elementType == "Variable" or element.elementType == "Property" then
+                return staticValues[element.level][key];
+            end
+        elseif nonStatics[key] then
+            local firstElement = nonStatics[key][1];
+            if firstElement.elementType == "Variable" or firstElement.elementType == "Property" then
+                return self[element.level][key];
+            end
+        end
+        error("Unknown key on element "..key);
+    end,
+
 	local meta = {
 		__typeof = typeObject,
 		__is = function(value) return typeObject.Equals(value); end,
 		__meta = function() return typeObject, statics, nonStatics, constructors, defaultValueProvider; end,
+        
+        __newindex = function(key, value) 
+        end,
 	};
 
-	local element = {};
+	
 	setmetatable(element, { 
 		__index = function(key)
+            if key == "__index" then
+                return index;
+            end
 			if meta[key] then 
 				return meta[key];
 			end

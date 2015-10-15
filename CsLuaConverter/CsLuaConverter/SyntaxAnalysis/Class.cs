@@ -63,7 +63,7 @@
 
             var typeObject = type.GetTypeObject();
 
-            textWriter.WriteLine("{0} = _M.NE({{[{1}] = function(generics, staticValues)", this.name, numberOfGenerics);
+            textWriter.WriteLine("{0} = _M.NE({{[{1}] = function(interactionElement, generics, staticValues)", this.name, numberOfGenerics);
             textWriter.Indent++;
             // Expected: typeObject, statics, nonStatics, constructors, defaultValueProvider 
             this.WriteGenericsMapping(textWriter, providers);
@@ -76,10 +76,10 @@
                 this.baseLists[0].Name.Generics.WriteLua(textWriter, providers);
                 textWriter.Write("}]");
             }
-            textWriter.WriteLine(".__meta();");
+            textWriter.WriteLine(".__meta(staticValues);");
             textWriter.WriteLine("local implements = {};");
             textWriter.WriteLine(
-                "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements);",
+                "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements, interactionElement);",
                 typeObject.Name, typeObject.Namespace, numberOfGenerics);
 
             //textWriter.WriteLine("local typeObject, constructors, defaultValueProvider;")
