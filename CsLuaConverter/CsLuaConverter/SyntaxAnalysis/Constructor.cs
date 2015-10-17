@@ -15,20 +15,26 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("function(");
-            this.parameters.WriteLua(textWriter, providers);
+            textWriter.Write("function(element");
+            if (this.parameters.Parameters.Count > 0)
+            {
+                textWriter.WriteLine(", ");
+                this.parameters.WriteLua(textWriter, providers);
+            }
+            
             textWriter.WriteLine(")");
             textWriter.Indent++;
 
             if (this.baseCall != null)
             {
+                // TODO: Modify to correct base constructor call.
                 textWriter.Write(this.baseCallPrefix);
                 this.baseCall.WriteLua(textWriter, providers);
                 textWriter.WriteLine(";");
             }
             else
             {
-                textWriter.WriteLine("if class.__base then class.__base.__Cstor(); end");
+                textWriter.WriteLine("_M.AM(baseConstructors,{}).func(element);");
             }
 
             this.block.WriteLua(textWriter, providers);

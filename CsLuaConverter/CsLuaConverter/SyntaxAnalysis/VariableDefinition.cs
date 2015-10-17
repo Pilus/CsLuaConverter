@@ -13,7 +13,7 @@
     internal class VariableDefinition : ILuaElement
     {
         private readonly bool includeVariableName;
-        private List<VariableDefinition> generics;
+        public List<VariableDefinition> Generics;
         public bool initializationCall;
         private bool isArray;
         private string type;
@@ -108,14 +108,14 @@
             
             if (token.Parent is TypeArgumentListSyntax && token.Text.Equals("<")) // <
             {
-                this.generics = new List<VariableDefinition>();
+                this.Generics = new List<VariableDefinition>();
                 while (!(token.Parent is TypeArgumentListSyntax && token.Text == ">"))
                 {
                     token = token.GetNextToken();
                     var generic = new VariableDefinition();
                     token = generic.Analyze(token);
                     token = token.GetNextToken();
-                    this.generics.Add(generic);
+                    this.Generics.Add(generic);
                 }
                 token = token.GetNextToken();
             }
@@ -209,6 +209,21 @@
             return '"' + this.GetFullTypeName(providers) + '"';
         }
 
+        public string GetTypeReferences(IProviders providers)
+        {
+            if (this.IsGeneric(providers))
+            {
+                if (providers.GenericsRegistry.GetGenericScope(this.type) == GenericScope.Class)
+                {
+                    return "generics[genericsMapping['" + this.type + "']]";
+                }
+                return "methodGenerics['" + this.type + "']";
+            }
+
+            return this.GetFullTypeName(providers) + ".__typeof";
+        }
+
+
         public string GetGenericsList(IProviders providers)
         {
             if (this.isArray)
@@ -217,11 +232,11 @@
             }
 
 
-            if (this.generics == null)
+            if (this.Generics == null)
             {
                 return null;
             }
-            return "CsLuaMeta.GenericsList(" + string.Join(",", this.generics.Select(t => "CsLuaMeta.Generic(" + t.GetQuotedFullTypeString(providers) + ")")) + ")";
+            return "CsLuaMeta.GenericsList(" + string.Join(",", this.Generics.Select(t => "CsLuaMeta.Generic(" + t.GetQuotedFullTypeString(providers) + ")")) + ")";
         }
     }
 }

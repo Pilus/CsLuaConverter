@@ -205,7 +205,7 @@
                     if (last is LiteralExpression)
                     {
                         this.Elements.Insert(this.Elements.IndexOf(last), new PredeterminedElement("("));
-                        this.Elements.Add(new PredeterminedElement("%CsLuaMeta.dot)"));
+                        this.Elements.Add(new PredeterminedElement("%_M.DOT)"));
                     }
                 }
 

@@ -80,7 +80,7 @@
                     textWriter.Write(
                         //"(" +
                         new string('(', dotCount) +
-                        fullRef.Replace(".", "%CsLuaMeta.dot).") //+
+                        fullRef.Replace(".", "%_M.DOT).") //+
                         //")" 
                     );
                 }

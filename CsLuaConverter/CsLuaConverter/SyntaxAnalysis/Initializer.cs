@@ -23,25 +23,29 @@
         {
             if (this.initializeClass)
             {
-                textWriter.Write(".__Initialize({");
+                textWriter.WriteLine(".__Initialize({");
             }
             else if (this.intializeClassWithoutContructor)
             {
-                textWriter.Write("().__Initialize({");
+                textWriter.WriteLine("().__Initialize({");
             }
             else
             {
-                textWriter.Write("System.Array(nil).__Cstor({");
+                textWriter.WriteLine("System.Array(nil).__Cstor({");
             }
+
+            textWriter.Indent++;
 
             for (int i = 0; i < this.elements.Count; i++)
             {
                 LuaElementHelper.WriteLuaJoin(this.elements[i].ToList(), textWriter, providers, "");
                 if (i < this.elements.Count - 1)
                 {
-                    textWriter.Write(",");
+                    textWriter.WriteLine(",");
                 }
             }
+
+            textWriter.Indent--;
             textWriter.WriteLine("})");
         }
 

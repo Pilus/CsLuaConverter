@@ -1,18 +1,18 @@
 ﻿
 
 local DotMeta = function(f1, f2) 
-	return setmetatable({}, {
-		__mod = function(obj, _) 
-			return setmetatable({}, {
-				__index = function(_, index)
-					return f1(obj,index);
-				end,
-				__newindex = function(_, index, value)
-					return f2(obj,index, value);
-				end,
-			})
-		end
-	});
+    return setmetatable({}, {
+        __mod = function(obj, _) 
+            return setmetatable({}, {
+                __index = function(_, index)
+                    return f1(obj,index);
+                end,
+                __newindex = function(_, index, value)
+                    return f2(obj,index, value);
+                end,
+            })
+        end
+    });
 end
 
 local GetType = function(obj)
@@ -27,12 +27,12 @@ end
 
 _M = _M or {};
 _M.DOT = DotMeta(
-	function(obj, index)  -- useage:  a%CsLuaMeta.dot%b
-		local typeObject = GetType(obj);
+    function(obj, index)  -- useage:  a%_M.dot%b
+        local typeObject = GetType(obj);
         return typeObject.InteractionElement.__index(obj, index); 
-	end, 
-	function(obj, index, value)
-		local typeObject = GetType(obj);
+    end, 
+    function(obj, index, value)
+        local typeObject = GetType(obj);
         return typeObject.InteractionElement.__newindex(obj, index, value); 
-	end
+    end
 );

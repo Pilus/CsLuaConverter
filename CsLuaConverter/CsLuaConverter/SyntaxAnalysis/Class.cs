@@ -68,7 +68,7 @@
             // Expected: typeObject, statics, nonStatics, constructors, defaultValueProvider 
             this.WriteGenericsMapping(textWriter, providers);
 
-            textWriter.Write("local baseTypeObject, statics, nonStatics, baseConstructors, _ = ");
+            textWriter.Write("local baseTypeObject, members, baseConstructors, baseElementGenerator = ");
             textWriter.Write("{0}.{1}", typeObject.BaseType.Namespace, typeObject.BaseType.Name);
             if (inheritsOtherClass && this.baseLists[0].Name.Generics != null)
             {
@@ -77,7 +77,6 @@
                 textWriter.Write("}]");
             }
             textWriter.WriteLine(".__meta(staticValues);");
-            textWriter.WriteLine("local implements = {};");
             textWriter.WriteLine(
                 "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements, interactionElement);",
                 typeObject.Name, typeObject.Namespace, numberOfGenerics);
@@ -86,7 +85,70 @@
             //var staticElements = elements.Where(e => e.)
             //elements.ForEach(e => e.WriteLua(textWriter, providers));
 
-            textWriter.WriteLine("return  typeObject, statics, nonStatics, constructors, defaultValueProvider;");
+            textWriter.WriteLine("local elementGenerator = function()");
+            textWriter.Indent++;
+            textWriter.WriteLine("local element = baseElementGenerator();");
+            textWriter.WriteLine("element.type = typeObject;");
+
+            textWriter.Write("element[typeObject.Level] = ");
+            LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>()
+            {
+                // TODO: Write default values for variables here.
+            });
+            
+            textWriter.WriteLine("return element;");
+            textWriter.Indent--;
+            textWriter.WriteLine("end");
+
+            // Members
+            foreach (var method in this.methods)
+            {
+                textWriter.Write("_M.IM(members,'{0}',", method.Name);
+
+                var parameters = method.GetParameters();
+                if (parameters.Generics != null)
+                {
+                    providers.GenericsRegistry.SetGenerics(parameters.Generics.Names, GenericScope.Method);
+                    //parameters.Generics.WriteLua(textWriter, providers);
+                }
+
+                LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>()
+                {
+                    { "type", "Method" },
+                    { "types", new Action(() => { textWriter.Write("{}"); }) }, // TODO: Correct types
+                    { "func", new Action(() => { method.WriteLua(textWriter, providers); }) },
+                });
+                textWriter.WriteLine(");");
+            }
+
+            // Constructors
+            textWriter.WriteLine("local constructors = {");
+            textWriter.Indent++;
+            if (this.constructors.Count == 0)
+            {
+                LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>()
+                {
+                    { "types", new Action(() => textWriter.Write("{}")) },
+                    { "func", new Action(() => textWriter.Write("function(element) _M.AM(baseConstructors, {}).func(element); end")) },
+                });
+            }
+            else
+            {
+                foreach (var constructor in this.constructors)
+                {
+                    LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>()
+                    {
+                        { "types", new Action(() => textWriter.Write("{}")) },
+                        { "func", new Action(() => constructor.WriteLua(textWriter, providers)) }, // TODO: Call base constructor
+                    });
+                    textWriter.Write(",");
+                }
+            }
+            textWriter.WriteLine("");
+            textWriter.Indent--;
+            textWriter.WriteLine("};");
+
+            textWriter.WriteLine("return 'Class', typeObject, members, constructors, elementGenerator;");
             
             textWriter.Indent--;
             textWriter.WriteLine("end}),");
@@ -160,12 +222,12 @@
         {
             foreach (Method m in this.methods.Where(m => m.Name.Equals("Main") && m.Static))
             {
-                writer.WriteLine("{0}.{1}().Main(nil);", nameSpace, this.name);
+                writer.WriteLine("({0}.{1}()%_M.DOT).Main(nil);", nameSpace, this.name);
             }
 
             if (this.attributes.Any(att => att.attributeText.StartsWith("CsLuaAddOn(")))
             {
-                writer.WriteLine("{0}.{1}().Execute();", nameSpace, this.name);
+                writer.WriteLine("({0}.{1}()%_M.DOT).Execute();", nameSpace, this.name);
             }
         }
 

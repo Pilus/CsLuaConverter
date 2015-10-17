@@ -9,13 +9,13 @@ local getHashOfGenerics = function(generics)
 	return i;
 end
 
-local isGenericsTable = function(value)
-	if not(type(value) == "table") then
+local isGenericsTable = function(t)
+	if not(type(t) == "table") then
 		return false;
 	end
 	
-	for _,v in ipairs(value) do
-		if not(type(v) == "table") or not(System.Type.__is(value)) then
+	for _,v in ipairs(t) do
+		if not(type(v) == "table") or not(System.Type.Is(v)) then
 			return false;
 		end
 	end
@@ -37,16 +37,16 @@ local NamespaceElement = function(metaProviders)
 
 	local element = {};
 	setmetatable(element, { 
-		__index = function(key)
+		__index = function(_, key)
 			if not(isGenericsTable(key)) then
 				return getInteractionElement()[key];
 			end
 			return getInteractionElement(key);
 		end,
-		__newindex = function(key, value)
+		__newindex = function(_, key, value)
 			getInteractionElement()[key] = value;
 		end,
-		__call = function(...)
+		__call = function(_, ...)
 			return getInteractionElement()(...);
 		end,
 	});

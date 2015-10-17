@@ -42,11 +42,35 @@
             }
 
             var originalScope = providers.NameProvider.CloneScope();
+
+            var numberOfGenerics = 0;
             if (this.generics != null)
             {
+                numberOfGenerics = this.generics.Names.Count;
                 providers.GenericsRegistry.SetGenerics(this.generics.Names, GenericScope.Class);
             }
+
+            var typeObject = providers.TypeProvider.LookupType(this.Name).GetTypeObject();
+
+            textWriter.WriteLine("{0} = _M.NE({{[{1}] = function(interactionElement, generics, staticValues)", this.Name, numberOfGenerics);
+            textWriter.Indent++;
+
+            textWriter.WriteLine(
+                "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements, interactionElement, 'Interface');",
+                typeObject.Name, typeObject.Namespace, numberOfGenerics);
+
+            textWriter.WriteLine("return 'Interface', typeObject, nil, nil, nil;");
+
+            textWriter.Indent--;
+            textWriter.WriteLine("end}),");
+
+            if (true)
+            {
+                return;
+            }
             
+            // OLD code
+
             textWriter.WriteLine("{0} = function(generics)", this.Name);
             textWriter.Indent++;
 

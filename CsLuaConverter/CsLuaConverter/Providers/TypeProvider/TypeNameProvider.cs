@@ -44,8 +44,11 @@
             this.LoadType(typeof(ICsLuaAddOn));
             this.LoadType(typeof(IDictionary));
             this.LoadType(typeof(IDictionary<object, object>));
+            this.LoadType(typeof(Dictionary<object, object>));
             this.LoadType(typeof(IList));
             this.LoadType(typeof(IList<object>));
+            this.LoadType(typeof(List<object>));
+            this.LoadType(typeof(Enumerable));
         }
 
         private void LoadSolution(Solution solution)

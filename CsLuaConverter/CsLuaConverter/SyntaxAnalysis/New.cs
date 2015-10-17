@@ -2,6 +2,7 @@
 namespace CsLuaConverter.SyntaxAnalysis
 {
     using System.CodeDom.Compiler;
+    using System.Linq;
     using CsLuaConverter.Providers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -17,7 +18,11 @@ namespace CsLuaConverter.SyntaxAnalysis
             if (this.typeWithgeneric != null)
             {
                 this.typeWithgeneric.WriteLua(textWriter, providers);
-                textWriter.Write("({0}).__Cstor", this.typeWithgeneric.GetGenericsList(providers) ?? "");
+                var generics = this.typeWithgeneric.Generics;
+                if (generics.Count > 0)
+                {
+                    textWriter.Write("[{{{0}}}]", string.Join(",", generics.Select(generic => generic.GetTypeReferences(providers)).ToArray()));
+                }
             }
             else
             {

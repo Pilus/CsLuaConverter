@@ -180,6 +180,7 @@
     <None Include="Lua\Meta\Dot.lua" />
     <None Include="Lua\Meta\InteractionElement.lua" />
     <None Include="Lua\Meta\NamespaceElement.lua" />
+    <None Include="Lua\System\System.Collections.Generic.List.lua" />
     <None Include="Lua\System\System.String.lua" />
     <None Include="Lua\System\System.Object.lua" />
     <None Include="Lua\System\System.Type.lua" />
