@@ -2,8 +2,8 @@
 --============= Interaction Element =============
 
 local expectOneMember = function(members, key)
-    assert(type(members) == "table", "A table of one member was expected for "..key..". Got no table.");
-    assert(#(members) == 1, "A table of one member was expected for "..key..". Got "..#(members).." members");
+    assert(type(members) == "table", "A table of one member was expected for "..tostring(key)..". Got no table.");
+    assert(#(members) == 1, "A table of one member was expected for "..tostring(key)..". Got "..#(members).." members");
 end
 
 local InteractionElement = function(metaProvider, generics)
