@@ -4,11 +4,20 @@
 
     public class NativeTypeResult : ITypeResult
     {
+        private readonly System.Type type;
         private readonly string name;
 
         public NativeTypeResult(string name)
         {
             this.name = name;
+        }
+
+        public string Name { get { return this.name; } }
+
+        public NativeTypeResult(string name, System.Type type)
+        {
+            this.name = name;
+            this.type = type;
         }
 
         public string ToQuotedString()
@@ -23,26 +32,12 @@
 
         public System.Type GetTypeObject()
         {
-            switch (this.name)
-            {
-                case "bool":
-                    return typeof(bool);
-                case "string":
-                    return typeof(string);
-                case "int":
-                    return typeof(int);
-                case "double":
-                    return typeof(double);
-                case "float":
-                    return typeof(float);
-                default:
-                    throw new TypeLookupException(string.Format("Unknown native type: {0}.", this.name));
-            }
+            return this.type;
         }
 
         public override string ToString()
         {
-            return this.name;
+            return this.type.FullName;
         }
     }
 }

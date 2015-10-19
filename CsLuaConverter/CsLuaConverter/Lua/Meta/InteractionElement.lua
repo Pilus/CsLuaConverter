@@ -2,8 +2,8 @@
 --============= Interaction Element =============
 
 local expectOneMember = function(members, key)
-    assert(type(members) == "table", "A table of one member was expected for "..tostring(key)..". Got no table.");
-    assert(#(members) == 1, "A table of one member was expected for "..tostring(key)..". Got "..#(members).." members");
+    assert(type(members) == "table", "A table of one member was expected for key '"..tostring(key).."'. Got no table.");
+    assert(#(members) == 1, "A table of one member was expected for key '"..tostring(key).."'. Got "..#(members).." members");
 end
 
 local InteractionElement = function(metaProvider, generics)
@@ -35,19 +35,19 @@ local InteractionElement = function(metaProvider, generics)
             error("Incorrect key for member. Key: "..key);
         end
 
-        if fittingMembers[1].type == "Variable" or fittingMembers[1].type == "AutoProperty" then
+        if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then
             expectOneMember(fittingMembers, key);
             return self[fittingMembers[1].level][key];
         end
 
-        if fittingMembers[1].type == "Method" then
+        if fittingMembers[1].memberType == "Method" then
             return function(...)
                 local member = _M.AM(fittingMembers, {...});
                 return member.func(...);
             end
         end
 
-        error("Could not handle member. Type: "..tostring(fittingMembers[1].type)..". Key: "..tostring(key));
+        error("Could not handle get member. Type: "..tostring(fittingMembers[1].type)..". Key: "..tostring(key));
     end;
 
     local newIndex = function(self, key, value, level)
@@ -57,10 +57,13 @@ local InteractionElement = function(metaProvider, generics)
             error("Incorrect key for member. Key: "..key);
         end
 
-        if fittingMembers[1].type == "Variable" or fittingMembers[1].type == "AutoProperty" then
+        if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then
             expectOneMember(fittingMembers, key);
             self[fittingMembers[1].level][key] = value;
+            return
         end
+
+        error("Could not handle set member. Type: "..tostring(fittingMembers[1].type)..". Key: "..tostring(key));
     end
 
     local meta = {

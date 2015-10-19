@@ -3,8 +3,8 @@ System = System or {};
 System.Collections = System.Collections or {};
 System.Collections.Generic = System.Collections.Generic or {};
 
-System.Collections.Generic.List = _M.NE({[1] = function()
-    local typeObject = System.Type('List','System.Collections.Generic',System.Object.__typeof,1);
+System.Collections.Generic.Dictionary = _M.NE({[2] = function()
+    local typeObject = System.Type('Dictionary','System.Collections.Generic',System.Object.__typeof,2);
     local level = 2;
     local members = {
         

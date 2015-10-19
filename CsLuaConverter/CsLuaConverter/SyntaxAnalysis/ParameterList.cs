@@ -58,6 +58,19 @@
                 }));
         }
 
+        public string TypesAsReferences(IProviders providers)
+        {
+            return string.Join(", ",
+                this.Parameters.Select(parameter => {
+                    var def = ((Parameter)parameter).Type;
+                    if (def.IsGeneric(providers))
+                    {
+                        return def.GetGenericsList(providers);
+                    }
+                    return def.GetFullTypeName(providers) + ".__typeof";
+                }));
+        }
+
         public bool LastParameterHasParamKeyword()
         {
             var last = this.Parameters.LastOrDefault();

@@ -66,7 +66,7 @@
             textWriter.WriteLine("{0} = _M.NE({{[{1}] = function(interactionElement, generics, staticValues)", this.name, numberOfGenerics);
             textWriter.Indent++;
             // Expected: typeObject, statics, nonStatics, constructors, defaultValueProvider 
-            this.WriteGenericsMapping(textWriter, providers);
+            WriteGenericsMapping(this.generics, textWriter, providers);
 
             textWriter.Write("local baseTypeObject, members, baseConstructors, baseElementGenerator = ");
             textWriter.Write("{0}.{1}", typeObject.BaseType.Namespace, typeObject.BaseType.Name);
@@ -81,15 +81,11 @@
                 "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements, interactionElement);",
                 typeObject.Name, typeObject.Namespace, numberOfGenerics);
 
-            //textWriter.WriteLine("local typeObject, constructors, defaultValueProvider;")
-            //var staticElements = elements.Where(e => e.)
-            //elements.ForEach(e => e.WriteLua(textWriter, providers));
-
             textWriter.WriteLine("local elementGenerator = function()");
             textWriter.Indent++;
+
             textWriter.WriteLine("local element = baseElementGenerator();");
             textWriter.WriteLine("element.type = typeObject;");
-
             textWriter.Write("element[typeObject.Level] = ");
             LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>()
             {
@@ -98,28 +94,11 @@
             
             textWriter.WriteLine("return element;");
             textWriter.Indent--;
+
             textWriter.WriteLine("end");
 
             // Members
-            foreach (var method in this.methods)
-            {
-                textWriter.Write("_M.IM(members,'{0}',", method.Name);
-
-                var parameters = method.GetParameters();
-                if (parameters.Generics != null)
-                {
-                    providers.GenericsRegistry.SetGenerics(parameters.Generics.Names, GenericScope.Method);
-                    //parameters.Generics.WriteLua(textWriter, providers);
-                }
-
-                LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>()
-                {
-                    { "type", "Method" },
-                    { "types", new Action(() => { textWriter.Write("{}"); }) }, // TODO: Correct types
-                    { "func", new Action(() => { method.WriteLua(textWriter, providers); }) },
-                });
-                textWriter.WriteLine(");");
-            }
+            WriteMethods(this.methods, textWriter, providers);
 
             // Constructors
             textWriter.WriteLine("local constructors = {");
@@ -157,16 +136,16 @@
             providers.NameProvider.SetScope(originalScope);
         }
 
-        private void WriteGenericsMapping(IndentedTextWriter textWriter, IProviders providers)
+        private static void WriteGenericsMapping(GenericsDefinition generics, IndentedTextWriter textWriter, IProviders providers)
         {
             var mapping = new Dictionary<string, object>();
             textWriter.Write("local genericsMapping = ");
 
-            if (this.generics != null)
+            if (generics != null)
             {
-                for (var i = 0; i < this.generics.Names.Count; i++)
+                for (var i = 0; i < generics.Names.Count; i++)
                 {
-                    var name = this.generics.Names[i];
+                    var name = generics.Names[i];
                     mapping.Add(name, i + 1);
                 }
                 LuaFormatter.WriteDictionary(textWriter, mapping, ";", string.Empty);
@@ -177,6 +156,53 @@
             }
         }
 
+        private static void WriteMethods(List<Method> methods, IndentedTextWriter textWriter, IProviders providers)
+        {
+            MemberWriter(methods, textWriter, method => method.Name, (method) =>
+            {
+                var parameters = method.GetParameters();
+                if (parameters.Generics != null)
+                {
+                    providers.GenericsRegistry.SetGenerics(parameters.Generics.Names, GenericScope.Method);
+                }
+
+                return new Dictionary<string, object>()
+                {
+                    { "memberType", "Method" },
+                    { "types", new Action(() => { textWriter.Write("{{{0}}}",parameters.TypesAsReferences(providers)); })},
+                    { "func", new Action(() => { method.WriteLua(textWriter, providers); }) },
+                };
+            });
+        }
+
+        private static void WriteProperties(List<Property> properties, IndentedTextWriter textWriter, IProviders providers)
+        {
+            MemberWriter(properties, textWriter, property => property.Name, (property) =>
+            {
+                if (property.IsDefault())
+                {
+                    return new Dictionary<string, object>()
+                    {
+                        { "memberType", "AutoProperty" },
+                    };
+                }
+
+                return new Dictionary<string, object>()
+                {
+                    { "memberType", "Property" },
+                };
+            });
+        }
+
+        private static void MemberWriter<T>(List<T> list, IndentedTextWriter textWriter, Func<T, string> nameProvider, Func<T, Dictionary<string, object>> action)
+        {
+            foreach (var item in list)
+            {
+                textWriter.Write("_M.IM(members,'{0}',", nameProvider(item));
+                LuaFormatter.WriteDictionary(textWriter, action(item));
+                textWriter.WriteLine(");");
+            }
+        }
 
         public SyntaxToken Analyze(SyntaxToken token)
         {

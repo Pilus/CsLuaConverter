@@ -146,7 +146,7 @@
             return new ScopeElement(this.Name)
             {
                 IsFromClass = true,
-                ClassPrefix = "class.",
+                ClassPrefix = "element.",
             };
         }
 

@@ -13,7 +13,7 @@
         {
             if (this.varName == null)
             {
-                textWriter.Write("class");
+                textWriter.Write("element");
                 return;
             }
             this.varName.WriteLua(textWriter, providers);

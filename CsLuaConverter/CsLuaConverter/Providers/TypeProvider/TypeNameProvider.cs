@@ -14,16 +14,16 @@
         private readonly LoadedNamespace rootNamespace;
         private List<LoadedNamespace> refenrecedNamespaces;
 
-        private List<ITypeResult> predefinedNativeTypeResults = new List<ITypeResult>()
+        private List<NativeTypeResult> predefinedNativeTypeResults = new List<NativeTypeResult>()
         {
-            new NativeTypeResult("int"),
-            new NativeTypeResult("object"),
-            new NativeTypeResult("string"),
-            new NativeTypeResult("bool"),
-            new NativeTypeResult("long"),
-            new NativeTypeResult("double"),
-            new NativeTypeResult("float"),
-            new NativeTypeResult("void"),
+            new NativeTypeResult("int", typeof(int)),
+            new NativeTypeResult("object", typeof(object)),
+            new NativeTypeResult("string", typeof(string)),
+            new NativeTypeResult("bool", typeof(bool)),
+            new NativeTypeResult("long", typeof(long)),
+            new NativeTypeResult("double", typeof(double)),
+            new NativeTypeResult("float", typeof(float)),
+            new NativeTypeResult("void", typeof(void)),
         };
 
         public TypeNameProvider(Solution solution)
@@ -154,7 +154,7 @@
 
         public ITypeResult LookupType(string name)
         {
-            var nativeType = this.predefinedNativeTypeResults.FirstOrDefault(t => t.ToString().Equals(name));
+            var nativeType = this.predefinedNativeTypeResults.FirstOrDefault(t => name.Equals(t.Name));
             if (nativeType != null)
             {
                 return nativeType;

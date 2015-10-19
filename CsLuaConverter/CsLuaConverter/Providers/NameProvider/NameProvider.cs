@@ -54,7 +54,7 @@
             {
                 this.AddToScope(new ScopeElement(method.Name)
                 {
-                    ClassPrefix = "class.",
+                    ClassPrefix = "element.",
                     IsFromClass = true,
                 });
             }
@@ -64,7 +64,7 @@
                 {
                     this.AddToScope(new ScopeElement(member.Name)
                     {
-                        ClassPrefix = "class.",
+                        ClassPrefix = "element.",
                         IsFromClass = true
                     });
                 }
@@ -74,7 +74,7 @@
             {
                 this.AddToScope(new ScopeElement(property.Name)
                 {
-                    ClassPrefix = "class.",
+                    ClassPrefix = "element.",
                     IsFromClass = true
                 });
             }
@@ -85,7 +85,7 @@
                 {
                     this.AddToScope(new ScopeElement(field.Name)
                     {
-                        ClassPrefix = "class.",
+                        ClassPrefix = "element.",
                         IsFromClass = true
                     });
                 }

@@ -175,7 +175,8 @@
                 throw new ConverterException("Cannot get full type name of generic.");
             }
 
-            return this.isArray ? "System.Array" : this.GetBasicType() ?? providers.TypeProvider.LookupType(this.type).ToString();
+            //return this.isArray ? "System.Array" : this.GetBasicType() ?? providers.TypeProvider.LookupType(this.type).ToString();
+            return this.isArray ? "System.Array" : providers.TypeProvider.LookupType(this.type).ToString();
         }
 
         public string GetTypeString()

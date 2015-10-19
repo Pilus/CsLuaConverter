@@ -79,12 +79,12 @@
         {
             if (type.Equals("base"))
             {
-                return "class.__base.__Cstor";
+                return "element.__base.__Cstor";
             }
 
             if (type.Equals("this"))
             {
-                return "class.__Cstor";
+                return "element.__Cstor";
             }
             throw new Exception("Unknown base type");
         }

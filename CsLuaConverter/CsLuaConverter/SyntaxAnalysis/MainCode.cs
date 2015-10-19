@@ -116,7 +116,7 @@
             {typeof(BreakStatementSyntax), token => new PredeterminedElement(token.Text)},
             {typeof(PostfixUnaryExpressionSyntax), token => new PlusPlus()},
             {typeof(NullableTypeSyntax), token => null},
-            {typeof(BaseExpressionSyntax), token => new PredeterminedElement("class.__base")},
+            {typeof(BaseExpressionSyntax), token => new PredeterminedElement("element.__base")},
             {typeof(EmptyStatementSyntax), token => new PredeterminedElement("")},
             {typeof(TypeOfExpressionSyntax), token =>
             {

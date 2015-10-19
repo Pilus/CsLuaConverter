@@ -59,7 +59,7 @@
                 textWriter.Indent++;
                 foreach (var element in serializeableElements)
                 {
-                    textWriter.WriteLine("class.{0} = f(t['{0}']);", element.Key);
+                    textWriter.WriteLine("element.{0} = f(t['{0}']);", element.Key);
                 }
                 textWriter.Indent--;
                 textWriter.Write("end");

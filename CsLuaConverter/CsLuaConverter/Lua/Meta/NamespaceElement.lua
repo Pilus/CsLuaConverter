@@ -4,7 +4,7 @@
 local getHashOfGenerics = function(generics)
 	local i = 1;
 	for _,v in ipairs(generics) do
-		i = i*GetHashCode;
+		i = i*v.GetHashCode();
 	end
 	return i;
 end
@@ -15,7 +15,7 @@ local isGenericsTable = function(t)
 	end
 	
 	for _,v in ipairs(t) do
-		if not(type(v) == "table") or not(System.Type.Is(v)) then
+		if not(type(v) == "table") or not(System.Type.__is(v)) then
 			return false;
 		end
 	end
@@ -29,7 +29,7 @@ local NamespaceElement = function(metaProviders)
 		generics = generics or {};
 		local hash = getHashOfGenerics(generics);
 		if not(interactionElements[hash]) then
-			interactionElements[hash] = _M.IE(metaProviders[#(generics)], generics);
+			interactionElements[hash] = _M.IE(metaProviders[#(generics)] or metaProviders["#"], generics);
 		end
 		
 		return interactionElements[hash];

@@ -51,7 +51,7 @@ local meta = {
             return function(otherType)
                 return self.hash == otherType.GetHashCode();
             end
-        elseif index == "Is" then
+        elseif index == "IsInstanceOfType" then
             return function(otherType)
                 if self.Equals(otherType) then
                     return true;
@@ -131,7 +131,7 @@ typeType = typeCall("Type", "System", objectType);
 
 local meta = {
     __typeof = typeType,
-    __is = function(value) return typeType.Is((value %_M.DOT).GetType()); end,
+    __is = function(value) return type(value) == "table" and type(value.GetType) == "function" and value.GetType() == typeType; end,
     __meta = function() return typeType; end,
     Is = typeType.Is,
 };
