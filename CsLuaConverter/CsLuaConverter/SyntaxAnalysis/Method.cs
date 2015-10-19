@@ -1,21 +1,31 @@
 ﻿namespace CsLuaConverter.SyntaxAnalysis
 {
+    using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using ClassElements;
     using CsLuaConverter.Providers;
     using CsLuaConverter.Providers.TypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal class Method : IFunction
+    internal class Method : IFunction, IClassMember
     {
         public bool IsAbstract;
         public bool IsVirtual;
         public bool IsOverride;
-        public string Name;
-        public Scope Scope;
-        public bool Static;
+        public string Name { get; private set; }
+        public Scope Scope { get; private set; }
+        public bool Static { get; private set; }
+        public void AddValues(Dictionary<string, object> values, IndentedTextWriter textWriter, IProviders providers)
+        {
+            values["types"] = new Action(() => { textWriter.Write("{{{0}}}", this.parameters.TypesAsReferences(providers)); });
+            values["func"] = new Action(() => { this.WriteLua(textWriter, providers); });
+        }
+
+        public string MemberType => "Method";
+
         private VariableDefinition TypeName;
         private Block block;
         private ParameterList parameters;
@@ -137,5 +147,7 @@
                 ClassPrefix = "element.",
             };
         }
+
+        
     }
 }

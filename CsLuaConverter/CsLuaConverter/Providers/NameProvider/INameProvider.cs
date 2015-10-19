@@ -5,7 +5,7 @@ namespace CsLuaConverter.Providers.NameProvider
     using System.Collections.Generic;
     using TypeProvider;
 
-    internal interface INameProvider
+    public interface INameProvider
     {
         List<ScopeElement> CloneScope();
         void SetScope(List<ScopeElement> scope);

@@ -8,18 +8,27 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal class Property : ILuaElement
+    internal class Property : ILuaElement, IClassMember
     {
-        public string Name;
+        public string Name { get; private set; }
         public VariableDefinition Type;
         private Block getBlock;
         private bool isStatic;
-        private Scope scope;
         private Block setBlock;
         private bool useDefaultGet;
         private bool useDefaultSet;
 
         private readonly string className;
+
+        public Scope Scope { get; private set; }
+
+        public string MemberType => this.IsDefault() ? "AutoProperty" : "Property";
+
+        public bool Static => this.isStatic;
+        public void AddValues(Dictionary<string, object> values, IndentedTextWriter textWriter, IProviders providers)
+        {
+
+        }
 
         public Property(string className)
         {
@@ -80,7 +89,7 @@
             {
                 token = token.GetNextToken();
             }
-            this.scope = (Scope) System.Enum.Parse(typeof(Scope), LuaElementHelper.UppercaseFirst(token.Text));
+            this.Scope = (Scope) System.Enum.Parse(typeof(Scope), LuaElementHelper.UppercaseFirst(token.Text));
             token = token.GetNextToken();
             if (token.Text.Equals("static"))
             {

@@ -4,7 +4,7 @@ namespace CsLuaConverter.Providers.TypeProvider
 {
     using System.Collections.Generic;
 
-    internal interface ITypeProvider
+    public interface ITypeProvider
     {
         void SetNamespaces(string currentNamespace, IEnumerable<string> namespaces);
         ITypeResult LookupType(IEnumerable<string> names);

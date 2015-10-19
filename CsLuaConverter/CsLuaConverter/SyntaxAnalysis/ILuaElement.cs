@@ -4,7 +4,7 @@
     using CsLuaConverter.Providers;
     using Microsoft.CodeAnalysis;
 
-    internal interface ILuaElement
+    public interface ILuaElement
     {
         void WriteLua(IndentedTextWriter textWriter, IProviders providers);
         SyntaxToken Analyze(SyntaxToken token);

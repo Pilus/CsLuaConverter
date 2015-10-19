@@ -32,7 +32,7 @@ local InteractionElement = function(metaProvider, generics)
         local fittingMembers = getMembers(key, level, false);
 
         if #(fittingMembers) == 0 then
-            error("Incorrect key for member. Key: "..key);
+            error("Could not find member. Key: "..tostring(key)..". Object: "..typeObject.FullName);
         end
 
         if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then
@@ -54,7 +54,7 @@ local InteractionElement = function(metaProvider, generics)
         local fittingMembers = getMembers(key, level, false);
 
         if #(fittingMembers) == 0 then
-            error("Incorrect key for member. Key: "..key);
+            error("Could not find member. Key: "..tostring(key)..". Object: "..typeObject.FullName);
         end
 
         if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then

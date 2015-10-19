@@ -1,6 +1,6 @@
 ﻿namespace CsLuaConverter.SyntaxAnalysis
 {
-    internal enum Scope
+    public enum Scope
     {
         Private,
         Public,

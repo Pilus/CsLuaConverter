@@ -118,6 +118,7 @@
     <Compile Include="SyntaxAnalysis\Class.cs" />
     <Compile Include="SyntaxAnalysis\ClassElements\Constructors.cs" />
     <Compile Include="SyntaxAnalysis\ClassElements\ElementType.cs" />
+    <Compile Include="SyntaxAnalysis\ClassElements\IClassMember.cs" />
     <Compile Include="SyntaxAnalysis\ClassElements\Interfaces.cs" />
     <Compile Include="SyntaxAnalysis\ClassElements\LuaFormatter.cs" />
     <Compile Include="SyntaxAnalysis\ClassElements\Methods.cs" />

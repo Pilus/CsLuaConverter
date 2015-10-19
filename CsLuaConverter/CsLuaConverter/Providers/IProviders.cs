@@ -5,7 +5,7 @@ namespace CsLuaConverter.Providers
     using NameProvider;
     using TypeProvider;
 
-    internal interface IProviders
+    public interface IProviders
     {
         ITypeProvider TypeProvider { get; }
         INameProvider NameProvider { get; }

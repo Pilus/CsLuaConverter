@@ -98,7 +98,8 @@
             textWriter.WriteLine("end");
 
             // Members
-            WriteMethods(this.methods, textWriter, providers);
+            MemberWriter(this.methods, textWriter, providers);
+            MemberWriter(this.properties, textWriter, providers);
 
             // Constructors
             textWriter.WriteLine("local constructors = {");
@@ -156,50 +157,16 @@
             }
         }
 
-        private static void WriteMethods(List<Method> methods, IndentedTextWriter textWriter, IProviders providers)
-        {
-            MemberWriter(methods, textWriter, method => method.Name, (method) =>
-            {
-                var parameters = method.GetParameters();
-                if (parameters.Generics != null)
-                {
-                    providers.GenericsRegistry.SetGenerics(parameters.Generics.Names, GenericScope.Method);
-                }
-
-                return new Dictionary<string, object>()
-                {
-                    { "memberType", "Method" },
-                    { "types", new Action(() => { textWriter.Write("{{{0}}}",parameters.TypesAsReferences(providers)); })},
-                    { "func", new Action(() => { method.WriteLua(textWriter, providers); }) },
-                };
-            });
-        }
-
-        private static void WriteProperties(List<Property> properties, IndentedTextWriter textWriter, IProviders providers)
-        {
-            MemberWriter(properties, textWriter, property => property.Name, (property) =>
-            {
-                if (property.IsDefault())
-                {
-                    return new Dictionary<string, object>()
-                    {
-                        { "memberType", "AutoProperty" },
-                    };
-                }
-
-                return new Dictionary<string, object>()
-                {
-                    { "memberType", "Property" },
-                };
-            });
-        }
-
-        private static void MemberWriter<T>(List<T> list, IndentedTextWriter textWriter, Func<T, string> nameProvider, Func<T, Dictionary<string, object>> action)
+        private static void MemberWriter<T>(List<T> list, IndentedTextWriter textWriter, IProviders providers) where T : IClassMember
         {
             foreach (var item in list)
             {
-                textWriter.Write("_M.IM(members,'{0}',", nameProvider(item));
-                LuaFormatter.WriteDictionary(textWriter, action(item));
+                textWriter.Write("_M.IM(members,'{0}',", item.Name);
+                var values = new Dictionary<string, object>();
+                values["level"] = new Action(() => { textWriter.Write("typeObject.Level"); });
+                values["memberType"] = item.MemberType;
+                item.AddValues(values, textWriter, providers);
+                LuaFormatter.WriteDictionary(textWriter, values);
                 textWriter.WriteLine(");");
             }
         }
