@@ -9,6 +9,7 @@
     using CsLuaConverter.Providers.TypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using CsLuaConverter.Providers.GenericsRegistry;
 
     internal class Method : IFunction, IClassMember
     {
@@ -20,6 +21,12 @@
         public bool Static { get; private set; }
         public void AddValues(Dictionary<string, object> values, IndentedTextWriter textWriter, IProviders providers)
         {
+            if (this.parameters.Generics != null)
+            {
+                values["hasMethodGenerics"] = true;
+                providers.GenericsRegistry.SetGenerics(this.parameters.Generics.Names, GenericScope.Method);
+            }
+
             values["types"] = new Action(() => { textWriter.Write("{{{0}}}", this.parameters.TypesAsReferences(providers)); });
             values["func"] = new Action(() => { this.WriteLua(textWriter, providers); });
         }
@@ -35,7 +42,17 @@
         {
             List<ScopeElement> scopeBefore = providers.NameProvider.CloneScope();
 
-            textWriter.Write("function(");
+            textWriter.Write("function(element");
+            if (this.parameters.Generics != null)
+            {
+                textWriter.Write(",methodGenerics");
+            }
+
+            if (this.parameters.Parameters.Count > 0)
+            {
+                textWriter.Write(",");
+            }
+
             this.parameters.WriteLua(textWriter, providers);
 
             if (this.parameters.LastParameterHasParamKeyword())
@@ -50,7 +67,14 @@
                 textWriter.WriteLine(")");
                 textWriter.Indent++;
             }
-            
+
+            if (this.parameters.Generics != null)
+            {
+                textWriter.Write("local methodGenericMapping = ");
+                this.parameters.Generics.WriteLua(textWriter, providers);
+                textWriter.WriteLine(";");
+            }
+
             this.block.WriteLua(textWriter, providers);
             textWriter.Indent--;
             textWriter.Write("end");

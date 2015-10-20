@@ -16,11 +16,11 @@
         {
             if (this.variableType != null)
             {
-                textWriter.Write("({0}).__Cstor", this.variableType.GetGenericsList(providers) ?? "");
+                textWriter.Write("{{{0}}}", this.variableType.GetGenericsList(providers) ?? "");
             }
             else
             {
-                textWriter.Write("().__Cstor");
+                textWriter.Write("");
             }
         }
 

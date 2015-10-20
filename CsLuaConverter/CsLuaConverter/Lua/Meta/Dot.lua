@@ -27,14 +27,35 @@ end
 
 _M = _M or {};
 _M.DOT = DotMeta(
-    function(obj, index)  -- useage:  a%_M.dot%b
-        assert(not(obj == nil), "Attempted to read index "..tostring(index).." on a nil value.");
+    function(objRef, index)  -- useage:  a%_M.dot%b
+        assert(not(objRef == nil), "Attempted to read index "..tostring(index).." on a nil value.");
         local typeObject = GetType(obj);
-        return typeObject.InteractionElement.__index(obj, index); 
+
+        local obj,level;
+        if type(objRef) == "table" and #(objRef) == 2 then
+            level = objRef[2];
+            obj = objRef[1]
+        else
+            level = nil;
+            obj = objRef;
+        end
+
+        local typeObject = GetType(obj);
+        return typeObject.InteractionElement.__index(obj, index, level); 
     end, 
-    function(obj, index, value)
-        assert(not(obj == nil), "Attempted to write index "..tostring(index).." to a nil value.");
+    function(objRef, index, value)
+        assert(not(objRef == nil), "Attempted to write index "..tostring(index).." to a nil value.");
+
+        local obj,level;
+        if type(objRef) == "table" and #(objRef) == 2 then
+            level = objRef[2];
+            obj = objRef[1]
+        else
+            level = nil;
+            obj = objRef;
+        end
+
         local typeObject = GetType(obj);
-        return typeObject.InteractionElement.__newindex(obj, index, value); 
+        return typeObject.InteractionElement.__newindex(obj, index, value, level); 
     end
 );

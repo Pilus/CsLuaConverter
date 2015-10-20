@@ -1,19 +1,23 @@
 ﻿namespace CsLuaConverter.SyntaxAnalysis
 {
+    using System;
     using System.CodeDom.Compiler;
+    using System.Collections.Generic;
     using ClassElements;
     using CsLuaConverter.Providers;
     using CsLuaConverter.Providers.TypeProvider;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    internal class ClassVariable : ILuaElement
+    internal class ClassVariable : ILuaElement, IClassMember
     {
-        
-
         public ILuaElement Expression;
-        public string Name;
-        public Scope Scope = Scope.Private;
+        public string Name { get; private set; }
+        public Scope Scope { get; private set; }
+        public bool Static { get { return this.isStatic; } }
+
+        public string MemberType { get { return "Variable"; } }
+
         public VariableDefinition Type;
         private bool isStatic;
 
@@ -21,7 +25,12 @@
 
         public ClassVariable(string className)
         {
+            this.Scope = Scope.Private;
             this.className = className;
+        }
+
+        public void AddValues(Dictionary<string, object> values, IndentedTextWriter textWriter, IProviders providers)
+        {
         }
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
@@ -104,5 +113,7 @@
                 ClassPrefix = "element.",
             };
         }
+
+        
     }
 }

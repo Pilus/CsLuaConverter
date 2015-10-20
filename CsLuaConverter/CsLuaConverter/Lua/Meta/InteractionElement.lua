@@ -10,7 +10,7 @@ local InteractionElement = function(metaProvider, generics)
     local element = {};
     local staticValues = {};
 
-    local catagory, typeObject, members, constructors, elementGenerator, implements = metaProvider(element, generics, staticValues);
+    local catagory, typeObject, members, constructors, elementGenerator, implements, initialize = metaProvider(element, generics, staticValues);
     
     local where = function(list, evaluator)
         local t = {};
@@ -29,10 +29,14 @@ local InteractionElement = function(metaProvider, generics)
     end
 
     local index = function(self, key, level)
+        if (key == "__Initialize") and initialize then
+            return function(values) initialize(self, values); return self; end
+        end
+
         local fittingMembers = getMembers(key, level, false);
 
         if #(fittingMembers) == 0 then
-            error("Could not find member. Key: "..tostring(key)..". Object: "..typeObject.FullName);
+            error("Could not find member. Key: "..tostring(key)..". Object: "..typeObject.FullName.." Level: "..tostring(level));
         end
 
         if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then
@@ -43,7 +47,7 @@ local InteractionElement = function(metaProvider, generics)
         if fittingMembers[1].memberType == "Method" then
             return function(...)
                 local member = _M.AM(fittingMembers, {...});
-                return member.func(...);
+                return member.func({self,level},...);
             end
         end
 
@@ -69,7 +73,10 @@ local InteractionElement = function(metaProvider, generics)
     local meta = {
         __typeof = typeObject,
         __is = function(value) return typeObject.IsInstanceOfType(value); end,
-        __meta = function() return typeObject, members, constructors, elementGenerator, implements; end,
+        __meta = function() 
+            -- TODO: Clone the members to allow multiple objects to inherit the same object.
+            return typeObject, members, constructors, elementGenerator, implements, initialize; 
+        end,
         __index = index,
         __newindex = newIndex,
     };
@@ -106,9 +113,9 @@ local InteractionElement = function(metaProvider, generics)
             local classElement = elementGenerator();
             -- find the constructor fitting the arguments.
             local constructor = _M.AM(constructors, {...});
-            -- Call the constructor with (classElement,...)
-            constructor.func(classElement, ...);
-            
+            -- Call the constructor
+            constructor.func({classElement, typeObject.Level}, ...);
+
             return classElement;
         end,
     });

@@ -68,7 +68,7 @@
             // Expected: typeObject, statics, nonStatics, constructors, defaultValueProvider 
             WriteGenericsMapping(this.generics, textWriter, providers);
 
-            textWriter.Write("local baseTypeObject, members, baseConstructors, baseElementGenerator = ");
+            textWriter.Write("local baseTypeObject, members, baseConstructors, baseElementGenerator, baseInitialize = ");
             textWriter.Write("{0}.{1}", typeObject.BaseType.Namespace, typeObject.BaseType.Name);
             if (inheritsOtherClass && this.baseLists[0].Name.Generics != null)
             {
@@ -81,9 +81,10 @@
                 "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements, interactionElement);",
                 typeObject.Name, typeObject.Namespace, numberOfGenerics);
 
+            // Element generator
             textWriter.WriteLine("local elementGenerator = function()");
             textWriter.Indent++;
-
+            
             textWriter.WriteLine("local element = baseElementGenerator();");
             textWriter.WriteLine("element.type = typeObject;");
             textWriter.Write("element[typeObject.Level] = ");
@@ -97,9 +98,27 @@
 
             textWriter.WriteLine("end");
 
+            // Initialize
+            textWriter.WriteLine("local initialize = function(element, values)");
+            textWriter.Indent++;
+
+            textWriter.WriteLine("if baseInitialize then baseInitialize(element, values); end");
+            foreach (var variable in this.variables)
+            {
+                textWriter.WriteLine("if not(values.{0} == nil) then element[typeObject.Level].{0} = values.{0}; end", variable.Name);
+            }
+            foreach (var property in this.properties)
+            {
+                textWriter.WriteLine("if not(values.{0} == nil) then element[typeObject.Level].{0} = values.{0}; end", property.Name);
+            }
+            textWriter.Indent--;
+
+            textWriter.WriteLine("end");
+
             // Members
             MemberWriter(this.methods, textWriter, providers);
             MemberWriter(this.properties, textWriter, providers);
+            MemberWriter(this.variables, textWriter, providers);
 
             // Constructors
             textWriter.WriteLine("local constructors = {");
@@ -119,7 +138,7 @@
                     LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>()
                     {
                         { "types", new Action(() => textWriter.Write("{}")) },
-                        { "func", new Action(() => constructor.WriteLua(textWriter, providers)) }, // TODO: Call base constructor
+                        { "func", new Action(() => constructor.WriteLua(textWriter, providers)) },
                     });
                     textWriter.Write(",");
                 }
@@ -128,7 +147,7 @@
             textWriter.Indent--;
             textWriter.WriteLine("};");
 
-            textWriter.WriteLine("return 'Class', typeObject, members, constructors, elementGenerator;");
+            textWriter.WriteLine("return 'Class', typeObject, members, constructors, elementGenerator, nil, initialize;");
             
             textWriter.Indent--;
             textWriter.WriteLine("end}),");
@@ -165,6 +184,7 @@
                 var values = new Dictionary<string, object>();
                 values["level"] = new Action(() => { textWriter.Write("typeObject.Level"); });
                 values["memberType"] = item.MemberType;
+                values["scope"] = item.Scope;
                 item.AddValues(values, textWriter, providers);
                 LuaFormatter.WriteDictionary(textWriter, values);
                 textWriter.WriteLine(");");

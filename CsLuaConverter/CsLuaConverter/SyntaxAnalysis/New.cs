@@ -36,7 +36,7 @@ namespace CsLuaConverter.SyntaxAnalysis
                 {
                     this.type.WriteLua(textWriter, providers);
                 }
-                textWriter.Write("().__Cstor");
+                textWriter.Write("");
             }
         }
 

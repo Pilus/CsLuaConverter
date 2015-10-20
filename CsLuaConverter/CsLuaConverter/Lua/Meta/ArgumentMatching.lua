@@ -24,7 +24,7 @@ local SelectMatchingByTypes = function(list, args)
     assert(type(args) == "table", "Expected a table as 2th argument to M.AM, got "..type(args))
     local argTypes = {};
     for i,arg in ipairs(args) do
-        argTypes[i] = (arg%_M.DOT).GetType();
+        argTypes[i] = (arg%_M.DOT(nil)).GetType();
     end
     
     local bestMatch, bestScore;
