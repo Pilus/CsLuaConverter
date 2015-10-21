@@ -21,13 +21,9 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            if (this.initializeClass)
+            if (this.initializeClass || this.intializeClassWithoutContructor)
             {
-                textWriter.WriteLine(".__Initialize({");
-            }
-            else if (this.intializeClassWithoutContructor)
-            {
-                textWriter.WriteLine("().__Initialize({");
+                textWriter.WriteLine("%_M.DOT).__Initialize({");
             }
             else
             {

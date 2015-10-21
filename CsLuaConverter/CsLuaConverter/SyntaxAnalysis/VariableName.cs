@@ -77,12 +77,15 @@
                 var dotCount = fullRef.Split('.').Length -1;
                 if (dotCount > 0)
                 {
-                    textWriter.Write(
-                        //"(" +
-                        new string('(', dotCount) +
-                        fullRef.Replace(".", "%_M.DOT).") //+
-                        //")" 
-                    );
+                    textWriter.Write(new string('(', dotCount));
+                    var prefix = string.Empty;
+                    if (fullRef.StartsWith("element."))
+                    {
+                        fullRef = fullRef.Substring(("element.").Length);
+                        prefix = "element%_M.DOT_LVL(typeObject.Level)).";
+                    }
+
+                    textWriter.Write(prefix + fullRef.Replace(".", "%_M.DOT)."));
                 }
                 else
                 {

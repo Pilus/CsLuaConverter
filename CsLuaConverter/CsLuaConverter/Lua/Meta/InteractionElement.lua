@@ -47,7 +47,7 @@ local InteractionElement = function(metaProvider, generics)
         if fittingMembers[1].memberType == "Method" then
             return function(...)
                 local member = _M.AM(fittingMembers, {...});
-                return member.func({self,level},...);
+                return member.func(self,...);
             end
         end
 
@@ -114,7 +114,7 @@ local InteractionElement = function(metaProvider, generics)
             -- find the constructor fitting the arguments.
             local constructor = _M.AM(constructors, {...});
             -- Call the constructor
-            constructor.func({classElement, typeObject.Level}, ...);
+            constructor.func(classElement, ...);
 
             return classElement;
         end,

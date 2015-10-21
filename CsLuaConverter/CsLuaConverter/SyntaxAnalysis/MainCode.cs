@@ -116,7 +116,7 @@
             {typeof(BreakStatementSyntax), token => new PredeterminedElement(token.Text)},
             {typeof(PostfixUnaryExpressionSyntax), token => new PlusPlus()},
             {typeof(NullableTypeSyntax), token => null},
-            {typeof(BaseExpressionSyntax), token => new PredeterminedElement("element.__base")},
+            {typeof(BaseExpressionSyntax), token => new PredeterminedElement("baseElement")},
             {typeof(EmptyStatementSyntax), token => new PredeterminedElement("")},
             {typeof(TypeOfExpressionSyntax), token =>
             {
@@ -206,6 +206,15 @@
                     {
                         this.Elements.Insert(this.Elements.IndexOf(last), new PredeterminedElement("("));
                         this.Elements.Add(new PredeterminedElement("%_M.DOT)"));
+                    }
+                }
+
+                if (element is Initializer && this.Elements.Count > 0)
+                {
+                    var secondLast = this.Elements.Skip(this.Elements.Count - 2).First();
+                    if (secondLast is New)
+                    {
+                        this.Elements.Insert(this.Elements.Count - 2, new PredeterminedElement("("));
                     }
                 }
 
