@@ -88,10 +88,29 @@
             textWriter.WriteLine("local element = baseElementGenerator();");
             textWriter.WriteLine("element.type = typeObject;");
             textWriter.Write("element[typeObject.Level] = ");
-            LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>()
+            
+            var defaultValues = new Dictionary<string, object>();
+            foreach (var variable in this.variables)
             {
-                // TODO: Write default values for variables here.
-            });
+                if (variable.Expression != null)
+                {
+                    defaultValues[variable.Name] = new Action(() => {
+                        variable.Expression.WriteLua(textWriter, providers);
+                    });
+                }
+                else
+                {
+                    defaultValues[variable.Name] = new Action(() => {
+                        textWriter.Write("_M.DV({0})", variable.Type.GetTypeReferences(providers));
+                    });
+                }
+            }
+            /*foreach (var property in this.properties)
+            {
+                textWriter.WriteLine("if not(values.{0} == nil) then element[typeObject.Level].{0} = values.{0}; end", property.Name);
+            }*/
+
+            LuaFormatter.WriteDictionary(textWriter, defaultValues);
             
             textWriter.WriteLine("return element;");
             textWriter.Indent--;

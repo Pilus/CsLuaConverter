@@ -30,6 +30,8 @@
 
             textWriter.WriteLine("{0} = {{", this.name);
             textWriter.Indent++;
+            textWriter.WriteLine("__isNamespace = true,");
+            
             foreach (NameSpacePart part in this.parts)
             {
                 part.WriteLua(textWriter, providers);

@@ -18,9 +18,9 @@
             List<ScopeElement> scope = providers.NameProvider.CloneScope();
             providers.NameProvider.AddToScope(new ScopeElement(this.iteratorName));
 
-            textWriter.Write("for _,{0} in CsLuaMeta.Foreach(", this.iteratorName);
+            textWriter.Write("for _,{0} in (", this.iteratorName);
             this.enumerable.WriteLua(textWriter, providers);
-            textWriter.WriteLine(") do");
+            textWriter.WriteLine("%_M.DOT).GetEnumerator() do");
             textWriter.Indent++;
             this.block.WriteLua(textWriter, providers);
             textWriter.Indent--;
