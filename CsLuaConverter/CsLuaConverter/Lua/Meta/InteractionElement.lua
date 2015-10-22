@@ -39,6 +39,10 @@ local InteractionElement = function(metaProvider, generics)
             error("Could not find member. Key: "..tostring(key)..". Object: "..typeObject.FullName.." Level: "..tostring(level));
         end
 
+        for i=1,#(fittingMembers) do
+            assert(type(fittingMembers[i].memberType) == "string", "Missing member type on member. Object: "..typeObject.FullName..". Key: "..tostring(key).." Level: "..tostring(level).." Member #: "..tostring(i))
+        end
+
         if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then
             expectOneMember(fittingMembers, key);
             return self[fittingMembers[1].level][key];
@@ -51,7 +55,11 @@ local InteractionElement = function(metaProvider, generics)
             end
         end
 
-        error("Could not handle get member. Type: "..tostring(fittingMembers[1].type)..". Key: "..tostring(key));
+        if fittingMembers[1].memberType == "Property" then
+            return fittingMembers[1].get(self);
+        end
+
+        error("Could not handle member (get). Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key));
     end;
 
     local newIndex = function(self, key, value, level)
@@ -67,7 +75,7 @@ local InteractionElement = function(metaProvider, generics)
             return
         end
 
-        error("Could not handle set member. Type: "..tostring(fittingMembers[1].type)..". Key: "..tostring(key));
+        error("Could not handle member (set). Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key));
     end
 
     local meta = {
@@ -79,13 +87,18 @@ local InteractionElement = function(metaProvider, generics)
         end,
         __index = index,
         __newindex = newIndex,
+        __isNamespace = false,
     };
 
     
     setmetatable(element, { 
         __index = function(_, key)
-            if meta[key] then 
+            if not(meta[key] == nil) then 
                 return meta[key];
+            end
+
+            if (key == "type") then
+                return nil;
             end
 
             if not(catagory == "Class") then
