@@ -12,7 +12,7 @@
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("[");
+            textWriter.Write("%_M.DOT)[");
             LuaElementHelper.WriteLuaJoin(this.arguments, textWriter, providers);
             textWriter.Write("]");
         }

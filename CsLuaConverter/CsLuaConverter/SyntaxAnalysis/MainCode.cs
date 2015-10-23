@@ -192,9 +192,10 @@
                     (element as BinaryExpression).PreviousElement = this.Elements.Last();
                 }
 
+                var last = this.Elements.LastOrDefault();
+
                 if (element is ReferencedVariableName)
                 {
-                    var last = this.Elements.Last();
                     var secondLast = this.Elements.Skip(this.Elements.Count - 2).First();
 
                     if (last is PredeterminedElement && (last as PredeterminedElement).Text.Equals(")"))
@@ -209,13 +210,19 @@
                     }
                 }
 
-                if (element is Initializer && this.Elements.Count > 0)
+                if (element is Initializer && this.Elements.Count > 1)
                 {
                     var secondLast = this.Elements.Skip(this.Elements.Count - 2).First();
                     if (secondLast is New)
                     {
                         this.Elements.Insert(this.Elements.Count - 2, new PredeterminedElement("("));
                     }
+                }
+
+                
+                if (element is BracketedArgumentList && (last is VariableName || last is This))
+                {
+                    this.Elements.Insert(this.Elements.Count - 1, new PredeterminedElement("("));
                 }
 
                 if (element != null)

@@ -36,6 +36,10 @@ local InteractionElement = function(metaProvider, generics)
         local fittingMembers = getMembers(key, level, false);
 
         if #(fittingMembers) == 0 then
+            fittingMembers = getMembers("#", level, false); -- Look up indexers
+        end
+
+        if #(fittingMembers) == 0 then
             error("Could not find member. Key: "..tostring(key)..". Object: "..typeObject.FullName.." Level: "..tostring(level));
         end
 
@@ -45,6 +49,11 @@ local InteractionElement = function(metaProvider, generics)
 
         if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then
             expectOneMember(fittingMembers, key);
+            return self[fittingMembers[1].level][key];
+        end
+
+        if fittingMembers[1].memberType == "Indexer" then
+            expectOneMember(fittingMembers, "#");
             return self[fittingMembers[1].level][key];
         end
 
@@ -59,11 +68,15 @@ local InteractionElement = function(metaProvider, generics)
             return fittingMembers[1].get(self);
         end
 
-        error("Could not handle member (get). Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key));
+        error("Could not handle member (get). Object: "..typeObject.FullName.." Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key));
     end;
 
     local newIndex = function(self, key, value, level)
         local fittingMembers = getMembers(key, level, false);
+
+        if #(fittingMembers) == 0 then
+            fittingMembers = getMembers("#", level, false); -- Look up indexers
+        end
 
         if #(fittingMembers) == 0 then
             error("Could not find member. Key: "..tostring(key)..". Object: "..typeObject.FullName);
@@ -75,7 +88,13 @@ local InteractionElement = function(metaProvider, generics)
             return
         end
 
-        error("Could not handle member (set). Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key));
+        if fittingMembers[1].memberType == "Indexer" then
+            expectOneMember(fittingMembers, "#");
+            self[fittingMembers[1].level][key] = value;
+            return
+        end
+
+        error("Could not handle member (set). Object: "..typeObject.FullName.." Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key)..". # members "..#(fittingMembers));
     end
 
     local meta = {

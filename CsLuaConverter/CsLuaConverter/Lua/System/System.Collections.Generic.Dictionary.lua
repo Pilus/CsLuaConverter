@@ -23,9 +23,15 @@ System.Collections.Generic.Dictionary = _M.NE({[2] = function(interactionElement
         scope = 'Public',
         types = {},
         func = function(element)
-            return function(x,y)
-            end;
+            return pairs(element[2]);
         end,
+    });
+
+    _M.IM(members,'#',{
+        level = typeObject.Level,
+        memberType = 'Indexer',
+        scope = 'Public',
+        types = {generics[1], generics[2]},
     });
 
     local constructors = {
@@ -34,7 +40,14 @@ System.Collections.Generic.Dictionary = _M.NE({[2] = function(interactionElement
             func = function() end,
         }
     };
-    return "Class", typeObject, members, constructors, function() return {[1] = {},[2] = {}, ["type"] = typeObject}; end;
+
+    local initialize = function(element, values)
+        for i,v in pairs(values) do
+            element[2][i] = v;
+        end
+    end
+
+    return "Class", typeObject, members, constructors, function() return {[1] = {},[2] = {}, ["type"] = typeObject}; end, implements, initialize;
 end})
 
 System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElement, generics, staticValues)

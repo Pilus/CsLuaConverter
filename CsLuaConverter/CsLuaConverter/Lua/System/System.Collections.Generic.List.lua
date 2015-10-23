@@ -26,11 +26,12 @@ System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, gene
             func = function() end,
         }
     };
-	local initialize = function(element, values)
-		for i=1,#(values) do
-			element[2][i] = values[i];
-		end
-	end
+
+    local initialize = function(element, values)
+        for i=1,#(values) do
+            element[2][i] = values[i];
+        end
+    end
 
     return "Class", typeObject, members, constructors, function() return {[1] = {},[2] = {}, ["type"] = typeObject}; end, implements, initialize;
 end})
