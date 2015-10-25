@@ -6,6 +6,19 @@ local expectOneMember = function(members, key)
     assert(#(members) == 1, "A table of one member was expected for key '"..tostring(key).."'. Got "..#(members).." members");
 end
 
+local clone;
+clone = function(t,dept)
+    local t2 = {};
+    for i,v in pairs(t) do
+        if dept > 1 and type(v) == "table" then
+            t2[i] = clone(v, dept-1);
+        else
+            t2[i] = v;
+        end
+    end
+    return t2;
+end
+
 local InteractionElement = function(metaProvider, generics)
     local element = {};
     local staticValues = {};
@@ -94,15 +107,14 @@ local InteractionElement = function(metaProvider, generics)
             return
         end
 
-        error("Could not handle member (set). Object: "..typeObject.FullName.." Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key)..". # members "..#(fittingMembers));
+        error("Could not handle member (set). Object: "..typeObject.FullName.." Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key)..". Num members: "..#(fittingMembers));
     end
 
     local meta = {
         __typeof = typeObject,
         __is = function(value) return typeObject.IsInstanceOfType(value); end,
         __meta = function() 
-            -- TODO: Clone the members to allow multiple objects to inherit the same object.
-            return typeObject, members, constructors, elementGenerator, implements, initialize; 
+            return typeObject, clone(members, 2), clone(constructors or {},2), elementGenerator, clone(implements or {},1), initialize; 
         end,
         __index = index,
         __newindex = newIndex,
