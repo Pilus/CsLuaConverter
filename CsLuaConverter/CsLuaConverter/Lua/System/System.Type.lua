@@ -3,7 +3,7 @@
 local hashString = function(str, hash)
     hash = hash or 7;
     for i=1, string.len(str) do
-        hash = hash*31 + string.byte(str,i);
+        hash = math.mod(hash*31 + string.byte(str,i), 1000000);
     end
     return hash;
 end
