@@ -1,7 +1,4 @@
-﻿
-System = System or {};
-
-System.Array = _M.NE({["#"] = function(interactionElement, generics, staticValues)
+﻿System.Array = _M.NE({["#"] = function(interactionElement, generics, staticValues)
     local typeObject = System.Type('Array','System',System.Object.__typeof,#(generics),nil,nil,interactionElement);
     local level = 2;
     local members = {

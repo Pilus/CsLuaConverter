@@ -167,7 +167,6 @@ local InteractionElement = function(metaProvider, generics)
     return element;
 end
 
-_M = _M or {};
 _M.IE = InteractionElement;
 
 local InsertMember = function(members, key, member)

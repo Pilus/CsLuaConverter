@@ -1,6 +1,4 @@
-﻿
-System = System or {};
-System.Object = _M.NE({[0] = function(interactionElement, generics, staticValues)
+﻿System.Object = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local typeObject = System.Type('Object','System',nil,0,nil,nil,interactionElement);
     local members = {
         {

@@ -44,5 +44,4 @@ local SelectMatchingByTypes = function(list, args)
     return bestMatch;
 end
 
-_M = _M or {};
 _M.AM = SelectMatchingByTypes;

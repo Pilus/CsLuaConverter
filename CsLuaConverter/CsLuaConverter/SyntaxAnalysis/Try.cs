@@ -62,7 +62,7 @@ namespace CsLuaConverter.SyntaxAnalysis
 
         public void WriteLua(IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.WriteLine("CsLuaMeta.Try(function()");
+            textWriter.WriteLine("_M.Try(function()");
             textWriter.Indent++;
             textWriter.Indent++;
             this.tryBlock.WriteLua(textWriter, providers);
@@ -76,7 +76,7 @@ namespace CsLuaConverter.SyntaxAnalysis
                 textWriter.Indent++;
                 if (aCatch.Type != null)
                 {
-                    textWriter.WriteLine("type = '{0}',", providers.TypeProvider.LookupType(aCatch.Type));
+                    textWriter.WriteLine("type = {0}.__typeof,", providers.TypeProvider.LookupType(aCatch.Type));
                 }
                 
                 textWriter.WriteLine("func = function({0})", aCatch.VariableName ?? "");

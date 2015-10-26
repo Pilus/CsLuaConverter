@@ -1,5 +1,4 @@
 ﻿
-System = System or {};
 System.Collections = System.Collections or {};
 System.Collections.Generic = System.Collections.Generic or {};
 
@@ -61,8 +60,7 @@ System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElem
         scope = 'Public',
         types = {},
         func = function(element)
-            return function(x,y)
-            end;
+            return pairs(element[2]);
         end,
     });
 

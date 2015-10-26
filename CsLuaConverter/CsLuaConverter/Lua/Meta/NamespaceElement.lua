@@ -54,5 +54,4 @@ local NamespaceElement = function(metaProviders)
 	return element;
 end
 
-_M = _M or {};
 _M.NE = NamespaceElement;

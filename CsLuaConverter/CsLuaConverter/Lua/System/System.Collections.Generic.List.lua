@@ -1,8 +1,4 @@
 ﻿
-System = System or {};
-System.Collections = System.Collections or {};
-System.Collections.Generic = System.Collections.Generic or {};
-
 System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, generics, staticValues)
     local implements = {};
     local baseTypeObject, members = System.Object.__meta(staticValues);

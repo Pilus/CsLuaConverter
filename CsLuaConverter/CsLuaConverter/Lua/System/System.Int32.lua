@@ -1,6 +1,4 @@
 ﻿
-System = System or {};
-
 System.Int32 = _M.NE({["#"] = function(interactionElement, generics, staticValues)
     local typeObject = System.Type('Int32','System',System.Object.__typeof,0,nil,nil,interactionElement);
     local level = 2;

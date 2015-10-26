@@ -1,6 +1,4 @@
-﻿System = System or {};
-
-local hashString = function(str, hash)
+﻿local hashString = function(str, hash)
     hash = hash or 7;
     for i=1, string.len(str) do
         hash = math.mod(hash*31 + string.byte(str,i), 1000000);
@@ -133,7 +131,6 @@ local meta = {
     __typeof = typeType,
     __is = function(value) return type(value) == "table" and type(value.GetType) == "function" and value.GetType() == typeType; end,
     __meta = function() return typeType; end,
-    Is = typeType.Is,
 };
 
 local element = {};

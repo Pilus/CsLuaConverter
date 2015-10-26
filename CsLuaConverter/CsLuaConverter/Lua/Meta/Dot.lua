@@ -30,7 +30,6 @@ local GetType = function(obj)
     end
 end
 
-_M = _M or {};
 _M.DOT_LVL = function(level)
     return DotMeta(
         function(obj, index)  -- useage:  a%_M.dot%b
