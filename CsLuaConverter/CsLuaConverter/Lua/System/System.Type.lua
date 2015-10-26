@@ -50,13 +50,18 @@ local meta = {
                 return self.hash == otherType.GetHashCode();
             end
         elseif index == "IsInstanceOfType" then
-            return function(otherType)
+            return function(instance)
+                local otherType = (instance %_M.DOT).GetType();
                 if self.Equals(otherType) then
                     return true;
                 end
 
+                if self.baseType and self.baseType.IsInstanceOfType(instance) then
+                    return true;
+                end
+
                 for _,imp in ipairs(self.implements or {}) do
-                    if imp.IsInstanceOfType(otherType) then
+                    if imp.IsInstanceOfType(instance) then
                         return true;
                     end
                 end

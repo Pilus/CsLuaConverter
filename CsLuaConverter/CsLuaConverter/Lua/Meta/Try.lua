@@ -10,7 +10,7 @@ _M.Try = function(try, catch, finally)
         
         local matchFound = false;
         for _, catchCase in ipairs(catch or {}) do
-            if catchCase.type == nil or catchCase.type.__is(exception) then
+            if catchCase.type == nil or catchCase.type.interactionElement.__is(exception) then
                 catchCase.func(exception)
                 matchFound = true;
                 break;
