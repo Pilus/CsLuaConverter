@@ -18,7 +18,7 @@ local DotMeta = function(fIndex, fNewIndex, fCall)
     });
 end
 
-local GetType = function(obj)
+local GetType = function(obj, index)
     if type(obj) == "table" and obj.type then
         return obj.type;
     elseif type(obj) == "string" then
@@ -26,7 +26,7 @@ local GetType = function(obj)
     elseif type(obj) == "function" then
         return System.Action.__typeof;
     else
-        error("Could not get type of object "..type(obj));
+        error("Could not get type of object "..type(obj)..". Attempting to read index "..tostring(index));
     end
 end
 
@@ -35,11 +35,11 @@ _M.DOT_LVL = function(level)
         function(obj, index)  -- useage:  a%_M.dot%b
             assert(not(obj == nil), "Attempted to read index "..tostring(index).." on a nil value.");
 
-            if (type(obj) == "table" and obj.__isNamespace == true) then
+            if (type(obj) == "table" and (obj.__isNamespace == true or obj.__isNamespaceElement)) then
                 return obj[index];
             end
 
-            local typeObject = GetType(obj);
+            local typeObject = GetType(obj, index);
             if (index == "GetType") then
                 return function() return typeObject; end
             end

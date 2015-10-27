@@ -99,10 +99,6 @@
             if (token.Parent is MethodDeclarationSyntax)
             {
                 string text = LuaElementHelper.UppercaseFirst(token.Text);
-                if (text == "Protected")
-                {
-                    text = "Private";
-                }
                 this.Scope = (Scope) System.Enum.Parse(typeof(Scope), text);
                 token = token.GetNextToken();
             }

@@ -1,9 +1,9 @@
 ﻿
 _M.Try = function(try, catch, finally)
-    __CurrentException = nil;
+    _M._CurrentException = nil;
     local success, err = pcall(try)
-    local exception = __CurrentException;
-    __CurrentException = nil;
+    local exception = _M._CurrentException;
+    _M._CurrentException = nil;
 
     if not(success) then
         exception = exception or System.Exception("Lua error:\n" .. (err or "nil"));

@@ -204,6 +204,7 @@
                 values["level"] = new Action(() => { textWriter.Write("typeObject.Level"); });
                 values["memberType"] = item.MemberType;
                 values["scope"] = item.Scope;
+                values["static"] = item.Static;
                 item.AddValues(values, textWriter, providers);
                 LuaFormatter.WriteDictionary(textWriter, values);
                 textWriter.WriteLine(");");

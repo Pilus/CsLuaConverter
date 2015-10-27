@@ -182,6 +182,7 @@
     <None Include="Lua\Meta\Dot.lua" />
     <None Include="Lua\Meta\InteractionElement.lua" />
     <None Include="Lua\Meta\NamespaceElement.lua" />
+    <None Include="Lua\Meta\Throw.lua" />
     <None Include="Lua\Meta\Try.lua" />
     <None Include="Lua\Meta\aa._M.lua" />
     <None Include="Lua\System\System.Exception.lua" />

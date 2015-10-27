@@ -14,7 +14,7 @@
         public ILuaElement Expression;
         public string Name { get; private set; }
         public Scope Scope { get; private set; }
-        public bool Static { get { return this.isStatic; } }
+        public bool Static => this.isStatic;
 
         public string MemberType { get { return "Variable"; } }
 

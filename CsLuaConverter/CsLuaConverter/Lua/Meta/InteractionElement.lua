@@ -37,7 +37,7 @@ local InteractionElement = function(metaProvider, generics)
 
     local getMembers = function(key, level, staticOnly)
         return where(members[key] or {}, function(member)
-            return (not(staticOnly) or member.static == true) and (member.scope == "Public" or member.level == level);
+            return (not(staticOnly) or member.static == true) and (member.scope == "Public" or (member.scope == "Protected" and level) or member.level == level);
         end);
     end
 
