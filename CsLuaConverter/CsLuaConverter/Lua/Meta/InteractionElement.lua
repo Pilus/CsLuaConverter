@@ -37,6 +37,7 @@ local InteractionElement = function(metaProvider, generics)
 
     local getMembers = function(key, level, staticOnly)
         return where(members[key] or {}, function(member)
+            assert(member.memberType, "Member without member type in "..typeObject.FullName..". Key: "..key.." Level: "..tostring(member.level));
             return (not(staticOnly) or member.static == true) and (member.scope == "Public" or (member.scope == "Protected" and level) or member.level == level);
         end);
     end
@@ -62,6 +63,11 @@ local InteractionElement = function(metaProvider, generics)
 
         if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then
             expectOneMember(fittingMembers, key);
+
+            if fittingMembers[1].static then
+                return staticValues[fittingMembers[1].level][key];
+            end
+
             return self[fittingMembers[1].level][key];
         end
 
@@ -97,6 +103,12 @@ local InteractionElement = function(metaProvider, generics)
 
         if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then
             expectOneMember(fittingMembers, key);
+
+            if (fittingMembers[1].static) then
+                staticValues[fittingMembers[1].level][key] = value;
+                return;
+            end
+
             self[fittingMembers[1].level][key] = value;
             return
         end
@@ -113,7 +125,11 @@ local InteractionElement = function(metaProvider, generics)
     local meta = {
         __typeof = typeObject,
         __is = function(value) return typeObject.IsInstanceOfType(value); end,
-        __meta = function() 
+        __meta = function(inheritingStaticValues) 
+            for i = 1, typeObject.level do
+                inheritingStaticValues[i] = staticValues[i];
+            end
+
             return typeObject, clone(members, 2), clone(constructors or {},2), elementGenerator, clone(implements or {},1), initialize; 
         end,
         __index = index,
@@ -138,8 +154,8 @@ local InteractionElement = function(metaProvider, generics)
 
             local fittingMembers = getMembers(key, nil, true);
             expectOneMember(fittingMembers, key);
-            assert(fittingMembers[1].type == "Variable", "Expected variable member. Got "..tostring(element.type)..".");
-            return staticValues[key];
+            assert(fittingMembers[1].memberType == "Variable", "Expected variable member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..".");
+            return staticValues[typeObject.level][key];
         end,
         __newindex = function(_, key, value)
             if not(catagory == "Class") then
@@ -148,8 +164,8 @@ local InteractionElement = function(metaProvider, generics)
 
             local fittingMembers = getMembers(key, nil, true);
             expectOneMember(fittingMembers, key);
-            assert(fittingMembers[1].type == "Variable", "Expected variable member. Got "..tostring(element.type)..".");
-            return staticValues[key];
+            assert(fittingMembers[1].memberType == "Variable", "Expected variable member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..".");
+            staticValues[typeObject.level][key] = value;
         end,
         __call = function(_, ...)
             assert(type(constructors)=="table" and #(constructors) > 0, "Class did not provide any constructors. Type: "..typeObject.FullName);

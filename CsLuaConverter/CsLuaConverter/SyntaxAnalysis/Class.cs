@@ -90,7 +90,7 @@
             textWriter.Write("element[typeObject.Level] = ");
             
             var defaultValues = new Dictionary<string, object>();
-            foreach (var variable in this.variables)
+            foreach (var variable in this.variables.Where(v => !v.Static))
             {
                 if (variable.Expression != null)
                 {
@@ -105,6 +105,7 @@
                     });
                 }
             }
+
             /*foreach (var property in this.properties)
             {
                 textWriter.WriteLine("if not(values.{0} == nil) then element[typeObject.Level].{0} = values.{0}; end", property.Name);
@@ -117,16 +118,37 @@
 
             textWriter.WriteLine("end");
 
+            // Initialize Static
+            textWriter.Write("staticValues[typeObject.Level] = ");
+            
+            var staticValues = new Dictionary<string, object>();
+            foreach (var variable in this.variables.Where(v => v.Static))
+            {
+                if (variable.Expression != null)
+                {
+                    staticValues[variable.Name] = new Action(() => {
+                        variable.Expression.WriteLua(textWriter, providers);
+                    });
+                }
+                else
+                {
+                    staticValues[variable.Name] = new Action(() => {
+                        textWriter.Write("_M.DV({0})", variable.Type.GetTypeReferences(providers));
+                    });
+                }
+            }
+            LuaFormatter.WriteDictionary(textWriter, staticValues);
+
             // Initialize
             textWriter.WriteLine("local initialize = function(element, values)");
             textWriter.Indent++;
 
             textWriter.WriteLine("if baseInitialize then baseInitialize(element, values); end");
-            foreach (var variable in this.variables)
+            foreach (var variable in this.variables.Where(v => !v.Static))
             {
                 textWriter.WriteLine("if not(values.{0} == nil) then element[typeObject.Level].{0} = values.{0}; end", variable.Name);
             }
-            foreach (var property in this.properties)
+            foreach (var property in this.properties.Where(v => !v.Static))
             {
                 textWriter.WriteLine("if not(values.{0} == nil) then element[typeObject.Level].{0} = values.{0}; end", property.Name);
             }
