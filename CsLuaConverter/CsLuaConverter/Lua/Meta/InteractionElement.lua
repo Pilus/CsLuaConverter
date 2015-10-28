@@ -24,7 +24,7 @@ local InteractionElement = function(metaProvider, generics)
     local staticValues = {};
 
     local catagory, typeObject, members, constructors, elementGenerator, implements, initialize = metaProvider(element, generics, staticValues);
-    
+
     local where = function(list, evaluator)
         local t = {};
         for _, value in ipairs(list) do

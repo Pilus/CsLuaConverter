@@ -1,5 +1,5 @@
 ﻿System.String = _M.NE({[0] = function(interactionElement, generics, staticValues)
-    local typeObject = System.Type('String','System',System.Object.__typeof,nil,nil,interactionElement);
+    local typeObject = System.Type('String','System',System.Object.__typeof,0,nil,nil,interactionElement);
     local members = {
         
     };

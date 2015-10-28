@@ -44,13 +44,13 @@ _M.DOT_LVL = function(level)
                 return function() return typeObject; end
             end
 
-            return typeObject.InteractionElement.__index(obj, index, level); 
+            return typeObject.interactionElement.__index(obj, index, level); 
         end, 
         function(obj, index, value)
             assert(not(obj == nil), "Attempted to write index "..tostring(index).." to a nil value.");
 
             local typeObject = GetType(obj);
-            return typeObject.InteractionElement.__newindex(obj, index, value, level); 
+            return typeObject.interactionElement.__newindex(obj, index, value, level); 
         end,
         function(obj, ...)
             assert(type(obj) == "function", "Attempted to invoke a "..type(obj).." value.");

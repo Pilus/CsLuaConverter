@@ -105,11 +105,13 @@ local typeCache = {};
 
 
 local typeCall = function(name, namespace, baseType, numberOfGenerics, generics, implements, interactionElement, catagory)
+    assert(interactionElement, "Type cannot be created without an interactionElement.");
+
     catagory = catagory or "Class";
     numberOfGenerics = numberOfGenerics or 0;
     local hash = getHash(name, namespace, numberOfGenerics, generics);
-    if typeCache[hash] then
-        return typeCache[hash];
+    if typeCache[hash] then 
+        error("The type object "..tostring(name).." was already created.");
     end
 
     local self = { 
@@ -129,8 +131,8 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
     return self;
 end
 
-objectType = typeCall("Object", "System");
-typeType = typeCall("Type", "System", objectType);
+--objectType = typeCall("Object", "System"); -- TODO: Initialize in a way that does not require the type cache
+typeType = typeCall("Type", "System", nil, 0, nil, nil, {});
 
 local meta = {
     __typeof = typeType,
