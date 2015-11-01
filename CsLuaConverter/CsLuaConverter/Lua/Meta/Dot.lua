@@ -25,6 +25,13 @@ local GetType = function(obj, index)
         return System.String.__typeof;
     elseif type(obj) == "function" then
         return System.Action.__typeof;
+    elseif type(obj) == "boolean" then
+        return System.Bool.__typeof;
+    elseif type(obj) == "number" then
+        if obj == math.floor(obj) then
+            return System.Int.__typeof;
+        end
+        return System.Double.__typeof;
     else
         error("Could not get type of object "..type(obj)..". Attempting to read index "..tostring(index));
     end

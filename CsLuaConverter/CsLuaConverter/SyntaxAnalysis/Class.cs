@@ -68,7 +68,7 @@
             // Expected: typeObject, statics, nonStatics, constructors, defaultValueProvider 
             WriteGenericsMapping(this.generics, textWriter, providers);
 
-            textWriter.Write("local baseTypeObject, members, baseConstructors, baseElementGenerator, baseInitialize = ");
+            textWriter.Write("local baseTypeObject, members, baseConstructors, baseElementGenerator, implements, baseInitialize = ");
             textWriter.Write("{0}.{1}", typeObject.BaseType.Namespace, typeObject.BaseType.Name);
             if (inheritsOtherClass && this.baseLists[0].Name.Generics != null)
             {

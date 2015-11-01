@@ -1,6 +1,6 @@
 ﻿System.String = _M.NE({[0] = function(interactionElement, generics, staticValues)
-    local typeObject = System.Type('String','System',System.Object.__typeof,0,nil,nil,interactionElement);
-    local members = {};
+    local baseTypeObject, members = System.Object.__meta(staticValues);
+    local typeObject = System.Type('String','System',baseTypeObject,0,nil,nil,interactionElement);
 
     _M.IM(members,'Split',{
         level = typeObject.Level,

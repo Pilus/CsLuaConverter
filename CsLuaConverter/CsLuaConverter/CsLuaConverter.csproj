@@ -185,7 +185,10 @@
     <None Include="Lua\Meta\Throw.lua" />
     <None Include="Lua\Meta\Try.lua" />
     <None Include="Lua\Meta\aa._M.lua" />
+    <None Include="Lua\System\System.Bool.lua" />
+    <None Include="Lua\System\System.Double.lua" />
     <None Include="Lua\System\System.Exception.lua" />
+    <None Include="Lua\System\System.Int.lua" />
     <None Include="Lua\System\System.Int32.lua" />
     <None Include="Lua\System\System.Array.lua" />
     <None Include="Lua\System\System.Action.lua" />

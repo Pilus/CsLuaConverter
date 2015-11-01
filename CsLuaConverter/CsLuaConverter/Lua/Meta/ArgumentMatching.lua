@@ -31,7 +31,7 @@ local SelectMatchingByTypes = function(list, args)
     for _, element in ipairs(list) do
         local score = ScoreArguments(element.types, argTypes);
         
-        if not(bestScore) or score > bestScore then
+        if not(score == nil) and (not(bestScore) or score > bestScore) then
             bestMatch = element;
             bestScore = score;
         end

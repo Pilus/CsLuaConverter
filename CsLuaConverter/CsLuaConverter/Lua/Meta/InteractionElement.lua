@@ -25,6 +25,7 @@ local InteractionElement = function(metaProvider, generics)
     local extendedMethods = {};
 
     local catagory, typeObject, members, constructors, elementGenerator, implements, initialize = metaProvider(element, generics, staticValues);
+    staticValues.type = typeObject;
 
     local where = function(list, evaluator, otherList)
         local t = {};
@@ -168,8 +169,16 @@ local InteractionElement = function(metaProvider, generics)
             end
 
             local fittingMembers = getMembers(key, nil, true);
+
+            if (fittingMembers[1].memberType == "Method") then
+                return function(...)
+                    local member = _M.AM(fittingMembers, {...});
+                    return member.func(staticValues,...);
+                end
+            end
+
             expectOneMember(fittingMembers, key);
-            assert(fittingMembers[1].memberType == "Variable", "Expected variable member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..".");
+            assert(fittingMembers[1].memberType == "Variable", "Expected variable member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..". Object: "..typeObject.FullName..".");
             return staticValues[typeObject.level][key];
         end,
         __newindex = function(_, key, value)
@@ -179,7 +188,7 @@ local InteractionElement = function(metaProvider, generics)
 
             local fittingMembers = getMembers(key, nil, true);
             expectOneMember(fittingMembers, key);
-            assert(fittingMembers[1].memberType == "Variable", "Expected variable member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..".");
+            assert(fittingMembers[1].memberType == "Variable", "Expected variable member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..". Object: "..typeObject.FullName..".");
             staticValues[typeObject.level][key] = value;
         end,
         __call = function(_, ...)
