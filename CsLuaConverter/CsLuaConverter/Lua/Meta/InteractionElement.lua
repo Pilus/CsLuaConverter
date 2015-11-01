@@ -22,12 +22,18 @@ end
 local InteractionElement = function(metaProvider, generics)
     local element = {};
     local staticValues = {};
+    local extendedMethods = {};
 
     local catagory, typeObject, members, constructors, elementGenerator, implements, initialize = metaProvider(element, generics, staticValues);
 
-    local where = function(list, evaluator)
+    local where = function(list, evaluator, otherList)
         local t = {};
         for _, value in ipairs(list) do
+            if evaluator(value) then
+                table.insert(t, value);
+            end
+        end
+        for _, value in ipairs(otherList) do
             if evaluator(value) then
                 table.insert(t, value);
             end
@@ -39,7 +45,7 @@ local InteractionElement = function(metaProvider, generics)
         return where(members[key] or {}, function(member)
             assert(member.memberType, "Member without member type in "..typeObject.FullName..". Key: "..key.." Level: "..tostring(member.level));
             return (not(staticOnly) or member.static == true) and (member.scope == "Public" or (member.scope == "Protected" and level) or member.level == level);
-        end);
+        end, extendedMethods[key] or {});
     end
 
     local index = function(self, key, level)
@@ -135,6 +141,15 @@ local InteractionElement = function(metaProvider, generics)
         __index = index,
         __newindex = newIndex,
         __isNamespace = false,
+        __extend = function(extensions) 
+            for _,v in ipairs(extensions) do
+                if not(extendedMethods[v.name]) then
+                    extendedMethods[v.name] = {};
+                end
+                v.level = typeObject.level;
+                table.insert(extendedMethods[v.name], v);
+            end
+        end,
     };
 
     

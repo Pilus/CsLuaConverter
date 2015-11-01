@@ -191,6 +191,7 @@
     <None Include="Lua\System\System.Action.lua" />
     <None Include="Lua\System\System.Collections.Generic.Dictionary.lua" />
     <None Include="Lua\System\System.Collections.Generic.List.lua" />
+    <None Include="Lua\System\System.Linq.lua" />
     <None Include="Lua\System\System.String.lua" />
     <None Include="Lua\System\System.Object.lua" />
     <None Include="Lua\System\System.Type.lua" />
