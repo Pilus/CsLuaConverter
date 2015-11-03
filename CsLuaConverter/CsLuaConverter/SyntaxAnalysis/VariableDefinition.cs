@@ -212,6 +212,11 @@
 
         public string GetTypeReferences(IProviders providers)
         {
+            return GetTypeReferences(providers, false);
+        }
+
+        public string GetTypeReferences(IProviders providers, bool skipTypeof)
+        {
             if (this.IsGeneric(providers))
             {
                 if (providers.GenericsRegistry.GetGenericScope(this.type) == GenericScope.Class)
@@ -221,7 +226,7 @@
                 return "methodGenerics['" + this.type + "']";
             }
 
-            return this.GetFullTypeName(providers) + ".__typeof";
+            return this.GetFullTypeName(providers) + (skipTypeof ? "" : ".__typeof");
         }
 
 

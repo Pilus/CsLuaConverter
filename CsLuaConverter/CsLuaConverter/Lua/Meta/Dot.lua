@@ -33,7 +33,7 @@ local GetType = function(obj, index)
         end
         return System.Double.__typeof;
     else
-        error("Could not get type of object "..type(obj)..". Attempting to read index "..tostring(index));
+        error("Could not get type of object "..type(obj)..". Attempting to address index "..tostring(index));
     end
 end
 
@@ -56,7 +56,11 @@ _M.DOT_LVL = function(level)
         function(obj, index, value)
             assert(not(obj == nil), "Attempted to write index "..tostring(index).." to a nil value.");
 
-            local typeObject = GetType(obj);
+            if (type(obj) == "table" and (obj.__isNamespaceElement)) then
+                return obj.__newindex(obj, index, value, level);
+            end
+
+            local typeObject = GetType(obj, index);
             return typeObject.interactionElement.__newindex(obj, index, value, level); 
         end,
         function(obj, ...)

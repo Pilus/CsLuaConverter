@@ -165,6 +165,10 @@ local InteractionElement = function(metaProvider, generics)
             end
 
             if not(catagory == "Class") then
+                if (key == "GetType") then
+                    return nil;
+                end
+
                 error(string.format("Could not find key on a non class element. Category: %s. Key: %s.", tostring(catagory), tostring(key)));
             end
 

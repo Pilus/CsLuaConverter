@@ -187,9 +187,14 @@
                 {
                     (element as PlusPlus).PreviousElement = this.Elements.Last();
                 }
+
                 if (element is BinaryExpression)
                 {
                     (element as BinaryExpression).PreviousElement = this.Elements.Last();
+                    if (token.Text.Equals("is"))
+                    {
+                        this.Elements.Remove(this.Elements.Last());
+                    }
                 }
 
                 var last = this.Elements.LastOrDefault();

@@ -178,7 +178,7 @@
                 {
                     LuaFormatter.WriteDictionary(textWriter, new Dictionary<string, object>()
                     {
-                        { "types", new Action(() => textWriter.Write("{}")) },
+                        { "types", new Action(() => textWriter.Write("{{{0}}}", constructor.GetParameters().TypesAsReferences(providers))) },
                         { "func", new Action(() => constructor.WriteLua(textWriter, providers)) },
                     });
                     textWriter.Write(",");
