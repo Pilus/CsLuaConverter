@@ -129,6 +129,7 @@
     <Compile Include="SyntaxAnalysis\Constructor.cs" />
     <Compile Include="SyntaxAnalysis\Creator.cs" />
     <Compile Include="SyntaxAnalysis\Delegate.cs" />
+    <Compile Include="SyntaxAnalysis\V2\BaseElement.cs" />
     <Compile Include="SyntaxAnalysis\Else.cs" />
     <Compile Include="SyntaxAnalysis\EnumElement.cs" />
     <Compile Include="SyntaxAnalysis\ForeachLoop.cs" />
@@ -167,6 +168,12 @@
     <Compile Include="SyntaxAnalysis\Throw.cs" />
     <Compile Include="SyntaxAnalysis\Try.cs" />
     <Compile Include="SyntaxAnalysis\TypeLookupException.cs" />
+    <Compile Include="SyntaxAnalysis\V2\BaseListElement.cs" />
+    <Compile Include="SyntaxAnalysis\V2\ClassDeclaration.cs" />
+    <Compile Include="SyntaxAnalysis\V2\ContainerElement.cs" />
+    <Compile Include="SyntaxAnalysis\V2\DocumentElement.cs" />
+    <Compile Include="SyntaxAnalysis\V2\IdentifierNameElement.cs" />
+    <Compile Include="SyntaxAnalysis\V2\NamespaceDeclaration.cs" />
     <Compile Include="SyntaxAnalysis\Var.cs" />
     <Compile Include="SyntaxAnalysis\VariableName.cs" />
     <Compile Include="SyntaxAnalysis\VariableDefinition.cs" />

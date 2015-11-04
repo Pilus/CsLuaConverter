@@ -8,6 +8,7 @@
     using System.Threading.Tasks;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using V2;
 
     internal class SyntaxAnalyser
     {
@@ -98,7 +99,7 @@
 
             if (Debugger.IsAttached)
             {
-                return this.AnalyseDocumentContent(document);
+                return this.AnalyseDocumentContent(document, this.token);
             }
 
             try
@@ -138,6 +139,13 @@
                 i++;
             }
             File.WriteAllText(fileName, s);
+        }
+
+        private NameSpacePart AnalyseDocumentContent(Document document, SyntaxToken token)
+        {
+            var element = new DocumentElement();
+            element.Analyze(token);
+            throw new NotImplementedException();
         }
 
         private NameSpacePart AnalyseDocumentContent(Document document)
