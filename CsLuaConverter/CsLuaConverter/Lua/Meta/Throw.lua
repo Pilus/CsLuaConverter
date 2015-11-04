@@ -5,5 +5,5 @@ _M.Throw = function(exception)
     end
 
     _M._CurrentException = exception;
-    error(exception.ToString(), 2);
+    error((exception % _M.DOT).ToString(), 2);
 end

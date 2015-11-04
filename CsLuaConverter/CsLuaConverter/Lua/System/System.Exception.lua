@@ -1,16 +1,25 @@
 ﻿
 System.Exception = _M.NE({[0] = function(interactionElement, generics, staticValues)
-    local typeObject = System.Type('Exception','System',System.Object.__typeof,0,nil,nil,interactionElement);
+    local baseTypeObject, members = System.Object.__meta(staticValues);
+    local typeObject = System.Type('Exception','System',baseTypeObject,0,nil,nil,interactionElement);
     local level = 2;
-    local members = {
-        Message = {
-            {
-                level = 2,
-                memberType = 'AutoProperty',
-                scope = 'Public',
-            },
-        },
-    };
+
+    _M.IM(members,'Message',{
+        level = typeObject.Level,
+        memberType = 'AutoProperty',
+        scope = 'Public',
+    });
+
+    _M.IM(members,'ToString',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {typeObject},
+        func = function(element)
+            return (element % _M.DOT).Message;
+        end,
+    });
+
     local constructors = {
         {
             types = {System.String.__typeof},
