@@ -8,6 +8,13 @@
 
     public abstract class BaseElement
     {
+        public static void ExpectSyntax(SyntaxToken token, SyntaxKind kind)
+        {
+            if (!token.Parent.IsKind(kind))
+            {
+                throw new Exception("Unexpected token." + Enum.Parse(typeof(SyntaxKind), token.RawKind + ""));
+            }
+        }
 
         private static readonly Dictionary<SyntaxKind, Func<BaseElement>> Mappings = new Dictionary
             <SyntaxKind, Func<BaseElement>>()

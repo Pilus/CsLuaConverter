@@ -9,7 +9,7 @@
         {
             token = token.GetNextToken();
             token = base.Analyze(token);
-            throw new System.NotImplementedException();
+            return token;
         }
 
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
@@ -19,7 +19,7 @@
 
         public override bool ShouldContainerBreak(SyntaxToken token)
         {
-            return false;
+            return !token.Parent.IsKind(SyntaxKind.IdentifierName);
         }
     }
 }

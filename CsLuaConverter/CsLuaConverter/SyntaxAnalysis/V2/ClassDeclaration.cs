@@ -26,6 +26,8 @@
                 token = this.baseList.Analyze(token);
             }
 
+            ExpectSyntax(token, SyntaxKind.OpenBraceToken);
+
             throw new NotImplementedException();
         }
 

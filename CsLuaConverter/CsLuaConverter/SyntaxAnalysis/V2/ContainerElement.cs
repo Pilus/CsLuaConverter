@@ -4,6 +4,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
 
     public abstract class ContainerElement : BaseElement
     {
@@ -15,7 +16,7 @@
             {
                 if (!this.IsTokenAcceptedInContainer(token))
                 {
-                    throw new Exception("Unexpected token.");
+                    throw new Exception("Unexpected token. " + Enum.Parse(typeof(SyntaxKind), token.RawKind + ""));
                 }
 
                 var element = GenerateMatchingElement(token);
