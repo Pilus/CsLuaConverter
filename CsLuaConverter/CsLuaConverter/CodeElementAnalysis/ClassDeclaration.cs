@@ -1,9 +1,7 @@
-﻿namespace CsLuaConverter.SyntaxAnalysis.V2
+﻿namespace CsLuaConverter.CodeElementAnalysis
 {
-    using System;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ClassDeclaration : ContainerElement
     {
@@ -13,7 +11,7 @@
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
-            while (token.Parent is ClassDeclarationSyntax && token.Text != "{")
+            while (token.Parent.IsKind(SyntaxKind.ClassDeclaration) && token.Text != "{")
             {
                 if (token.IsKind(SyntaxKind.IdentifierToken)) this.name = token.Text;
                 if (token.IsKind(SyntaxKind.StaticKeyword)) this.IsStatic = true;
@@ -26,19 +24,21 @@
                 token = this.baseList.Analyze(token);
             }
 
-            ExpectSyntax(token, SyntaxKind.OpenBraceToken);
+            ExpectKind(token.GetKind(), SyntaxKind.OpenBraceToken);
+            token = token.GetNextToken();
 
-            throw new NotImplementedException();
+            return base.Analyze(token);
         }
 
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
-            throw new System.NotImplementedException();
+            return token.Parent.IsKind(SyntaxKind.ConstructorDeclaration) ||
+                token.Parent.IsKind(SyntaxKind.MethodDeclaration);
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)
         {
-            throw new System.NotImplementedException();
+            return token.Parent.IsKind(SyntaxKind.ClassDeclaration) && token.IsKind(SyntaxKind.CloseBraceToken);
         }
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace CsLuaConverter.SyntaxAnalysis.V2
+﻿namespace CsLuaConverter.CodeElementAnalysis
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
@@ -14,9 +13,14 @@
         {
             while (!this.ShouldContainerBreak(token))
             {
+                if (this.IsDelimiter(token))
+                {
+                    token = token.GetNextToken();
+                }
+
                 if (!this.IsTokenAcceptedInContainer(token))
                 {
-                    throw new Exception("Unexpected token. " + Enum.Parse(typeof(SyntaxKind), token.RawKind + ""));
+                    throw new Exception(string.Format("Unexpected token. {0} in {1}.", token.Parent.GetKind(), this.GetType().Name));
                 }
 
                 var element = GenerateMatchingElement(token);
@@ -29,6 +33,11 @@
             }
 
             return token;
+        }
+
+        public virtual bool IsDelimiter(SyntaxToken token)
+        {
+            return false;
         }
 
         public abstract bool IsTokenAcceptedInContainer(SyntaxToken token);

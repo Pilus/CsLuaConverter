@@ -1,4 +1,4 @@
-﻿namespace CsLuaConverter.SyntaxAnalysis.V2
+﻿namespace CsLuaConverter.CodeElementAnalysis
 {
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;

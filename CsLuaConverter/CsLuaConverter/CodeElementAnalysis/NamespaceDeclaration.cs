@@ -1,9 +1,10 @@
-﻿namespace CsLuaConverter.SyntaxAnalysis.V2
+﻿namespace CsLuaConverter.CodeElementAnalysis
 {
     using System.Collections.Generic;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using SyntaxAnalysis;
 
     public class NamespaceDeclaration : ContainerElement
     {

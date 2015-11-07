@@ -1,18 +1,18 @@
-﻿namespace CsLuaConverter.SyntaxAnalysis.V2
+﻿namespace CsLuaConverter.CodeElementAnalysis
 {
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class DocumentElement : ContainerElement
+    public class Line : ContainerElement
     {
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
-            return token.Parent.IsKind(SyntaxKind.NamespaceDeclaration);
+            return true;
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)
         {
-            return false;
+            return token.IsKind(SyntaxKind.SemicolonToken);
         }
     }
 }

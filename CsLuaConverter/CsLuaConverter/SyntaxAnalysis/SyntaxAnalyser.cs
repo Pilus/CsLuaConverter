@@ -6,9 +6,9 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using CodeElementAnalysis;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using V2;
 
     internal class SyntaxAnalyser
     {
@@ -125,12 +125,13 @@
         private void PrintSyntaxTreeToFile(string name, SyntaxToken token)
         {
             string s = "Token Parent,Text\n";
-            SyntaxToken firstToken = token;
+            
             while (token.Parent != null)
             {
-                s += string.Format("{0},{1}\n", token.Parent.GetType().Name, token.Text);
+                s += string.Format("{0},{1},{2}\n", token.Text, token.GetKind(), token.Parent.GetKind());
                 token = token.GetNextToken();
             }
+
             var i = 2;
             var fileName = "DebugOutput\\" + name + ".csv";
             while (File.Exists(fileName))
