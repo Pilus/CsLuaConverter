@@ -7,6 +7,7 @@
     {
         private readonly string parentFullName;
 
+        public readonly bool IsRoot;
         public readonly string Name;
         public readonly List<Namespace> SubNamespaces;
         public readonly List<NamespaceElement> Elements;
@@ -14,13 +15,14 @@
         public Namespace(string name, string parentFullName)
         {
             this.Name = name;
+            this.IsRoot = (this.parentFullName == null);
             this.parentFullName = parentFullName;
             this.FullName = (this.parentFullName == null) ? this.Name : this.parentFullName + "." + this.Name;
             this.SubNamespaces = new List<Namespace>();
             this.Elements = new List<NamespaceElement>();
         }
 
-        private string FullName { get; }
+        public string FullName { get; }
 
         public void Add(NamespaceElement namespaceElement)
         {

@@ -108,10 +108,13 @@
     <Compile Include="AddOnConstruction\LuaAddOn.cs" />
     <Compile Include="ISyntaxAnalyser.cs" />
     <Compile Include="LuaFileWriter.cs" />
+    <Compile Include="LuaVisitor\VisitorList.cs" />
+    <Compile Include="LuaVisitor\IVisitor.cs" />
     <Compile Include="LuaVisitor\LuaDocumentVisitor.cs" />
     <Compile Include="LuaVisitor\Namespace.cs" />
     <Compile Include="LuaVisitor\NamespaceElement.cs" />
     <Compile Include="LuaVisitor\NamespaceExtractor.cs" />
+    <Compile Include="LuaVisitor\NamespaceVisitor.cs" />
     <Compile Include="ProjectType.cs" />
     <Compile Include="Providers\GenericsRegistry\GenericScope.cs" />
     <Compile Include="Providers\GenericsRegistry\GenericsRegistry.cs" />

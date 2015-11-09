@@ -17,7 +17,8 @@
 
             var namespaces = this.namespaceExtractor.Extract(documentElements);
 
-            throw new NotImplementedException();
+            return namespaces.ToDictionary<Namespace, string, Action<IndentedTextWriter, IProviders>>(
+                ns => ns.Name, ns => (writer, providers) => VisitorList.Visit(ns, writer, providers));
         }
     }
 }
