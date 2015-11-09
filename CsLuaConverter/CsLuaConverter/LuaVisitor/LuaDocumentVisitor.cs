@@ -9,9 +9,13 @@
 
     public class LuaDocumentVisitor : IDocumentVisitor
     {
+        private readonly NamespaceExtractor namespaceExtractor = new NamespaceExtractor();
+
         public Dictionary<string, Action<IndentedTextWriter, IProviders>> Visit(IEnumerable<DocumentElement> documents)
         {
-            var document = documents.First();
+            var documentElements = documents.Take(10).ToList();
+
+            var namespaces = this.namespaceExtractor.Extract(documentElements);
 
             throw new NotImplementedException();
         }

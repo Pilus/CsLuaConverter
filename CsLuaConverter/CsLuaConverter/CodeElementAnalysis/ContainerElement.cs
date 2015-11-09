@@ -7,7 +7,7 @@
 
     public abstract class ContainerElement : BaseElement
     {
-        protected IList<BaseElement> ContainedElements = new List<BaseElement>();
+        public IList<BaseElement> ContainedElements = new List<BaseElement>();
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
