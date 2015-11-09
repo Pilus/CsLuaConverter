@@ -40,7 +40,8 @@
 
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
-            return token.Parent.IsKind(SyntaxKind.ClassDeclaration);
+            return token.Parent.IsKind(SyntaxKind.ClassDeclaration) ||
+                   token.Parent.IsKind(SyntaxKind.UsingDirective);
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)

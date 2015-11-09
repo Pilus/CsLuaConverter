@@ -9,16 +9,22 @@
     using ReferenceAnalysis;
     using SyntaxAnalysis;
 
-    internal static class SolutionHandler
+    internal class SolutionHandler
     {
-        public static IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, IProviders providers)
+        private readonly ISyntaxAnalyser syntaxAnalyzer;
+
+        public SolutionHandler(ISyntaxAnalyser syntaxAnalyzer)
+        {
+            this.syntaxAnalyzer = syntaxAnalyzer;
+        }
+
+        public IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, IProviders providers)
         {
             var projects = solution.Projects.Select(ProjectAnalyser.AnalyzeProject)
                 .Where(project => !project.ProjectType.Equals(ProjectType.Ignored))
                 .ToList();
 
-            var syntaxAnalyser = new SyntaxAnalyser();
-            var analyzedProjects = projects.Select(project => syntaxAnalyser.AnalyzeProject(project)).ToList();
+            var analyzedProjects = projects.Select(project => this.syntaxAnalyzer.AnalyzeProject(project)).ToList();
 
             ReferenceAnalyzer.PopulateAndAnalyseReferences(analyzedProjects);
 

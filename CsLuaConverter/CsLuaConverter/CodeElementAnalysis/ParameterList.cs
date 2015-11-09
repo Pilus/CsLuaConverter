@@ -16,7 +16,10 @@
 
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
-            throw new System.NotImplementedException();
+            return token.Parent.IsKind(SyntaxKind.PredefinedType) ||
+                   token.Parent.IsKind(SyntaxKind.Parameter) ||
+                   token.Parent.IsKind(SyntaxKind.IdentifierName) ||
+                   token.Parent.IsKind(SyntaxKind.GenericName);
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)

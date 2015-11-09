@@ -12,6 +12,9 @@
     using Microsoft.CodeAnalysis.MSBuild;
     using Providers;
     using System.Timers;
+    using CodeElementAnalysis;
+    using LuaVisitor;
+    using SyntaxAnalysis;
 
     internal class Program
     {
@@ -44,7 +47,21 @@
             stopWatch.Start();
             var solution = GetSolution(solutionPath);
             var providers = new Providers.Providers(solution);
-            var addOns = SolutionHandler.GenerateAddOnsFromSolution(solution, providers);
+
+            var useOriginal = false;
+            ISyntaxAnalyser analyzer = null;
+            if (useOriginal)
+            {
+                analyzer = new SyntaxAnalyser();
+            }
+            else
+            {
+                analyzer = new Analyzer(new LuaDocumentVisitor());
+            }
+
+
+            var solutionHandler = new SolutionHandler(analyzer);
+            var addOns = solutionHandler.GenerateAddOnsFromSolution(solution, providers);
 
             foreach (var addon in addOns)
             {

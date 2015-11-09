@@ -8,6 +8,7 @@
         public bool IsStatic;
         private string name;
         private BaseListElement baseList;
+        private TypeParameterList Generics;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -24,6 +25,13 @@
                 token = this.baseList.Analyze(token);
             }
 
+            if (token.Parent.IsKind(SyntaxKind.TypeParameterList))
+            {
+                this.Generics = new TypeParameterList();
+                token = this.Generics.Analyze(token);
+                token = token.GetNextToken();
+            }
+
             ExpectKind(token.GetKind(), SyntaxKind.OpenBraceToken);
             token = token.GetNextToken();
 
@@ -33,7 +41,8 @@
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
             return token.Parent.IsKind(SyntaxKind.ConstructorDeclaration) ||
-                token.Parent.IsKind(SyntaxKind.MethodDeclaration);
+                   token.Parent.IsKind(SyntaxKind.MethodDeclaration) ||
+                   token.Parent.IsKind(SyntaxKind.FieldDeclaration);
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)

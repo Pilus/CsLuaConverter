@@ -36,6 +36,13 @@
             { SyntaxKind.ArgumentList,                  () => new ArgumentList() },
             { SyntaxKind.SimpleMemberAccessExpression,  () => new SimpleMemberAccessExpression() },
             { SyntaxKind.NumericLiteralExpression,      () => new NumericLiteralExpression() },
+            { SyntaxKind.TrueLiteralExpression,         () => new TrueLiteralExpression() },
+            { SyntaxKind.NullLiteralExpression,         () => new NullLiteralExpression() },
+            { SyntaxKind.Parameter,                     () => new Parameter() },
+            { SyntaxKind.FieldDeclaration,              () => new FieldDeclaration() },
+            { SyntaxKind.GenericName,                   () => new GenericName() },
+            { SyntaxKind.UsingDirective,                () => new UsingDirective() },
+            { SyntaxKind.TypeParameter,                 () => new TypeParameter() },
         };
 
         public abstract SyntaxToken Analyze(SyntaxToken token);

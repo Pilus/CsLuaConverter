@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.SyntaxAnalysis
 {
     using System;
+    using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
@@ -9,8 +10,9 @@
     using CodeElementAnalysis;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using Providers;
 
-    internal class SyntaxAnalyser
+    internal class SyntaxAnalyser : ISyntaxAnalyser
     {
         private bool debugOutputFolderExists;
         private SyntaxToken token;
@@ -45,7 +47,7 @@
             };
         }
 
-        public Dictionary<string, NameSpace> GetNamespaces(Project project)
+        private Dictionary<string, Action<IndentedTextWriter, IProviders>> GetNamespaces(Project project)
         {
             if (Debugger.IsAttached)
             {
@@ -64,7 +66,7 @@
         }
 
 
-        private Dictionary<string, NameSpace> GetNamespacesFromProject(Project project)
+        private Dictionary<string, Action<IndentedTextWriter, IProviders>> GetNamespacesFromProject(Project project)
         {
             IEnumerable<Document> docs = project.Documents
                 .Where(doc => doc.Folders.FirstOrDefault() != "Properties"
@@ -84,10 +86,11 @@
                     nameSpaces[nameSpacePart.FullName.First()] = new NameSpace(nameSpacePart, 1);
                 }
             }
-            return nameSpaces;
+
+            return nameSpaces.ToDictionary<KeyValuePair<string, NameSpace>, string, Action<IndentedTextWriter, IProviders>>(ns => ns.Key, ns => ns.Value.WriteLua);
         }
 
-        public NameSpacePart AnalyseDocument(Document document)
+        private NameSpacePart AnalyseDocument(Document document)
         {
             SyntaxNode syntaxTreeRoot = this.GetSyntaxTreeRoot(document);
             this.token = syntaxTreeRoot.FindToken(syntaxTreeRoot.SpanStart);
@@ -95,11 +98,6 @@
             if (this.debugOutputFolderExists)
             {
                 this.PrintSyntaxTreeToFile(document.Name, this.token);
-            }
-
-            if (Debugger.IsAttached)
-            {
-                return this.AnalyseDocumentContent(document, this.token);
             }
 
             try
@@ -140,13 +138,6 @@
                 i++;
             }
             File.WriteAllText(fileName, s);
-        }
-
-        private NameSpacePart AnalyseDocumentContent(Document document, SyntaxToken token)
-        {
-            var element = new DocumentElement();
-            element.Analyze(token);
-            throw new NotImplementedException();
         }
 
         private NameSpacePart AnalyseDocumentContent(Document document)

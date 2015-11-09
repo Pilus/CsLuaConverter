@@ -7,12 +7,13 @@
     {
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
-            return token.Parent.IsKind(SyntaxKind.NamespaceDeclaration);
+            return token.Parent.IsKind(SyntaxKind.NamespaceDeclaration) ||
+                   token.Parent.IsKind(SyntaxKind.UsingDirective);
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)
         {
-            return false;
+            return token.IsKind(SyntaxKind.None);
         }
     }
 }

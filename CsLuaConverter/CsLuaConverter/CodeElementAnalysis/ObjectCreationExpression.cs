@@ -6,7 +6,7 @@
 
     public class ObjectCreationExpression : BaseElement
     {
-        public IdentifierName TypeElement;
+        public BaseElement TypeElement;
         public ArgumentList ArgumentList;
 
         public override SyntaxToken Analyze(SyntaxToken token)
@@ -15,7 +15,19 @@
             ExpectKind(SyntaxKind.NewKeyword, token.GetKind());
             token = token.GetNextToken();
 
-            this.TypeElement = new IdentifierName();
+            if (token.Parent.IsKind(SyntaxKind.IdentifierName))
+            {
+                this.TypeElement = new IdentifierName();
+            }
+            else if(token.Parent.IsKind(SyntaxKind.GenericName))
+            {
+                this.TypeElement = new GenericName();
+            }
+            else
+            {
+                throw new Exception("Unexpected element. " + token.Parent.GetKind());
+            }
+            
             token = this.TypeElement.Analyze(token);
             token = token.GetNextToken();
 

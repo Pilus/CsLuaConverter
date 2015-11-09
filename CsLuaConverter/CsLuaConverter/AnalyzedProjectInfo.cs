@@ -1,11 +1,14 @@
 ﻿
-namespace CsLuaConverter.SyntaxAnalysis
+namespace CsLuaConverter
 {
+    using System;
+    using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
     using ProjectAnalysis;
+    using Providers;
 
-    class AnalyzedProjectInfo
+    public class AnalyzedProjectInfo
     {
         public AnalyzedProjectInfo()
         {
@@ -13,7 +16,7 @@ namespace CsLuaConverter.SyntaxAnalysis
         }
 
         public ProjectInfo Info { get; set; }
-        public Dictionary<string, NameSpace> Namespaces { get; set; }
+        public Dictionary<string, Action<IndentedTextWriter, IProviders>> Namespaces { get; set; }
         public List<AnalyzedProjectInfo> Referenders { get; private set; }
         public List<AnalyzedProjectInfo> RequiredAddOns { get; private set; }
         public List<AnalyzedProjectInfo> HostOf { get; private set; }
