@@ -108,6 +108,7 @@
     <Compile Include="AddOnConstruction\LuaAddOn.cs" />
     <Compile Include="ISyntaxAnalyser.cs" />
     <Compile Include="LuaFileWriter.cs" />
+    <Compile Include="LuaVisitor\ClassVisitor.cs" />
     <Compile Include="LuaVisitor\VisitorList.cs" />
     <Compile Include="LuaVisitor\IVisitor.cs" />
     <Compile Include="LuaVisitor\LuaDocumentVisitor.cs" />
