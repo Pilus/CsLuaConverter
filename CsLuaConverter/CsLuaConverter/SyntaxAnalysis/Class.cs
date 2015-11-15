@@ -118,6 +118,8 @@
 
             textWriter.WriteLine("end");
 
+
+
             // Initialize Static
             textWriter.Write("staticValues[typeObject.Level] = ");
             

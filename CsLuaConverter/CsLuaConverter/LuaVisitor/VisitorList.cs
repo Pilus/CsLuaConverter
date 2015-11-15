@@ -13,6 +13,7 @@
         {
             new NamespaceVisitor(),
             new ClassVisitor(),
+            new TypeVisitor(),
         };
 
         private static IndentedTextWriter writer;
