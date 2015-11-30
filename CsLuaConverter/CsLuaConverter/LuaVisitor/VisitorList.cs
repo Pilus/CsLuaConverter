@@ -14,6 +14,8 @@
             new NamespaceVisitor(),
             new ClassVisitor(),
             new TypeVisitor(),
+            new PropertyVisitor(),
+            new NumericLiteralExpressionVisitor(),
         };
 
         private static IndentedTextWriter writer;
