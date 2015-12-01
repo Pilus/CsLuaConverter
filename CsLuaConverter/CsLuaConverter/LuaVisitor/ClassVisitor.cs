@@ -27,6 +27,7 @@
             WriteElementGeneratorFunction(element, textWriter, providers);
             WriteStaticValues(element, textWriter, providers);
             WriteInitialize(element, textWriter, providers);
+            WriteMembers(element, textWriter, providers);
 
             textWriter.Indent--;
             textWriter.WriteLine("end}),");
@@ -90,12 +91,12 @@
 
             textWriter.Indent++;
 
-            // TODO: Write default values for non static variable values.
+            // TODO: Write default values for non static property values.
 
-            var properties = element.ContainedElements.Where(e => e is FieldDeclaration);
-            foreach (var prop in properties)
+            var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
+            foreach (var field in fields)
             {
-                PropertyVisitor.WriteDefaultValue(prop as FieldDeclaration, textWriter, providers, false);
+                PropertyVisitor.WriteDefaultValue(field as FieldDeclaration, textWriter, providers, false);
             }
 
             textWriter.Indent--;
@@ -115,12 +116,12 @@
 
             textWriter.Indent++;
 
-            // TODO: Write default values for static variable values.
+            // TODO: Write default values for static property values.
 
-            var properties = element.ContainedElements.Where(e => e is FieldDeclaration);
-            foreach (var prop in properties)
+            var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
+            foreach (var field in fields)
             {
-                PropertyVisitor.WriteDefaultValue(prop as FieldDeclaration, textWriter, providers, true);
+                PropertyVisitor.WriteDefaultValue(field as FieldDeclaration, textWriter, providers, true);
             }
 
             textWriter.Indent--;
@@ -135,13 +136,13 @@
 
             textWriter.WriteLine("if baseInitialize then baseInitialize(element, values); end");
 
-            // TODO: Write variables
+            // TODO: Write properties
 
             
-            var properties = element.ContainedElements.Where(e => e is FieldDeclaration);
-            foreach (var property in properties)
+            var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
+            foreach (var field in fields)
             {
-                PropertyVisitor.WriteInitialValue(property as FieldDeclaration, textWriter, providers, false);
+                PropertyVisitor.WriteInitialValue(field as FieldDeclaration, textWriter, providers, false);
             }
             textWriter.Indent--;
 
@@ -168,5 +169,14 @@
                 textWriter.WriteLine("{};");
             }
         }
+
+        private static void WriteMembers(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            foreach (var member in element.ContainedElements.Where(m => !(m is ConstructorDeclaration)))
+            {
+                VisitorList.Visit(member);
+            }
+        }
+
     }
 }

@@ -110,6 +110,7 @@
     <Compile Include="LuaFileWriter.cs" />
     <Compile Include="LuaVisitor\ClassVisitor.cs" />
     <Compile Include="LuaVisitor\Extensions.cs" />
+    <Compile Include="LuaVisitor\MethodVisitor.cs" />
     <Compile Include="LuaVisitor\NumericLiteralExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\PropertyVisitor.cs" />
     <Compile Include="LuaVisitor\TypeVisitor.cs" />
