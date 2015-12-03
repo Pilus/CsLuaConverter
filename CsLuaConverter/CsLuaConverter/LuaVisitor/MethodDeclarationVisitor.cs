@@ -2,10 +2,11 @@
 {
     using CodeElementAnalysis;
     using System;
+    using System.Linq;
     using Providers;
     using System.CodeDom.Compiler;
 
-    public class MethodVisitor : IVisitor<MethodDeclaration>
+    public class MethodDeclarationVisitor : IVisitor<MethodDeclaration>
     {
         public void Visit(MethodDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
@@ -19,7 +20,19 @@
             textWriter.Write("types = {");
             VisitorList.Visit(element.Parameters);
             textWriter.WriteLine("},");
-            //element.Block
+
+            textWriter.Write("func = function(element");
+            if (element.Parameters.ContainedElements.Any())
+            {
+                textWriter.Write(",");
+            }
+
+            VisitorList.Visit(element.Parameters);
+            textWriter.WriteLine(")");
+            textWriter.Indent++;
+            VisitorList.Visit(element.Block);
+            textWriter.Indent--;
+            textWriter.WriteLine("end");
 
             textWriter.Indent--;
             textWriter.WriteLine("});");

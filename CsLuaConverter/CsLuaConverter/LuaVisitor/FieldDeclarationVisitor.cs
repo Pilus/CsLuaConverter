@@ -5,7 +5,7 @@
     using Providers;
     using System.CodeDom.Compiler;
 
-    public class PropertyVisitor : IVisitor<FieldDeclaration>
+    public class FieldDeclarationVisitor : IVisitor<FieldDeclaration>
     {
         public void Visit(FieldDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {

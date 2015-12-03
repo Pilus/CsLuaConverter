@@ -96,7 +96,7 @@
             var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
             foreach (var field in fields)
             {
-                PropertyVisitor.WriteDefaultValue(field as FieldDeclaration, textWriter, providers, false);
+                FieldDeclarationVisitor.WriteDefaultValue(field as FieldDeclaration, textWriter, providers, false);
             }
 
             textWriter.Indent--;
@@ -121,7 +121,7 @@
             var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
             foreach (var field in fields)
             {
-                PropertyVisitor.WriteDefaultValue(field as FieldDeclaration, textWriter, providers, true);
+                FieldDeclarationVisitor.WriteDefaultValue(field as FieldDeclaration, textWriter, providers, true);
             }
 
             textWriter.Indent--;
@@ -142,7 +142,7 @@
             var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
             foreach (var field in fields)
             {
-                PropertyVisitor.WriteInitialValue(field as FieldDeclaration, textWriter, providers, false);
+                FieldDeclarationVisitor.WriteInitialValue(field as FieldDeclaration, textWriter, providers, false);
             }
             textWriter.Indent--;
 
