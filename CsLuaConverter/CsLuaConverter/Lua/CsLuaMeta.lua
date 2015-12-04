@@ -599,7 +599,7 @@ CsLuaMeta.CreateClass = function(info)
 				if (element.override == true) and inheritiedClass then
 					overrides[element.name] = func;
 				end
-			elseif (element.type == "Variable") then
+			elseif (element.type == "Field") then
 				if (element.static) then
 					staticVariables[element.name] = element;
 				else

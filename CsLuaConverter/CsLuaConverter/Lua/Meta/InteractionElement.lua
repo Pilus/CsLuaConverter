@@ -68,7 +68,7 @@ local InteractionElement = function(metaProvider, generics)
             assert(type(fittingMembers[i].memberType) == "string", "Missing member type on member. Object: "..typeObject.FullName..". Key: "..tostring(key).." Level: "..tostring(level).." Member #: "..tostring(i))
         end
 
-        if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then
+        if fittingMembers[1].memberType == "Field" or fittingMembers[1].memberType == "AutoProperty" then
             expectOneMember(fittingMembers, key);
 
             if fittingMembers[1].static then
@@ -108,7 +108,7 @@ local InteractionElement = function(metaProvider, generics)
             error("Could not find member. Key: "..tostring(key)..". Object: "..typeObject.FullName);
         end
 
-        if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then
+        if fittingMembers[1].memberType == "Field" or fittingMembers[1].memberType == "AutoProperty" then
             expectOneMember(fittingMembers, key);
 
             if (fittingMembers[1].static) then
@@ -182,7 +182,7 @@ local InteractionElement = function(metaProvider, generics)
             end
 
             expectOneMember(fittingMembers, key);
-            assert(fittingMembers[1].memberType == "Variable", "Expected variable member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..". Object: "..typeObject.FullName..".");
+            assert(fittingMembers[1].memberType == "Field", "Expected field member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..". Object: "..typeObject.FullName..".");
             return staticValues[typeObject.level][key];
         end,
         __newindex = function(_, key, value)
@@ -192,7 +192,7 @@ local InteractionElement = function(metaProvider, generics)
 
             local fittingMembers = getMembers(key, nil, true);
             expectOneMember(fittingMembers, key);
-            assert(fittingMembers[1].memberType == "Variable", "Expected variable member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..". Object: "..typeObject.FullName..".");
+            assert(fittingMembers[1].memberType == "Field", "Expected field member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..". Object: "..typeObject.FullName..".");
             staticValues[typeObject.level][key] = value;
         end,
         __call = function(_, ...)

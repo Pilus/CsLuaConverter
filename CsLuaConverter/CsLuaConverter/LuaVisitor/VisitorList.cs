@@ -18,6 +18,11 @@
             new NumericLiteralExpressionVisitor(),
             new MethodDeclarationVisitor(),
             new ParameterListVisitor(),
+            new BlockVisitor(),
+            new PredefinedTypeVisitor(),
+            new ParameterVisitor(),
+            new IdentifierNameVisitor(),
+            new GenericNameVisitor(),
         };
 
         private static IndentedTextWriter writer;

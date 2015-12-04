@@ -9,7 +9,14 @@
     {
         public void Visit(FieldDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
-            throw new NotImplementedException();
+            textWriter.WriteLine("_M.IM(members, 'Ok', {");
+            textWriter.Indent++;
+            textWriter.WriteLine("level = typeObject.Level,");
+            textWriter.WriteLine("memberType = 'Field',");
+            textWriter.WriteLine("scope = '{0}',", element.Scope);
+            textWriter.WriteLine("static = {0},", element.Static);
+            textWriter.Indent--;
+            textWriter.WriteLine("}");
         }
 
         public static void WriteDefaultValue(FieldDeclaration element, IndentedTextWriter textWriter, IProviders providers, bool @static)

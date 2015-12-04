@@ -36,7 +36,6 @@
 
             textWriter.Indent--;
             textWriter.WriteLine("});");
-            throw new NotImplementedException();
         }
     }
 }
