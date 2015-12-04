@@ -16,9 +16,10 @@
             return (SyntaxKind)Enum.Parse(typeof(SyntaxKind), node.RawKind.ToString());
         }
 
-        public static bool IsKind(this SyntaxNode node, SyntaxKind[] kinds)
+        public static bool IsKind(this SyntaxNode node, params SyntaxKind[] kinds)
         {
-            return kinds.Any(kind => node.IsKind(kind));
+            var kind = node.GetKind();
+            return kinds.Any(k => k.Equals(kind));
         }
     }
 }
