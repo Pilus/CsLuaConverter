@@ -7,6 +7,7 @@
     public class MethodDeclaration : BaseElement
     {
         public bool Static;
+        public bool Override;
         public Scope Scope;
         public BaseElement ReturnType;
         public string Text;
@@ -22,6 +23,12 @@
             if (token.IsKind(SyntaxKind.StaticKeyword))
             {
                 this.Static = true;
+                token = token.GetNextToken();
+            }
+
+            if (token.IsKind(SyntaxKind.OverrideKeyword))
+            {
+                this.Override = true;
                 token = token.GetNextToken();
             }
 

@@ -46,6 +46,12 @@
             { SyntaxKind.ArrayCreationExpression,           () => new ArrayCreationExpression() },
             { SyntaxKind.ImplicitArrayCreationExpression,   () => new ImplicitArrayCreationExpression() },
             { SyntaxKind.ObjectInitializerExpression,       () => new ObjectInitializerExpression() },
+            { SyntaxKind.ReturnStatement,                   () => new ReturnStatement() },
+            { SyntaxKind.PropertyDeclaration,               () => new PropertyDeclaration() },
+            { SyntaxKind.IfStatement,                       () => new IfStatement() },
+            { SyntaxKind.IsExpression,                      () => new IsExpression() },
+            { SyntaxKind.ParenthesizedExpression,           () => new ParenthesizedExpression() },
+            { SyntaxKind.AsExpression,                      () => new AsExpression() },
         };
 
         public abstract SyntaxToken Analyze(SyntaxToken token);

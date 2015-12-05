@@ -32,8 +32,6 @@
                 token = element.Analyze(token);
 
                 this.Statements.Add(element);
-
-                token = token.GetNextToken();
             }
 
             return token;

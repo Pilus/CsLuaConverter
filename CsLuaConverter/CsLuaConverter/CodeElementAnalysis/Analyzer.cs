@@ -4,9 +4,12 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
     using Providers;
 
     public class Analyzer : ISyntaxAnalyser
@@ -57,13 +60,62 @@
             return this.documentVisitor.Visit(documentElements);
         }
 
+        private static SyntaxToken firstToken;
+
         private static DocumentElement AnalyzeDocument(Document document)
         {
             SyntaxNode syntaxTreeRoot = GetSyntaxTreeRoot(document);
             var token = syntaxTreeRoot.FindToken(syntaxTreeRoot.SpanStart);
+            firstToken = token;
             var element = new DocumentElement();
             element.Analyze(token);
             return element;
+        }
+
+        public static string DisplayKinds(SyntaxToken focusToken)
+        {
+            var token = firstToken;
+            var list = new List<string[]>();
+            while (!token.IsKind(SyntaxKind.None))
+            {
+                list.Add(new string[] { token.Text, token.GetKind().ToString(), token.Parent.GetKind().ToString() });
+
+                if (token == focusToken)
+                {
+                    list.Insert(0, new string[] { "Token at index:", (list.Count + 1).ToString() });
+                }
+
+                token = token.GetNextToken();
+            }
+
+            var max1 = list.Max(i => i[0].Length);
+            var max2 = list.Max(i => i[1].Length);
+
+            var sw = new StringWriter();
+
+            foreach (var line in list)
+            {
+                if (line.Length > 0)
+                {
+                    sw.Write(line[0] + new string(' ', 1 + max1 - line[0].Length));
+                }
+
+                if (line.Length > 1)
+                {
+                    sw.Write(line[1] + new string(' ', 1 + max2 - line[1].Length));
+                }
+
+                if (line.Length > 2)
+                {
+                    sw.Write(line[2]);
+                }
+
+                sw.WriteLine("");
+            }
+
+            File.WriteAllText("debug.txt", sw.ToString());
+
+            return new FileInfo("debug.txt").FullName;
         }
 
         private static SyntaxNode GetSyntaxTreeRoot(Document doc)

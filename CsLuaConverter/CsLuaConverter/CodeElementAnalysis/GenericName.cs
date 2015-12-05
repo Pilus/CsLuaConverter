@@ -8,6 +8,7 @@
     {
         public string Name;
         public TypeArgumentList ArgumentList;
+        public bool IsArray;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -17,8 +18,19 @@
             token = token.GetNextToken();
 
             this.ArgumentList = new TypeArgumentList();
+            token = this.ArgumentList.Analyze(token);
 
-            return this.ArgumentList.Analyze(token);
+            if (token.GetNextToken().Parent.IsKind(SyntaxKind.ArrayRankSpecifier))
+            {
+                token = token.GetNextToken();
+                ExpectKind(SyntaxKind.OpenBracketToken, token.GetKind());
+                token = token.GetNextToken();
+                ExpectKind(SyntaxKind.ArrayRankSpecifier, token.Parent.GetKind());
+                ExpectKind(SyntaxKind.CloseBracketToken, token.GetKind());
+                this.IsArray = true;
+            }
+
+            return token;
         }
     }
 }

@@ -42,7 +42,8 @@
         {
             return token.Parent.IsKind(SyntaxKind.ConstructorDeclaration) ||
                    token.Parent.IsKind(SyntaxKind.MethodDeclaration) ||
-                   token.Parent.IsKind(SyntaxKind.FieldDeclaration);
+                   token.Parent.IsKind(SyntaxKind.FieldDeclaration) ||
+                   token.Parent.IsKind(SyntaxKind.PropertyDeclaration);
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)

@@ -12,7 +12,11 @@
 
         public override bool ShouldContainerBreak(SyntaxToken token)
         {
-            return token.IsKind(SyntaxKind.CommaToken) || token.IsKind(SyntaxKind.CloseBraceToken);
+            return 
+                token.IsKind(SyntaxKind.CommaToken) || 
+                token.IsKind(SyntaxKind.CloseBraceToken) ||
+                token.IsKind(SyntaxKind.CloseParenToken) ||
+                token.IsKind(SyntaxKind.SemicolonToken);
         }
     }
 }

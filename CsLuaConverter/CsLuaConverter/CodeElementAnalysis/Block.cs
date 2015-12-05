@@ -7,7 +7,7 @@
 
     public class Block : BaseElement
     {
-        protected IList<Line> Lines = new List<Line>();
+        protected IList<Statement> Statements = new List<Statement>();
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -17,10 +17,10 @@
 
             while (!(token.Parent.IsKind(SyntaxKind.Block) && token.IsKind(SyntaxKind.CloseBraceToken)))
             {
-                var line = new Line();
+                var statement = new Statement();
 
-                token = line.Analyze(token);
-                this.Lines.Add(line);
+                token = statement.Analyze(token);
+                this.Statements.Add(statement);
                 token = token.GetNextToken();
             }
 
