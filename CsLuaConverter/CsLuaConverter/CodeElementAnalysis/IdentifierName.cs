@@ -11,15 +11,20 @@
         public override SyntaxToken Analyze(SyntaxToken token)
         {
             ExpectKind(SyntaxKind.IdentifierName, token.Parent.GetKind());
-            this.Names.Add(token.Text);
-
-            while (token.GetNextToken().Parent.IsKind(SyntaxKind.IdentifierName))
+            
+            while (token.Parent.IsKind(SyntaxKind.IdentifierName))
             {
-                token = token.GetNextToken();
                 this.Names.Add(token.Text);
+
+                token = token.GetNextToken();
+
+                if (token.Parent.IsKind(SyntaxKind.QualifiedName) && token.IsKind(SyntaxKind.DotToken))
+                {
+                    token = token.GetNextToken();
+                }
             }
             
-            return token;
+            return token.GetPreviousToken();
         }
     }
 }

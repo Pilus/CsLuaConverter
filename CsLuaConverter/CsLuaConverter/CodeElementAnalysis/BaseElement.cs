@@ -52,6 +52,14 @@
             { SyntaxKind.IsExpression,                      () => new IsExpression() },
             { SyntaxKind.ParenthesizedExpression,           () => new ParenthesizedExpression() },
             { SyntaxKind.AsExpression,                      () => new AsExpression() },
+            { SyntaxKind.EqualsExpression,                  () => new EqualsExpression() },
+            { SyntaxKind.BaseExpression,                    () => new BaseExpression() },
+            { SyntaxKind.AddExpression,                     () => new AddExpression() },
+            { SyntaxKind.EnumDeclaration,                   () => new EnumDeclaration() },
+            { SyntaxKind.EnumMemberDeclaration,             () => new EnumMemberDeclaration() },
+            { SyntaxKind.InterfaceDeclaration,              () => new InterfaceDeclaration() },
+            { SyntaxKind.CastExpression,                    () => new CastExpression() },
+            { SyntaxKind.FalseLiteralExpression,            () => new FalseLiteralExpression() },
         };
 
         public abstract SyntaxToken Analyze(SyntaxToken token);

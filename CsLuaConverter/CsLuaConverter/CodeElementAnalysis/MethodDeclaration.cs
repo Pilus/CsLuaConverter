@@ -13,6 +13,7 @@
         public string Text;
         public ParameterList Parameters;
         public Block Block;
+        public TypeParameterList MethodGenerics;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -39,6 +40,14 @@
             ExpectKind(SyntaxKind.IdentifierToken, token.GetKind());
             this.Text = token.Text;
             token = token.GetNextToken();
+
+            if (token.Parent.IsKind(SyntaxKind.TypeParameterList))
+            {
+                this.MethodGenerics = new TypeParameterList();
+                token = this.MethodGenerics.Analyze(token);
+                token = token.GetNextToken();
+            }
+
 
             ExpectKind(SyntaxKind.ParameterList, token.Parent.GetKind());
             this.Parameters = new ParameterList();

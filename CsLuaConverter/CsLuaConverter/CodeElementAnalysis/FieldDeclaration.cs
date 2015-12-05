@@ -8,6 +8,7 @@
     {
         public Scope Scope;
         public bool Static;
+        public bool Const;
         public BaseElement Type;
         public string Name;
         public BaseElement Value;
@@ -21,6 +22,17 @@
             if (token.IsKind(SyntaxKind.StaticKeyword))
             {
                 this.Static = true;
+                token = token.GetNextToken();
+            }
+
+            if (token.IsKind(SyntaxKind.ConstKeyword))
+            {
+                this.Const = true;
+                token = token.GetNextToken();
+            }
+
+            if (token.IsKind(SyntaxKind.ReadOnlyKeyword))
+            {
                 token = token.GetNextToken();
             }
 

@@ -41,7 +41,9 @@
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
             return token.Parent.IsKind(SyntaxKind.ClassDeclaration) ||
-                   token.Parent.IsKind(SyntaxKind.UsingDirective);
+                   token.Parent.IsKind(SyntaxKind.UsingDirective) ||
+                   token.Parent.IsKind(SyntaxKind.EnumDeclaration) ||
+                   token.Parent.IsKind(SyntaxKind.InterfaceDeclaration);
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)

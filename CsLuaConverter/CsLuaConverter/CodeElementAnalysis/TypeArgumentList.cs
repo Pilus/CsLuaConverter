@@ -26,7 +26,7 @@
 
         public override bool IsDelimiter(SyntaxToken token)
         {
-            return token.Parent.IsKind(SyntaxKind.PredefinedType) && token.IsKind(SyntaxKind.CommaToken);
+            return token.Parent.IsKind(SyntaxKind.TypeArgumentList) && token.IsKind(SyntaxKind.CommaToken);
         }
     }
 }
