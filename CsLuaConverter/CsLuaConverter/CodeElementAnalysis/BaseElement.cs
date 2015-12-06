@@ -60,6 +60,14 @@
             { SyntaxKind.InterfaceDeclaration,              () => new InterfaceDeclaration() },
             { SyntaxKind.CastExpression,                    () => new CastExpression() },
             { SyntaxKind.FalseLiteralExpression,            () => new FalseLiteralExpression() },
+            { SyntaxKind.PostIncrementExpression,           () => new PostIncrementExpression() },
+            { SyntaxKind.ForEachStatement,                  () => new ForEachStatement() },
+            { SyntaxKind.TryStatement,                      () => new TryStatement() },
+            { SyntaxKind.CharacterLiteralExpression,        () => new CharacterLiteralExpression() },
+            { SyntaxKind.PostDecrementExpression,           () => new PostDecrementExpression() },
+            { SyntaxKind.ElseClause,                        () => new ElseClause() },
+            { SyntaxKind.NotEqualsExpression,               () => new NotEqualsExpression() },
+            { SyntaxKind.ThrowStatement,                    () => new ThrowStatement() },
         };
 
         public abstract SyntaxToken Analyze(SyntaxToken token);

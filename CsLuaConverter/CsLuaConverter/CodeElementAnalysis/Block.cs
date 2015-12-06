@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class Block : BaseElement
     {
@@ -13,6 +15,7 @@
         {
             ExpectKind(SyntaxKind.Block, token.Parent.GetKind());
             ExpectKind(SyntaxKind.OpenBraceToken, token.GetKind());
+            var parent = (BlockSyntax) token.Parent;
             token = token.GetNextToken();
 
             while (!(token.Parent.IsKind(SyntaxKind.Block) && token.IsKind(SyntaxKind.CloseBraceToken)))
@@ -24,8 +27,12 @@
                 token = token.GetNextToken();
             }
 
-            return token;
+            if (token != parent.CloseBraceToken)
+            {
+                throw new Exception("Expected closing token.");
+            }
 
+            return token;
         }
     }
 }
