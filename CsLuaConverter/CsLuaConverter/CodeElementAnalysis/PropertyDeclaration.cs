@@ -6,6 +6,7 @@
 
     public class PropertyDeclaration : BaseElement
     {
+        public bool Static;
         public Scope Scope;
         public BaseElement Type;
         public string Name;
@@ -14,9 +15,21 @@
         public override SyntaxToken Analyze(SyntaxToken token)
         {
             ExpectKind(SyntaxKind.PropertyDeclaration, token.Parent.GetKind());
-            this.Scope = (Scope)Enum.Parse(typeof (Scope), token.Text, true);
 
+            this.Scope = (Scope)Enum.Parse(typeof(Scope), token.Text, true);
             token = token.GetNextToken();
+
+            if (token.IsKind(SyntaxKind.StaticKeyword))
+            {
+                this.Static = true;
+                token = token.GetNextToken();
+            }
+
+            if (token.Parent.IsKind(SyntaxKind.PropertyDeclaration))
+            {
+                throw new Exception("Expected all PropertyDeclarationTokens to be analyzed.");
+            }
+
             this.Type = GenerateMatchingElement(token);
             token = this.Type.Analyze(token);
 

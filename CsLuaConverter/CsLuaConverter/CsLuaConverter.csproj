@@ -78,6 +78,7 @@
     <Compile Include="AddOnConstruction\CodeFile.cs" />
     <Compile Include="AnalyzedProjectInfo.cs" />
     <Compile Include="CodeElementAnalysis\AccessorList.cs" />
+    <Compile Include="CodeElementAnalysis\AddAssignmentExpression.cs" />
     <Compile Include="CodeElementAnalysis\AddExpression.cs" />
     <Compile Include="CodeElementAnalysis\Analyzer.cs" />
     <Compile Include="CodeElementAnalysis\ArgumentList.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="CodeElementAnalysis\InterfaceDeclaration.cs" />
     <Compile Include="CodeElementAnalysis\IsExpression.cs" />
     <Compile Include="CodeElementAnalysis\MethodDeclaration.cs" />
+    <Compile Include="CodeElementAnalysis\MultiplyExpression.cs" />
     <Compile Include="CodeElementAnalysis\NotEqualsExpression.cs" />
     <Compile Include="CodeElementAnalysis\NullLiteralExpression.cs" />
     <Compile Include="CodeElementAnalysis\NumericLiteralExpression.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="CodeElementAnalysis\ObjectInitializerExpression.cs" />
     <Compile Include="CodeElementAnalysis\Parameter.cs" />
     <Compile Include="CodeElementAnalysis\ParenthesizedExpression.cs" />
+    <Compile Include="CodeElementAnalysis\ParenthesizedLambdaExpression.cs" />
     <Compile Include="CodeElementAnalysis\PostDecrementExpression.cs" />
     <Compile Include="CodeElementAnalysis\PostIncrementExpression.cs" />
     <Compile Include="CodeElementAnalysis\PredefinedType.cs" />
@@ -122,6 +125,7 @@
     <Compile Include="CodeElementAnalysis\SimpleMemberAccessExpression.cs" />
     <Compile Include="CodeElementAnalysis\Statement.cs" />
     <Compile Include="CodeElementAnalysis\StringLiteralExpression.cs" />
+    <Compile Include="CodeElementAnalysis\SubtractAssignmentExpression.cs" />
     <Compile Include="CodeElementAnalysis\ThisExpression.cs" />
     <Compile Include="CodeElementAnalysis\ThrowStatement.cs" />
     <Compile Include="CodeElementAnalysis\TrueLiteralExpression.cs" />
@@ -242,7 +246,7 @@
     <Compile Include="SyntaxAnalysis\Throw.cs" />
     <Compile Include="SyntaxAnalysis\Try.cs" />
     <Compile Include="SyntaxAnalysis\TypeLookupException.cs" />
-    <Compile Include="CodeElementAnalysis\BaseListElement.cs" />
+    <Compile Include="CodeElementAnalysis\BaseList.cs" />
     <Compile Include="CodeElementAnalysis\ClassDeclaration.cs" />
     <Compile Include="CodeElementAnalysis\ConstructorDeclaration.cs" />
     <Compile Include="CodeElementAnalysis\ContainerElement.cs" />

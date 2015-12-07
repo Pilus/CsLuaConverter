@@ -6,7 +6,7 @@
 
     public class ForEachStatement : BaseElement
     {
-        public IdentifierName IteratorType;
+        public BaseElement IteratorType;
         public string IteratorName;
         public Statement EnumeratorStatement;
         public Block Block;
@@ -21,10 +21,17 @@
             ExpectKind(SyntaxKind.OpenParenToken, token.GetKind());
 
             token = token.GetNextToken();
-            ExpectKind(SyntaxKind.IdentifierName, token.Parent.GetKind());
-            this.IteratorType = new IdentifierName();
-            token = this.IteratorType.Analyze(token);
-
+            if (token.Parent.IsKind(SyntaxKind.IdentifierName))
+            {
+                this.IteratorType = new IdentifierName();
+                token = this.IteratorType.Analyze(token);
+            }
+            else if (token.Parent.IsKind(SyntaxKind.PredefinedType))
+            {
+                this.IteratorType = new PredefinedType();
+                token = this.IteratorType.Analyze(token);
+            }
+            
             token = token.GetNextToken();
             ExpectKind(SyntaxKind.ForEachStatement, token.Parent.GetKind());
             ExpectKind(SyntaxKind.IdentifierToken, token.GetKind());

@@ -4,15 +4,19 @@
     using System.Collections.Generic;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ObjectInitializerExpression : BaseElement
     {
         public IList<Statement> Statements = new List<Statement>();
 
+        private InitializerExpressionSyntax parent;
+
         public override SyntaxToken Analyze(SyntaxToken token)
         {
             ExpectKind(SyntaxKind.ObjectInitializerExpression, token.Parent.GetKind());
             ExpectKind(SyntaxKind.OpenBraceToken, token.GetKind());
+            this.parent = (InitializerExpressionSyntax)token.Parent;
             token = token.GetNextToken();
 
             while (!this.ShouldContainerBreak(token))
@@ -44,8 +48,7 @@
 
         public bool ShouldContainerBreak(SyntaxToken token)
         {
-            return token.Parent.GetKind() == SyntaxKind.ObjectInitializerExpression &&
-                token.GetKind() == SyntaxKind.CloseBraceToken;
+            return token == this.parent.CloseBraceToken;
         }
 
         public bool IsDelimiter(SyntaxToken token)

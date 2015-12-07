@@ -7,7 +7,7 @@
     {
         public bool IsStatic;
         public string Name;
-        public BaseListElement BaseList;
+        public BaseList BaseList;
         public TypeParameterList Generics;
 
         public override SyntaxToken Analyze(SyntaxToken token)
@@ -19,17 +19,17 @@
                 token = token.GetNextToken();
             }
 
-            if (token.Parent.IsKind(SyntaxKind.BaseList))
-            {
-                this.BaseList = new BaseListElement();
-                token = this.BaseList.Analyze(token);
-            }
-
             if (token.Parent.IsKind(SyntaxKind.TypeParameterList))
             {
                 this.Generics = new TypeParameterList();
                 token = this.Generics.Analyze(token);
                 token = token.GetNextToken();
+            }
+
+            if (token.Parent.IsKind(SyntaxKind.BaseList))
+            {
+                this.BaseList = new BaseList();
+                token = this.BaseList.Analyze(token);
             }
 
             ExpectKind(token.GetKind(), SyntaxKind.OpenBraceToken);

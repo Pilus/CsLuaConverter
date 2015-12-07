@@ -7,7 +7,7 @@
     {
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
-            return true;
+            return !token.Parent.IsKind(SyntaxKind.Block);
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)

@@ -6,6 +6,7 @@
     public class IfStatement : BaseElement
     {
         public Statement Statement;
+        public Block Block;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -18,7 +19,13 @@
 
             token = token.GetNextToken();
             this.Statement = new Statement();
-            return this.Statement.Analyze(token);
+            token = this.Statement.Analyze(token);
+
+            token = token.GetNextToken();
+            this.Block = new Block();
+            token = this.Block.Analyze(token);
+
+            return token;
         }
     }
 }

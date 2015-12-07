@@ -5,7 +5,7 @@
 
     public class ElseClause : BaseElement
     {
-        public Statement Statement;
+        public Block Block;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -13,8 +13,10 @@
             ExpectKind(SyntaxKind.ElseKeyword, token.GetKind());
 
             token = token.GetNextToken();
-            this.Statement = new Statement();
-            return this.Statement.Analyze(token);
+            this.Block = new Block();
+            token = this.Block.Analyze(token);
+
+            return token;
         }
     }
 }

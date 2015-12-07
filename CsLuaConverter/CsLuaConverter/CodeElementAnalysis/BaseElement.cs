@@ -68,6 +68,11 @@
             { SyntaxKind.ElseClause,                        () => new ElseClause() },
             { SyntaxKind.NotEqualsExpression,               () => new NotEqualsExpression() },
             { SyntaxKind.ThrowStatement,                    () => new ThrowStatement() },
+            { SyntaxKind.ParameterList,                     () => new ParameterList() },
+            { SyntaxKind.ParenthesizedLambdaExpression,     () => new ParenthesizedLambdaExpression() },
+            { SyntaxKind.SubtractAssignmentExpression,      () => new SubtractAssignmentExpression() },
+            { SyntaxKind.AddAssignmentExpression,           () => new AddAssignmentExpression() },
+            { SyntaxKind.MultiplyExpression,                () => new MultiplyExpression() },
         };
 
         public abstract SyntaxToken Analyze(SyntaxToken token);

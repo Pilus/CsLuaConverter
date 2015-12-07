@@ -30,6 +30,11 @@
                 this.ContainedElements.Add(element);
 
                 token = token.GetNextToken();
+
+                if (this.IsDelimiter(token))
+                {
+                    token = token.GetNextToken();
+                }
             }
 
             return token;

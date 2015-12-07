@@ -6,7 +6,9 @@
     public class AccessorList : BaseElement
     {
         public bool HasAutoGetter;
+        public Block GetBlock;
         public bool HasAutoSetter;
+        public Block SetBlock;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -18,17 +20,44 @@
             {
                 if (token.Parent.IsKind(SyntaxKind.GetAccessorDeclaration))
                 {
+                    if (token.IsKind(SyntaxKind.ProtectedKeyword))
+                    {
+                        token = token.GetNextToken();
+                    }
+
                     ExpectKind(SyntaxKind.GetKeyword, token.GetKind());
                     token = token.GetNextToken();
-                    ExpectKind(SyntaxKind.SemicolonToken, token.GetKind());
-                    this.HasAutoGetter = true;
+
+                    if (token.IsKind(SyntaxKind.SemicolonToken))
+                    {
+                        this.HasAutoGetter = true;
+                    }
+                    else
+                    {
+                        this.GetBlock = new Block();
+                        token = this.GetBlock.Analyze(token);
+                    }
+                    
                 }
-                else if (token.Parent.IsKind(SyntaxKind.GetAccessorDeclaration))
+                else if (token.Parent.IsKind(SyntaxKind.SetAccessorDeclaration))
                 {
+                    if (token.IsKind(SyntaxKind.ProtectedKeyword))
+                    {
+                        token = token.GetNextToken();
+                    }
+
                     ExpectKind(SyntaxKind.SetKeyword, token.GetKind());
                     token = token.GetNextToken();
-                    ExpectKind(SyntaxKind.SemicolonToken, token.GetKind());
-                    this.HasAutoSetter = true;
+
+                    if (token.IsKind(SyntaxKind.SemicolonToken))
+                    {
+                        this.HasAutoSetter = true;
+                    }
+                    else
+                    {
+                        this.SetBlock = new Block();
+                        token = this.SetBlock.Analyze(token);
+                    }
                 }
 
                 token = token.GetNextToken();

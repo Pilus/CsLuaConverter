@@ -24,7 +24,11 @@
 
                 token = statement.Analyze(token);
                 this.Statements.Add(statement);
-                token = token.GetNextToken();
+
+                if (token != parent.CloseBraceToken)
+                {
+                    token = token.GetNextToken();
+                }
             }
 
             if (token != parent.CloseBraceToken)
