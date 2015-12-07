@@ -85,6 +85,9 @@
     <Compile Include="CodeElementAnalysis\ArrayCreationExpression.cs" />
     <Compile Include="CodeElementAnalysis\ArrayInitializerExpression.cs" />
     <Compile Include="CodeElementAnalysis\AsExpression.cs" />
+    <Compile Include="CodeElementAnalysis\AttributeArgumentList.cs" />
+    <Compile Include="CodeElementAnalysis\AttributeList.cs" />
+    <Compile Include="CodeElementAnalysis\BaseConstructorInitializer.cs" />
     <Compile Include="CodeElementAnalysis\BaseExpression.cs" />
     <Compile Include="CodeElementAnalysis\Block.cs" />
     <Compile Include="CodeElementAnalysis\BracketedArgumentList.cs" />
@@ -104,9 +107,11 @@
     <Compile Include="CodeElementAnalysis\IfStatement.cs" />
     <Compile Include="CodeElementAnalysis\ImplicitArrayCreationExpression.cs" />
     <Compile Include="CodeElementAnalysis\InterfaceDeclaration.cs" />
+    <Compile Include="CodeElementAnalysis\InterfaceElement.cs" />
     <Compile Include="CodeElementAnalysis\IsExpression.cs" />
     <Compile Include="CodeElementAnalysis\MethodDeclaration.cs" />
     <Compile Include="CodeElementAnalysis\MultiplyExpression.cs" />
+    <Compile Include="CodeElementAnalysis\NameEquals.cs" />
     <Compile Include="CodeElementAnalysis\NotEqualsExpression.cs" />
     <Compile Include="CodeElementAnalysis\NullLiteralExpression.cs" />
     <Compile Include="CodeElementAnalysis\NumericLiteralExpression.cs" />

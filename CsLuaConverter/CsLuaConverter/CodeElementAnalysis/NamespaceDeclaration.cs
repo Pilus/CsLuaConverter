@@ -43,7 +43,8 @@
             return token.Parent.IsKind(SyntaxKind.ClassDeclaration) ||
                    token.Parent.IsKind(SyntaxKind.UsingDirective) ||
                    token.Parent.IsKind(SyntaxKind.EnumDeclaration) ||
-                   token.Parent.IsKind(SyntaxKind.InterfaceDeclaration);
+                   token.Parent.IsKind(SyntaxKind.InterfaceDeclaration) ||
+                   token.Parent.IsKind(SyntaxKind.AttributeList);
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)

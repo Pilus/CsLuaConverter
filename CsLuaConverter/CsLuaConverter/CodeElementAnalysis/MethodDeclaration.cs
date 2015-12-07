@@ -8,6 +8,7 @@
     {
         public bool Static;
         public bool Override;
+        public bool Virtual;
         public Scope Scope;
         public BaseElement ReturnType;
         public string Text;
@@ -31,6 +32,17 @@
             {
                 this.Override = true;
                 token = token.GetNextToken();
+            }
+
+            if (token.IsKind(SyntaxKind.VirtualKeyword))
+            {
+                this.Virtual = true;
+                token = token.GetNextToken();
+            }
+
+            if (token.Parent.IsKind(SyntaxKind.MethodDeclaration))
+            {
+                throw new Exception("Not all method declartion tokens were handled.");
             }
 
             this.ReturnType = GenerateMatchingElement(token);

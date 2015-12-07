@@ -73,6 +73,8 @@
             { SyntaxKind.SubtractAssignmentExpression,      () => new SubtractAssignmentExpression() },
             { SyntaxKind.AddAssignmentExpression,           () => new AddAssignmentExpression() },
             { SyntaxKind.MultiplyExpression,                () => new MultiplyExpression() },
+            { SyntaxKind.AttributeList,                     () => new AttributeList() },
+            { SyntaxKind.NameEquals,                        () => new NameEquals() },
         };
 
         public abstract SyntaxToken Analyze(SyntaxToken token);

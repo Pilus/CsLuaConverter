@@ -38,15 +38,15 @@
 
         private static void WriteBaseInheritance(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
-            var firstBaseElement = element.BaseList?.ContainedElements.First();
+            var firstBaseElementPair = element.BaseList?.ContainedElements.First();
             var baseTypeNamespace = "System";
             var baseTypeName = "Object";
 
             IdentifierName inhetitedClass = null;
 
-            if (firstBaseElement != null)
+            if (firstBaseElementPair != null)
             {
-                var identifierName = (IdentifierName)firstBaseElement;
+                var identifierName = (IdentifierName)firstBaseElementPair.First();
                 var type = identifierName.GetTypeObject(providers);
 
                 if (type.IsClass)
@@ -93,7 +93,7 @@
 
             // TODO: Write default values for non static property values.
 
-            var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
+            var fields = element.ContainedElements.Single().Where(e => e is FieldDeclaration);
             foreach (var field in fields)
             {
                 FieldDeclarationVisitor.WriteDefaultValue(field as FieldDeclaration, textWriter, providers, false);
@@ -118,7 +118,7 @@
 
             // TODO: Write default values for static property values.
 
-            var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
+            var fields = element.ContainedElements.Single().Where(e => e is FieldDeclaration);
             foreach (var field in fields)
             {
                 FieldDeclarationVisitor.WriteDefaultValue(field as FieldDeclaration, textWriter, providers, true);
@@ -139,7 +139,7 @@
             // TODO: Write properties
 
             
-            var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
+            var fields = element.ContainedElements.Single().Where(e => e is FieldDeclaration);
             foreach (var field in fields)
             {
                 FieldDeclarationVisitor.WriteInitialValue(field as FieldDeclaration, textWriter, providers, false);

@@ -7,6 +7,7 @@
     {
         public ParameterList Parameters;
         public Block Block;
+        public BaseConstructorInitializer BaseConstructorInitializer;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -21,6 +22,13 @@
             this.Parameters = new ParameterList();
             token = this.Parameters.Analyze(token);
             token = token.GetNextToken();
+
+            if (token.Parent.IsKind(SyntaxKind.BaseConstructorInitializer))
+            {
+                this.BaseConstructorInitializer = new BaseConstructorInitializer();
+                token = this.BaseConstructorInitializer.Analyze(token);
+                token = token.GetNextToken();
+            }
 
             ExpectKind(SyntaxKind.Block, token.Parent.GetKind());
             ExpectKind(SyntaxKind.OpenBraceToken, token.GetKind());

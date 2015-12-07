@@ -1,14 +1,16 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis
 {
     using System;
+    using System.Collections.Generic;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class InterfaceDeclaration : ContainerElement
+    public class InterfaceDeclaration : BaseElement
     {
         public Scope Scope;
         public BaseList BaseList;
         public TypeParameterList Generics;
+        public IList<InterfaceElement> Elements = new List<InterfaceElement>();
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -41,15 +43,34 @@
             ExpectKind(SyntaxKind.OpenBraceToken, token.GetKind());
 
             token = token.GetNextToken();
-            return base.Analyze(token);
+            
+            while (!this.ShouldContainerBreak(token))
+            {
+                if (!this.IsTokenAcceptedInContainer(token))
+                {
+                    throw new Exception(string.Format("Unexpected token. {0} in {1}.", token.Parent.GetKind(), this.GetType().Name));
+                }
+
+                var element = new InterfaceElement();
+
+                token = element.Analyze(token);
+
+                this.Elements.Add(element);
+
+                token = token.GetNextToken();
+            }
+
+            return token;
         }
 
-        public override bool IsTokenAcceptedInContainer(SyntaxToken token)
+        public bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
-            throw new System.NotImplementedException();
+            return token.Parent.IsKind(SyntaxKind.PredefinedType) || 
+                token.Parent.IsKind(SyntaxKind.MethodDeclaration) ||
+                token.Parent.IsKind(SyntaxKind.IdentifierName);
         }
 
-        public override bool ShouldContainerBreak(SyntaxToken token)
+        public bool ShouldContainerBreak(SyntaxToken token)
         {
             return token.Parent.IsKind(SyntaxKind.InterfaceDeclaration) && token.IsKind(SyntaxKind.CloseBraceToken);
         }

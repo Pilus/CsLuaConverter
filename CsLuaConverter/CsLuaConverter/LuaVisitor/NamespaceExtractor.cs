@@ -45,13 +45,13 @@
 
             var outerUsings = document.ContainedElements.Where(e => e is UsingDirective) as IEnumerable<UsingDirective>;
 
-            var namespaces = document.ContainedElements.Where(e => e is NamespaceDeclaration);
+            var namespaces = document.ContainedElements.Single().Where(e => e is NamespaceDeclaration);
 
             foreach (var baseElement in namespaces)
             {
                 var ns = (NamespaceDeclaration) baseElement;
-                var elements = ns.ContainedElements.Where(e => !(e is UsingDirective));
-                var innerUsings = ns.ContainedElements.Where(e => e is UsingDirective) as IEnumerable<UsingDirective>;
+                var elements = ns.ContainedElements.Single().Where(e => !(e is UsingDirective));
+                var innerUsings = ns.ContainedElements.Single().Where(e => e is UsingDirective) as IEnumerable<UsingDirective>;
 
                 list.AddRange(elements.Select(element => this.GenerateNamespaceElement(string.Join(".", ns.FullName), element, outerUsings, innerUsings)));
             }
