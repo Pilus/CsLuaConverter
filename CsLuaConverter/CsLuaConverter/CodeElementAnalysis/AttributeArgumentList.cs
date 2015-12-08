@@ -5,6 +5,14 @@
 
     public class AttributeArgumentList : ContainerElement
     {
+        public override SyntaxToken Analyze(SyntaxToken token)
+        {
+            ExpectKind(SyntaxKind.AttributeArgumentList, token.Parent.GetKind());
+            ExpectKind(SyntaxKind.OpenParenToken, token.GetKind());
+
+            return base.Analyze(token);
+        }
+
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
             return token.Parent.IsKind(SyntaxKind.StringLiteralExpression) || 

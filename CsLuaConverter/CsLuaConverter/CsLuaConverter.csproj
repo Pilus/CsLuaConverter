@@ -94,6 +94,8 @@
     <Compile Include="CodeElementAnalysis\CastExpression.cs" />
     <Compile Include="CodeElementAnalysis\CatchDeclaration.cs" />
     <Compile Include="CodeElementAnalysis\CharacterLiteralExpression.cs" />
+    <Compile Include="CodeElementAnalysis\CollectionInitializerExpression.cs" />
+    <Compile Include="CodeElementAnalysis\ComplexElementInitializerExpression.cs" />
     <Compile Include="CodeElementAnalysis\ElseClause.cs" />
     <Compile Include="CodeElementAnalysis\EnumDeclaration.cs" />
     <Compile Include="CodeElementAnalysis\EnumMemberDeclaration.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="CodeElementAnalysis\ReturnStatement.cs" />
     <Compile Include="CodeElementAnalysis\Scope.cs" />
     <Compile Include="CodeElementAnalysis\SimpleAssignmentExpression.cs" />
+    <Compile Include="CodeElementAnalysis\SimpleLambdaExpression.cs" />
     <Compile Include="CodeElementAnalysis\SimpleMemberAccessExpression.cs" />
     <Compile Include="CodeElementAnalysis\Statement.cs" />
     <Compile Include="CodeElementAnalysis\StringLiteralExpression.cs" />

@@ -16,7 +16,9 @@
 
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
-            return token.Parent.IsKind(SyntaxKind.PredefinedType) || token.Parent.IsKind(SyntaxKind.IdentifierName);
+            return token.Parent.IsKind(SyntaxKind.PredefinedType) || 
+                token.Parent.IsKind(SyntaxKind.IdentifierName) || 
+                token.Parent.IsKind(SyntaxKind.GenericName);
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)

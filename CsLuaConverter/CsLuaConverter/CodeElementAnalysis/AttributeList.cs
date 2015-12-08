@@ -16,12 +16,15 @@
             token = token.GetNextToken();
             this.IdentifierName = new IdentifierName();
             token = this.IdentifierName.Analyze(token);
-
             token = token.GetNextToken();
-            this.AttributeArgumentList = new AttributeArgumentList();
-            token = this.AttributeArgumentList.Analyze(token);
 
-            token = token.GetNextToken();
+            if (token.Parent.IsKind(SyntaxKind.AttributeArgumentList))
+            {
+                this.AttributeArgumentList = new AttributeArgumentList();
+                token = this.AttributeArgumentList.Analyze(token);
+                token = token.GetNextToken();
+            }
+
             ExpectKind(SyntaxKind.AttributeList, token.Parent.GetKind());
             ExpectKind(SyntaxKind.CloseBracketToken, token.GetKind());
 

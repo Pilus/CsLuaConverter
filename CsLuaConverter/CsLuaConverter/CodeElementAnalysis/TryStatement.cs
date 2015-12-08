@@ -23,10 +23,14 @@
             if (nextToken.Parent.IsKind(SyntaxKind.CatchClause))
             {
                 token = nextToken.GetNextToken();
-                this.CatchDeclaration = new CatchDeclaration();
-                token = this.CatchDeclaration.Analyze(token);
 
-                token = token.GetNextToken();
+                if (token.Parent.IsKind(SyntaxKind.CatchDeclaration))
+                {
+                    this.CatchDeclaration = new CatchDeclaration();
+                    token = this.CatchDeclaration.Analyze(token);
+                    token = token.GetNextToken();
+                }
+
                 this.CatchBlock = new Block();
                 token = this.CatchBlock.Analyze(token);
                 nextToken = token.GetNextToken();
