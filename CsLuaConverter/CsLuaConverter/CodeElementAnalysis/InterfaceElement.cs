@@ -9,6 +9,7 @@
         public string Name;
         public ParameterList ParameterList;
         public TypeParameterList Generics;
+        public bool IsProperty;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -23,6 +24,24 @@
                 this.Type = new IdentifierName();
                 token = this.Type.Analyze(token);
                 token = token.GetNextToken();
+            }
+            else if (token.Parent.IsKind(SyntaxKind.GenericName))
+            {
+                this.Type = new GenericName();
+                token = this.Type.Analyze(token);
+                token = token.GetNextToken();
+            }
+
+            if (token.Parent.IsKind(SyntaxKind.PropertyDeclaration))
+            {
+                ExpectKind(SyntaxKind.IdentifierToken, token.GetKind());
+                this.Name = token.Text;
+                this.IsProperty = true;
+
+                token = token.GetNextToken();
+                var accessor = new AccessorList();
+                token = accessor.Analyze(token);
+                return token;
             }
 
             ExpectKind(SyntaxKind.MethodDeclaration, token.Parent.GetKind());

@@ -78,6 +78,9 @@
             { SyntaxKind.CollectionInitializerExpression,       () => new CollectionInitializerExpression() },
             { SyntaxKind.SimpleLambdaExpression,                () => new SimpleLambdaExpression() },
             { SyntaxKind.ComplexElementInitializerExpression,   () => new ComplexElementInitializerExpression() },
+            { SyntaxKind.TypeOfExpression,                      () => new TypeOfExpression() },
+            { SyntaxKind.LogicalNotExpression,                  () => new LogicalNotExpression() },
+            { SyntaxKind.ConditionalExpression,                 () => new ConditionalExpression() },
         };
 
         public abstract SyntaxToken Analyze(SyntaxToken token);

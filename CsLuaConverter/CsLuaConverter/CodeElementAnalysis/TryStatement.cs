@@ -20,7 +20,7 @@
             token = this.TryBlock.Analyze(token);
 
             var nextToken = token.GetNextToken();
-            if (nextToken.Parent.IsKind(SyntaxKind.CatchClause))
+            while (nextToken.Parent.IsKind(SyntaxKind.CatchClause))
             {
                 token = nextToken.GetNextToken();
 

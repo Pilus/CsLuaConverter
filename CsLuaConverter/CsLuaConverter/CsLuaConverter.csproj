@@ -96,6 +96,7 @@
     <Compile Include="CodeElementAnalysis\CharacterLiteralExpression.cs" />
     <Compile Include="CodeElementAnalysis\CollectionInitializerExpression.cs" />
     <Compile Include="CodeElementAnalysis\ComplexElementInitializerExpression.cs" />
+    <Compile Include="CodeElementAnalysis\ConditionalExpression.cs" />
     <Compile Include="CodeElementAnalysis\ElseClause.cs" />
     <Compile Include="CodeElementAnalysis\EnumDeclaration.cs" />
     <Compile Include="CodeElementAnalysis\EnumMemberDeclaration.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="CodeElementAnalysis\InterfaceDeclaration.cs" />
     <Compile Include="CodeElementAnalysis\InterfaceElement.cs" />
     <Compile Include="CodeElementAnalysis\IsExpression.cs" />
+    <Compile Include="CodeElementAnalysis\LogicalNotExpression.cs" />
     <Compile Include="CodeElementAnalysis\MethodDeclaration.cs" />
     <Compile Include="CodeElementAnalysis\MultiplyExpression.cs" />
     <Compile Include="CodeElementAnalysis\NameEquals.cs" />
@@ -139,6 +141,7 @@
     <Compile Include="CodeElementAnalysis\TrueLiteralExpression.cs" />
     <Compile Include="CodeElementAnalysis\TryStatement.cs" />
     <Compile Include="CodeElementAnalysis\TypeArgumentList.cs" />
+    <Compile Include="CodeElementAnalysis\TypeOfExpression.cs" />
     <Compile Include="CodeElementAnalysis\TypeParameter.cs" />
     <Compile Include="CodeElementAnalysis\TypeParameterList.cs" />
     <Compile Include="CodeElementAnalysis\UsingDirective.cs" />

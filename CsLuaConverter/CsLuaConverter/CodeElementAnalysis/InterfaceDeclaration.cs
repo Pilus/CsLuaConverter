@@ -7,7 +7,7 @@
 
     public class InterfaceDeclaration : BaseElement
     {
-        public Scope Scope;
+        public Scope Scope = Scope.Private;
         public BaseList BaseList;
         public TypeParameterList Generics;
         public IList<InterfaceElement> Elements = new List<InterfaceElement>();
@@ -15,9 +15,12 @@
         public override SyntaxToken Analyze(SyntaxToken token)
         {
             ExpectKind(SyntaxKind.InterfaceDeclaration, token.Parent.GetKind());
-            this.Scope = (Scope) Enum.Parse(typeof (Scope), token.Text, true);
+            if (Enum.TryParse(token.Text, true, out this.Scope))
+            {
+                token = token.GetNextToken();
+            }
 
-            token = token.GetNextToken();
+            
             ExpectKind(SyntaxKind.InterfaceDeclaration, token.Parent.GetKind());
             ExpectKind(SyntaxKind.InterfaceKeyword, token.GetKind());
 
@@ -67,7 +70,8 @@
         {
             return token.Parent.IsKind(SyntaxKind.PredefinedType) || 
                 token.Parent.IsKind(SyntaxKind.MethodDeclaration) ||
-                token.Parent.IsKind(SyntaxKind.IdentifierName);
+                token.Parent.IsKind(SyntaxKind.IdentifierName) ||
+                token.Parent.IsKind(SyntaxKind.GenericName);
         }
 
         public bool ShouldContainerBreak(SyntaxToken token)
