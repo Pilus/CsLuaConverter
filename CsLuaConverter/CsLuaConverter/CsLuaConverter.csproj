@@ -133,7 +133,10 @@
     <Compile Include="CodeElementAnalysis\SimpleAssignmentExpression.cs" />
     <Compile Include="CodeElementAnalysis\SimpleLambdaExpression.cs" />
     <Compile Include="CodeElementAnalysis\SimpleMemberAccessExpression.cs" />
-    <Compile Include="CodeElementAnalysis\Statement.cs" />
+    <Compile Include="CodeElementAnalysis\Statements\Statement.cs" />
+    <Compile Include="CodeElementAnalysis\Statements\StatementException.cs" />
+    <Compile Include="CodeElementAnalysis\Statements\StatementInfo.cs" />
+    <Compile Include="CodeElementAnalysis\Statements\StatementType.cs" />
     <Compile Include="CodeElementAnalysis\StringLiteralExpression.cs" />
     <Compile Include="CodeElementAnalysis\SubtractAssignmentExpression.cs" />
     <Compile Include="CodeElementAnalysis\ThisExpression.cs" />
