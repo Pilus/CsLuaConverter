@@ -11,14 +11,19 @@
         {
             var first = true;
             
-            foreach (var subElement in element.ContainedElements)
+            foreach (var parameterElements in element.ContainedElements)
             {
                 if (!first)
                 {
                     textWriter.Write(",");
                 }
 
-                VisitorList.Visit(subElement);
+                foreach (var parameterElement in parameterElements)
+                {
+                    VisitorList.Visit(parameterElement);
+                }
+                
+
                 first = false;
             }
         }

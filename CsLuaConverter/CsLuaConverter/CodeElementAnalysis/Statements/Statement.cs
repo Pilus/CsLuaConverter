@@ -9,12 +9,12 @@
 
     public class Statement : ContainerElement
     {
-        public StatementInfo[] StatementInfos;
+        public StatementInfo StatementInfo;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
             token = base.Analyze(token);
-            this.StatementInfos = this.ContainedElements.Select(elements => DetermineStatementInfo(elements)).ToArray();
+            this.StatementInfo = DetermineStatementInfo(this.ContainedElements);
             return token;
         }
 
@@ -34,13 +34,14 @@
 
         private static readonly IDictionary<Type, Func<IList<BaseElement>, int, StatementInfo>> InfoProviders = new Dictionary<Type, Func<IList<BaseElement>, int, StatementInfo>>()
         {
+            /*
             {typeof(SimpleAssignmentExpression), (elements, i) => new StatementInfo(StatementType.SimpleAssignment, i)},
             {typeof(EqualsValueClause), (elements, i) => new StatementInfo(StatementType.SimpleAssignment, i)},
             {typeof(ArgumentList), (elements, i) => new StatementInfo(StatementType.MethodCall, i)},
             {typeof(IsExpression), (elements, i) => new StatementInfo(StatementType.IsExpression, i)},
             {typeof(AsExpression), (elements, i) => new StatementInfo(StatementType.AsExpression, i)},
             {typeof(PostIncrementExpression), (elements, i) => new StatementInfo(StatementType.PlusPlus, i)},
-            {typeof(EqualsExpression), (elements, i) => new StatementInfo(StatementType.EqualsExpression, i)},
+            {typeof(EqualsExpression), (elements, i) => new StatementInfo(StatementType.EqualsExpression, i)}, */
         };
 
         private static StatementInfo DetermineStatementInfo(IList<BaseElement> elements)

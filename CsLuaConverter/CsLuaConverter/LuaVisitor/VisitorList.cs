@@ -23,6 +23,11 @@
             new ParameterVisitor(),
             new IdentifierNameVisitor(),
             new GenericNameVisitor(),
+            new StringLiteralExpressionVisitor(),
+            new SimpleVisitors(),
+            new PropertyDeclarationVisitor(),
+            new InterfaceDeclarationVisitor(),
+            new AttributeListVisitor(),
         };
 
         private static IndentedTextWriter writer;
@@ -43,7 +48,7 @@
 
             if (visitor == null)
             {
-                throw new Exception(string.Format("No visitor found for type {0}.", element.GetType().Name));
+                throw new Exception(string.Format("No visitor found for type {0}", element.GetType().Name));
             }
 
             var m = visitorType.GetMethod("Visit", BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod);

@@ -3,7 +3,7 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class ParameterList : ContainerElement
+    public class ParameterList : DelimiteredContainerElement
     {
         public override SyntaxToken Analyze(SyntaxToken token)
         {

@@ -46,7 +46,7 @@
 
             if (firstBaseElementPair != null)
             {
-                var identifierName = (IdentifierName)firstBaseElementPair.First();
+                var identifierName = (IdentifierName)firstBaseElementPair;
                 var type = identifierName.GetTypeObject(providers);
 
                 if (type.IsClass)
@@ -93,7 +93,7 @@
 
             // TODO: Write default values for non static property values.
 
-            var fields = element.ContainedElements.Single().Where(e => e is FieldDeclaration);
+            var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
             foreach (var field in fields)
             {
                 FieldDeclarationVisitor.WriteDefaultValue(field as FieldDeclaration, textWriter, providers, false);
@@ -118,7 +118,7 @@
 
             // TODO: Write default values for static property values.
 
-            var fields = element.ContainedElements.Single().Where(e => e is FieldDeclaration);
+            var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
             foreach (var field in fields)
             {
                 FieldDeclarationVisitor.WriteDefaultValue(field as FieldDeclaration, textWriter, providers, true);
@@ -139,7 +139,7 @@
             // TODO: Write properties
 
             
-            var fields = element.ContainedElements.Single().Where(e => e is FieldDeclaration);
+            var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
             foreach (var field in fields)
             {
                 FieldDeclarationVisitor.WriteInitialValue(field as FieldDeclaration, textWriter, providers, false);

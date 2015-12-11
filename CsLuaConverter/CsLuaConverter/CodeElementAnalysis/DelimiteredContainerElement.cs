@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using Microsoft.CodeAnalysis;
 
-    public abstract class ContainerElement : BaseElement
+    public abstract class DelimiteredContainerElement : BaseElement
     {
-        public IList<BaseElement> ContainedElements = new List<BaseElement>();
+        public IList<BaseElement[]> ContainedElements = new List<BaseElement[]>();
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -14,6 +14,8 @@
             {
                 token = token.GetNextToken();
             }
+
+            var elementPair = new List<BaseElement>();
 
             while (!this.ShouldContainerBreak(token))
             {
@@ -26,24 +28,28 @@
 
                 token = element.Analyze(token);
 
-                this.ContainedElements.Add(element);
+                elementPair.Add(element);
 
                 token = token.GetNextToken();
 
                 if (this.IsDelimiter(token))
                 {
+                    this.ContainedElements.Add(elementPair.ToArray());
+                    elementPair = new List<BaseElement>();
                     token = token.GetNextToken();
                 }
+            }
+
+            if (elementPair.Count > 0)
+            {
+                this.ContainedElements.Add(elementPair.ToArray());
             }
 
             return token;
         }
 
-        public virtual bool IsDelimiter(SyntaxToken token)
-        {
-            return false;
-        }
-
+        public abstract bool IsDelimiter(SyntaxToken token);
+        
         public abstract bool IsTokenAcceptedInContainer(SyntaxToken token);
 
         public abstract bool ShouldContainerBreak(SyntaxToken token);
