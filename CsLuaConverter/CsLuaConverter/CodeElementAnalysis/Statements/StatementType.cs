@@ -2,12 +2,7 @@
 {
     public enum StatementType
     {
-        SimpleAssignment,
-        MethodCall,
-        ResultingStatement,
-        IsExpression,
-        AsExpression,
-        PlusPlus,
-        EqualsExpression,
+        VariableDeclaration,
+        SimpleStatement,
     }
 }

@@ -8,8 +8,13 @@
     {
         public void Visit(Block element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.WriteLine("-- TODO: BlockVisitor");
-            //throw new System.NotImplementedException();
+            var scope = providers.NameProvider.CloneScope();
+            foreach (var subElement in element.Statements)
+            {
+                VisitorList.Visit(subElement);
+            }
+
+            providers.NameProvider.SetScope(scope);
         }
     }
 }

@@ -28,6 +28,9 @@
             new PropertyDeclarationVisitor(),
             new InterfaceDeclarationVisitor(),
             new AttributeListVisitor(),
+            new StatementVisitor(),
+            new VariableDeclaratorVisitor(),
+            new ObjectCreationExpressionVisitor(),
         };
 
         private static IndentedTextWriter writer;

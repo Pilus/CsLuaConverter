@@ -11,9 +11,12 @@
     {
         public StatementInfo StatementInfo;
 
+        public string EndToken;
+
         public override SyntaxToken Analyze(SyntaxToken token)
         {
             token = base.Analyze(token);
+            this.EndToken = token.Text;
             this.StatementInfo = DetermineStatementInfo(this.ContainedElements);
             return token;
         }
@@ -34,6 +37,15 @@
 
         private static readonly IDictionary<Type, Func<IList<BaseElement>, int, StatementInfo>> InfoProviders = new Dictionary<Type, Func<IList<BaseElement>, int, StatementInfo>>()
         {
+            {typeof(VariableDeclarator), (elements, i) =>
+            {
+                if (i == 1 && (elements[0] is IdentifierName || elements[0] is GenericName))
+                {
+                    return new StatementInfo(StatementType.VariableDeclaration, i);
+                }
+
+                return null;
+            }},
             /*
             {typeof(SimpleAssignmentExpression), (elements, i) => new StatementInfo(StatementType.SimpleAssignment, i)},
             {typeof(EqualsValueClause), (elements, i) => new StatementInfo(StatementType.SimpleAssignment, i)},
@@ -46,20 +58,22 @@
 
         private static StatementInfo DetermineStatementInfo(IList<BaseElement> elements)
         {
-            var elementsWithProviders = elements.Where(e => InfoProviders.ContainsKey(e.GetType())).ToList();
+            var statementTypes = elements
+                .Where(e => InfoProviders.ContainsKey(e.GetType()))
+                .Select(e => InfoProviders[e.GetType()](elements, elements.IndexOf(e)))
+                .ToList();
 
-            if (!elementsWithProviders.Any())
+            if (!statementTypes.Any())
             {
-                return new StatementInfo(StatementType.ResultingStatement, null);
+                return new StatementInfo(StatementType.SimpleStatement, null);
             }
 
-            if (elementsWithProviders.Count() > 1)
+            if (statementTypes.Count() > 1)
             {
                 throw new StatementException("Multiple elements with providers found.");
             }
 
-            var provider = elementsWithProviders.Single();
-            return InfoProviders[provider.GetType()](elements, elements.IndexOf(provider));
+            return statementTypes.Single();
         }
     }
 }

@@ -10,7 +10,7 @@
 
     public class Block : BaseElement
     {
-        protected IList<Statement> Statements = new List<Statement>();
+        public IList<Statement> Statements = new List<Statement>();
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
