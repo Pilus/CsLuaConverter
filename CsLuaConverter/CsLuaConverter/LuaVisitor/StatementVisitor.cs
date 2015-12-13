@@ -12,14 +12,6 @@
         {
             var elements = statement.ContainedElements;
 
-            switch (statement.StatementInfo.StatementType)
-            {
-                case StatementType.VariableDeclaration:
-                    textWriter.Write("local ");
-                    elements = elements.Skip(1).ToList();
-                    break;
-            }
-
             foreach (var containedElement in elements)
             {
                 VisitorList.Visit(containedElement);

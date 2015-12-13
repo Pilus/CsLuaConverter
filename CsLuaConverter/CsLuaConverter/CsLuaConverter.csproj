@@ -155,6 +155,7 @@
     <Compile Include="AddOnConstruction\LuaAddOn.cs" />
     <Compile Include="ISyntaxAnalyser.cs" />
     <Compile Include="LuaFileWriter.cs" />
+    <Compile Include="LuaVisitor\ArgumentListVisitor.cs" />
     <Compile Include="LuaVisitor\AttributeListVisitor.cs" />
     <Compile Include="LuaVisitor\BlockVisitor.cs" />
     <Compile Include="LuaVisitor\ClassVisitor.cs" />

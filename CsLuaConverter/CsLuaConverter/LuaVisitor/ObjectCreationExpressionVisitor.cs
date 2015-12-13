@@ -8,7 +8,8 @@
     {
         public void Visit(ObjectCreationExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            throw new System.NotImplementedException();
+            VisitorList.Visit(element.TypeElement);
+            VisitorList.Visit(element.ArgumentList);
         }
     }
 }

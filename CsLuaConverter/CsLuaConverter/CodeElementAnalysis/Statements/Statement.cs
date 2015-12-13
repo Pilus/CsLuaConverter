@@ -37,9 +37,9 @@
 
         private static readonly IDictionary<Type, Func<IList<BaseElement>, int, StatementInfo>> InfoProviders = new Dictionary<Type, Func<IList<BaseElement>, int, StatementInfo>>()
         {
-            {typeof(VariableDeclarator), (elements, i) =>
+            {typeof(IdentifierName), (elements, i) =>
             {
-                if (i == 1 && (elements[0] is IdentifierName || elements[0] is GenericName))
+                if (i == 0 && ((IdentifierName)(elements[0])).InnerElement is VariableDeclarator)
                 {
                     return new StatementInfo(StatementType.VariableDeclaration, i);
                 }
@@ -61,6 +61,7 @@
             var statementTypes = elements
                 .Where(e => InfoProviders.ContainsKey(e.GetType()))
                 .Select(e => InfoProviders[e.GetType()](elements, elements.IndexOf(e)))
+                .Where(st => st != null)
                 .ToList();
 
             if (!statementTypes.Any())

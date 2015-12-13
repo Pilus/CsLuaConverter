@@ -10,8 +10,16 @@
     {
         public void Visit(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)
         {
-            var name = providers.NameProvider.LookupVariableName(element.Names);
-            textWriter.Write(name);
+            if (!(element.InnerElement is VariableDeclarator))
+            {
+                var name = providers.NameProvider.LookupVariableName(element.Names);
+                textWriter.Write(name);
+            }
+
+            if (element.InnerElement != null)
+            {
+                VisitorList.Visit(element.InnerElement);
+            }
         }
     }
 }

@@ -31,6 +31,7 @@
             new StatementVisitor(),
             new VariableDeclaratorVisitor(),
             new ObjectCreationExpressionVisitor(),
+            new ArgumentListVisitor(),
         };
 
         private static IndentedTextWriter writer;

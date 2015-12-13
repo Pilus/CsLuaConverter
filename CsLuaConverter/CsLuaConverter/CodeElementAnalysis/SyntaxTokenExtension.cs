@@ -21,5 +21,10 @@
             var kind = node.GetKind();
             return kinds.Any(k => k.Equals(kind));
         }
+
+        public static bool Is(this SyntaxToken token, SyntaxKind parentKind, SyntaxKind kind)
+        {
+            return token.GetKind().Equals(kind) && token.Parent.GetKind().Equals(parentKind);
+        }
     }
 }

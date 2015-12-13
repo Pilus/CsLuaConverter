@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis
 {
+    using System;
     using System.Collections.Generic;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
@@ -7,6 +8,8 @@
     public class IdentifierName : BaseElement
     {
         public readonly List<string> Names = new List<string>();
+
+        public BaseElement InnerElement;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -23,7 +26,16 @@
                     token = token.GetNextToken();
                 }
             }
-            
+
+            // VariableDeclarator(IdentifierToken), OpenBracketToken, ArgumentList(OpenParenToken), SimpleMemberAccessExpression (DotToken)
+            if (token.Is(SyntaxKind.VariableDeclarator, SyntaxKind.IdentifierToken) ||
+                token.Is(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.DotToken))
+            {
+                this.InnerElement = GenerateMatchingElement(token);
+                token = this.InnerElement.Analyze(token);
+                return token;
+            }
+
             return token.GetPreviousToken();
         }
     }
