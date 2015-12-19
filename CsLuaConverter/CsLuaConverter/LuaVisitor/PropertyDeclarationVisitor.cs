@@ -8,12 +8,12 @@
     {
         public void Visit(PropertyDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.WriteLine("_M.IM(members, 'PropertyWithGetSet',{");
+            textWriter.WriteLine("_M.IM(members, '{0}',{{", element.Name);
             textWriter.Indent++;
             textWriter.WriteLine("level = typeObject.Level,");
             textWriter.WriteLine("memberType = 'Property',");
             textWriter.WriteLine("scope = '{0}',", element.Scope);
-            textWriter.WriteLine("static = '{0}',", element.Static);
+            textWriter.WriteLine("static = '{0}',", element.Static.ToString().ToLower());
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }

@@ -8,6 +8,7 @@
 
     public abstract class BaseElement
     {
+        [System.Diagnostics.DebuggerNonUserCode]
         public static void ExpectKind(SyntaxKind expectedKind, SyntaxKind actualKind)
         {
             if (!expectedKind.Equals(actualKind))

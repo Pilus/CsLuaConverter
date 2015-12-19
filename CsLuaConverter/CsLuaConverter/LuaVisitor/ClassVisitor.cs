@@ -17,6 +17,7 @@
         public void Visit(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
             var originalScope = providers.NameProvider.CloneScope();
+            providers.NameProvider.AddAllInheritedMembersToScope(element.Name);
 
             textWriter.WriteLine("{0} = _M.NE({{[{1}] = function(interactionElement, generics, staticValues)", element.Name, GetNumOfGenerics(element));
             textWriter.Indent++;

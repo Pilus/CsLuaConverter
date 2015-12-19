@@ -2,12 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using TypeProvider;
 
     internal class NameProvider : INameProvider
     {
+        private const string ClassPrefix = "element";
+
         private List<ScopeElement> currentScope;
         private readonly ITypeProvider typeProvider;
 
@@ -54,7 +57,7 @@
             {
                 this.AddToScope(new ScopeElement(method.Name)
                 {
-                    ClassPrefix = "element.",
+                    ClassPrefix = ClassPrefix,
                     IsFromClass = true,
                 });
             }
@@ -64,7 +67,7 @@
                 {
                     this.AddToScope(new ScopeElement(member.Name)
                     {
-                        ClassPrefix = "element.",
+                        ClassPrefix = ClassPrefix,
                         IsFromClass = true
                     });
                 }
@@ -74,7 +77,7 @@
             {
                 this.AddToScope(new ScopeElement(property.Name)
                 {
-                    ClassPrefix = "element.",
+                    ClassPrefix = ClassPrefix,
                     IsFromClass = true
                 });
             }
@@ -85,7 +88,7 @@
                 {
                     this.AddToScope(new ScopeElement(field.Name)
                     {
-                        ClassPrefix = "element.",
+                        ClassPrefix = ClassPrefix,
                         IsFromClass = true
                     });
                 }
@@ -130,7 +133,27 @@
             return this.typeProvider.LookupType(names).ToString();
         }
 
+        public IEnumerable<string> LookupVariableNameSplitted(IEnumerable<string> names)
+        {
+            var firstName = names.First();
+            var variable = this.currentScope.LastOrDefault(element => element.Name.Equals(firstName));
 
-        
+            if (variable != null)
+            {
+                var variableNames = new List<string>(names.Skip(1));
+                variableNames.Insert(0, variable.Name);
+
+                if (variable.ClassPrefix != null)
+                {
+                    variableNames.Insert(0, variable.ClassPrefix);
+                }
+
+                return variableNames;
+            }
+
+            var type = this.typeProvider.LookupType(names);
+
+            return new[] { type.GetTypeObject().FullName };
+        }
     }
 }

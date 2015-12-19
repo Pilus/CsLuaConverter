@@ -28,7 +28,7 @@
             }
 
             // VariableDeclarator(IdentifierToken), OpenBracketToken, ArgumentList(OpenParenToken), SimpleMemberAccessExpression (DotToken)
-            if (token.Is(SyntaxKind.VariableDeclarator, SyntaxKind.IdentifierToken) ||
+            if ( //token.Is(SyntaxKind.VariableDeclarator, SyntaxKind.IdentifierToken) ||
                 token.Is(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.DotToken))
             {
                 this.InnerElement = GenerateMatchingElement(token);

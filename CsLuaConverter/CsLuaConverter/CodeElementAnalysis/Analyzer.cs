@@ -55,7 +55,7 @@
                               && !doc.FilePath.EndsWith("AssemblyAttributes.cs")
                 );
 
-            var documentElements = docs.Select(AnalyzeDocument).Take(1);
+            var documentElements = docs.Select(AnalyzeDocument);
 
             return this.documentVisitor.Visit(documentElements);
         }

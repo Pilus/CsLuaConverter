@@ -20,9 +20,42 @@
 
                 foreach (var parameterElement in parameterElements)
                 {
-                    VisitorList.Visit(parameterElement);
+                    if (!(parameterElement is PredefinedType || parameterElement is IdentifierName))
+                    {
+                        VisitorList.Visit(parameterElement);
+                    }
                 }
                 
+
+                first = false;
+            }
+        }
+
+
+        public static void VisitParameterListTypeReferences(ParameterList element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            var first = true;
+
+            foreach (var parameterElements in element.ContainedElements)
+            {
+                if (!first)
+                {
+                    textWriter.Write(",");
+                }
+
+                foreach (var parameterElement in parameterElements)
+                {
+                    if (parameterElement is PredefinedType)
+                    {
+                        VisitorList.Visit(parameterElement);
+                    }
+                    else if (parameterElement is IdentifierName)
+                    {
+                        VisitorList.Visit(parameterElement);
+                        textWriter.Write(".__typeof");
+                    }
+                }
+
 
                 first = false;
             }

@@ -37,11 +37,13 @@
         private static IndentedTextWriter writer;
         private static IProviders providers;
 
+        [System.Diagnostics.DebuggerNonUserCode]
         public static void Visit<T>(T element)
         {
             Visit<T>(element, writer, providers);
         }
 
+        [System.Diagnostics.DebuggerNonUserCode]
         public static void Visit<T>(T element, IndentedTextWriter writer, IProviders providers)
         {
             VisitorList.writer = writer;

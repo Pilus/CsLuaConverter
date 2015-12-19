@@ -5,7 +5,7 @@
 
     public class SimpleMemberAccessExpression : BaseElement
     {
-        public string AccessedName;
+        public BaseElement InnerElement;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -13,11 +13,9 @@
             ExpectKind(SyntaxKind.DotToken, token.GetKind());
 
             token = token.GetNextToken();
-            ExpectKind(SyntaxKind.IdentifierName, token.Parent.GetKind());
-            ExpectKind(SyntaxKind.IdentifierToken, token.GetKind());
-            this.AccessedName = token.Text;
 
-            return token;
+            this.InnerElement = GenerateMatchingElement(token);
+            return this.InnerElement.Analyze(token);
         }
     }
 }
