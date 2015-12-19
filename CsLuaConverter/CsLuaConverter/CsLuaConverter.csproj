@@ -158,10 +158,13 @@
     <Compile Include="LuaVisitor\ArgumentListVisitor.cs" />
     <Compile Include="LuaVisitor\AttributeListVisitor.cs" />
     <Compile Include="LuaVisitor\BlockVisitor.cs" />
+    <Compile Include="LuaVisitor\BracketedArgumentListVisitor.cs" />
     <Compile Include="LuaVisitor\ClassVisitor.cs" />
     <Compile Include="LuaVisitor\Extensions.cs" />
+    <Compile Include="LuaVisitor\ForEachStatementVisitor.cs" />
     <Compile Include="LuaVisitor\GenericNameVisitor.cs" />
     <Compile Include="LuaVisitor\IdentifierNameVisitor.cs" />
+    <Compile Include="LuaVisitor\IfStatementVisitor.cs" />
     <Compile Include="LuaVisitor\InterfaceDeclarationVisitor.cs" />
     <Compile Include="LuaVisitor\LuaVisitorException.cs" />
     <Compile Include="LuaVisitor\MethodDeclarationVisitor.cs" />
@@ -170,11 +173,13 @@
     <Compile Include="LuaVisitor\ObjectCreationExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\ParameterListVisitor.cs" />
     <Compile Include="LuaVisitor\ParameterVisitor.cs" />
+    <Compile Include="LuaVisitor\PostIncrementExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\PredefinedTypeVisitor.cs" />
     <Compile Include="LuaVisitor\PropertyDeclarationVisitor.cs" />
     <Compile Include="LuaVisitor\SimpleVisitors.cs" />
     <Compile Include="LuaVisitor\StatementVisitor.cs" />
     <Compile Include="LuaVisitor\StringLiteralExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\TryStatementVisitor.cs" />
     <Compile Include="LuaVisitor\TypeVisitor.cs" />
     <Compile Include="LuaVisitor\VariableDeclaratorVisitor.cs" />
     <Compile Include="LuaVisitor\VisitorList.cs" />

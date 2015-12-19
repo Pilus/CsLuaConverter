@@ -1,14 +1,14 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis
 {
+    using System.Collections.Generic;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
     public class TryStatement : BaseElement
     {
         public Block TryBlock;
-        public Block CatchBlock;
-        public CatchDeclaration CatchDeclaration;
         public Block FinallyBlock;
+        public IEnumerable<CatchPair> CatchPairs;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -20,21 +20,30 @@
             token = this.TryBlock.Analyze(token);
 
             var nextToken = token.GetNextToken();
+
+            var catchPairs = new List<CatchPair>();
+
             while (nextToken.Parent.IsKind(SyntaxKind.CatchClause))
             {
                 token = nextToken.GetNextToken();
 
+                var pair = new CatchPair();
+
                 if (token.Parent.IsKind(SyntaxKind.CatchDeclaration))
                 {
-                    this.CatchDeclaration = new CatchDeclaration();
-                    token = this.CatchDeclaration.Analyze(token);
+                    pair.Declaration = new CatchDeclaration();
+                    token = pair.Declaration.Analyze(token);
                     token = token.GetNextToken();
                 }
 
-                this.CatchBlock = new Block();
-                token = this.CatchBlock.Analyze(token);
+                pair.Block = new Block();
+                token = pair.Block.Analyze(token);
                 nextToken = token.GetNextToken();
+
+                catchPairs.Add(pair);
             }
+
+            this.CatchPairs = catchPairs;
 
             if (nextToken.Parent.IsKind(SyntaxKind.FinallyClause))
             {
@@ -45,5 +54,12 @@
 
             return token;
         }
+    }
+
+    public struct CatchPair
+    {
+        public CatchDeclaration Declaration;
+        public Block Block;
+
     }
 }

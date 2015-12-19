@@ -2,12 +2,14 @@
 {
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Statements;
 
     public class IfStatement : BaseElement
     {
         public Statement Statement;
         public Block Block;
+        public ElseClause Else;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -25,6 +27,13 @@
             token = token.GetNextToken();
             this.Block = new Block();
             token = this.Block.Analyze(token);
+
+            var nextToken = token.GetNextToken();
+            if (nextToken.Parent.IsKind(SyntaxKind.ElseClause))
+            {
+                this.Else = new ElseClause();
+                token = this.Else.Analyze(nextToken);
+            }
 
             return token;
         }

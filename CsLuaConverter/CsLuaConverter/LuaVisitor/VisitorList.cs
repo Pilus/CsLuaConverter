@@ -32,6 +32,11 @@
             new VariableDeclaratorVisitor(),
             new ObjectCreationExpressionVisitor(),
             new ArgumentListVisitor(),
+            new PostIncrementExpressionVisitor(),
+            new ForEachStatementVisitor(),
+            new BracketedArgumentListVisitor(),
+            new IfStatementVisitor(),
+            new TryStatementVisitor(),
         };
 
         private static IndentedTextWriter writer;

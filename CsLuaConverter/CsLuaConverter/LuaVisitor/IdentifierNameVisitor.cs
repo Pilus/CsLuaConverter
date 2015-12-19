@@ -17,7 +17,7 @@
 
         public static void Visit(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, bool skipVariableLookup)
         {
-            if (!(element.InnerElement is VariableDeclarator))
+            if (element.Names.FirstOrDefault() != "var")
             {
                 var skippedLevels = element.InnerElement == null ? 1 : 0;
                 IList<string> names;
