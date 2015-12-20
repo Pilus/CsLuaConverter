@@ -10,7 +10,7 @@
         {
             textWriter.Write("(");
             var first = true;
-            foreach (var containedElement in element.ContainedElements)
+            foreach (var containedElementList in element.ContainedElements)
             {
                 if (first == false)
                 {
@@ -18,7 +18,11 @@
                 }
 
                 first = false;
-                VisitorList.Visit(containedElement);
+
+                foreach (var containedElement in containedElementList)
+                {
+                    VisitorList.Visit(containedElement);
+                }
             }
 
             textWriter.Write(")");

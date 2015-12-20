@@ -16,9 +16,7 @@
             textWriter.Write("for _,{0} in (", element.IteratorName);
             VisitorList.Visit(element.EnumeratorStatement);
             textWriter.WriteLine("%_M.DOT).GetEnumerator() do");
-            textWriter.Indent++;
             VisitorList.Visit(element.Block);
-            textWriter.Indent--;
             textWriter.WriteLine("end");
 
             providers.NameProvider.SetScope(scope);

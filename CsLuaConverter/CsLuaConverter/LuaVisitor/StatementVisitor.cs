@@ -1,6 +1,9 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
+    using System;
     using System.CodeDom.Compiler;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using CodeElementAnalysis;
     using CodeElementAnalysis.Statements;
@@ -22,6 +25,11 @@
                     PostIncrementExpressionVisitor.Visit(nextElement as PostIncrementExpression, textWriter, providers, element);
                     i++;
                 }
+                else if (nextElement is PostDecrementExpression)
+                {
+                    PostDecrementExpressionVisitor.Visit(nextElement as PostDecrementExpression, textWriter, providers, element);
+                    i++;
+                }
                 else
                 {
                     VisitorList.Visit(element);
@@ -31,6 +39,10 @@
             if (statement.EndToken.Equals(";"))
             {
                 textWriter.WriteLine(statement.EndToken);
+            }
+            else if (statement.EndToken.Equals("}"))
+            {
+                
             }
             else
             {

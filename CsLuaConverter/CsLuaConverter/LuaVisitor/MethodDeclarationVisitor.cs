@@ -31,9 +31,7 @@
 
             VisitorList.Visit(element.Parameters);
             textWriter.WriteLine(")");
-            textWriter.Indent++;
             VisitorList.Visit(element.Block);
-            textWriter.Indent--;
             textWriter.WriteLine("end");
 
             providers.NameProvider.SetScope(scope);

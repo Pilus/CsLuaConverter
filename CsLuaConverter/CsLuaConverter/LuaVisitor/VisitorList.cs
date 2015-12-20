@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using CodeElementAnalysis;
     using Providers;
 
     public static class VisitorList
@@ -33,10 +34,12 @@
             new ObjectCreationExpressionVisitor(),
             new ArgumentListVisitor(),
             new PostIncrementExpressionVisitor(),
+            new PostDecrementExpressionVisitor(),
             new ForEachStatementVisitor(),
             new BracketedArgumentListVisitor(),
             new IfStatementVisitor(),
             new TryStatementVisitor(),
+            new ThrowStatementVisitor(),
         };
 
         private static IndentedTextWriter writer;

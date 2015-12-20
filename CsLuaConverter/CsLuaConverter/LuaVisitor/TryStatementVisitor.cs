@@ -10,10 +10,11 @@
     {
         public void Visit(TryStatement element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.WriteLine("_M.Try(function()");
+            textWriter.WriteLine("_M.Try(");
+            textWriter.Indent++;
 
+            textWriter.WriteLine("function()");
             VisitorList.Visit(element.TryBlock);
-
             textWriter.WriteLine("end,");
             textWriter.WriteLine("{");
             textWriter.Indent++;
@@ -30,7 +31,7 @@
                     textWriter.Write("type = ");
                     VisitorList.Visit(pair.Declaration.ExceptionType);
                     variableName = pair.Declaration.ExceptionVariableName;
-                    textWriter.WriteLine(",");
+                    textWriter.WriteLine(".__typeof,");
                 }
 
                 textWriter.WriteLine("func = function({0})", variableName);
@@ -41,10 +42,8 @@
                     providers.NameProvider.AddToScope(new ScopeElement(variableName));
                 }
 
-                textWriter.Indent++;
                 VisitorList.Visit(pair.Block);
-                textWriter.Indent--;
-
+                
                 providers.NameProvider.SetScope(scope);
 
                 textWriter.WriteLine("end,");

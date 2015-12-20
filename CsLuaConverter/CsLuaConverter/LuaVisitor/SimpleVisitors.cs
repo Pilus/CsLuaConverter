@@ -7,7 +7,7 @@
     public class SimpleVisitors : 
         IVisitor<FalseLiteralExpression>, IVisitor<EqualsValueClause>, IVisitor<SimpleMemberAccessExpression>, IVisitor<TrueLiteralExpression>,
         IVisitor<NullLiteralExpression>, IVisitor<SimpleAssignmentExpression>, IVisitor<ThisExpression>, IVisitor<AddExpression>,
-        IVisitor<CharacterLiteralExpression>
+        IVisitor<CharacterLiteralExpression>, IVisitor<NotEqualsExpression>
     {
         public void Visit(FalseLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
@@ -54,12 +54,17 @@
 
         public void Visit(AddExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write(" + ");
+            textWriter.Write(" +CsLuaMeta.add+ ");
         }
 
         public void Visit(CharacterLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write(element.Text);
+        }
+
+        public void Visit(NotEqualsExpression element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write(" ~= ");
         }
     }
 }
