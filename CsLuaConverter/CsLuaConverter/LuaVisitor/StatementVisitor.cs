@@ -40,13 +40,9 @@
             {
                 textWriter.WriteLine(statement.EndToken);
             }
-            else if (statement.EndToken.Equals("}"))
-            {
-                
-            }
             else
             {
-                textWriter.Write(statement.EndToken);
+                
             }
         }
     }
