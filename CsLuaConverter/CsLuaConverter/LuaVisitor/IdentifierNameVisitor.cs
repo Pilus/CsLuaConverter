@@ -30,7 +30,7 @@
                     names = providers.NameProvider.LookupVariableNameSplitted(element.Names).ToList();
                 }
 
-                textWriter.Write(new string('<', names.Count- skippedLevels));
+                textWriter.Write(new string('(', names.Count- skippedLevels));
 
                 for (var i=0; i < names.Count; i++)
                 {
@@ -46,11 +46,11 @@
                     { 
                         if (name == "element")
                         {
-                            textWriter.Write("%_M.DOT_LVL(typeObject.Level)>");
+                            textWriter.Write("%_M.DOT_LVL(typeObject.Level))");
                         }
                         else //if (i != names.Count - 1 && !(element.InnerElement is ArgumentList))
                         {
-                            textWriter.Write("%_M.DOT>");
+                            textWriter.Write("%_M.DOT)");
                         }
                     }
                 }

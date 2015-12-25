@@ -40,10 +40,6 @@
             {
                 textWriter.WriteLine(statement.EndToken);
             }
-            else
-            {
-                
-            }
         }
     }
 }

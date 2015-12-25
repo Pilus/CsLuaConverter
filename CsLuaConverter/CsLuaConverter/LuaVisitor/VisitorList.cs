@@ -40,10 +40,13 @@
             new IfStatementVisitor(),
             new TryStatementVisitor(),
             new ThrowStatementVisitor(),
+            new TypeArgumentListVisitor(),
+            new CollectionInitializerExpressionVisitor(),
         };
 
         private static IndentedTextWriter writer;
         private static IProviders providers;
+        private static Type visitorType;
 
         [System.Diagnostics.DebuggerNonUserCode]
         public static void Visit<T>(T element)
@@ -57,8 +60,8 @@
             VisitorList.writer = writer;
             VisitorList.providers = providers;
 
-            var visitorType = typeof (IVisitor<>).MakeGenericType(element.GetType());
-            var visitor = Visitors.SingleOrDefault(v => visitorType.IsInstanceOfType(v));
+            visitorType = typeof (IVisitor<>).MakeGenericType(element.GetType());
+            var visitor = Visitors.SingleOrDefault(IsType);
 
             if (visitor == null)
             {
@@ -68,6 +71,12 @@
             var m = visitorType.GetMethod("Visit", BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod);
 
             m.Invoke(visitor, new object[] {element, writer, providers });
+        }
+
+        [System.Diagnostics.DebuggerNonUserCode]
+        private static bool IsType(IVisitor visitor)
+        {
+            return visitorType.IsInstanceOfType(visitor);
         }
     }
 }
