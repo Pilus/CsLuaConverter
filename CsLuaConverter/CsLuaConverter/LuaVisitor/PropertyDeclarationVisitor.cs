@@ -17,5 +17,20 @@
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }
+
+        public static void WriteInitializeValue(PropertyDeclaration element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (element.Static)
+            {
+                return;
+            }
+
+            if (!element.Accessors.HasAutoSetter)
+            {
+                return;
+            }
+
+            textWriter.WriteLine("if not(values.{0} == nil) then element[typeObject.Level].{0} = values.{0}; end", element.Name);
+        }
     }
 }

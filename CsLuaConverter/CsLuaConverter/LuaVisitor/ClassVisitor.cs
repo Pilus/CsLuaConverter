@@ -140,14 +140,20 @@
 
             // TODO: Write properties
 
-            
-            var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
+
+            var fields = element.ContainedElements.OfType<FieldDeclaration>();
             foreach (var field in fields)
             {
-                FieldDeclarationVisitor.WriteInitialValue(field as FieldDeclaration, textWriter, providers, false);
+                FieldDeclarationVisitor.WriteInitializeValue(field, textWriter, providers, false);
             }
-            textWriter.Indent--;
 
+            var properties = element.ContainedElements.OfType<PropertyDeclaration>();
+            foreach (var property in properties)
+            {
+                PropertyDeclarationVisitor.WriteInitializeValue(property, textWriter, providers);
+            }
+
+            textWriter.Indent--;
             textWriter.WriteLine("end");
         }
 

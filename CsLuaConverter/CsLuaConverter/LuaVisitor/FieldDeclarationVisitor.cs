@@ -21,7 +21,7 @@
 
         public static void WriteDefaultValue(FieldDeclaration element, IndentedTextWriter textWriter, IProviders providers, bool @static)
         {
-            if (element.Static != @static)
+            if ((element.Static || element.Const) != @static)
             {
                 return;
             }
@@ -41,9 +41,9 @@
             textWriter.WriteLine(",");
         }
 
-        public static void WriteInitialValue(FieldDeclaration element, IndentedTextWriter textWriter, IProviders providers, bool @static)
+        public static void WriteInitializeValue(FieldDeclaration element, IndentedTextWriter textWriter, IProviders providers, bool @static)
         {
-            if (element.Static != @static)
+            if ((element.Static || element.Const) != @static)
             {
                 return;
             }
