@@ -42,6 +42,8 @@
             new ThrowStatementVisitor(),
             new TypeArgumentListVisitor(),
             new CollectionInitializerExpressionVisitor(),
+            new EnumDeclarationVisitor(),
+            new EnumMemberDeclarationVisitor(),
         };
 
         private static IndentedTextWriter writer;

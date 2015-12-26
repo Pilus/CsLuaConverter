@@ -162,6 +162,8 @@
     <Compile Include="LuaVisitor\BracketedArgumentListVisitor.cs" />
     <Compile Include="LuaVisitor\ClassVisitor.cs" />
     <Compile Include="LuaVisitor\CollectionInitializerExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\EnumDeclarationVisitor.cs" />
+    <Compile Include="LuaVisitor\EnumMemberDeclarationVisitor.cs" />
     <Compile Include="LuaVisitor\Extensions.cs" />
     <Compile Include="LuaVisitor\ForEachStatementVisitor.cs" />
     <Compile Include="LuaVisitor\GenericNameVisitor.cs" />

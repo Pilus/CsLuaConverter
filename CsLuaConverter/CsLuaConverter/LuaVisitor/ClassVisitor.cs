@@ -29,6 +29,7 @@
             WriteStaticValues(element, textWriter, providers);
             WriteInitialize(element, textWriter, providers);
             WriteMembers(element, textWriter, providers);
+            WriteConstructors(element, textWriter, providers);
 
             textWriter.Indent--;
             textWriter.WriteLine("end}),");
@@ -173,11 +174,84 @@
 
         private static void WriteMembers(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
-            foreach (var member in element.ContainedElements.Where(m => !(m is ConstructorDeclaration)))
+            foreach (var member in element.ContainedElements.Where(m => !(m is ConstructorDeclaration)).OrderBy(GetMemberOrder))
             {
                 VisitorList.Visit(member);
             }
         }
 
+        private static int GetMemberOrder(BaseElement element)
+        {
+            if (element is MethodDeclaration)
+            {
+                return 1;
+            }
+
+            if (element is PropertyDeclaration)
+            {
+                return 2;
+            }
+
+            if (element is FieldDeclaration)
+            {
+                return 3;
+            }
+
+            throw new LuaVisitorException("Unknown member");
+        }
+
+
+        private static void WriteConstructors(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.WriteLine("local constructors = {");
+            textWriter.Indent++;
+
+            var constuctors = element.ContainedElements.OfType<ConstructorDeclaration>().ToList();
+
+            if (constuctors.Count == 0)
+            {
+                textWriter.WriteLine("{");
+                textWriter.Indent++;
+
+                textWriter.WriteLine("types = {},");
+                textWriter.WriteLine("func = function(element) _M.AM(baseConstructors, {}).func(element); end,");
+
+                textWriter.Indent--;
+                textWriter.WriteLine("}");
+            }
+            else
+            {
+                foreach (var constructor in constuctors)
+                {
+                    textWriter.WriteLine("{");
+                    textWriter.Indent++;
+                    
+                    var scope = providers.NameProvider.CloneScope();
+
+                    textWriter.Write("types = {");
+                    ParameterListVisitor.VisitParameterListTypeReferences(constructor.Parameters, textWriter, providers);
+                    textWriter.WriteLine("},");
+
+                    textWriter.Write("func = function(element");
+                    if (constructor.Parameters != null)
+                    {
+                        textWriter.Write(",");
+                        VisitorList.Visit(constructor.Parameters);
+                    }
+
+                    textWriter.WriteLine(")");
+                    VisitorList.Visit(constructor.Block);
+                    textWriter.WriteLine("end,");
+
+                    providers.NameProvider.SetScope(scope);
+
+                    textWriter.Indent--;
+                    textWriter.WriteLine("},");
+                }
+            }
+
+            textWriter.Indent--;
+            textWriter.WriteLine("};");
+        }
     }
 }
