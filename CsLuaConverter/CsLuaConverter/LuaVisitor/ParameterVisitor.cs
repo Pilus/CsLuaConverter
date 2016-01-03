@@ -9,6 +9,11 @@
     {
         public void Visit(Parameter element, IndentedTextWriter textWriter, IProviders providers)
         {
+            if (element.IsParams)
+            {
+                return;
+            }
+
             providers.NameProvider.AddToScope(new ScopeElement(element.Name));
             textWriter.Write(element.Name);
         }

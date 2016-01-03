@@ -188,6 +188,7 @@
     <Compile Include="LuaVisitor\SimpleVisitors.cs" />
     <Compile Include="LuaVisitor\StatementVisitor.cs" />
     <Compile Include="LuaVisitor\StringLiteralExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\AssignmentExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\TryStatementVisitor.cs" />
     <Compile Include="LuaVisitor\TypeArgumentListVisitor.cs" />
     <Compile Include="LuaVisitor\TypeVisitor.cs" />

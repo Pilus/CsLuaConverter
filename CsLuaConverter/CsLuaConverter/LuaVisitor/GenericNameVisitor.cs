@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
     using System.CodeDom.Compiler;
+    using System.Collections.Generic;
     using System.Linq;
     using CodeElementAnalysis;
     using Providers;
@@ -9,7 +10,12 @@
     {
         public void Visit(GenericName element, IndentedTextWriter textWriter, IProviders providers)
         {
-            var names = providers.NameProvider.LookupVariableNameSplitted(new [] { element.Name } ).ToList();
+            Visit(element, textWriter, providers, false);
+        }
+
+        public static void Visit(GenericName element, IndentedTextWriter textWriter, IProviders providers, bool skipLookup)
+        {
+            var names = skipLookup ? new List<string>(){element.Name} : providers.NameProvider.LookupVariableNameSplitted(new [] { element.Name } ).ToList();
 
             textWriter.Write(new string('(', names.Count));
 

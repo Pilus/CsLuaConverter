@@ -41,6 +41,16 @@
                     // Do not perform any casts.
                     i += 2;
                 }
+                else if (nextElement is SubtractAssignmentExpression)
+                {
+                    AssignmentExpressionVisitor.Visit(nextElement as SubtractAssignmentExpression, textWriter, providers, element);
+                    i++;
+                }
+                else if (nextElement is AddAssignmentExpression)
+                {
+                    AssignmentExpressionVisitor.Visit(nextElement as AddAssignmentExpression, textWriter, providers, element);
+                    i++;
+                }
                 else
                 {
                     VisitorList.Visit(element);

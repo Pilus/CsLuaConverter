@@ -46,9 +46,9 @@
             var baseTypeNamespace = "System";
             var baseTypeName = "Object";
 
-            IdentifierName inhetitedClass = null;
+            BaseElement inhetitedClass = null;
 
-            if (firstBaseElementPair != null)
+            if (firstBaseElementPair is IdentifierName)
             {
                 var identifierName = (IdentifierName)firstBaseElementPair;
                 var type = identifierName.GetTypeObject(providers);
@@ -59,6 +59,18 @@
                     baseTypeNamespace = type.Namespace;
                     baseTypeName = type.Name;
                 }
+            }
+            else if (firstBaseElementPair is GenericName)
+            {
+                var identifierName = (GenericName)firstBaseElementPair;
+                var type = providers.TypeProvider.LookupType(identifierName.Name).GetTypeObject();
+
+                if (type.IsClass)
+                {
+                    inhetitedClass = identifierName;
+                    baseTypeNamespace = type.Namespace;
+                    baseTypeName = type.Name;
+                };
             }
 
             textWriter.Write("local baseTypeObject, members, baseConstructors, baseElementGenerator, implements, baseInitialize = ");

@@ -8,7 +8,7 @@
         IVisitor<FalseLiteralExpression>, IVisitor<EqualsValueClause>, IVisitor<SimpleMemberAccessExpression>, IVisitor<TrueLiteralExpression>,
         IVisitor<NullLiteralExpression>, IVisitor<SimpleAssignmentExpression>, IVisitor<ThisExpression>, IVisitor<AddExpression>,
         IVisitor<CharacterLiteralExpression>, IVisitor<NotEqualsExpression>, IVisitor<ReturnStatement>, IVisitor<ParenthesizedExpression>, 
-        IVisitor<EqualsExpression>
+        IVisitor<EqualsExpression>, IVisitor<BaseExpression>, IVisitor<CastExpression>
     {
         public void Visit(FalseLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
@@ -26,6 +26,10 @@
             if (element.InnerElement is IdentifierName)
             {
                 IdentifierNameVisitor.Visit((IdentifierName) element.InnerElement, textWriter, providers, true);
+            }
+            else if (element.InnerElement is GenericName)
+            {
+                GenericNameVisitor.Visit((GenericName) element.InnerElement, textWriter, providers, true);
             }
             else
             {
@@ -83,6 +87,15 @@
         public void Visit(EqualsExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write(" == ");
+        }
+
+        public void Visit(BaseExpression element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write("baseElement");
+        }
+
+        public void Visit(CastExpression element, IndentedTextWriter textWriter, IProviders providers)
+        {
         }
     }
 }
