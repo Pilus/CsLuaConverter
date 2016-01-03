@@ -27,7 +27,14 @@
                 }
                 else
                 {
-                    names = providers.NameProvider.LookupVariableNameSplitted(element.Names).ToList();
+                    if (providers.GenericsRegistry.IsGeneric(element.Names.SingleOrDefault()))
+                    {
+                        names = new[] { string.Format("generics[genericsMapping['{0}']]", element.Names.SingleOrDefault()) };
+                    }
+                    else
+                    {
+                        names = providers.NameProvider.LookupVariableNameSplitted(element.Names).ToList();
+                    }
                 }
 
                 textWriter.Write(new string('(', names.Count- skippedLevels));

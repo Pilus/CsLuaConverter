@@ -22,6 +22,8 @@
             textWriter.WriteLine("{0} = _M.NE({{[{1}] = function(interactionElement, generics, staticValues)", element.Name, GetNumOfGenerics(element));
             textWriter.Indent++;
 
+            RegisterGenerics(element, textWriter, providers);
+
             WriteGenericsMapping(element, textWriter, providers);
             WriteBaseInheritance(element, textWriter, providers);
             WriteTypeGeneration(element, textWriter, providers);
@@ -160,6 +162,16 @@
         private static int GetNumOfGenerics(ClassDeclaration element)
         {
             return element.Generics?.ContainedElements.Count ?? 0;
+        }
+
+        private static void RegisterGenerics(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (element.Generics == null)
+            {
+                return;
+            }
+
+            providers.GenericsRegistry.SetGenerics(element.Generics.ContainedElements.OfType<TypeParameter>().Select(e => e.Name), GenericScope.Class);
         }
 
         private static void WriteGenericsMapping(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)

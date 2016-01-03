@@ -30,6 +30,17 @@
                     PostDecrementExpressionVisitor.Visit(nextElement as PostDecrementExpression, textWriter, providers, element);
                     i++;
                 }
+                else if (nextElement is IsExpression)
+                {
+                    IsExpressionVisitor.Visit(nextElement as IsExpression, textWriter, providers, element, elements[i+2] as IdentifierName);
+                    i+=2;
+                }
+                else if (nextElement is AsExpression)
+                {
+                    VisitorList.Visit(element);
+                    // Do not perform any casts.
+                    i += 2;
+                }
                 else
                 {
                     VisitorList.Visit(element);

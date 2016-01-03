@@ -10,7 +10,7 @@
     {
         public void Visit(TypeParameterList element, IndentedTextWriter textWriter, IProviders providers)
         {
-            var c = 1;
+            var c = 0;
             foreach (var containedElement in element.ContainedElements)
             {
                 if (c > 0)

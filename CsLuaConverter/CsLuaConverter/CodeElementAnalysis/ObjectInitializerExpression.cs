@@ -9,7 +9,7 @@
 
     public class ObjectInitializerExpression : BaseElement
     {
-        public IList<Statement> Statements = new List<Statement>();
+        public IList<ObjectInitializerPair> Pairs = new List<ObjectInitializerPair>();
 
         private InitializerExpressionSyntax parent;
 
@@ -32,11 +32,20 @@
                     throw new Exception(string.Format("Unexpected token. {0} in {1}.", token.Parent.GetKind(), this.GetType().Name));
                 }
 
-                var element = new Statement();
 
-                token = element.Analyze(token);
+                var pair = new ObjectInitializerPair();
+                pair.Name = new IdentifierName();
+                token = pair.Name.Analyze(token);
 
-                this.Statements.Add(element);
+                token = token.GetNextToken();
+                ExpectKind(SyntaxKind.SimpleAssignmentExpression, token.Parent.GetKind());
+                ExpectKind(SyntaxKind.EqualsToken, token.GetKind());
+
+                token = token.GetNextToken();
+                pair.Statement = new Statement();
+                token = pair.Statement.Analyze(token);
+
+                this.Pairs.Add(pair);
             }
 
             return token;
@@ -57,5 +66,11 @@
             return token.Parent.GetKind() == SyntaxKind.ObjectInitializerExpression &&
                 token.GetKind() == SyntaxKind.CommaToken;
         }
+    }
+
+    public struct ObjectInitializerPair
+    {
+        public IdentifierName Name;
+        public Statement Statement;
     }
 }

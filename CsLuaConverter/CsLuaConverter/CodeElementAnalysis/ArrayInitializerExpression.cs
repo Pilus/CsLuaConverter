@@ -3,7 +3,7 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class ArrayInitializerExpression : ContainerElement
+    public class ArrayInitializerExpression : DelimiteredContainerElement
     {
         public override SyntaxToken Analyze(SyntaxToken token)
         {
