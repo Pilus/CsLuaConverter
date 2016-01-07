@@ -3,33 +3,33 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class ComplexElementInitializerExpression : ContainerElement
+    public class ComplexElementInitializerExpression : BaseElement
     {
+        public BaseElement KeyElement;
+        public BaseElement ValueElement;
+
         public override SyntaxToken Analyze(SyntaxToken token)
         {
             ExpectKind(SyntaxKind.ComplexElementInitializerExpression, token.Parent.GetKind());
             ExpectKind(SyntaxKind.OpenBraceToken, token.GetKind());
 
             token = token.GetNextToken();
-            return base.Analyze(token);
-        }
+            ExpectKind(new []{ SyntaxKind.StringLiteralExpression, SyntaxKind.NumericLiteralExpression }, token.Parent.GetKind());
+            this.KeyElement = GenerateMatchingElement(token);
+            token = this.KeyElement.Analyze(token);
+            token = token.GetNextToken();
 
-        public override bool IsTokenAcceptedInContainer(SyntaxToken token)
-        {
-            return token.Parent.IsKind(SyntaxKind.StringLiteralExpression) ||
-                   token.Parent.IsKind(SyntaxKind.NumericLiteralExpression);
-        }
+            ExpectKind(SyntaxKind.ComplexElementInitializerExpression, token.Parent.GetKind());
+            ExpectKind(SyntaxKind.CommaToken, token.GetKind());
+            token = token.GetNextToken();
 
-        public override bool ShouldContainerBreak(SyntaxToken token)
-        {
-            return token.Parent.IsKind(SyntaxKind.ComplexElementInitializerExpression) &&
-                   token.IsKind(SyntaxKind.CloseBraceToken);
-        }
+            this.ValueElement = GenerateMatchingElement(token);
+            token = this.ValueElement.Analyze(token);
+            token = token.GetNextToken();
 
-        public override bool IsDelimiter(SyntaxToken token)
-        {
-            return token.Parent.IsKind(SyntaxKind.ComplexElementInitializerExpression) &&
-                   token.IsKind(SyntaxKind.CommaToken);
+            ExpectKind(SyntaxKind.ComplexElementInitializerExpression, token.Parent.GetKind());
+            ExpectKind(SyntaxKind.CloseBraceToken, token.GetKind());
+            return token;
         }
     }
 }

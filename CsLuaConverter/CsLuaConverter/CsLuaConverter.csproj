@@ -163,6 +163,8 @@
     <Compile Include="LuaVisitor\BracketedArgumentListVisitor.cs" />
     <Compile Include="LuaVisitor\ClassVisitor.cs" />
     <Compile Include="LuaVisitor\CollectionInitializerExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\ComplexElementInitializerExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\ConditionalExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\EnumDeclarationVisitor.cs" />
     <Compile Include="LuaVisitor\EnumMemberDeclarationVisitor.cs" />
     <Compile Include="LuaVisitor\Extensions.cs" />
@@ -191,6 +193,7 @@
     <Compile Include="LuaVisitor\AssignmentExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\TryStatementVisitor.cs" />
     <Compile Include="LuaVisitor\TypeArgumentListVisitor.cs" />
+    <Compile Include="LuaVisitor\TypeOfExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\TypeVisitor.cs" />
     <Compile Include="LuaVisitor\VariableDeclaratorVisitor.cs" />
     <Compile Include="LuaVisitor\VisitorList.cs" />

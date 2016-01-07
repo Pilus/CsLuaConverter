@@ -8,7 +8,7 @@
         IVisitor<FalseLiteralExpression>, IVisitor<EqualsValueClause>, IVisitor<SimpleMemberAccessExpression>, IVisitor<TrueLiteralExpression>,
         IVisitor<NullLiteralExpression>, IVisitor<SimpleAssignmentExpression>, IVisitor<ThisExpression>, IVisitor<AddExpression>,
         IVisitor<CharacterLiteralExpression>, IVisitor<NotEqualsExpression>, IVisitor<ReturnStatement>, IVisitor<ParenthesizedExpression>, 
-        IVisitor<EqualsExpression>, IVisitor<BaseExpression>, IVisitor<CastExpression>
+        IVisitor<EqualsExpression>, IVisitor<BaseExpression>, IVisitor<CastExpression>, IVisitor<LogicalNotExpression>
     {
         public void Visit(FalseLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
@@ -96,6 +96,11 @@
 
         public void Visit(CastExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
+        }
+
+        public void Visit(LogicalNotExpression element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write("CsLuaMeta._not+");
         }
     }
 }

@@ -37,7 +37,7 @@
                 textWriter.WriteLine("func = function({0})", variableName);
 
                 var scope = providers.NameProvider.CloneScope();
-                if (variableName != string.Empty)
+                if (!string.IsNullOrEmpty(variableName))
                 {
                     providers.NameProvider.AddToScope(new ScopeElement(variableName));
                 }

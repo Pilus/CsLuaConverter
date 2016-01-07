@@ -17,6 +17,15 @@
             }
         }
 
+        [System.Diagnostics.DebuggerNonUserCode]
+        public static void ExpectKind(SyntaxKind[] expectedKinds, SyntaxKind actualKind)
+        {
+            if (!expectedKinds.Contains(actualKind))
+            {
+                throw new Exception($"Unexpected token. Expected {string.Join(", ", expectedKinds)}, got {actualKind}.");
+            }
+        }
+
         private static readonly Dictionary<SyntaxKind, Func<BaseElement>> NodeMappings = new Dictionary
             <SyntaxKind, Func<BaseElement>>()
         {

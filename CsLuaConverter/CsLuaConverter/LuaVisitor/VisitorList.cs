@@ -46,6 +46,10 @@
             new EnumMemberDeclarationVisitor(),
             new ArrayVisitor(),
             new ObjectInitializerExpressionVisitor(),
+            new ComplexElementInitializerExpressionVisitor(),
+            new IsExpressionVisitor(),
+            new TypeOfExpressionVisitor(),
+            new ConditionalExpressionVisitor(),
         };
 
         private static IndentedTextWriter writer;

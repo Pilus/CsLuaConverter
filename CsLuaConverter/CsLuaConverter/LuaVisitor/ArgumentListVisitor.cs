@@ -40,6 +40,26 @@
                 var index = elements.IndexOf(elements.First(e => e is ParenthesizedLambdaExpression));
                 SimpleLambdaExpressionVisitor.Visit(elements.Take(index), elements.Skip(index + 1), textWriter, providers);
             }
+            else if (elements.Any(e => e is IsExpression))
+            {
+                var index = elements.IndexOf(elements.First(e => e is IsExpression));
+
+                for (var i = 0; i < elements.Count; i++)
+                {
+                    var element = elements[i];
+
+                    if (i == index - 1)
+                    {
+                        IsExpressionVisitor.Visit(elements[index] as IsExpression, textWriter, providers, element, elements[index + 1] as IdentifierName);
+                        i += 2;
+                    }
+                    else
+                    {
+                        VisitorList.Visit(element);
+                    }
+                }
+
+            }
             else
             {
                 foreach (var containedElement in elements)
