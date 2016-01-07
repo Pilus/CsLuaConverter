@@ -8,7 +8,16 @@
     {
         public void Visit(StringLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write(element.Text);
+            if (element.Text.StartsWith("@"))
+            {
+                textWriter.Write("[[");
+                textWriter.Write(element.Text.Substring(2, element.Text.Length - 3));
+                textWriter.Write("]]");
+            }
+            else
+            {
+                textWriter.Write(element.Text);
+            }
         }
     }
 }
