@@ -10,7 +10,7 @@
         {
             textWriter.Write("_M.Throw(");
             VisitorList.Visit(element.Statement);
-            textWriter.WriteLine(");");
+            textWriter.Write(")");
         }
     }
 }

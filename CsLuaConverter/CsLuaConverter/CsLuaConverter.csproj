@@ -187,6 +187,7 @@
     <Compile Include="LuaVisitor\PredefinedTypeVisitor.cs" />
     <Compile Include="LuaVisitor\PropertyDeclarationVisitor.cs" />
     <Compile Include="LuaVisitor\SimpleLambdaExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\SimpleMemberAccessExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\SimpleVisitors.cs" />
     <Compile Include="LuaVisitor\StatementVisitor.cs" />
     <Compile Include="LuaVisitor\StringLiteralExpressionVisitor.cs" />

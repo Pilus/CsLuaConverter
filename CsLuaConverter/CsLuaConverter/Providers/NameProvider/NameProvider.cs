@@ -115,6 +115,11 @@
             return this.LookupVariableName(names, false);
         }
 
+        public ScopeElement GetScopeElement(string name)
+        {
+            return this.currentScope.LastOrDefault(element => element.Name.Equals(name));
+        }
+
         public string LookupVariableName(IEnumerable<string> names, bool isClassVariable)
         {
             var firstName = names.First();

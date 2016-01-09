@@ -5,7 +5,7 @@
     using Providers;
 
     public class SimpleVisitors : 
-        IVisitor<FalseLiteralExpression>, IVisitor<EqualsValueClause>, IVisitor<SimpleMemberAccessExpression>, IVisitor<TrueLiteralExpression>,
+        IVisitor<FalseLiteralExpression>, IVisitor<EqualsValueClause>, IVisitor<TrueLiteralExpression>,
         IVisitor<NullLiteralExpression>, IVisitor<SimpleAssignmentExpression>, IVisitor<ThisExpression>, IVisitor<AddExpression>,
         IVisitor<CharacterLiteralExpression>, IVisitor<NotEqualsExpression>, IVisitor<ReturnStatement>, IVisitor<ParenthesizedExpression>, 
         IVisitor<EqualsExpression>, IVisitor<BaseExpression>, IVisitor<CastExpression>, IVisitor<LogicalNotExpression>
@@ -18,23 +18,6 @@
         public void Visit(EqualsValueClause element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write(" = ");
-        }
-
-        public void Visit(SimpleMemberAccessExpression element, IndentedTextWriter textWriter, IProviders providers)
-        {
-            textWriter.Write(".");
-            if (element.InnerElement is IdentifierName)
-            {
-                IdentifierNameVisitor.Visit((IdentifierName) element.InnerElement, textWriter, providers, true);
-            }
-            else if (element.InnerElement is GenericName)
-            {
-                GenericNameVisitor.Visit((GenericName) element.InnerElement, textWriter, providers, true);
-            }
-            else
-            {
-                VisitorList.Visit(element.InnerElement);
-            }
         }
 
         public void Visit(TrueLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)

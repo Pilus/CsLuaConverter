@@ -50,6 +50,7 @@
             new IsExpressionVisitor(),
             new TypeOfExpressionVisitor(),
             new ConditionalExpressionVisitor(),
+            new SimpleMemberAccessExpressionVisitor(),
         };
 
         private static IndentedTextWriter writer;

@@ -9,7 +9,7 @@
     {
         public readonly List<string> Names = new List<string>();
 
-        public BaseElement InnerElement;
+        public SimpleMemberAccessExpression InnerElement;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -27,11 +27,11 @@
                 }
             }
 
-            // VariableDeclarator(IdentifierToken), OpenBracketToken, ArgumentList(OpenParenToken), SimpleMemberAccessExpression (DotToken)
-            if ( //token.Is(SyntaxKind.VariableDeclarator, SyntaxKind.IdentifierToken) ||
-                token.Is(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.DotToken))
+            if (token.Is(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.DotToken))
             {
-                this.InnerElement = GenerateMatchingElement(token);
+                ExpectKind(SyntaxKind.SimpleMemberAccessExpression, token.Parent.GetKind());
+
+                this.InnerElement = new SimpleMemberAccessExpression();
                 token = this.InnerElement.Analyze(token);
                 return token;
             }
