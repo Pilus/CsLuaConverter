@@ -50,16 +50,28 @@
             foreach (var baseElement in namespaces)
             {
                 var ns = (NamespaceDeclaration) baseElement;
-                var elements = ns.ContainedElements.Where(e => !(e is UsingDirective));
-                var innerUsings = ns.ContainedElements.OfType<UsingDirective>();
+                var elements = ns.ContainedElements.Where(e => !(e is UsingDirective)).ToList();
+                var innerUsings = ns.ContainedElements.OfType<UsingDirective>().ToList();
 
-                list.AddRange(elements.Select(element => this.GenerateNamespaceElement(string.Join(".", ns.FullName), element, outerUsings, innerUsings)));
+                var attributes = new List<AttributeList>();
+                foreach (var element in elements)
+                {
+                    if (element is AttributeList)
+                    {
+                        attributes.Add(element as AttributeList);
+                    }
+                    else
+                    {
+                        list.Add(this.GenerateNamespaceElement(string.Join(".", ns.FullName), element, outerUsings, innerUsings, attributes));
+                        attributes = new List<AttributeList>();
+                    }
+                }
             }
 
             return list;
         }
 
-        private NamespaceElement GenerateNamespaceElement(string namespaceName, BaseElement element, IEnumerable<UsingDirective> outerUsings, IEnumerable<UsingDirective> innerUsings)
+        private NamespaceElement GenerateNamespaceElement(string namespaceName, BaseElement element, IEnumerable<UsingDirective> outerUsings, IEnumerable<UsingDirective> innerUsings, IEnumerable<AttributeList> attributes)
         {
             var usings = new List<UsingDirective>();
             if (outerUsings != null)
@@ -77,6 +89,7 @@
                 Element = element,
                 NamespaceLocation = namespaceName,  
                 Usings = usings,
+                Attributes = attributes.ToList()
             };
         }
     }

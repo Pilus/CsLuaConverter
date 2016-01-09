@@ -40,6 +40,17 @@
             providers.NameProvider.SetScope(originalScope);
         }
 
+        public static void WriteFooter(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers, List<AttributeList> attributes)
+        {
+            if (attributes.Any(e => e.IdentifierName.Names.SingleOrDefault() == "CsLuaAddOn"))
+            {
+                var type = providers.TypeProvider.LookupType(element.Name);
+                textWriter.Write(type.GetTypeObject().FullName);
+                textWriter.WriteLine(".Execute();");
+            }
+        }
+
+
         private static void WriteBaseInheritance(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
             var firstBaseElementPair = element.BaseList?.ContainedElements.First();

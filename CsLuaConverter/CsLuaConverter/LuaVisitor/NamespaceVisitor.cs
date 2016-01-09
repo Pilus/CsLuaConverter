@@ -20,6 +20,8 @@
 
             textWriter.Indent--;
             textWriter.WriteLine("}" + (element.IsRoot ? "" : ","));
+
+            WriteFooter(element, textWriter, providers);
         }
 
         public void Visit(NamespaceElement element, IndentedTextWriter textWriter, IProviders providers)
@@ -36,6 +38,21 @@
         public string GetFullNameOfUsing(UsingDirective theUsing)
         {
             return string.Join(".", theUsing.Name.Names);
+        }
+
+        public static void WriteFooter(Namespace element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            element.Elements.ForEach(e => WriteFooter(e, textWriter, providers));
+
+            element.SubNamespaces.ForEach(e => WriteFooter(e, textWriter, providers));
+        }
+
+        public static void WriteFooter(NamespaceElement element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (element.Element is ClassDeclaration)
+            {
+                ClassVisitor.WriteFooter((ClassDeclaration) element.Element, textWriter, providers, element.Attributes);
+            }
         }
     }
 }
