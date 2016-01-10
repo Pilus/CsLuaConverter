@@ -38,7 +38,7 @@ local NamespaceElement = function(metaProviders)
     local element = {};
     setmetatable(element, { 
         __index = function(_, key)
-            if key == "__isNamespaceElement" then
+            if key == "__isNamespace" then
                 return true;
             end
 

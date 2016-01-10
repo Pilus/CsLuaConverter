@@ -1,1 +1,1 @@
-﻿System = {};
+﻿System = { __isNamespace = true };

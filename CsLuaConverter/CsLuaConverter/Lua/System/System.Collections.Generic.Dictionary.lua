@@ -1,6 +1,6 @@
 ﻿
-System.Collections = System.Collections or {};
-System.Collections.Generic = System.Collections.Generic or {};
+System.Collections = System.Collections or { __isNamespace = true };
+System.Collections.Generic = System.Collections.Generic or { __isNamespace = true };
 
 System.Collections.Generic.Dictionary = _M.NE({[2] = function(interactionElement, generics, staticValues)
     local implements = {};

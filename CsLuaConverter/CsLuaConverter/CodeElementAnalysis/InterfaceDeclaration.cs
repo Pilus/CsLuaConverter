@@ -8,6 +8,7 @@
     public class InterfaceDeclaration : BaseElement
     {
         public Scope Scope = Scope.Private;
+        public string Name;
         public BaseList BaseList;
         public TypeParameterList Generics;
         public IList<InterfaceElement> Elements = new List<InterfaceElement>();
@@ -27,6 +28,7 @@
             token = token.GetNextToken();
             ExpectKind(SyntaxKind.InterfaceDeclaration, token.Parent.GetKind());
             ExpectKind(SyntaxKind.IdentifierToken, token.GetKind());
+            this.Name = token.Text;
 
             token = token.GetNextToken();
             if (token.Parent.IsKind(SyntaxKind.TypeParameterList))

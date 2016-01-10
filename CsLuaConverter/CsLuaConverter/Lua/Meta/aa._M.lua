@@ -1,1 +1,1 @@
-﻿_M = {};
+﻿_M = { __isNamespace = true };

@@ -42,7 +42,7 @@ _M.DOT_LVL = function(level)
         function(obj, index)  -- useage:  a%_M.dot%b
             assert(not(obj == nil), "Attempted to read index "..tostring(index).." on a nil value.");
 
-            if (type(obj) == "table" and (obj.__isNamespace == true or obj.__isNamespaceElement)) then
+            if (type(obj) == "table" and (obj.__isNamespace == true)) then
                 return obj[index];
             end
 
@@ -56,7 +56,7 @@ _M.DOT_LVL = function(level)
         function(obj, index, value)
             assert(not(obj == nil), "Attempted to write index "..tostring(index).." to a nil value.");
 
-            if (type(obj) == "table" and (obj.__isNamespaceElement)) then
+            if (type(obj) == "table" and (obj.__isNamespace)) then
                 return obj.__newindex(obj, index, value, level);
             end
 

@@ -33,6 +33,8 @@
             WriteMembers(element, textWriter, providers);
             WriteConstructors(element, textWriter, providers);
 
+            textWriter.Write("return 'Class', typeObject, members, constructors, elementGenerator, nil, initialize;");
+
             textWriter.Indent--;
             textWriter.WriteLine("end}),");
 
@@ -45,8 +47,9 @@
             if (attributes.Any(e => e.IdentifierName.Names.SingleOrDefault() == "CsLuaAddOn"))
             {
                 var type = providers.TypeProvider.LookupType(element.Name);
+                textWriter.Write("(");
                 textWriter.Write(type.GetTypeObject().FullName);
-                textWriter.WriteLine(".Execute();");
+                textWriter.WriteLine("() % _M.DOT).Execute();");
             }
         }
 
