@@ -13,11 +13,24 @@
             Visit(element, textWriter, providers, false);
         }
 
-        public static void Visit(GenericName element, IndentedTextWriter textWriter, IProviders providers, bool skipLookup)
+
+        public static void Visit(GenericName element, IndentedTextWriter textWriter, IProviders providers,
+            bool writeAsIs)
         {
-            var names = skipLookup ? new List<string>(){element.Name} : providers.NameProvider.LookupVariableNameSplitted(new [] { element.Name } ).ToList();
+            WriteOpen(element, textWriter, providers, writeAsIs);
+            WriteClose(element, textWriter, providers, writeAsIs);
+        }
+
+        public static void WriteOpen(GenericName element, IndentedTextWriter textWriter, IProviders providers, bool skipLookup)
+        {
+            var names = skipLookup ? new List<string>() { element.Name } : providers.NameProvider.LookupVariableNameSplitted(new[] { element.Name }).ToList();
 
             textWriter.Write(new string('(', names.Count));
+        }
+
+        public static void WriteClose(GenericName element, IndentedTextWriter textWriter, IProviders providers, bool skipLookup)
+        {
+            var names = skipLookup ? new List<string>(){element.Name} : providers.NameProvider.LookupVariableNameSplitted(new [] { element.Name } ).ToList();
 
             for (var i = 0; i<names.Count; i++)
             {

@@ -15,7 +15,7 @@
         public Namespace(string name, string parentFullName)
         {
             this.Name = name;
-            this.IsRoot = (this.parentFullName == null);
+            this.IsRoot = (parentFullName == null);
             this.parentFullName = parentFullName;
             this.FullName = (this.parentFullName == null) ? this.Name : this.parentFullName + "." + this.Name;
             this.SubNamespaces = new List<Namespace>();

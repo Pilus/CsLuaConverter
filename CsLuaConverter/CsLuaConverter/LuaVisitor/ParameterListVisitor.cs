@@ -20,12 +20,11 @@
 
                 foreach (var parameterElement in parameterElements)
                 {
-                    if (!(parameterElement is PredefinedType || parameterElement is IdentifierName))
+                    if ((parameterElement is Parameter))
                     {
                         VisitorList.Visit(parameterElement);
                     }
                 }
-                
 
                 first = false;
             }

@@ -9,7 +9,18 @@
     {
         public void Visit(BracketedArgumentList element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("[");
+            WriteOpen(element, textWriter, providers);
+            WriteClose(element, textWriter, providers);
+        }
+
+        public static void WriteOpen(BracketedArgumentList element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write("(");
+        }
+
+        public static void WriteClose(BracketedArgumentList element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write(" % _M.DOT)[");
             VisitorList.Visit(element.ContainedElements.Single());
             textWriter.Write("]");
         }

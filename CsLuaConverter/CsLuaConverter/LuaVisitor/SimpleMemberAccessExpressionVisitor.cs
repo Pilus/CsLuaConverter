@@ -30,6 +30,10 @@
             {
                 IdentifierNameVisitor.WriteOpen((IdentifierName) element.InnerElement, textWriter, providers, true);
             }
+            else if (element.InnerElement is GenericName)
+            {
+                GenericNameVisitor.WriteOpen((GenericName)element.InnerElement, textWriter, providers, true);
+            }
         }
 
         public static void WriteClose(SimpleMemberAccessExpression element, IndentedTextWriter textWriter, IProviders providers)
@@ -42,7 +46,7 @@
             }
             else if (element.InnerElement is GenericName)
             {
-                GenericNameVisitor.Visit((GenericName)element.InnerElement, textWriter, providers, true);
+                GenericNameVisitor.WriteClose((GenericName)element.InnerElement, textWriter, providers, true);
             }
             else
             {

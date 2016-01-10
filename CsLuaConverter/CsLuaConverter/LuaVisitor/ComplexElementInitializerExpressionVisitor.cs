@@ -8,10 +8,10 @@
     {
         public void Visit(ComplexElementInitializerExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
+            textWriter.Write("[");
             VisitorList.Visit(element.KeyElement);
-            textWriter.Write(" = ");
+            textWriter.Write("] = ");
             VisitorList.Visit(element.ValueElement);
-            textWriter.WriteLine(",");
         }
     }
 }

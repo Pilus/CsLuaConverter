@@ -9,7 +9,7 @@
     {
         public readonly List<string> Names = new List<string>();
 
-        public SimpleMemberAccessExpression InnerElement;
+        public BaseElement InnerElement;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -29,9 +29,14 @@
 
             if (token.Is(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.DotToken))
             {
-                ExpectKind(SyntaxKind.SimpleMemberAccessExpression, token.Parent.GetKind());
-
                 this.InnerElement = new SimpleMemberAccessExpression();
+                token = this.InnerElement.Analyze(token);
+                return token;
+            }
+
+            if (token.Is(SyntaxKind.BracketedArgumentList, SyntaxKind.OpenBracketToken))
+            {
+                this.InnerElement = new BracketedArgumentList();
                 token = this.InnerElement.Analyze(token);
                 return token;
             }

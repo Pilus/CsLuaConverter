@@ -27,7 +27,19 @@
 
             if (element.InnerElement != null)
             {
-                SimpleMemberAccessExpressionVisitor.WriteOpen(element.InnerElement, textWriter, providers);
+                if (element.InnerElement is SimpleMemberAccessExpression)
+                {
+                    SimpleMemberAccessExpressionVisitor.WriteOpen((SimpleMemberAccessExpression) element.InnerElement, textWriter, providers);
+                }
+                else if (element.InnerElement is BracketedArgumentList)
+                {
+                    BracketedArgumentListVisitor.WriteOpen((BracketedArgumentList)element.InnerElement, textWriter, providers);
+                }
+                else
+                {
+                    throw new LuaVisitorException("Unhandled idenfier name inner element");
+                }
+                
                 textWriter.Write("(");
             }
 
@@ -66,7 +78,19 @@
             if (element.InnerElement != null)
             {
                 textWriter.Write(" % _M.DOT)");
-                SimpleMemberAccessExpressionVisitor.WriteClose(element.InnerElement, textWriter, providers);
+
+                if (element.InnerElement is SimpleMemberAccessExpression)
+                {
+                    SimpleMemberAccessExpressionVisitor.WriteClose((SimpleMemberAccessExpression)element.InnerElement, textWriter, providers);
+                }
+                else if (element.InnerElement is BracketedArgumentList)
+                {
+                    BracketedArgumentListVisitor.WriteClose((BracketedArgumentList)element.InnerElement, textWriter, providers);
+                }
+                else
+                {
+                    throw new LuaVisitorException("Unhandled idenfier name inner element");
+                }
             }
         }
 

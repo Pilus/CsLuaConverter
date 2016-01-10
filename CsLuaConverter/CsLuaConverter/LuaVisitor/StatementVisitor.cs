@@ -14,7 +14,16 @@
         public void Visit(Statement statement, IndentedTextWriter textWriter, IProviders providers)
         {
             var elements = statement.ContainedElements.ToList();
+            Visit(elements, textWriter, providers);
 
+            if (statement.EndToken.Equals(";"))
+            {
+                textWriter.WriteLine(statement.EndToken);
+            }
+        }
+
+        public static void Visit(IList<BaseElement> elements, IndentedTextWriter textWriter, IProviders providers)
+        {
             for (var i = 0; i < elements.Count; i++)
             {
                 var element = elements[i];
@@ -51,15 +60,16 @@
                     AssignmentExpressionVisitor.Visit(nextElement as AddAssignmentExpression, textWriter, providers, element);
                     i++;
                 }
+                else if (nextElement is SimpleMemberAccessExpression)
+                {
+                    textWriter.Write("(");
+                    VisitorList.Visit(element);
+                    textWriter.Write(" % _M.DOT)");
+                }
                 else
                 {
                     VisitorList.Visit(element);
                 }
-            }
-
-            if (statement.EndToken.Equals(";"))
-            {
-                textWriter.WriteLine(statement.EndToken);
             }
         }
     }
