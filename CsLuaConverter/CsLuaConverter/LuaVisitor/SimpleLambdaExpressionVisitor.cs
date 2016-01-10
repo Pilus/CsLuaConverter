@@ -31,7 +31,7 @@
                 VisitorList.Visit(parameter);
             }
 
-            textWriter.Write(") ");
+            textWriter.Write(") return ");
 
             foreach (var element in body)
             {
