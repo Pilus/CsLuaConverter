@@ -8,7 +8,7 @@
     {
         public void Visit(TypeArgumentList element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("[");
+            textWriter.Write("[{");
             var first = true;
 
             foreach (var containedElement in element.ContainedElements)
@@ -26,7 +26,7 @@
                 textWriter.Write(".__typeof");
             }
 
-            textWriter.Write("]");
+            textWriter.Write("}]");
         }
     }
 }

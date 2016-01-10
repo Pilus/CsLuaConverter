@@ -274,7 +274,7 @@
                     textWriter.WriteLine("},");
 
                     textWriter.Write("func = function(element");
-                    if (constructor.Parameters != null)
+                    if (constructor.Parameters != null && constructor.Parameters.ContainedElements.Count > 0)
                     {
                         textWriter.Write(",");
                         VisitorList.Visit(constructor.Parameters);
