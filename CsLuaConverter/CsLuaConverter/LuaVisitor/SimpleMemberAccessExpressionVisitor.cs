@@ -34,10 +34,13 @@
             {
                 GenericNameVisitor.WriteOpen((GenericName)element.InnerElement, textWriter, providers, true);
             }
+
+            textWriter.Write("(");
         }
 
         public static void WriteClose(SimpleMemberAccessExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
+            textWriter.Write(" % _M.DOT)");
             textWriter.Write(".");
 
             if (element.InnerElement is IdentifierName)

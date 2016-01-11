@@ -284,6 +284,21 @@
                     }
 
                     textWriter.WriteLine(")");
+
+                    textWriter.Indent++;
+                    if (constructor.BaseConstructorInitializer != null)
+                    {
+                        textWriter.Write("element.__base");
+                        VisitorList.Visit(constructor.BaseConstructorInitializer.ArgumentList);
+                        textWriter.WriteLine(";");
+                    }
+                    else
+                    {
+                        textWriter.WriteLine("_M.AM(baseConstructors,{}).func(element);");
+                    }
+
+                    textWriter.Indent--;
+
                     VisitorList.Visit(constructor.Block);
                     textWriter.WriteLine("end,");
 

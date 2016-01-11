@@ -11,9 +11,9 @@
             textWriter.WriteLine("_M.IM(members, '{0}',{{", element.Name);
             textWriter.Indent++;
             textWriter.WriteLine("level = typeObject.Level,");
-            textWriter.WriteLine("memberType = 'Property',");
+            textWriter.WriteLine("memberType = '{0}',", IsAutoProperty(element) ? "AutoProperty" : "Property");
             textWriter.WriteLine("scope = '{0}',", element.Scope);
-            textWriter.WriteLine("static = '{0}',", element.Static.ToString().ToLower());
+            textWriter.WriteLine("static = {0},", element.Static.ToString().ToLower());
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }
@@ -31,6 +31,11 @@
             }
 
             textWriter.WriteLine("if not(values.{0} == nil) then element[typeObject.Level].{0} = values.{0}; end", element.Name);
+        }
+
+        private static bool IsAutoProperty(PropertyDeclaration element)
+        {
+            return element.Accessors.HasAutoGetter && element.Accessors.HasAutoSetter;
         }
     }
 }

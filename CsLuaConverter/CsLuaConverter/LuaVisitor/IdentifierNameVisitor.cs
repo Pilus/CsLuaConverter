@@ -39,8 +39,6 @@
                 {
                     throw new LuaVisitorException("Unhandled idenfier name inner element");
                 }
-                
-                textWriter.Write("(");
             }
 
             switch (type)
@@ -77,8 +75,6 @@
 
             if (element.InnerElement != null)
             {
-                textWriter.Write(" % _M.DOT)");
-
                 if (element.InnerElement is SimpleMemberAccessExpression)
                 {
                     SimpleMemberAccessExpressionVisitor.WriteClose((SimpleMemberAccessExpression)element.InnerElement, textWriter, providers);
