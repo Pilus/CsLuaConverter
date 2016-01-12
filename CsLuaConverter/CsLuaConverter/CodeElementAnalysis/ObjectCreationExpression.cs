@@ -28,13 +28,7 @@
                 throw new Exception("Unexpected element. " + token.Parent.GetKind());
             }
             
-            token = this.TypeElement.Analyze(token);
-            token = token.GetNextToken();
-
-            this.ArgumentList = new ArgumentList();
-            token = this.ArgumentList.Analyze(token);
-
-            return token;
+            return this.TypeElement.Analyze(token);
         }
     }
 }

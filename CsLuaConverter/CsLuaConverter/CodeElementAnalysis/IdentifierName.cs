@@ -41,6 +41,13 @@
                 return token;
             }
 
+            if (token.Is(SyntaxKind.ArgumentList, SyntaxKind.OpenParenToken))
+            {
+                this.InnerElement = new ArgumentList();
+                token = this.InnerElement.Analyze(token);
+                return token;
+            }
+
             return token.GetPreviousToken();
         }
     }
