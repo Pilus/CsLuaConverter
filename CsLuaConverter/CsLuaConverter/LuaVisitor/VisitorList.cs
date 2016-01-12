@@ -83,6 +83,49 @@
         }
 
         [System.Diagnostics.DebuggerNonUserCode]
+        public static void WriteOpen<T>(T element)
+        {
+            if (element == null)
+            {
+                return;
+            }
+
+            visitorType = typeof(IOpenCloseVisitor<>).MakeGenericType(element.GetType());
+            var visitor = Visitors.SingleOrDefault(IsType);
+
+            if (visitor == null)
+            {
+                throw new Exception(string.Format("No open close visitor found for type {0}", element.GetType().Name));
+            }
+
+            var m = visitorType.GetMethod("WriteOpen", BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod);
+
+            m.Invoke(visitor, new object[] { element, writer, providers });
+        }
+
+        [System.Diagnostics.DebuggerNonUserCode]
+        public static void WriteClose<T>(T element)
+        {
+            if (element == null)
+            {
+                return;
+            }
+
+            visitorType = typeof(IOpenCloseVisitor<>).MakeGenericType(element.GetType());
+            var visitor = Visitors.SingleOrDefault(IsType);
+
+            if (visitor == null)
+            {
+                throw new Exception(string.Format("No open close visitor found for type {0}", element.GetType().Name));
+            }
+
+            var m = visitorType.GetMethod("WriteClose", BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod);
+
+            m.Invoke(visitor, new object[] { element, writer, providers });
+        }
+
+
+        [System.Diagnostics.DebuggerNonUserCode]
         private static bool IsType(IVisitor visitor)
         {
             return visitorType.IsInstanceOfType(visitor);

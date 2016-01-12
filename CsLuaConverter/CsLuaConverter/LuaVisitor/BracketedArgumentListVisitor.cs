@@ -5,7 +5,7 @@
     using CodeElementAnalysis;
     using Providers;
 
-    public class BracketedArgumentListVisitor : IVisitor<BracketedArgumentList>
+    public class BracketedArgumentListVisitor : IOpenCloseVisitor<BracketedArgumentList>
     {
         public void Visit(BracketedArgumentList element, IndentedTextWriter textWriter, IProviders providers)
         {
@@ -13,17 +13,22 @@
             WriteClose(element, textWriter, providers);
         }
 
-        public static void WriteOpen(BracketedArgumentList element, IndentedTextWriter textWriter, IProviders providers)
+        public void WriteOpen(BracketedArgumentList element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("(");
+            VisitorList.WriteOpen(element.InnerElement);
+
+            if (element.InnerElement != null)
+            {
+                textWriter.Write("(");
+            }
         }
 
-        public static void WriteClose(BracketedArgumentList element, IndentedTextWriter textWriter, IProviders providers)
+        public void WriteClose(BracketedArgumentList element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write(" % _M.DOT)[");
-            //textWriter.Write("[");
+            textWriter.Write("[");
             VisitorList.Visit(element.ContainedElements.Single());
-            textWriter.Write("]");
+            textWriter.Write("]" + (element.InnerElement == null ? "" : " % _M.DOT)"));
+            VisitorList.WriteClose(element.InnerElement);
         }
     }
 }

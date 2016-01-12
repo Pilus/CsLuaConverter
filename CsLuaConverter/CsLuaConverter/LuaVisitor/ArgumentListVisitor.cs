@@ -6,9 +6,24 @@
     using CodeElementAnalysis;
     using Providers;
 
-    public class ArgumentListVisitor : IVisitor<ArgumentList>
+    public class ArgumentListVisitor : IOpenCloseVisitor<ArgumentList>
     {
         public void Visit(ArgumentList element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            this.WriteClose(element, textWriter, providers);
+            this.WriteClose(element, textWriter, providers);
+        }
+
+        public void WriteOpen(ArgumentList element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (element.InnerElement != null)
+            {
+                VisitorList.WriteOpen(element.InnerElement);
+                textWriter.Write("(");
+            }
+        }
+
+        public void WriteClose(ArgumentList element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("(");
             var first = true;
@@ -21,14 +36,20 @@
 
                 first = false;
 
-                this.VisitArgument(containedElementList.ToList(), textWriter, providers);
+                this.visitArgument(containedElementList.ToList(), textWriter, providers);
 
             }
 
             textWriter.Write(")");
+
+            if (element.InnerElement != null)
+            {
+                textWriter.Write(" % _M.DOT)");
+                VisitorList.WriteClose(element.InnerElement);
+            }
         }
 
-        public void VisitArgument(List<BaseElement> elements, IndentedTextWriter textWriter, IProviders providers)
+        private void visitArgument(List<BaseElement> elements, IndentedTextWriter textWriter, IProviders providers)
         {
             if (elements.Any(e => e is SimpleLambdaExpression))
             {

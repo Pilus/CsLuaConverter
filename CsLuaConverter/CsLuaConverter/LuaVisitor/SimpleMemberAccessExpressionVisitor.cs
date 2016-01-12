@@ -4,7 +4,7 @@
     using CodeElementAnalysis;
     using Providers;
 
-    public class SimpleMemberAccessExpressionVisitor : IVisitor<SimpleMemberAccessExpression>
+    public class SimpleMemberAccessExpressionVisitor : IOpenCloseVisitor<SimpleMemberAccessExpression>
     {
         public void Visit(SimpleMemberAccessExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
@@ -24,37 +24,17 @@
             }
         }
 
-        public static void WriteOpen(SimpleMemberAccessExpression element, IndentedTextWriter textWriter, IProviders providers)
+        public void WriteOpen(SimpleMemberAccessExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            if (element.InnerElement is IdentifierName)
-            {
-                IdentifierNameVisitor.WriteOpen((IdentifierName) element.InnerElement, textWriter, providers, true);
-            }
-            else if (element.InnerElement is GenericName)
-            {
-                GenericNameVisitor.WriteOpen((GenericName)element.InnerElement, textWriter, providers, true);
-            }
-
+            VisitorList.WriteOpen(element.InnerElement);
             textWriter.Write("(");
         }
 
-        public static void WriteClose(SimpleMemberAccessExpression element, IndentedTextWriter textWriter, IProviders providers)
+        public void WriteClose(SimpleMemberAccessExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write(" % _M.DOT)");
             textWriter.Write(".");
-
-            if (element.InnerElement is IdentifierName)
-            {
-                IdentifierNameVisitor.WriteClose((IdentifierName)element.InnerElement, textWriter, providers, true);
-            }
-            else if (element.InnerElement is GenericName)
-            {
-                GenericNameVisitor.WriteClose((GenericName)element.InnerElement, textWriter, providers, true);
-            }
-            else
-            {
-                throw new LuaVisitorException("Unhandled inner element of SimpleMemberAccessExpression");
-            }
+            VisitorList.WriteClose(element.InnerElement);
         }
     }
 }

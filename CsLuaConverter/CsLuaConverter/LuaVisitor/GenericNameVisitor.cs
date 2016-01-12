@@ -6,13 +6,12 @@
     using CodeElementAnalysis;
     using Providers;
 
-    public class GenericNameVisitor : IVisitor<GenericName>
+    public class GenericNameVisitor : IOpenCloseVisitor<GenericName>
     {
         public void Visit(GenericName element, IndentedTextWriter textWriter, IProviders providers)
         {
             Visit(element, textWriter, providers, false);
         }
-
 
         public static void Visit(GenericName element, IndentedTextWriter textWriter, IProviders providers,
             bool writeAsIs)
@@ -21,14 +20,26 @@
             WriteClose(element, textWriter, providers, writeAsIs);
         }
 
-        public static void WriteOpen(GenericName element, IndentedTextWriter textWriter, IProviders providers, bool skipLookup)
+        public void WriteOpen(GenericName element, IndentedTextWriter textWriter, IProviders providers)
         {
-            var names = skipLookup ? new List<string>() { element.Name } : providers.NameProvider.LookupVariableNameSplitted(new[] { element.Name }).ToList();
-
-            textWriter.Write(new string('(', names.Count));
+            WriteOpen(element, textWriter, providers, true);
         }
 
-        public static void WriteClose(GenericName element, IndentedTextWriter textWriter, IProviders providers, bool skipLookup)
+        public void WriteClose(GenericName element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            WriteClose(element, textWriter, providers, true);
+        }
+
+        private static void WriteOpen(GenericName element, IndentedTextWriter textWriter, IProviders providers, bool skipLookup)
+        {
+            VisitorList.WriteOpen(element.InnerElement);
+
+            var names = skipLookup ? new List<string>() { element.Name } : providers.NameProvider.LookupVariableNameSplitted(new[] { element.Name }).ToList();
+
+            textWriter.Write(new string('(', names.Count + (element.InnerElement != null ? 1 : 0)));
+        }
+
+        private static void WriteClose(GenericName element, IndentedTextWriter textWriter, IProviders providers, bool skipLookup)
         {
             var names = skipLookup ? new List<string>(){element.Name} : providers.NameProvider.LookupVariableNameSplitted(new [] { element.Name } ).ToList();
 
@@ -46,16 +57,22 @@
                 { 
                     if (name == "element")
                     {
-                        textWriter.Write("%_M.DOT_LVL(typeObject.Level))");
+                        textWriter.Write(" % _M.DOT_LVL(typeObject.Level))");
                     }
                     else
                     {
-                        textWriter.Write("%_M.DOT)");
+                        textWriter.Write(" % _M.DOT)");
                     }
                 }
             }
 
             VisitorList.Visit(element.ArgumentList);
+
+            if (element.InnerElement != null)
+            {
+                textWriter.Write(" % _M.DOT)");
+                VisitorList.WriteClose(element.InnerElement);
+            }
         }
     }
 }

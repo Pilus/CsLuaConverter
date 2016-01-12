@@ -9,7 +9,6 @@
         public void Visit(ObjectCreationExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             VisitorList.Visit(element.TypeElement);
-            VisitorList.Visit(element.ArgumentList);
         }
     }
 }

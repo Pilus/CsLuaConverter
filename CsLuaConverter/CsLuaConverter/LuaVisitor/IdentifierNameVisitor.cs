@@ -7,13 +7,22 @@
     using CodeElementAnalysis;
     using Providers;
 
-    public class IdentifierNameVisitor : IVisitor<IdentifierName>
+    public class IdentifierNameVisitor : IOpenCloseVisitor<IdentifierName>
     {
         public void Visit(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)
         {
             Visit(element, textWriter, providers, false);
         }
 
+        public void WriteOpen(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            WriteOpen(element, textWriter, providers, true);
+        }
+
+        public void WriteClose(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            WriteClose(element, textWriter, providers, true);
+        }
 
         public static void Visit(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, bool writeAsIs)
         {
@@ -21,25 +30,11 @@
             WriteClose(element, textWriter, providers, writeAsIs);
         }
 
-        public static void WriteOpen(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, bool writeAsIs)
+        private static void WriteOpen(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, bool writeAsIs)
         {
-            var type = DetermineType(element, providers, writeAsIs);
+            VisitorList.WriteOpen(element.InnerElement);
 
-            if (element.InnerElement != null)
-            {
-                if (element.InnerElement is SimpleMemberAccessExpression)
-                {
-                    SimpleMemberAccessExpressionVisitor.WriteOpen((SimpleMemberAccessExpression) element.InnerElement, textWriter, providers);
-                }
-                else if (element.InnerElement is BracketedArgumentList)
-                {
-                    BracketedArgumentListVisitor.WriteOpen((BracketedArgumentList)element.InnerElement, textWriter, providers);
-                }
-                else
-                {
-                    throw new LuaVisitorException("Unhandled idenfier name inner element");
-                }
-            }
+            var type = DetermineType(element, providers, writeAsIs);
 
             switch (type)
             {
@@ -53,7 +48,7 @@
             }
         }
 
-        public static void WriteClose(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, bool writeAsIs)
+        private static void WriteClose(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, bool writeAsIs)
         {
             var type = DetermineType(element, providers, writeAsIs);
 
@@ -73,21 +68,7 @@
                     break;
             }
 
-            if (element.InnerElement != null)
-            {
-                if (element.InnerElement is SimpleMemberAccessExpression)
-                {
-                    SimpleMemberAccessExpressionVisitor.WriteClose((SimpleMemberAccessExpression)element.InnerElement, textWriter, providers);
-                }
-                else if (element.InnerElement is BracketedArgumentList)
-                {
-                    BracketedArgumentListVisitor.WriteClose((BracketedArgumentList)element.InnerElement, textWriter, providers);
-                }
-                else
-                {
-                    throw new LuaVisitorException("Unhandled idenfier name inner element");
-                }
-            }
+            VisitorList.WriteClose(element.InnerElement);
         }
 
 

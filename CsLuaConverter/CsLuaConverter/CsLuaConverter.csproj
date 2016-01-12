@@ -173,6 +173,7 @@
     <Compile Include="LuaVisitor\IdentifierNameVisitor.cs" />
     <Compile Include="LuaVisitor\IfStatementVisitor.cs" />
     <Compile Include="LuaVisitor\InterfaceDeclarationVisitor.cs" />
+    <Compile Include="LuaVisitor\IOpenCloseVisitor.cs" />
     <Compile Include="LuaVisitor\IsExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\LuaVisitorException.cs" />
     <Compile Include="LuaVisitor\MethodDeclarationVisitor.cs" />

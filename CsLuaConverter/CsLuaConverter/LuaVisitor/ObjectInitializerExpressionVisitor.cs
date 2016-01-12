@@ -4,9 +4,20 @@
     using CodeElementAnalysis;
     using Providers;
 
-    public class ObjectInitializerExpressionVisitor : IVisitor<ObjectInitializerExpression>
+    public class ObjectInitializerExpressionVisitor : IOpenCloseVisitor<ObjectInitializerExpression>
     {
         public void Visit(ObjectInitializerExpression element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            this.WriteOpen(element, textWriter, providers);
+            this.WriteClose(element, textWriter, providers);
+        }
+
+        public void WriteOpen(ObjectInitializerExpression element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            
+        }
+
+        public void WriteClose(ObjectInitializerExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write(".__Initialize({");
 

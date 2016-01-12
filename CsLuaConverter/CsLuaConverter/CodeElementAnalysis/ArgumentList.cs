@@ -16,23 +16,15 @@
 
             token = token.GetNextToken();
 
-            if (token.Is(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.DotToken))
+            if (token.Is(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.DotToken) ||
+                token.Is(SyntaxKind.BracketedArgumentList, SyntaxKind.OpenBracketToken) ||
+                token.Is(SyntaxKind.ArgumentList, SyntaxKind.OpenParenToken) ||
+                token.Is(SyntaxKind.ObjectInitializerExpression, SyntaxKind.OpenBraceToken) ||
+                token.Is(SyntaxKind.ArrayInitializerExpression, SyntaxKind.OpenBraceToken) ||
+                token.Is(SyntaxKind.CollectionInitializerExpression, SyntaxKind.OpenBraceToken) ||
+                token.Is(SyntaxKind.ComplexElementInitializerExpression, SyntaxKind.OpenBraceToken))
             {
-                this.InnerElement = new SimpleMemberAccessExpression();
-                token = this.InnerElement.Analyze(token);
-                return token;
-            }
-
-            if (token.Is(SyntaxKind.BracketedArgumentList, SyntaxKind.OpenBracketToken))
-            {
-                this.InnerElement = new BracketedArgumentList();
-                token = this.InnerElement.Analyze(token);
-                return token;
-            }
-
-            if (token.Is(SyntaxKind.ArgumentList, SyntaxKind.OpenParenToken))
-            {
-                this.InnerElement = new ArgumentList();
+                this.InnerElement = GenerateMatchingElement(token);
                 token = this.InnerElement.Analyze(token);
                 return token;
             }
