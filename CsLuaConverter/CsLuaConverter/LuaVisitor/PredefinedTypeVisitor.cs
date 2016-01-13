@@ -4,9 +4,9 @@
     using CodeElementAnalysis;
     using Providers;
 
-    public class PredefinedTypeVisitor : IVisitor<PredefinedType>
+    public class PredefinedTypeVisitor : BaseOpenCloseVisitor<PredefinedType>
     {
-        public void Visit(PredefinedType element, IndentedTextWriter textWriter, IProviders providers)
+        protected override void Write(PredefinedType element, IndentedTextWriter textWriter, IProviders providers)
         {
             var type = providers.TypeProvider.LookupType(element.Text);
             textWriter.Write("{0}.__typeof", type.GetTypeObject().FullName);

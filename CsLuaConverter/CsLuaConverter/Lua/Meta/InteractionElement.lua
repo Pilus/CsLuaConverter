@@ -50,6 +50,8 @@ local InteractionElement = function(metaProvider, generics)
     end
 
     local index = function(self, key, level)
+        if (key == "__isNamespace") then return false; end
+
         if (key == "__Initialize") and initialize then
             return function(values) initialize(self, values); return self; end
         end

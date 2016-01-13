@@ -51,6 +51,8 @@
             new TypeOfExpressionVisitor(),
             new ConditionalExpressionVisitor(),
             new SimpleMemberAccessExpressionVisitor(),
+            new ParenthesizedExpressionVisitor(),
+            new BaseExpressionVisitor(),
         };
 
         private static IndentedTextWriter writer;

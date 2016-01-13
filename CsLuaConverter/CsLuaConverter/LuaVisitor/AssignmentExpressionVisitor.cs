@@ -19,7 +19,7 @@
             VisitorList.Visit(targetElement);
             textWriter.Write(" = ");
             VisitorList.Visit(targetElement);
-            textWriter.Write(" + ");
+            textWriter.Write(" +CsLuaMeta.add+ ");
         }
     }
 }

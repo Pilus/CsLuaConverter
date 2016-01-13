@@ -9,8 +9,8 @@
     {
         public void Visit(BracketedArgumentList element, IndentedTextWriter textWriter, IProviders providers)
         {
-            WriteOpen(element, textWriter, providers);
-            WriteClose(element, textWriter, providers);
+            this.WriteOpen(element, textWriter, providers);
+            this.WriteClose(element, textWriter, providers);
         }
 
         public void WriteOpen(BracketedArgumentList element, IndentedTextWriter textWriter, IProviders providers)

@@ -7,8 +7,8 @@
     public class SimpleVisitors : 
         IVisitor<FalseLiteralExpression>, IVisitor<EqualsValueClause>, IVisitor<TrueLiteralExpression>,
         IVisitor<NullLiteralExpression>, IVisitor<SimpleAssignmentExpression>, IVisitor<ThisExpression>, IVisitor<AddExpression>,
-        IVisitor<CharacterLiteralExpression>, IVisitor<NotEqualsExpression>, IVisitor<ReturnStatement>, IVisitor<ParenthesizedExpression>, 
-        IVisitor<EqualsExpression>, IVisitor<BaseExpression>, IVisitor<CastExpression>, IVisitor<LogicalNotExpression>
+        IVisitor<CharacterLiteralExpression>, IVisitor<NotEqualsExpression>, IVisitor<ReturnStatement>, 
+        IVisitor<EqualsExpression>, IVisitor<CastExpression>, IVisitor<LogicalNotExpression>
     {
         public void Visit(FalseLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
@@ -60,21 +60,9 @@
             textWriter.Write("return ");
         }
 
-        public void Visit(ParenthesizedExpression element, IndentedTextWriter textWriter, IProviders providers)
-        {
-            textWriter.Write("(");
-            VisitorList.Visit(element.Statement);
-            textWriter.Write(")");
-        }
-
         public void Visit(EqualsExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write(" == ");
-        }
-
-        public void Visit(BaseExpression element, IndentedTextWriter textWriter, IProviders providers)
-        {
-            textWriter.Write("baseElement");
         }
 
         public void Visit(CastExpression element, IndentedTextWriter textWriter, IProviders providers)

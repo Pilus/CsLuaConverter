@@ -3,7 +3,7 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class PredefinedType : BaseElement
+    public class PredefinedType : ElementWithInnerElement
     {
         public string Text;
         public bool IsArray;
@@ -23,7 +23,30 @@
                 this.IsArray = true;
             }
 
-            return token;
+            token = token.GetNextToken();
+
+            if (token.Is(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.DotToken))
+            {
+                this.InnerElement = new SimpleMemberAccessExpression();
+                token = this.InnerElement.Analyze(token);
+                return token;
+            }
+
+            if (token.Is(SyntaxKind.BracketedArgumentList, SyntaxKind.OpenBracketToken))
+            {
+                this.InnerElement = new BracketedArgumentList();
+                token = this.InnerElement.Analyze(token);
+                return token;
+            }
+
+            if (token.Is(SyntaxKind.ArgumentList, SyntaxKind.OpenParenToken))
+            {
+                this.InnerElement = new ArgumentList();
+                token = this.InnerElement.Analyze(token);
+                return token;
+            }
+
+            return token.GetPreviousToken();
         }
     }
 }

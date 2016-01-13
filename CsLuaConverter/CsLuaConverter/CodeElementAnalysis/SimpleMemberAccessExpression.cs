@@ -3,10 +3,8 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class SimpleMemberAccessExpression : BaseElement
+    public class SimpleMemberAccessExpression : ElementWithInnerElement
     {
-        public BaseElement InnerElement;
-
         public override SyntaxToken Analyze(SyntaxToken token)
         {
             ExpectKind(SyntaxKind.SimpleMemberAccessExpression, token.Parent.GetKind());

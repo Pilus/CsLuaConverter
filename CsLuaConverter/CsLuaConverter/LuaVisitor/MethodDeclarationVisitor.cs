@@ -13,7 +13,7 @@
         {
             RegisterMethodGenerics(element, providers);
 
-            textWriter.WriteLine("_M.IM(members,'{0}',{{", element.Text);
+            textWriter.WriteLine("_M.IM(members, '{0}', {{", element.Text);
             textWriter.Indent++;
 
             textWriter.WriteLine("level = typeObject.Level,");

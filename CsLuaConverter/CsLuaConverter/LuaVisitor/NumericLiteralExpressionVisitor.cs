@@ -5,9 +5,9 @@
     using Providers;
     using System.CodeDom.Compiler;
 
-    public class NumericLiteralExpressionVisitor : IVisitor<NumericLiteralExpression>
+    public class NumericLiteralExpressionVisitor : BaseOpenCloseVisitor<NumericLiteralExpression>
     {
-        public void Visit(NumericLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
+        protected override void Write(NumericLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write(element.Text);
         }

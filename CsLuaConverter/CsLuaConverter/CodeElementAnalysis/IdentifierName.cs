@@ -5,11 +5,9 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class IdentifierName : BaseElement
+    public class IdentifierName : ElementWithInnerElement
     {
         public readonly List<string> Names = new List<string>();
-
-        public BaseElement InnerElement;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {

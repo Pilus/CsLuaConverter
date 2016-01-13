@@ -56,9 +56,7 @@
             if (element.FinallyBlock != null)
             {
                 textWriter.WriteLine("function()");
-                textWriter.Indent++;
                 VisitorList.Visit(element.FinallyBlock);
-                textWriter.Indent--;
                 textWriter.WriteLine("end");
             }
             else

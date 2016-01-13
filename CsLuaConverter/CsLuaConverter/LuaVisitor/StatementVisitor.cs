@@ -29,7 +29,11 @@
                 var element = elements[i];
                 var nextElement = i + 1 < elements.Count ? elements[i + 1] : null;
 
-                if (nextElement is PostIncrementExpression)
+                if (i == 0 && (element is PredefinedType && (element as PredefinedType).InnerElement == null))
+                {
+                    textWriter.Write("local ");
+                }
+                else if (nextElement is PostIncrementExpression)
                 {
                     PostIncrementExpressionVisitor.Visit(nextElement as PostIncrementExpression, textWriter, providers, element);
                     i++;

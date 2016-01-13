@@ -4,12 +4,11 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class GenericName : BaseElement
+    public class GenericName : ElementWithInnerElement
     {
         public string Name;
         public TypeArgumentList ArgumentList;
         public bool IsArray;
-        public BaseElement InnerElement;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {

@@ -32,7 +32,12 @@
 
         private static void WriteOpen(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, bool writeAsIs)
         {
-            VisitorList.WriteOpen(element.InnerElement);
+            if (element.InnerElement != null)
+            {
+                VisitorList.WriteOpen(element.InnerElement);
+                textWriter.Write("(");
+            }
+            
 
             var type = DetermineType(element, providers, writeAsIs);
 
@@ -68,7 +73,12 @@
                     break;
             }
 
-            VisitorList.WriteClose(element.InnerElement);
+            if (element.InnerElement != null)
+            {
+                textWriter.Write(" % _M.DOT)");
+                VisitorList.WriteClose(element.InnerElement);
+            }
+            
         }
 
 
