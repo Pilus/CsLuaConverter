@@ -64,7 +64,7 @@ _M.DOT_LVL = function(level)
             return typeObject.interactionElement.__newindex(obj, index, value, level); 
         end,
         function(obj, ...)
-            --assert(type(obj) == "function", "Attempted to invoke a "..type(obj).." value.");
+            assert(type(obj) == "function" or type(obj) == "table", "Attempted to invoke a "..type(obj).." value.");
             return obj(...);
         end
     );

@@ -7,7 +7,6 @@
     public class ObjectCreationExpression : BaseElement
     {
         public BaseElement TypeElement;
-        public ArgumentList ArgumentList;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {

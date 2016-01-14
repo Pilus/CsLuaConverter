@@ -11,26 +11,26 @@
     {
         public void Visit(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)
         {
-            Visit(element, textWriter, providers, false);
+            Visit(element, textWriter, providers, null);
         }
 
         public void WriteOpen(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)
         {
-            WriteOpen(element, textWriter, providers, true);
+            WriteOpen(element, textWriter, providers, IdentifyerType.AsIs);
         }
 
         public void WriteClose(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)
         {
-            WriteClose(element, textWriter, providers, true);
+            WriteClose(element, textWriter, providers, IdentifyerType.AsIs);
         }
 
-        public static void Visit(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, bool writeAsIs)
+        public static void Visit(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, IdentifyerType? type)
         {
-            WriteOpen(element, textWriter, providers, writeAsIs);
-            WriteClose(element, textWriter, providers, writeAsIs);
+            WriteOpen(element, textWriter, providers, type);
+            WriteClose(element, textWriter, providers, type);
         }
 
-        private static void WriteOpen(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, bool writeAsIs)
+        private static void WriteOpen(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, IdentifyerType? type)
         {
             if (element.InnerElement != null)
             {
@@ -39,9 +39,9 @@
             }
             
 
-            var type = DetermineType(element, providers, writeAsIs);
+            var identifierType = type ?? DetermineType(element, providers);
 
-            switch (type)
+            switch (identifierType)
             {
                 case IdentifyerType.AsIs:
                     WriteAsIsOpen(element, textWriter, providers);
@@ -49,15 +49,16 @@
                 case IdentifyerType.AsRef:
                 case IdentifyerType.AsVar:
                 case IdentifyerType.AsGeneric:
+                case IdentifyerType.AsScope:
                     break;
             }
         }
 
-        private static void WriteClose(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, bool writeAsIs)
+        private static void WriteClose(IdentifierName element, IndentedTextWriter textWriter, IProviders providers, IdentifyerType? type)
         {
-            var type = DetermineType(element, providers, writeAsIs);
+            var identifierType = type ?? DetermineType(element, providers);
 
-            switch (type)
+            switch (identifierType)
             {
                 case IdentifyerType.AsVar:
                     WriteLocalVar(element, textWriter, providers);
@@ -71,6 +72,9 @@
                 case IdentifyerType.AsRef:
                     WriteAsReferenceClose(element, textWriter, providers);
                     break;
+                case IdentifyerType.AsScope:
+                    WriteAsScopeClose(element, textWriter, providers);
+                    break;
             }
 
             if (element.InnerElement != null)
@@ -82,13 +86,8 @@
         }
 
 
-        private static IdentifyerType DetermineType(IdentifierName element, IProviders providers, bool writeAsIs)
+        private static IdentifyerType DetermineType(IdentifierName element, IProviders providers)
         {
-            if (writeAsIs)
-            {
-                return IdentifyerType.AsIs;
-            }
-
             if (element.Names.FirstOrDefault() == "var")
             {
                 return IdentifyerType.AsVar;
@@ -97,6 +96,11 @@
             if (providers.GenericsRegistry.IsGeneric(element.Names.SingleOrDefault()))
             {
                 return IdentifyerType.AsGeneric;
+            }
+
+            if (providers.NameProvider.GetScopeElement(element.Names.First()) != null)
+            {
+                return IdentifyerType.AsScope;
             }
 
             return IdentifyerType.AsRef;
@@ -121,33 +125,32 @@
             }
         }
 
-        private static void WriteAsReferenceClose(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)
+        private static void WriteAsScopeClose(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)
         {
             var scopeElement = providers.NameProvider.GetScopeElement(element.Names.First());
-            if (scopeElement != null)
+            if (scopeElement.ClassPrefix != null)
             {
-                if (scopeElement.ClassPrefix != null)
+                if (scopeElement.ClassPrefix == "element")
                 {
-                    if (scopeElement.ClassPrefix == "element")
-                    {
-                        textWriter.Write("(element%_M.DOT_LVL(typeObject.Level)).");
-                    }
-                    else
-                    {
-                        textWriter.Write("({0} % _M.DOT).", scopeElement.ClassPrefix);
-                    }
+                    textWriter.Write("(element%_M.DOT_LVL(typeObject.Level)).");
                 }
-                textWriter.Write(scopeElement.Name);
+                else
+                {
+                    textWriter.Write("({0} % _M.DOT).", scopeElement.ClassPrefix);
+                }
+            }
+            textWriter.Write(scopeElement.Name);
 
-                if (element.Names.Count > 1)
-                {
-                    throw new LuaVisitorException("Scope element with further reference not supported.");
-                }
-            }
-            else
+            if (element.Names.Count > 1)
             {
-                textWriter.Write(providers.TypeProvider.LookupType(element.Names).ToString());
+                throw new LuaVisitorException("Scope element with further reference not supported.");
             }
+        }
+
+
+        private static void WriteAsReferenceClose(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write(providers.TypeProvider.LookupType(element.Names).ToString());
         }
 
         private static void WriteAsGenericReference(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)
@@ -167,5 +170,6 @@
         AsIs,
         AsRef,
         AsGeneric,
+        AsScope,
     }
 }

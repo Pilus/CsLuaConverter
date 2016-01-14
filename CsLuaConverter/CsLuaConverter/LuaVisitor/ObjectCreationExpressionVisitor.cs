@@ -8,7 +8,20 @@
     {
         public void Visit(ObjectCreationExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            VisitorList.Visit(element.TypeElement);
+            var e = element.TypeElement;
+
+            if (e is IdentifierName)
+            {
+                IdentifierNameVisitor.Visit(e as IdentifierName, textWriter, providers, IdentifyerType.AsRef);
+            }
+            else if (e is GenericName)
+            {
+                GenericNameVisitor.Visit(e as GenericName, textWriter, providers, false);
+            }
+            else
+            {
+                throw new LuaVisitorException("Unexected element in object creation expression.");
+            }
         }
     }
 }

@@ -34,7 +34,7 @@
                     textWriter.Write(",");
                 }
 
-                IdentifierNameVisitor.Visit(pair.Name, textWriter, providers, true);
+                IdentifierNameVisitor.Visit(pair.Name, textWriter, providers, IdentifyerType.AsIs);
                 textWriter.Write(" = ");
                 VisitorList.Visit(pair.Statement);
             }
