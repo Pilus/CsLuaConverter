@@ -176,6 +176,10 @@ local InteractionElement = function(metaProvider, generics)
 
             local fittingMembers = getMembers(key, nil, true);
 
+            if #(fittingMembers) == 0 then
+                error("Could not find static member. Key: "..tostring(key)..". Object: "..typeObject.FullName);
+            end
+
             if (fittingMembers[1].memberType == "Method") then
                 return function(...)
                     local member = _M.AM(fittingMembers, {...});

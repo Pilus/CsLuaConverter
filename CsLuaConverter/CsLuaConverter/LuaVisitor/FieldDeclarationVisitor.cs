@@ -35,7 +35,7 @@
             {
                 textWriter.Write("_M.DV(");
                 VisitorList.Visit(element.Type);
-                textWriter.Write(")");
+                textWriter.Write(".__typeof)");
             }
 
             textWriter.WriteLine(",");

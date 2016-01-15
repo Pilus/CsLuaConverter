@@ -15,6 +15,17 @@
         end,
     });
 
+    _M.IM(members,'IsNullOrEmpty',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        static = true,
+        types = {typeObject},
+        func = function(_, str)
+            return str == nil or str == "";
+        end,
+    });
+
     local constructors = {
         {
             types = {},

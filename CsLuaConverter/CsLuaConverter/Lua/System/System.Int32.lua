@@ -5,6 +5,18 @@ System.Int32 = _M.NE({["#"] = function(interactionElement, generics, staticValue
     local members = {
         
     };
+
+    _M.IM(members,'Parse',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        static = true,
+        types = {System.Object.__typeof},
+        func = function(_, value)
+            return math.floor(tonumber(value));
+        end,
+    });
+
     local constructors = {
         {
             types = {},

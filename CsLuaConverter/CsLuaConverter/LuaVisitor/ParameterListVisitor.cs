@@ -47,6 +47,7 @@
                     if (parameterElement is PredefinedType)
                     {
                         VisitorList.Visit(parameterElement);
+                        textWriter.Write(".__typeof");
                     }
                     else if (parameterElement is IdentifierName)
                     {

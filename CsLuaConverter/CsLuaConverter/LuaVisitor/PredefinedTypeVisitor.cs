@@ -9,7 +9,7 @@
         protected override void Write(PredefinedType element, IndentedTextWriter textWriter, IProviders providers)
         {
             var type = providers.TypeProvider.LookupType(element.Text);
-            textWriter.Write("{0}.__typeof", type.GetTypeObject().FullName);
+            textWriter.Write("{0}", type.GetTypeObject().FullName);
         }
     }
 }
