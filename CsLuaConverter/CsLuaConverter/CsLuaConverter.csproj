@@ -141,6 +141,7 @@
     <Compile Include="CodeElementAnalysis\Statements\StatementType.cs" />
     <Compile Include="CodeElementAnalysis\StringLiteralExpression.cs" />
     <Compile Include="CodeElementAnalysis\SubtractAssignmentExpression.cs" />
+    <Compile Include="CodeElementAnalysis\SubtractExpression.cs" />
     <Compile Include="CodeElementAnalysis\ThisExpression.cs" />
     <Compile Include="CodeElementAnalysis\ThrowStatement.cs" />
     <Compile Include="CodeElementAnalysis\ThrowStatementVisitor.cs" />

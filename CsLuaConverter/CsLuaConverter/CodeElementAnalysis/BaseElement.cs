@@ -91,6 +91,7 @@
             { SyntaxKind.TypeOfExpression,                      () => new TypeOfExpression() },
             { SyntaxKind.LogicalNotExpression,                  () => new LogicalNotExpression() },
             { SyntaxKind.ConditionalExpression,                 () => new ConditionalExpression() },
+            { SyntaxKind.SubtractExpression,                    () => new SubtractExpression() },
         };
 
         public abstract SyntaxToken Analyze(SyntaxToken token);

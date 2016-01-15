@@ -4,6 +4,7 @@
     using System;
     using Providers;
     using System.CodeDom.Compiler;
+    using System.Linq;
 
     public class FieldDeclarationVisitor : IVisitor<FieldDeclaration>
     {
@@ -34,7 +35,18 @@
             else
             {
                 textWriter.Write("_M.DV(");
-                VisitorList.Visit(element.Type);
+                if (element.Type is IdentifierName)
+                {
+                    // TODO: Merge with similar code in ParameterListVisitor
+                    var e = element.Type as IdentifierName;
+                    var isGeneric = providers.GenericsRegistry.IsGeneric(e.Names.First());
+                    IdentifierNameVisitor.Visit(e, textWriter, providers, isGeneric ? IdentifyerType.AsGeneric : IdentifyerType.AsRef);
+                }
+                else
+                {
+                    VisitorList.Visit(element.Type);
+                }
+                
                 textWriter.Write(".__typeof)");
             }
 
