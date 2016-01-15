@@ -3,10 +3,8 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class ThisExpression : BaseElement
+    public class ThisExpression : ElementWithInnerElement
     {
-        public BaseElement InnerElement;
-
         public override SyntaxToken Analyze(SyntaxToken token)
         {
             ExpectKind(SyntaxKind.ThisExpression, token.Parent.GetKind());

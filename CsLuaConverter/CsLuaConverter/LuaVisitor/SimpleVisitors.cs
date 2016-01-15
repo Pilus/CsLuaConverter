@@ -6,7 +6,7 @@
 
     public class SimpleVisitors : 
         IVisitor<FalseLiteralExpression>, IVisitor<EqualsValueClause>, IVisitor<TrueLiteralExpression>,
-        IVisitor<NullLiteralExpression>, IVisitor<SimpleAssignmentExpression>, IVisitor<ThisExpression>, IVisitor<AddExpression>,
+        IVisitor<NullLiteralExpression>, IVisitor<SimpleAssignmentExpression>, IVisitor<AddExpression>,
         IVisitor<CharacterLiteralExpression>, IVisitor<NotEqualsExpression>, IVisitor<ReturnStatement>, 
         IVisitor<EqualsExpression>, IVisitor<CastExpression>, IVisitor<LogicalNotExpression>
     {
@@ -33,11 +33,6 @@
         public void Visit(SimpleAssignmentExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write(" = ");
-        }
-
-        public void Visit(ThisExpression element, IndentedTextWriter textWriter, IProviders providers)
-        {
-            VisitorList.Visit(element.InnerElement);
         }
 
         public void Visit(AddExpression element, IndentedTextWriter textWriter, IProviders providers)

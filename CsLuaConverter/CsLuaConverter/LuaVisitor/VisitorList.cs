@@ -53,6 +53,7 @@
             new SimpleMemberAccessExpressionVisitor(),
             new ParenthesizedExpressionVisitor(),
             new BaseExpressionVisitor(),
+            new ThisExpressionVisitor(),
         };
 
         private static IndentedTextWriter writer;
