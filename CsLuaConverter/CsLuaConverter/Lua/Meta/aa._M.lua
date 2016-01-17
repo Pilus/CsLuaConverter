@@ -1,1 +1,8 @@
-﻿_M = { __isNamespace = true };
+﻿_M = { };
+_M.MetaTypes = {
+    TypeObject = "TypeObject",
+    ClassObject = "ClassObject",
+    NameSpace = "NameSpace",
+    InteractionElement = "InteractionElement",
+};
+_M.__metaType = _M.MetaTypes.NameSpace

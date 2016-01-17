@@ -1,1 +1,1 @@
-﻿System = { __isNamespace = true };
+﻿System = { __metaType = _M.MetaTypes.NameSpace };

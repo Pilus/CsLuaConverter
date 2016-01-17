@@ -29,6 +29,7 @@ local NamespaceElement = function(metaProviders)
         generics = generics or {};
         local hash = getHashOfGenerics(generics);
         if not(interactionElements[hash]) then
+            assert(metaProviders[#(generics)] or metaProviders["#"], string.format("Could not find meta provider fitting number of generics: %s or '#'", #(generics)));
             interactionElements[hash] = _M.IE(metaProviders[#(generics)] or metaProviders["#"], generics);
         end
         
@@ -38,8 +39,8 @@ local NamespaceElement = function(metaProviders)
     local element = {};
     setmetatable(element, { 
         __index = function(_, key)
-            if key == "__isNamespace" then
-                return true;
+            if key == "__metaType" then
+                return _M.MetaTypes.NameSpace;
             end
 
             if not(isGenericsTable(key)) then

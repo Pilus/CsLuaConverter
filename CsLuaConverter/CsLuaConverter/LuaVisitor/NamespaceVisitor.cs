@@ -12,7 +12,7 @@
         {
             textWriter.WriteLine("{0} = {{", element.Name);
             textWriter.Indent++;
-            textWriter.WriteLine("__isNamespace = true,");
+            textWriter.WriteLine("__metaType = _M.MetaTypes.NameSpace,");
 
             element.Elements.ForEach(VisitorList.Visit);
 

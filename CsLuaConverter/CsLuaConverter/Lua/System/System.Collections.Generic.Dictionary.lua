@@ -1,6 +1,6 @@
 ﻿
-System.Collections = System.Collections or { __isNamespace = true };
-System.Collections.Generic = System.Collections.Generic or { __isNamespace = true };
+System.Collections = System.Collections or { __metaType = _M.MetaTypes.NameSpace };
+System.Collections.Generic = System.Collections.Generic or { __metaType = _M.MetaTypes.NameSpace };
 
 System.Collections.Generic.Dictionary = _M.NE({[2] = function(interactionElement, generics, staticValues)
     local implements = {};
@@ -46,7 +46,16 @@ System.Collections.Generic.Dictionary = _M.NE({[2] = function(interactionElement
         end
     end
 
-    return "Class", typeObject, members, constructors, function() return {[1] = {},[2] = {}, ["type"] = typeObject}; end, implements, initialize;
+    local objectGenerator = function() 
+        return {
+            [1] = {},
+            [2] = {}, 
+            ["type"] = typeObject,
+            __metaType = _M.MetaTypes.TypeObject,
+        }; 
+    end
+
+    return "Class", typeObject, members, constructors, objectGenerator, implements, initialize;
 end})
 
 System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElement, generics, staticValues)
@@ -74,5 +83,15 @@ System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElem
             end,
         }
     };
-    return "Class", typeObject, members, constructors, function() return {[1] = {},[2] = {}, ["type"] = typeObject}; end;
+
+    local objectGenerator = function() 
+        return {
+            [1] = {},
+            [2] = {}, 
+            ["type"] = typeObject,
+            __metaType = _M.MetaTypes.TypeObject,
+        }; 
+    end
+
+    return "Class", typeObject, members, constructors, objectGenerator;
 end})

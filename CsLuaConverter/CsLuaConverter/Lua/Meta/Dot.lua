@@ -41,8 +41,9 @@ _M.DOT_LVL = function(level)
     return DotMeta(
         function(obj, index)  -- useage:  a%_M.dot%b
             assert(not(obj == nil), "Attempted to read index "..tostring(index).." on a nil value.");
+            assert(not(type(obj) == "table") or not(obj.__metaType == nil), "Attempted to read index "..tostring(index).." on a obj value with no meta type");
 
-            if (type(obj) == "table" and (obj.__isNamespace == true)) then
+            if (type(obj) == "table" and (obj.__metaType ~= _M.MetaTypes.ClassObject)) then
                 return obj[index];
             end
 
@@ -55,8 +56,9 @@ _M.DOT_LVL = function(level)
         end, 
         function(obj, index, value)
             assert(not(obj == nil), "Attempted to write index "..tostring(index).." to a nil value.");
+            assert(not(type(obj) == "table") or not(obj.__metaType == nil), "Attempted to write index "..tostring(index).." on a obj value with no meta type");
 
-            if (type(obj) == "table" and (obj.__isNamespace)) then
+            if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.NameSpace)) then
                 return obj.__newindex(obj, index, value, level);
             end
 

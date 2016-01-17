@@ -50,7 +50,7 @@ local InteractionElement = function(metaProvider, generics)
     end
 
     local index = function(self, key, level)
-        if (key == "__isNamespace") then return false; end
+        if (key == "__metaType") then return _M.MetaTypes.InteractionElement; end
 
         if (key == "__Initialize") and initialize then
             return function(values) initialize(self, values); return self; end
@@ -143,7 +143,7 @@ local InteractionElement = function(metaProvider, generics)
         end,
         __index = index,
         __newindex = newIndex,
-        __isNamespace = false,
+        __metaType = _M.MetaTypes.InteractionElement,
         __extend = function(extensions) 
             for _,v in ipairs(extensions) do
                 if not(extendedMethods[v.name]) then

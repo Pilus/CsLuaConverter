@@ -37,7 +37,9 @@ end
 
 local meta = {
     __index = function(self, index)
-        if index == "GetType" then
+        if index == "__metaType" then
+            return _M.MetaTypes.TypeObject;
+        elseif index == "GetType" then
             return function()
                 return typeType;
             end

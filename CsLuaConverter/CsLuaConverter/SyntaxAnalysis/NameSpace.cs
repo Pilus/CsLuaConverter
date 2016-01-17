@@ -30,7 +30,7 @@
 
             textWriter.WriteLine("{0} = {{", this.name);
             textWriter.Indent++;
-            textWriter.WriteLine("__isNamespace = true,");
+            textWriter.WriteLine("__metaType = _M.MetaTypes.NameSpace,");
             
             foreach (NameSpacePart part in this.parts)
             {
