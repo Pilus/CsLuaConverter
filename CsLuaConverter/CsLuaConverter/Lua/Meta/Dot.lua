@@ -41,7 +41,7 @@ _M.DOT_LVL = function(level)
     return DotMeta(
         function(obj, index)  -- useage:  a%_M.dot%b
             assert(not(obj == nil), "Attempted to read index "..tostring(index).." on a nil value.");
-            assert(not(type(obj) == "table") or not(obj.__metaType == nil), "Attempted to read index "..tostring(index).." on a obj value with no meta type");
+            --assert(not(type(obj) == "table") or not(obj.__metaType == nil), "Attempted to read index "..tostring(index).." on a obj value with no meta type");
 
             if (type(obj) == "table" and (obj.__metaType ~= _M.MetaTypes.ClassObject)) then
                 return obj[index];

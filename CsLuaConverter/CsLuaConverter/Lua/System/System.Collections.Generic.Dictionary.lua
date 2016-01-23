@@ -51,7 +51,7 @@ System.Collections.Generic.Dictionary = _M.NE({[2] = function(interactionElement
             [1] = {},
             [2] = {}, 
             ["type"] = typeObject,
-            __metaType = _M.MetaTypes.TypeObject,
+            __metaType = _M.MetaTypes.ClassObject,
         }; 
     end
 
@@ -89,7 +89,7 @@ System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElem
             [1] = {},
             [2] = {}, 
             ["type"] = typeObject,
-            __metaType = _M.MetaTypes.TypeObject,
+            __metaType = _M.MetaTypes.ClassObject,
         }; 
     end
 

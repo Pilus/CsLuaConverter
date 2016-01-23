@@ -29,5 +29,14 @@ System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, gene
         end
     end
 
-    return "Class", typeObject, members, constructors, function() return {[1] = {},[2] = {}, ["type"] = typeObject}; end, implements, initialize;
+    local objectGenerator = function() 
+        return {
+            [1] = {},
+            [2] = {}, 
+            ["type"] = typeObject,
+            __metaType = _M.MetaTypes.ClassObject,
+        }; 
+    end
+
+    return "Class", typeObject, members, constructors, objectGenerator, implements, initialize;
 end})

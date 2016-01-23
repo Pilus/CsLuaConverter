@@ -32,5 +32,8 @@
             func = function() end,
         }
     };
-    return "Class", typeObject, members, constructors, function() return {[1] = {},[2] = {}, ["type"] = typeObject}; end;
+    local objectGenerator = function() 
+        return "";
+    end
+    return "Class", typeObject, members, constructors, objectGenerator;
 end})

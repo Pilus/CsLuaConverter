@@ -8,5 +8,13 @@
             func = function() end,
         }
     };
-    return "Class", typeObject, members, constructors, function() return {[1] = {},[2] = {}, ["type"] = typeObject}; end;
+    local objectGenerator = function() 
+        return {
+            [1] = {},
+            [2] = {}, 
+            ["type"] = typeObject,
+            __metaType = _M.MetaTypes.ClassObject,
+        }; 
+    end
+    return "Class", typeObject, members, constructors, objectGenerator;
 end})
