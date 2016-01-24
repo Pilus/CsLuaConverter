@@ -43,7 +43,7 @@ _M.DOT_LVL = function(level)
             assert(not(obj == nil), "Attempted to read index "..tostring(index).." on a nil value.");
             --assert(not(type(obj) == "table") or not(obj.__metaType == nil), "Attempted to read index "..tostring(index).." on a obj value with no meta type");
 
-            if (type(obj) == "table" and (obj.__metaType ~= _M.MetaTypes.ClassObject)) then
+            if (type(obj) == "table" and (obj.__metaType ~= _M.MetaTypes.ClassObject and obj.__metaType ~= _M.MetaTypes.StaticValues)) then
                 return obj[index];
             end
 

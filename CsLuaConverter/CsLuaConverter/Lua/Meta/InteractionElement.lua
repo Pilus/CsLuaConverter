@@ -21,7 +21,7 @@ end
 
 local InteractionElement = function(metaProvider, generics)
     local element = {};
-    local staticValues = {};
+    local staticValues = {__metaType = _M.MetaTypes.StaticValues};
     local extendedMethods = {};
 
     local catagory, typeObject, members, constructors, elementGenerator, implements, initialize = metaProvider(element, generics, staticValues);
