@@ -10,7 +10,7 @@
     {
         public void Visit(ArgumentList element, IndentedTextWriter textWriter, IProviders providers)
         {
-            this.WriteClose(element, textWriter, providers);
+            this.WriteOpen(element, textWriter, providers);
             this.WriteClose(element, textWriter, providers);
         }
 
@@ -26,6 +26,19 @@
         public void WriteClose(ArgumentList element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("(");
+
+            WriteInner(element, textWriter, providers);
+            textWriter.Write(")");
+
+            if (element.InnerElement != null)
+            {
+                textWriter.Write(" % _M.DOT)");
+                VisitorList.WriteClose(element.InnerElement);
+            }
+        }
+
+        public static void WriteInner(ArgumentList element, IndentedTextWriter textWriter, IProviders providers)
+        {
             var first = true;
             foreach (var containedElementList in element.ContainedElements)
             {
@@ -36,20 +49,12 @@
 
                 first = false;
 
-                this.visitArgument(containedElementList.ToList(), textWriter, providers);
+                VisitArgument(containedElementList.ToList(), textWriter, providers);
 
-            }
-
-            textWriter.Write(")");
-
-            if (element.InnerElement != null)
-            {
-                textWriter.Write(" % _M.DOT)");
-                VisitorList.WriteClose(element.InnerElement);
             }
         }
 
-        private void visitArgument(List<BaseElement> elements, IndentedTextWriter textWriter, IProviders providers)
+        private static void VisitArgument(List<BaseElement> elements, IndentedTextWriter textWriter, IProviders providers)
         {
             if (elements.Any(e => e is SimpleLambdaExpression))
             {

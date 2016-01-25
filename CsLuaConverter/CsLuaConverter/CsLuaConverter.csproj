@@ -211,6 +211,7 @@
     <Compile Include="LuaVisitor\NamespaceElement.cs" />
     <Compile Include="LuaVisitor\NamespaceExtractor.cs" />
     <Compile Include="LuaVisitor\NamespaceVisitor.cs" />
+    <Compile Include="NotYetSupportedException.cs" />
     <Compile Include="ProjectType.cs" />
     <Compile Include="Providers\GenericsRegistry\GenericScope.cs" />
     <Compile Include="Providers\GenericsRegistry\GenericsRegistry.cs" />

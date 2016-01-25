@@ -53,16 +53,17 @@ local meta = {
             end
         elseif index == "IsInstanceOfType" then
             return function(instance)
-                if self.hash == instance.type.hash then
+                local otherType = instance.type;
+                if self.hash == otherType.hash then
                     return true;
                 end
 
-                if instance.type.baseType and self.IsInstanceOfType({type = instance.type.baseType}) then
+                if otherType.baseType and self.IsInstanceOfType({type = otherType.baseType}) then
                     return true;
                 end
 
-                for _,imp in ipairs(self.implements or {}) do
-                    if imp.IsInstanceOfType(instance) then
+                for _,imp in ipairs(otherType.implements or {}) do
+                    if self.IsInstanceOfType({type = imp}) then
                         return true;
                     end
                 end

@@ -227,3 +227,9 @@ local InsertMember = function(members, key, member)
     table.insert(members[key], member);
 end
 _M.IM = InsertMember;
+
+local BaseCstor = function(classElement, baseConstructors, ...)
+    local constructor = _M.AM(baseConstructors, {...});
+    constructor.func(classElement, ...);
+end
+_M.BC = BaseCstor;

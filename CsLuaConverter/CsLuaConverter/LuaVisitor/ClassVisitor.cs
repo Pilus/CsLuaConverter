@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Reflection.Emit;
     using CodeElementAnalysis;
+    using CsLuaAttributes;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers;
     using Providers.GenericsRegistry;
@@ -104,6 +105,38 @@
         private static void WriteTypeGeneration(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
             var typeObject = providers.TypeProvider.LookupType(element.Name).GetTypeObject();
+
+            if (element.BaseList != null)
+            {
+                foreach (var containedElement in element.BaseList.ContainedElements)
+                {
+                    if (containedElement is IdentifierName)
+                    {
+                        var identifierName = (IdentifierName)containedElement;
+                        var type = identifierName.GetTypeObject(providers);
+
+                        if (type.IsInterface && type != typeof(ICsLuaAddOn))
+                        {
+                            textWriter.Write("table.insert(implements, ");
+                            VisitorList.Visit(identifierName);
+                            textWriter.WriteLine(".__typeof);");
+                        }
+                    }
+                    else if (containedElement is GenericName)
+                    {
+                        var genericName = (GenericName)containedElement;
+                        var type = providers.TypeProvider.LookupType(genericName.Name).GetTypeObject();
+
+                        if (type.IsInterface)
+                        {
+                            textWriter.Write("table.insert(implements, ");
+                            VisitorList.Visit(genericName);
+                            textWriter.WriteLine(".__typeof);");
+                        };
+                    }
+                }
+            }
+
 
             textWriter.WriteLine(
                 "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements, interactionElement);",
@@ -288,13 +321,13 @@
                     textWriter.Indent++;
                     if (constructor.BaseConstructorInitializer != null)
                     {
-                        textWriter.Write("element.__base");
-                        VisitorList.Visit(constructor.BaseConstructorInitializer.ArgumentList);
-                        textWriter.WriteLine(";");
+                        textWriter.Write("_M.BC(element, baseConstructors, ");
+                        ArgumentListVisitor.WriteInner(constructor.BaseConstructorInitializer.ArgumentList, textWriter, providers);
+                        textWriter.WriteLine(");");
                     }
                     else
                     {
-                        textWriter.WriteLine("_M.AM(baseConstructors,{}).func(element);");
+                        textWriter.WriteLine("_M.BC(element, baseConstructors);");
                     }
 
                     textWriter.Indent--;
