@@ -151,7 +151,7 @@
             textWriter.WriteLine("local element = baseElementGenerator();");
             textWriter.WriteLine("element.type = typeObject;");
             textWriter.WriteLine("element[typeObject.Level] = {");
-
+            
             textWriter.Indent++;
 
             // TODO: Write default values for non static property values.

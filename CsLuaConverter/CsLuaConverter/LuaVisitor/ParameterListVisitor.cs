@@ -45,7 +45,7 @@
 
                 foreach (var parameterElement in parameterElements)
                 {
-                    if (parameterElement is PredefinedType)
+                    if (parameterElement is PredefinedType || parameterElement is GenericName)
                     {
                         VisitorList.Visit(parameterElement);
                         textWriter.Write(".__typeof");

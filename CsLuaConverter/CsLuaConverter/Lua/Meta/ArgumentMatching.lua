@@ -1,19 +1,19 @@
  
 --============= Argument Matching =============
 
-local ScoreArguments = function(expectedTypes, argTypes)
+local ScoreArguments = function(expectedTypes, argTypes, args)
     local sum = 0;
     local str = "";
 
     for i,argType in ipairs(argTypes) do
         local expectedType = expectedTypes[i];
         if (expectedType == nil) then
-            return nil, ", - Skipping candidate. Did not have enough expected types.";
+            return nil, ", - Skipping candidate. Did not have enough expected types. Expected "..#(expectedTypes).." had: "..#(argTypes);
         end
         
         str = str .. "," .. expectedType.FullName;
 
-        local score = argType.GetMatchScore(expectedType);
+        local score = argType.GetMatchScore(expectedType, args[i]);
         if (score == nil) then
             return nil, str .. ", - Skipping candidate. Arg did not match.";
         end
@@ -38,7 +38,7 @@ local SelectMatchingByTypes = function(list, args)
     local candidatesStr = "Candidates:";
 
     for _, element in ipairs(list) do
-        local score, scoreStr = ScoreArguments(element.types, argTypes);
+        local score, scoreStr = ScoreArguments(element.types, argTypes, args);
         candidatesStr = candidatesStr .. "\n  " .. scoreStr;
 
         if not(score == nil) and (not(bestScore) or score > bestScore) then

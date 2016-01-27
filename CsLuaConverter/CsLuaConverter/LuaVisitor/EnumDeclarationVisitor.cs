@@ -9,10 +9,9 @@
     {
         public void Visit(EnumDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.WriteLine("{0} = {{", element.Name);
+            var type = providers.TypeProvider.LookupType(element.Name).GetTypeObject();
+            textWriter.WriteLine("{0} = _M.EN({{", element.Name);
             textWriter.Indent++;
-
-            textWriter.WriteLine("__default = \"{0}\",", (element.ContainedElements.First() as EnumMemberDeclaration)?.Text);
 
             foreach (var containedElement in element.ContainedElements)
             {
@@ -20,7 +19,7 @@
             }
 
             textWriter.Indent--;
-            textWriter.WriteLine("},");
+            textWriter.WriteLine("}},'{0}','{1}'),", type.Name, type.Namespace);
         }
     }
 }

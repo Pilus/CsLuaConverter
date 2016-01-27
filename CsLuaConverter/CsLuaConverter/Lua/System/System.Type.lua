@@ -9,7 +9,7 @@ end
 local typeType;
 local objectType;
 
-local GetMatchScore = function(self, otherType)
+local GetMatchScore = function(self, otherType, otherValue)
     if otherType.GetHashCode() == self.hash then
         return self.level;
     end
@@ -28,6 +28,12 @@ local GetMatchScore = function(self, otherType)
         end
     end
     
+    if otherType.catagory == "Enum" and self.Equals(System.String.__typeof) then
+        if (System.Enum % _M.DOT).Parse(otherType, otherValue) then
+            return 0;
+        end
+    end
+
     if self.baseType then
         return self.baseType.GetMatchScore(otherType);
     end
@@ -78,7 +84,7 @@ local meta = {
         elseif index == "Level" then
             return self.level;
         elseif index == "GetMatchScore" then
-            return function(otherType) return GetMatchScore(self, otherType); end;
+            return function(otherType, otherValue) return GetMatchScore(self, otherType, otherValue); end;
         elseif index == "InteractionElement" then
             return self.interactionElement;
         elseif index == "FullName" then
@@ -88,6 +94,8 @@ local meta = {
             end
 
             return self.namespace .. "." .. self.name .. generic;
+        elseif index == "IsEnum" then
+            return self.catagory == "Enum";
         end
     end,
 };
@@ -116,7 +124,8 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
         error("The type object "..tostring(name).." was already created.");
     end
 
-    local self = { 
+    local self = {
+        catagory = catagory, 
         namespace = namespace,
         name = name, 
         numberOfGenerics = numberOfGenerics,
