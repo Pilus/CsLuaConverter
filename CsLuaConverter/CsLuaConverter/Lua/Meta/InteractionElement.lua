@@ -189,7 +189,7 @@ local InteractionElement = function(metaProvider, generics)
 
             expectOneMember(fittingMembers, key);
             assert(fittingMembers[1].memberType == "Field", "Expected field member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..". Object: "..typeObject.FullName..".");
-            return staticValues[typeObject.level][key];
+            return staticValues[fittingMembers[1].level][key];
         end,
         __newindex = function(_, key, value)
             if not(catagory == "Class") then
@@ -199,7 +199,7 @@ local InteractionElement = function(metaProvider, generics)
             local fittingMembers = getMembers(key, nil, true);
             expectOneMember(fittingMembers, key);
             assert(fittingMembers[1].memberType == "Field", "Expected field member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..". Object: "..typeObject.FullName..".");
-            staticValues[typeObject.level][key] = value;
+            staticValues[fittingMembers[1].level][key] = value;
         end,
         __call = function(_, ...)
             assert(type(constructors)=="table" and #(constructors) > 0, "Class did not provide any constructors. Type: "..typeObject.FullName);

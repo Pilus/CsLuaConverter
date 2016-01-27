@@ -47,6 +47,10 @@ _M.DOT_LVL = function(level)
                 return obj[index];
             end
 
+            if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.NameSpaceElement)) then
+                return obj.__index(obj, index, level); 
+            end
+
             local typeObject = GetType(obj, index);
             if (index == "GetType") then
                 return function() return typeObject; end
@@ -58,7 +62,7 @@ _M.DOT_LVL = function(level)
             assert(not(obj == nil), "Attempted to write index "..tostring(index).." to a nil value.");
             assert(not(type(obj) == "table") or not(obj.__metaType == nil), "Attempted to write index "..tostring(index).." on a obj value with no meta type");
 
-            if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.NameSpace)) then
+            if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.NameSpaceElement)) then
                 return obj.__newindex(obj, index, value, level);
             end
 

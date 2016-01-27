@@ -40,7 +40,7 @@ local NamespaceElement = function(metaProviders)
     setmetatable(element, { 
         __index = function(_, key)
             if key == "__metaType" then
-                return _M.MetaTypes.NameSpace;
+                return _M.MetaTypes.NameSpaceElement;
             end
 
             if not(isGenericsTable(key)) then

@@ -5,5 +5,6 @@ _M.MetaTypes = {
     NameSpace = "NameSpace",
     InteractionElement = "InteractionElement",
     StaticValues = "StaticValues",
+    NameSpaceElement = "NameSpaceElement",
 };
 _M.__metaType = _M.MetaTypes.NameSpace

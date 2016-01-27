@@ -37,7 +37,7 @@
 
         public void Visit(AddExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write(" +CsLuaMeta.add+ ");
+            textWriter.Write(" +_M.Add+ ");
         }
 
         public void Visit(CharacterLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
