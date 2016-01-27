@@ -26,7 +26,7 @@ local GetType = function(obj, index)
     elseif type(obj) == "function" then
         return System.Action.__typeof;
     elseif type(obj) == "boolean" then
-        return System.Bool.__typeof;
+        return System.Boolean.__typeof;
     elseif type(obj) == "number" then
         if obj == math.floor(obj) then
             return System.Int.__typeof;

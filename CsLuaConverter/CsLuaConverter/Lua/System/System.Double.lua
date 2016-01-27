@@ -1,4 +1,4 @@
-﻿System.Bool = _M.NE({[0] = function(interactionElement, generics, staticValues)
+﻿System.Double = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
     local typeObject = System.Type('Double','System',baseTypeObject,0,nil,nil,interactionElement);
 

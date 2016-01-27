@@ -15,7 +15,7 @@ local ScoreArguments = function(expectedTypes, argTypes, args)
 
         local score = argType.GetMatchScore(expectedType, args[i]);
         if (score == nil) then
-            return nil, str .. ", - Skipping candidate. Arg did not match.";
+            return nil, str .. ", - Skipping candidate. Arg did not match "..argType.FullName;
         end
         sum = sum + score;
     end
