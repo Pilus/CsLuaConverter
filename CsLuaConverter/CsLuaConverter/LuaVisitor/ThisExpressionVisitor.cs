@@ -28,7 +28,7 @@
 
             if (element.InnerElement != null)
             {
-                textWriter.Write(" % _M.DOT_LVL(typeObject.Level)).");
+                textWriter.Write(" % _M.DOT).");
             }
 
             VisitorList.WriteClose(element.InnerElement);

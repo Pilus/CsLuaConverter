@@ -4,11 +4,32 @@
     using CodeElementAnalysis;
     using Providers;
 
-    public class BaseExpressionVisitor : BaseOpenCloseVisitor<BaseExpression>
+    public class BaseExpressionVisitor : IOpenCloseVisitor<BaseExpression>
     {
-        protected override void Write(BaseExpression element, IndentedTextWriter textWriter, IProviders providers)
+        public void Visit(BaseExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("baseElement");
+            this.WriteOpen(element, textWriter, providers);
+            this.WriteClose(element, textWriter, providers);
+        }
+
+        public void WriteOpen(BaseExpression element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (element.InnerElement != null)
+            {
+                VisitorList.WriteOpen(element.InnerElement);
+                textWriter.Write("(");
+            }
+        }
+
+        public void WriteClose(BaseExpression element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write("element");
+
+            if (element.InnerElement != null)
+            {
+                textWriter.Write(" % _M.DOT_LVL(typeObject.Level - 1))");
+                VisitorList.WriteClose(element.InnerElement);
+            }
         }
     }
 }

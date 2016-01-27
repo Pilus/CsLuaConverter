@@ -45,8 +45,61 @@ local InteractionElement = function(metaProvider, generics)
     local getMembers = function(key, level, staticOnly)
         return where(members[key] or {}, function(member)
             assert(member.memberType, "Member without member type in "..typeObject.FullName..". Key: "..key.." Level: "..tostring(member.level));
-            return (not(staticOnly) or member.static == true) and (member.scope == "Public" or (member.scope == "Protected" and level) or member.level == level);
+            return (not(staticOnly) or member.static == true) and (member.scope == "Public" or (member.scope == "Protected" and level) or member.level == level or (not(level) and member.level == typeObject.level)) and (not(level) or level >= member.level);
         end, extendedMethods[key] or {});
+    end
+
+    local matchesAll = function(t1, t2)
+        if not(#(t1) == #(t2)) then
+            return false;
+        end
+
+        for i,_ in ipairs(t1) do
+            if not(t1[i] == t2[i]) then
+                return false;
+            end
+        end
+
+        return true;
+    end
+
+    local filterOverrides = function(fittingMembers, level)
+        if #(fittingMembers) == 1 then
+            return fittingMembers;
+        end
+
+        local skippedMembers = {};
+        local acceptedMembers = {};
+
+        for i,member in ipairs(fittingMembers) do
+            if not(acceptedMembers[i]) and not(skippedMembers[i]) then
+                acceptedMembers[i] = true;
+                if member.override then
+                    for j,otherMember in ipairs(fittingMembers) do
+                        if not(j == i) and matchesAll(member.types, otherMember.types) then
+                            if member.level > otherMember.level then
+                                acceptedMembers[i] = true;
+                                skippedMembers[j] = true;
+                                acceptedMembers[j] = false;
+                            else
+                                acceptedMembers[j] = true;
+                                skippedMembers[i] = true;
+                                acceptedMembers[i] = false;
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        local result = {};
+        for i,v in pairs(acceptedMembers) do
+            if v then
+                table.insert(result, fittingMembers[i]);
+            end
+        end
+
+        return result;
     end
 
     local index = function(self, key, level)
@@ -56,7 +109,7 @@ local InteractionElement = function(metaProvider, generics)
             return function(values) initialize(self, values); return self; end
         end
 
-        local fittingMembers = getMembers(key, level, false);
+        local fittingMembers = filterOverrides(getMembers(key, level, false), level or typeObject.level);
 
         if #(fittingMembers) == 0 then
             fittingMembers = getMembers("#", level, false); -- Look up indexers
@@ -107,7 +160,7 @@ local InteractionElement = function(metaProvider, generics)
         end
 
         if #(fittingMembers) == 0 then
-            error("Could not find member. Key: "..tostring(key)..". Object: "..typeObject.FullName);
+            error("Could not find member (set). Key: "..tostring(key)..". Object: "..typeObject.FullName.." Level: "..tostring(level));
         end
 
         if fittingMembers[1].memberType == "Field" or fittingMembers[1].memberType == "AutoProperty" then

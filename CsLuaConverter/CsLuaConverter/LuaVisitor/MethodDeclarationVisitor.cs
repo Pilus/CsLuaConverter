@@ -20,6 +20,12 @@
             textWriter.WriteLine("memberType = 'Method',");
             textWriter.WriteLine("scope = '{0}',", element.Scope);
             textWriter.WriteLine("static = {0},", element.Static.ToString().ToLower());
+
+            if (element.Override)
+            {
+                textWriter.WriteLine("override = true,");
+            }
+
             textWriter.Write("types = {");
             ParameterListVisitor.VisitParameterListTypeReferences(element.Parameters, textWriter, providers);
             textWriter.WriteLine("},");
