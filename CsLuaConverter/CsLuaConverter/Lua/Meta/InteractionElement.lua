@@ -45,7 +45,21 @@ local InteractionElement = function(metaProvider, generics)
     local getMembers = function(key, level, staticOnly)
         return where(members[key] or {}, function(member)
             assert(member.memberType, "Member without member type in "..typeObject.FullName..". Key: "..key.." Level: "..tostring(member.level));
-            return (not(staticOnly) or member.static == true) and (member.scope == "Public" or (member.scope == "Protected" and level) or member.level == level or (not(level) and member.level == typeObject.level)) and (not(level) or level >= member.level);
+            local static = member.static;
+            local public = member.scope == "Public";
+            local protected = member.scope == "Protected";
+            local memberLevel = member.level;
+            local levelProvided = not(level == nil);
+            local typeLevel = typeObject.level;
+
+            return (not(staticOnly) or static) and
+            (
+                (levelProvided and memberLevel == level) or
+                (not(levelProvided) and (public or protected) and memberLevel <= typeLevel) or
+                (not(levelProvided) and not(public or protected) and memberLevel == typeLevel)
+            );
+
+            --return (not(staticOnly) or member.static == true) and (member.scope == "Public" or (member.scope == "Protected" and level) or member.level == level or (not(level) and member.level == typeObject.level)) and (not(level) or level >= member.level);
         end, extendedMethods[key] or {});
     end
 
@@ -67,7 +81,7 @@ local InteractionElement = function(metaProvider, generics)
         if #(fittingMembers) == 1 then
             return fittingMembers;
         end
-
+        
         local skippedMembers = {};
         local acceptedMembers = {};
 

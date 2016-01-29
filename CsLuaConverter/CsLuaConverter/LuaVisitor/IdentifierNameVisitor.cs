@@ -130,14 +130,14 @@
             var scopeElement = providers.NameProvider.GetScopeElement(element.Names.First());
             if (scopeElement.ClassPrefix != null)
             {
-                if (scopeElement.ClassPrefix == "element")
-                {
-                    textWriter.Write("(element%_M.DOT_LVL(typeObject.Level)).");
-                }
-                else
-                {
+                //if (scopeElement.ClassPrefix == "element")
+                //{
+                //    textWriter.Write("(element%_M.DOT_LVL(typeObject.Level)).");
+                //}
+                //else
+                //{
                     textWriter.Write("({0} % _M.DOT).", scopeElement.ClassPrefix);
-                }
+                //}
             }
             textWriter.Write(scopeElement.Name);
 
