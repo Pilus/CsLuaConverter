@@ -54,7 +54,7 @@ local InteractionElement = function(metaProvider, generics)
 
             return (not(staticOnly) or static) and
             (
-                (levelProvided and memberLevel == level) or
+                (levelProvided and memberLevel <= level) or
                 (not(levelProvided) and (public or protected) and memberLevel <= typeLevel) or
                 (not(levelProvided) and not(public or protected) and memberLevel == typeLevel)
             );
@@ -77,11 +77,35 @@ local InteractionElement = function(metaProvider, generics)
         return true;
     end
 
+    local orderByLevel = function(members)
+        local t = {};
+
+        for _,member in ipairs(members) do
+            local inserted = false;
+
+            for i,v in ipairs(t) do
+                if member.level > v.level then
+                    table.insert(t, i, member);
+                    inserted = true;
+                    break;
+                end
+            end
+
+            if (inserted == false) then
+                table.insert(t, member);
+            end
+        end
+
+        return t;
+    end
+
     local filterOverrides = function(fittingMembers, level)
         if #(fittingMembers) == 1 then
             return fittingMembers;
         end
         
+        fittingMembers = orderByLevel(fittingMembers);
+
         local skippedMembers = {};
         local acceptedMembers = {};
 
