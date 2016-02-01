@@ -1,14 +1,11 @@
 ﻿namespace CsLuaConverter.ProjectAnalysis
 {
-    using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using CsLuaAttributes;
+    using CsLuaFramework.Attributes;
     using Microsoft.CodeAnalysis;
-    using SyntaxAnalysis;
 
     public static class ProjectAnalyser
     {

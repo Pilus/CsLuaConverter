@@ -4,7 +4,7 @@
 param (
 	[string] $projectPath
 )
-$outputFile = (Get-Location).Path + "\CsLuaMeta.lua";
+$outputFile = (Get-Location).Path + "\CsLua.lua";
 
 echo "Copying: $projectPath => $outputFile" 
 

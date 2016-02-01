@@ -12,7 +12,7 @@
             if (content == null)
             {
                 var path = new FileInfo(System.Reflection.Assembly.GetEntryAssembly().Location).Directory;
-                using (var sr = new StreamReader(path + @"\CsLuaMeta.lua"))
+                using (var sr = new StreamReader(path + @"\CsLua.lua"))
                 {
                     content = sr.ReadToEnd();
                 }
@@ -21,13 +21,13 @@
             return new CodeFile()
             {
                 Content = content,
-                FileName = "CsLuaMeta.lua",
+                FileName = "CsLua.lua",
             };
         }
 
         public static string GetReferenceString()
         {
-            return "local CsLuaMeta = CsLuaMeta;";
+            return "local _M = _M;";
         }
     }
 }

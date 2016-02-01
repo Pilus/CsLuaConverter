@@ -4,10 +4,8 @@
     using System.IO;
     using System.Linq;
     using System.Xml;
-    using CsLuaAttributes;
-    using ProjectAnalysis;
+    using CsLuaFramework.Attributes;
     using Providers;
-    using SyntaxAnalysis;
 
     internal class AddOn : IDeployableAddOn
     {
@@ -24,7 +22,7 @@
             this.name = projectInfo.Info.Name;
 
             this.codeFiles = new List<CodeFile>();
-            if (projectInfo.HostOf.Any(p => p.Info.Name.Equals("CsLua")))
+            if (!projectInfo.RefersTo.Any())
             {
                 this.codeFiles.Add(CsLuaMetaReader.GetMetaFile());
             }

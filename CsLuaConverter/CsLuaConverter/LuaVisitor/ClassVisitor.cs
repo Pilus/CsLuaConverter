@@ -6,7 +6,7 @@
     using System.Linq;
     using System.Reflection.Emit;
     using CodeElementAnalysis;
-    using CsLuaAttributes;
+    using CsLuaFramework;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers;
     using Providers.GenericsRegistry;

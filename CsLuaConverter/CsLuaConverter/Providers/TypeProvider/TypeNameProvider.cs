@@ -1,6 +1,5 @@
 ﻿namespace CsLuaConverter.Providers.TypeProvider
 {
-    using CsLuaAttributes;
     using Microsoft.CodeAnalysis;
     using System;
     using System.Collections;
@@ -8,6 +7,7 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using CsLuaFramework;
 
     public class TypeNameProvider : ITypeProvider
     {
@@ -30,6 +30,8 @@
         {
             this.rootNamespace = new LoadedNamespace(null);
             this.LoadSystemTypes();
+            this.LoadAssembly(Assembly.Load("Lua"));
+            this.LoadAssembly(Assembly.Load("CsLuaFramework"));
             this.LoadSolution(solution);
         }
 
