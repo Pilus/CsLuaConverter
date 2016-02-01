@@ -21,3 +21,12 @@
 /CsLua.v12.suo
 /CsLuaConverter/CsLuaConverter.sln.DotSettings.user
 /CsLuaConverter/CsLuaConverter.v12.suo
+/CsLuaConverter/CsLuaFramework/bin/Debug
+/CsLuaConverter/CsLuaFramework/obj/Debug
+/CsLuaConverter/Lua/bin/Debug
+/CsLuaConverter/Lua/obj/Debug
+/CsLuaTest/.vs/CsLuaTest/v14
+/CsLuaTest/CsLuaTest/bin/Debug
+/CsLuaTest/CsLuaTest/obj/Debug
+/CsLuaTest/CsLuaTestRunner/bin/Debug
+/CsLuaTest/CsLuaTestRunner/obj/Debug
