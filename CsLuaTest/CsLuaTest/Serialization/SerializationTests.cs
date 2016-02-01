@@ -1,35 +1,35 @@
 ﻿namespace CsLuaTest.Serialization
 {
+    using CsLuaFramework;
+    using Lua;
+
     public class SerializationTests : BaseTest
     {
-        /*
         public SerializationTests()
         {
             Name = "Serialization";
             this.Tests["TestBasicSerializableClass"] = TestBasicSerializableClass;
-            this.Tests["TestClassWithSubObject"] = TestClassWithSubObject;
-            this.Tests["TestClassInCsLuaList"] = TestClassInCsLuaList;
-            this.Tests["TestSerializeDictionary"] = TestSerializeDictionary;
+            //this.Tests["TestClassWithSubObject"] = TestClassWithSubObject;
+            //this.Tests["TestClassInCsLuaList"] = TestClassInCsLuaList;
+            //this.Tests["TestSerializeDictionary"] = TestSerializeDictionary;
         }
         
         private static void TestBasicSerializableClass()
         {
             var theClass = new ClassWithNativeObjects();
 
-            var tableFormatter = new TableFormatter<ClassWithNativeObjects>();
-            
-            var res = tableFormatter.Serialize(theClass);
+            var res = Serializer.Serialize(theClass);
 
-            Assert(theClass.AString, res["AString"]);
-            Assert(theClass.ANumber, res["ANumber"]);
-            Assert("CsLuaTest.Serialization.ClassWithNativeObjects", res["__type"]);
+            Assert(theClass.AString, (res[2] as NativeLuaTable)["AString"]);
+            Assert(theClass.ANumber, (res[2] as NativeLuaTable)["ANumber"]);
+            Assert(223500, res["type"]);
 
-            var processedClass = tableFormatter.Deserialize(res);
+            var processedClass = Serializer.Deserialize<ClassWithNativeObjects>(res);
 
             Assert(theClass.AString, processedClass.AString);
             Assert(theClass.ANumber, processedClass.ANumber);
         }
-
+        /*
         private static void TestClassWithSubObject()
         {
             var theClass = new ClassWithSubObject();

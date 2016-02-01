@@ -12,20 +12,7 @@
 
             object[] objs = FormatterServices.GetObjectData(graph, members);
 
-            NativeLuaTable table = new NativeLuaTable();
-            /*
-            for (var i = 0; i < objs.Length; i++)
-            {
-                var value = SerializeValue(objs[i]);
-                if (value != null)
-                {
-                    table[GetIndexFromInfo(members[i])] = value;
-                }
-            }
-
-            table[typeIndex] = type.FullName; //*/
-
-            return table;
+            throw new System.NotImplementedException();
         }
 
         public static T Deserialize<T>(NativeLuaTable t)
