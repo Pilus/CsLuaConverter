@@ -219,6 +219,12 @@ local InteractionElement = function(metaProvider, generics)
             return
         end
 
+        if fittingMembers[1].memberType == "Property" then
+            expectOneMember(fittingMembers, key);
+            fittingMembers[1].set(self, value);
+            return 
+        end
+
         error("Could not handle member (set). Object: "..typeObject.FullName.." Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key)..". Num members: "..#(fittingMembers));
     end
 
@@ -279,8 +285,18 @@ local InteractionElement = function(metaProvider, generics)
             end
 
             expectOneMember(fittingMembers, key);
-            assert(fittingMembers[1].memberType == "Field", "Expected field member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..". Object: "..typeObject.FullName..".");
-            return staticValues[fittingMembers[1].level][key];
+            local member = fittingMembers[1];
+
+            if member.memberType == "Property" then
+                return member.get(staticValues);
+            end
+
+            if member.memberType == "AutoProperty" then
+                return staticValues[member.level][key];
+            end
+
+            assert(member.memberType == "Field", "Expected field member for key "..tostring(key)..". Got "..tostring(member.memberType)..". Object: "..typeObject.FullName..".");
+            return staticValues[member.level][key];
         end,
         __newindex = function(_, key, value)
             if not(catagory == "Class") then
@@ -289,8 +305,20 @@ local InteractionElement = function(metaProvider, generics)
 
             local fittingMembers = getMembers(key, nil, true);
             expectOneMember(fittingMembers, key);
-            assert(fittingMembers[1].memberType == "Field", "Expected field member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..". Object: "..typeObject.FullName..".");
-            staticValues[fittingMembers[1].level][key] = value;
+            local member = fittingMembers[1];
+
+            if member.memberType == "Property" then
+                member.set(staticValues, value);
+                return 
+            end
+
+            if member.memberType == "AutoProperty" then
+                staticValues[member.level][key] = value;
+                return;
+            end
+
+            assert(member.memberType == "Field", "Expected field member for key "..tostring(key)..". Got "..tostring(member.memberType)..". Object: "..typeObject.FullName..".");
+            staticValues[member.level][key] = value;
         end,
         __call = function(_, ...)
             assert(type(constructors)=="table" and #(constructors) > 0, "Class did not provide any constructors. Type: "..typeObject.FullName);

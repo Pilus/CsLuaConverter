@@ -21,5 +21,20 @@
         {
             return obj.ToString();
         }
+
+        public string GenericAtAmbMethod<T3, T4>(T3 obj, T4 obj2)
+        {
+            return obj.ToString() + obj2.ToString() + "A";
+        }
+
+        public string GenericAtAmbMethod<T3>(T3 obj, string obj2)
+        {
+            return obj.ToString() + obj2.ToString() + "B";
+        }
+
+        public static string StaticMethodWithGenerics<T3>(T3 value)
+        {
+            return value.GetType().Name;
+        }
     }
 }

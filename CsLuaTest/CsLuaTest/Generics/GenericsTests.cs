@@ -12,6 +12,8 @@
             this.Tests["TestGenericReturnArg"] = TestGenericReturnArg;
             this.Tests["TestGenericReturnSpecificForMethod"] = TestGenericReturnSpecificForMethod;
             this.Tests["TestGenericStatic"] = TestGenericStatic;
+            this.Tests["TestGenericsInAmbMethods"] = TestGenericsInAmbMethods;
+            this.Tests["TestGenericsInStaticMethods"] = TestGenericsInStaticMethods;
         }
 
         private static void TestGenericMethod()
@@ -82,6 +84,22 @@
             var obj = new ClassA("test5");
             var value5 = theClass.GenericAtMethod(obj);
             Assert("test5", value5);
+        }
+
+        private static void TestGenericsInAmbMethods()
+        {
+            var theClass = new MethodsWithGeneric<int, int>();
+
+            Assert("XYA", theClass.GenericAtAmbMethod<string, string>("X", "Y"));
+            Assert("XYB", theClass.GenericAtAmbMethod<string>("X", "Y"));
+            Assert("XYB", theClass.GenericAtAmbMethod("X", "Y"));
+        }
+
+        private static void TestGenericsInStaticMethods()
+        {
+            Assert("String", MethodsWithGeneric<int, int>.StaticMethodWithGenerics("X"));
+            Assert("String", MethodsWithGeneric<int, int>.StaticMethodWithGenerics<string>("X"));
+            Assert("Int32", MethodsWithGeneric<int, int>.StaticMethodWithGenerics<int>(43));
         }
 
         private static void TestGenericStatic()

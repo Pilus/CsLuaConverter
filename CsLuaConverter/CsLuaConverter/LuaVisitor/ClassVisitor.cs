@@ -154,7 +154,11 @@
             
             textWriter.Indent++;
 
-            // TODO: Write default values for non static property values.
+            var properties = element.ContainedElements.Where(e => e is PropertyDeclaration);
+            foreach (var property in properties)
+            {
+                PropertyDeclarationVisitor.WriteDefaultValue(property as PropertyDeclaration, textWriter, providers, false);
+            }
 
             var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
             foreach (var field in fields)
@@ -179,7 +183,11 @@
 
             textWriter.Indent++;
 
-            // TODO: Write default values for static property values.
+            var properties = element.ContainedElements.Where(e => e is PropertyDeclaration);
+            foreach (var property in properties)
+            {
+                PropertyDeclarationVisitor.WriteDefaultValue(property as PropertyDeclaration, textWriter, providers, true);
+            }
 
             var fields = element.ContainedElements.Where(e => e is FieldDeclaration);
             foreach (var field in fields)

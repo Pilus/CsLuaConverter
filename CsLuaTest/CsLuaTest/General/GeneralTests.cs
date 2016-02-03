@@ -15,6 +15,7 @@
             this.Tests["CommonStringExtensionsShouldWork"] = CommonStringExtensionsShouldWork;
             this.Tests["HandleAmbigurityBetweenPropertyNameAndType"] = HandleAmbigurityBetweenPropertyNameAndType;
             this.Tests["TestClassWithInitializerAndConstructor"] = TestClassWithInitializerAndConstructor;
+            this.Tests["TestClassWithProperties"] = TestClassWithProperties;
         }
 
         private static void NonStaticClassWithStaticMethod()
@@ -91,6 +92,27 @@
             var c = new ClassInitializerAndCstor("A") { Value = "B" };
 
             Assert("B", c.Value);
+        }
+
+        private static void TestClassWithProperties()
+        {
+            var c = new ClassWithProperty();
+
+            Assert(0, c.IntProperty);
+
+            Assert("", c.AutoProperty);
+            c.AutoProperty = "A";
+            Assert("A", c.AutoProperty);
+
+            Assert("GetValue", c.PropertyWithGet);
+
+            c.PropertyWithGetAndSet = "B";
+            Assert(Output, "B");
+            Output = "C";
+            Assert("C", c.PropertyWithGetAndSet);
+
+            c.PropertyWithSet = "D";
+            Assert(Output, "D");
         }
     }
 }
