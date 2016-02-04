@@ -177,10 +177,7 @@ local InteractionElement = function(metaProvider, generics)
         end
 
         if fittingMembers[1].memberType == "Method" then
-            return function(...)
-                local member = _M.AM(fittingMembers, {...});
-                return member.func(self,...);
-            end
+            return _M.GM(fittingMembers, self);
         end
 
         if fittingMembers[1].memberType == "Property" then
@@ -278,10 +275,7 @@ local InteractionElement = function(metaProvider, generics)
             end
 
             if (fittingMembers[1].memberType == "Method") then
-                return function(...)
-                    local member = _M.AM(fittingMembers, {...});
-                    return member.func(staticValues,...);
-                end
+                return _M.GM(fittingMembers, staticValues);
             end
 
             expectOneMember(fittingMembers, key);

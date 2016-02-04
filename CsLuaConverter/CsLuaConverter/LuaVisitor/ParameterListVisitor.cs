@@ -5,6 +5,7 @@
     using Providers;
     using System.CodeDom.Compiler;
     using System.Linq;
+    using Providers.GenericsRegistry;
 
     public class ParameterListVisitor : IVisitor<ParameterList>
     {
@@ -54,9 +55,14 @@
                     {
                         // TODO: Merge with similar code in FieldDeclartionVisitor
                         var e = parameterElement as IdentifierName;
-                        var isGeneric = providers.GenericsRegistry.IsGeneric(e.Names.First());
+                        var name = e.Names.First();
+                        var isGeneric = providers.GenericsRegistry.IsGeneric(name);
                         IdentifierNameVisitor.Visit(e, textWriter, providers, isGeneric ? IdentifyerType.AsGeneric : IdentifyerType.AsRef);
-                        textWriter.Write(".__typeof");
+
+                        if (!isGeneric || providers.GenericsRegistry.GetGenericScope(name) == GenericScope.Class)
+                        {
+                            textWriter.Write(".__typeof");
+                        }
                     }
                 }
 

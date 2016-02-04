@@ -23,7 +23,7 @@ local ScoreArguments = function(expectedTypes, argTypes, args)
     return sum, str;
 end
 
-local SelectMatchingByTypes = function(list, args)
+local SelectMatchingByTypes = function(list, args, methodGenerics)
     assert(type(list) == "table", "Expected a table as 1th argument to _M.AM, got "..type(list))
     assert(type(args) == "table", "Expected a table as 2th argument to _M.AM, got "..type(args))
     local argTypes = {};
@@ -38,7 +38,21 @@ local SelectMatchingByTypes = function(list, args)
     local candidatesStr = "Candidates:";
 
     for _, element in ipairs(list) do
-        local score, scoreStr = ScoreArguments(element.types, argTypes, args);
+        local types = element.types;
+
+        if methodGenerics then
+            types = {};
+
+            for _, t in ipairs(element.types) do
+                if type(t) == "string" then
+                    table.insert(types, methodGenerics[element.generics[t]]);
+                else
+                    table.insert(types, t);
+                end
+            end
+        end
+
+        local score, scoreStr = ScoreArguments(types, argTypes, args);
         candidatesStr = candidatesStr .. "\n  " .. scoreStr;
 
         if not(score == nil) and (not(bestScore) or score > bestScore) then

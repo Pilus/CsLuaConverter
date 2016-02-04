@@ -93,6 +93,7 @@
             Assert("XYA", theClass.GenericAtAmbMethod<string, string>("X", "Y"));
             Assert("XYB", theClass.GenericAtAmbMethod<string>("X", "Y"));
             Assert("XYB", theClass.GenericAtAmbMethod("X", "Y"));
+            Assert("X1A", theClass.GenericAtAmbMethod("X", 1));
         }
 
         private static void TestGenericsInStaticMethods()

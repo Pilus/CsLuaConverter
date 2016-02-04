@@ -6,6 +6,7 @@
     using System.Linq;
     using CodeElementAnalysis;
     using Providers;
+    using Providers.GenericsRegistry;
 
     public class IdentifierNameVisitor : IOpenCloseVisitor<IdentifierName>
     {
@@ -155,7 +156,17 @@
 
         private static void WriteAsGenericReference(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("generics[genericsMapping['{0}']]", element.Names.Single());
+            var name = element.Names.Single();
+            var scope = providers.GenericsRegistry.GetGenericScope(name);
+            if (scope.Equals(GenericScope.Class))
+            {
+                textWriter.Write("generics[genericsMapping['{0}']]", name);
+            }
+            else
+            {
+                textWriter.Write("'{0}'", name);
+            }
+            
         }
 
         private static void WriteLocalVar(IdentifierName element, IndentedTextWriter textWriter, IProviders providers)

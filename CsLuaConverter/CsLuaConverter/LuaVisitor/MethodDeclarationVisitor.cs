@@ -30,6 +30,13 @@
             ParameterListVisitor.VisitParameterListTypeReferences(element.Parameters, textWriter, providers);
             textWriter.WriteLine("},");
 
+            if (element.MethodGenerics != null)
+            {
+                textWriter.Write("generics = {");
+                VisitorList.Visit(element.MethodGenerics);
+                textWriter.WriteLine("},");
+            }
+
             textWriter.Write("func = function(element");
             if (element.Parameters.ContainedElements.Any())
             {
