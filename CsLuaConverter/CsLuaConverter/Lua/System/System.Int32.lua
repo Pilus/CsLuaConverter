@@ -1,10 +1,9 @@
 ﻿
 System.Int32 = _M.NE({["#"] = function(interactionElement, generics, staticValues)
-    local typeObject = System.Type('Int32','System',System.Object.__typeof,0,nil,nil,interactionElement);
+    local baseTypeObject, members = System.Object.__meta({});
+    local typeObject = System.Type('Int32','System',baseTypeObject,0,nil,nil,interactionElement);
     local level = 2;
-    local members = {
-        
-    };
+    members[level] = {};
 
     _M.IM(members,'Parse',{
         level = typeObject.Level,

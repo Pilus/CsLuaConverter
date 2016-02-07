@@ -17,10 +17,12 @@
     {
         public void Visit(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
+            textWriter.Write("{0} = _M.NE({{", element.Name);
+
             var originalScope = providers.NameProvider.CloneScope();
             providers.NameProvider.AddAllInheritedMembersToScope(element.Name);
 
-            textWriter.WriteLine("{0} = _M.NE({{[{1}] = function(interactionElement, generics, staticValues)", element.Name, GetNumOfGenerics(element));
+            textWriter.WriteLine("[{1}] = function(interactionElement, generics, staticValues)", GetNumOfGenerics(element));
             textWriter.Indent++;
 
             RegisterGenerics(element, textWriter, providers);
@@ -37,10 +39,12 @@
             textWriter.Write("return 'Class', typeObject, members, constructors, elementGenerator, nil, initialize;");
 
             textWriter.Indent--;
-            textWriter.WriteLine("end}),");
+            textWriter.Write("end,");
 
             providers.GenericsRegistry.ClearScope(GenericScope.Class);
             providers.NameProvider.SetScope(originalScope);
+
+            textWriter.WriteLine("}),");
         }
 
         public static void WriteFooter(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers, List<AttributeList> attributes)
