@@ -14,7 +14,22 @@
             textWriter.Indent++;
             textWriter.WriteLine("__metaType = _M.MetaTypes.NameSpace,");
 
-            element.Elements.ForEach(VisitorList.Visit);
+            element.Elements.Where(e => !(e.Element is ClassDeclaration)).ToList().ForEach(VisitorList.Visit);
+            var classPairs = element.Elements.Where(e => e.Element is ClassDeclaration)
+                .GroupBy(e => (e.Element as ClassDeclaration).Name);
+
+            foreach (var pair in classPairs)
+            {
+                textWriter.Write("{0} = _M.NE({{", pair.Key);
+                
+                foreach (var classNamespaceElement in pair)
+                {
+                    VisitorList.Visit(classNamespaceElement);
+                }
+
+                textWriter.WriteLine("}),");
+            }
+
 
             element.SubNamespaces.ForEach(VisitorList.Visit);
 

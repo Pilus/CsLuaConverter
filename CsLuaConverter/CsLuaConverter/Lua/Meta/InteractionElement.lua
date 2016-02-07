@@ -20,7 +20,7 @@ clone = function(t,dept)
 end
 
 local InteractionElement = function(metaProvider, generics)
-    local element = {};
+    local element = { __metaType = _M.MetaTypes.InteractionElement };
     local staticValues = {__metaType = _M.MetaTypes.StaticValues};
     local extendedMethods = {};
 

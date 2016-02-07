@@ -66,6 +66,11 @@ _M.DOT_LVL = function(level)
                 return obj.__newindex(obj, index, value, level);
             end
 
+            if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.InteractionElement)) then
+                obj[index] = value;
+                return;
+            end
+
             local typeObject = GetType(obj, index);
             return typeObject.interactionElement.__newindex(obj, index, value, level); 
         end,
