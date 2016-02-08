@@ -44,19 +44,9 @@
             }
 
             textWriter.Write("{0} = _M.DV(", element.Name);
-            if (element.Type is IdentifierName)
-            {
-                // TODO: Merge with similar code in ParameterListVisitor
-                var e = element.Type as IdentifierName;
-                var isGeneric = providers.GenericsRegistry.IsGeneric(e.Names.First());
-                IdentifierNameVisitor.Visit(e, textWriter, providers, isGeneric ? IdentifyerType.AsGeneric : IdentifyerType.AsRef);
-            }
-            else
-            {
-                VisitorList.Visit(element.Type);
-            }
+            TypeOfExpressionVisitor.WriteTypeReference(element.Type, textWriter, providers);
 
-            textWriter.WriteLine(".__typeof),");
+            textWriter.WriteLine("),");
         }
 
         private static bool IsAutoProperty(PropertyDeclaration element)

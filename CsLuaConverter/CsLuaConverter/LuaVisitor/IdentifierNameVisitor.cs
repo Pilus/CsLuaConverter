@@ -164,7 +164,7 @@
             }
             else
             {
-                textWriter.Write("'{0}'", name);
+                textWriter.Write("methodGenerics[methodGenericsMapping['{0}']]", name);
             }
             
         }

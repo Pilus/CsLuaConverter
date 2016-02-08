@@ -5,11 +5,34 @@
     using CodeElementAnalysis;
     using Providers;
 
-    public class TypeOfExpressionVisitor : IVisitor<TypeOfExpression>
+    public class TypeOfExpressionVisitor : BaseOpenCloseVisitor<TypeOfExpression>
     {
-        public void Visit(TypeOfExpression element, IndentedTextWriter textWriter, IProviders providers)
+        protected override void Write(TypeOfExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            VisitorList.Visit(element.ContainedElements.Single());
+            WriteTypeReference(element.Type, textWriter, providers);
+        }
+
+        public static void WriteTypeReference(BaseElement typeElement, IndentedTextWriter textWriter,
+            IProviders providers)
+        {
+            var skipTypeOf = false;
+            if (typeElement is IdentifierName)
+            {
+                var e = typeElement as IdentifierName;
+                var isGeneric = providers.GenericsRegistry.IsGeneric(e.Names.First());
+                IdentifierNameVisitor.Visit(e, textWriter, providers, isGeneric ? IdentifyerType.AsGeneric : IdentifyerType.AsRef);
+                skipTypeOf = isGeneric;
+            }
+            else
+            {
+                VisitorList.Visit(typeElement);
+            }
+
+            if (skipTypeOf)
+            {
+                return;
+            }
+
             textWriter.Write(".__typeof");
         }
     }

@@ -7,7 +7,6 @@ local initializeDefaultValues = function()
 
     defaultValues = {
         [System.Int32.__typeof] = 0,
-        [System.String.__typeof] = "",
         [System.Boolean.__typeof] = false,
     };
 end

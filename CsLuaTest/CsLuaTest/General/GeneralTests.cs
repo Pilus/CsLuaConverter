@@ -99,8 +99,6 @@
             var c = new ClassWithProperty();
 
             Assert(0, c.IntProperty);
-
-            Assert("", c.AutoProperty);
             c.AutoProperty = "A";
             Assert("A", c.AutoProperty);
 

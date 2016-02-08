@@ -13,6 +13,14 @@
         {
             RegisterMethodGenerics(element, providers);
 
+            if (element.MethodGenerics != null)
+            {
+                textWriter.Write("local methodGenericsMapping = {");
+                VisitorList.Visit(element.MethodGenerics);
+                textWriter.WriteLine("};");
+                textWriter.WriteLine("local methodGenerics = _M.MG;");
+            }
+
             textWriter.WriteLine("_M.IM(members, '{0}', {{", element.Text);
             textWriter.Indent++;
 
@@ -32,12 +40,16 @@
 
             if (element.MethodGenerics != null)
             {
-                textWriter.Write("generics = {");
-                VisitorList.Visit(element.MethodGenerics);
-                textWriter.WriteLine("},");
+                textWriter.WriteLine("generics = methodGenericsMapping,");
             }
 
             textWriter.Write("func = function(element");
+
+            if (element.MethodGenerics != null)
+            {
+                textWriter.Write(",methodGenericsMapping,methodGenerics");
+            }
+
             if (element.Parameters.ContainedElements.Any())
             {
                 textWriter.Write(",");

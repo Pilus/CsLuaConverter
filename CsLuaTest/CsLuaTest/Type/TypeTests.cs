@@ -9,6 +9,7 @@
             this.Tests["TestGetTypeOfClass"] = TestGetTypeOfClass;
             this.Tests["TestIsType"] = TestIsType;
             this.Tests["TestIsInstanceOf"] = TestIsInstanceOf;
+            this.Tests["TestTypeof"] = TestTypeof;
         }
 
         private static void TestGetTypeOfNumber()
@@ -51,6 +52,13 @@
 
             var typeInterface = typeof(InterfaceA);
             Assert(true, typeInterface.IsInstanceOfType(obj));
+        }
+
+        private static void TestTypeof()
+        {
+            Assert("ClassA", typeof(ClassA).Name);
+            Assert("ClassA", new GenericTypeTestClass<ClassA>().GetClassGenericsName());
+            Assert("String", new GenericTypeTestClass<ClassA>().GetMethodGenericsName<string>());
         }
     }
 }
