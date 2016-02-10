@@ -28,29 +28,18 @@
             }
 
             textWriter.Write("{0} = ", element.Name);
+
             if (element.Value != null)
             {
                 VisitorList.Visit(element.Value);
+                textWriter.WriteLine(",");
             }
             else
-            {
+            { 
                 textWriter.Write("_M.DV(");
-                if (element.Type is IdentifierName)
-                {
-                    // TODO: Merge with similar code in ParameterListVisitor
-                    var e = element.Type as IdentifierName;
-                    var isGeneric = providers.GenericsRegistry.IsGeneric(e.Names.First());
-                    IdentifierNameVisitor.Visit(e, textWriter, providers, isGeneric ? IdentifyerType.AsGeneric : IdentifyerType.AsRef);
-                }
-                else
-                {
-                    VisitorList.Visit(element.Type);
-                }
-                
-                textWriter.Write(".__typeof)");
+                TypeOfExpressionVisitor.WriteTypeReference(element.Type, textWriter, providers);
+                textWriter.WriteLine("),");
             }
-
-            textWriter.WriteLine(",");
         }
 
         public static void WriteInitializeValue(FieldDeclaration element, IndentedTextWriter textWriter, IProviders providers, bool @static)
