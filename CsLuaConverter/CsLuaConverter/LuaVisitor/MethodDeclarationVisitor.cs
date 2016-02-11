@@ -18,7 +18,7 @@
                 textWriter.Write("local methodGenericsMapping = {");
                 VisitorList.Visit(element.MethodGenerics);
                 textWriter.WriteLine("};");
-                textWriter.WriteLine("local methodGenerics = _M.MG;");
+                textWriter.WriteLine("local methodGenerics = _M.MG(methodGenericsMapping);");
             }
 
             textWriter.WriteLine("_M.IM(members, '{0}', {{", element.Text);

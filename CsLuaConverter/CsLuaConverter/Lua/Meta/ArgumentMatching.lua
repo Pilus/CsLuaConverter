@@ -38,17 +38,16 @@ local SelectMatchingByTypes = function(list, args, methodGenerics)
     local candidatesStr = "Candidates:";
 
     for _, element in ipairs(list) do
-        local types = element.types;
-
-        if methodGenerics then
-            types = {};
-
-            for _, t in ipairs(element.types) do
-                if type(t) == "string" then
+        local types = {};
+        for _, t in ipairs(element.types) do 
+            if type(t) == "string" then
+                if methodGenerics and methodGenerics[element.generics[t]] then
                     table.insert(types, methodGenerics[element.generics[t]]);
                 else
-                    table.insert(types, t);
+                    table.insert(types, System.Object.__typeof);
                 end
+            else
+                table.insert(types, t);
             end
         end
 

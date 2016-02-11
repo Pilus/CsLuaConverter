@@ -32,12 +32,18 @@ end
 
 _M.GM = GenericMethod;
 
-local MethodGenerics = {};
-
-setmetatable(MethodGenerics,{
-    __index = function(_, key)
-        return key;
-    end
-});
+local MethodGenerics = function(generics)
+    local t = {};
+    setmetatable(t,{
+        __index = function(_, key)
+            for i,v in pairs(generics) do
+                if v == key then
+                    return i;
+                end
+            end
+        end
+    });
+    return t;
+end
 
 _M.MG = MethodGenerics;
