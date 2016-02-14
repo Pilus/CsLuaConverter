@@ -1,6 +1,6 @@
-﻿System.Array = _M.NE({["#"] = function(interactionElement, generics, staticValues)
+﻿System.Array = _M.NE({[1] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),nil,nil,interactionElement);
+    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,nil,interactionElement);
 
     local len = function(element)
         return (element[typeObject.level][0] and 1 or 0) + #(element[typeObject.level]);

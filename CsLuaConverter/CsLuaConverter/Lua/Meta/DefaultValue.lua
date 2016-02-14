@@ -14,6 +14,12 @@ end
 
 local GetDefaultValue = function(type)
     initializeDefaultValues();
-    return defaultValues[type];
+    if not(defaultValues[type] == nil) then
+        return defaultValues[type];
+    end
+
+    if type.IsEnum then
+        return type.InteractionElement.__default;
+    end
 end
 _M.DV = GetDefaultValue;

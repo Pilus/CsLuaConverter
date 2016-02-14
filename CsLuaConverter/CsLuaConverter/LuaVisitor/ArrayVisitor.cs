@@ -1,7 +1,6 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
     using System.CodeDom.Compiler;
-    using System.Linq;
     using CodeElementAnalysis;
     using Providers;
 
@@ -9,16 +8,16 @@
     {
         public void Visit(ArrayCreationExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("System.Array({");
-            VisitorList.Visit(element.ElementType);
-            textWriter.Write("})");
+            textWriter.Write("(System.Array[{");
+            TypeOfExpressionVisitor.WriteTypeReference(element.ElementType, textWriter, providers);
+            textWriter.Write("}]() % _M.DOT)");
 
             VisitorList.Visit(element.Initializer);
         }
 
         public void Visit(ArrayInitializerExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write(".__Cstor({");
+            textWriter.Write(".__Initialize({");
 
             if (element.ContainedElements.Count > 0)
             {
@@ -40,7 +39,7 @@
 
         public void Visit(ImplicitArrayCreationExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("System.Array({nil})");
+            textWriter.Write("(System.Array[{System.Object.__typeof}]() % _M.DOT)");
 
             VisitorList.Visit(element.Initializer);
         }

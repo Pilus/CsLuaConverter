@@ -13,6 +13,7 @@
             textWriter.WriteLine("{0} = _M.EN({{", element.Name);
             textWriter.Indent++;
 
+            EnumMemberDeclarationVisitor.WriteAsDefault(element.ContainedElements.First() as EnumMemberDeclaration, textWriter, providers);
             foreach (var containedElement in element.ContainedElements)
             {
                 VisitorList.Visit(containedElement);
