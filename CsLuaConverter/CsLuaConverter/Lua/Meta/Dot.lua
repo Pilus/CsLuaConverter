@@ -19,8 +19,11 @@ local DotMeta = function(fIndex, fNewIndex, fCall)
 end
 
 local GetType = function(obj, index)
-    if type(obj) == "table" and obj.type then
-        return obj.type;
+    if type(obj) == "table" then
+        if type(obj.type) == "table" and obj.type.__metaType == _M.MetaTypes.TypeObject then
+            return obj.type;
+        end
+        return Lua.NativeLuaTable.__typeof;
     elseif type(obj) == "string" then
         return System.String.__typeof;
     elseif type(obj) == "function" then
@@ -43,7 +46,7 @@ _M.DOT_LVL = function(level)
             assert(not(obj == nil), "Attempted to read index "..tostring(index).." on a nil value.");
             --assert(not(type(obj) == "table") or not(obj.__metaType == nil), "Attempted to read index "..tostring(index).." on a obj value with no meta type");
 
-            if (type(obj) == "table" and (obj.__metaType ~= _M.MetaTypes.ClassObject and obj.__metaType ~= _M.MetaTypes.StaticValues)) then
+            if (type(obj) == "table" and (obj.__metaType ~= _M.MetaTypes.ClassObject and obj.__metaType ~= _M.MetaTypes.StaticValues) and not(index == "GetType")) then
                 return obj[index];
             end
 

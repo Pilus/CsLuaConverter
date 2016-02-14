@@ -21,6 +21,24 @@
         return t;
     end
 
+    local replaceHashsWithTypes;
+    replaceHashsWithTypes = function(obj)
+        if type(obj) == "table" then
+            local t = {};
+            for i,v in pairs(obj) do
+                if i == "type" and type(v) == "number" then
+                    t[i] = GetTypeFromHash(v);
+                    t.__metaType = _M.MetaTypes.ClassObject;
+                else
+                    t[i] = replaceHashsWithTypes(v);
+                end
+            end
+            return t;
+        else
+            return obj;
+        end
+    end
+
     _M.IM(members,'Serialize',{
         level = typeObject.Level,
         memberType = 'Method',
@@ -29,6 +47,17 @@
         types = {System.Object.__typeof},
         func = function(_, obj)
             return replaceTypeRefs(obj);
+        end,
+    });
+
+    _M.IM(members,'Deserialize',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        static = true,
+        types = {System.Object.__typeof},
+        func = function(_, obj)
+            return replaceHashsWithTypes(obj);
         end,
     });
 

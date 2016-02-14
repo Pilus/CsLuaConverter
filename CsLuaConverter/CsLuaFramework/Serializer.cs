@@ -7,11 +7,6 @@
     {
         public static NativeLuaTable Serialize<T>(T graph)
         {
-            var type = graph.GetType();
-            var members = FormatterServices.GetSerializableMembers(type);
-
-            object[] objs = FormatterServices.GetObjectData(graph, members);
-
             throw new System.NotImplementedException();
         }
 

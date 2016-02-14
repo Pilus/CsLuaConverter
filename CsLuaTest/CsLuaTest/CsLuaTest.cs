@@ -36,12 +36,12 @@ namespace CsLuaTest
                 new StaticTests(),
                 new TypeMethodsTests(),
                 new GenericsTests(),
+                new ArraysTests(),
                 new SerializationTests(),
                 new DefaultValuesTests(),
                 new InterfacesTests(),
                 new WrapTests(),
                 new ParamsTests(),
-                new ArraysTests(),
                 new StringExtensionTests(),
             };
 

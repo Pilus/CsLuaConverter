@@ -8,22 +8,38 @@ Lua = {
     Core = _G,
     Strings = _G,
     LuaMath = _G,
-	Table = table,
+    Table = table,
 
-	NativeLuaTable = function() return {__Cstor = function() return {}; end}; end,    
+    NativeLuaTable = function() return {__Cstor = function() return {}; end}; end,    
 };
 
+Lua.NativeLuaTable = _M.NE({[0] = function(interactionElement, generics, staticValues)
+    local baseTypeObject, members = System.Object.__meta(staticValues);
+    local typeObject = System.Type('NativeLuaTable','Lua',baseTypeObject,0,nil,nil,interactionElement);
+
+    local constructors = {
+        {
+            types = {},
+            func = function() end,
+        }
+    };
+    local objectGenerator = function() 
+        return {};
+    end
+    return "Class", typeObject, members, constructors, objectGenerator;
+end});
+
 Lua.Strings.format = function(str,...)
-	-- TODO: replace {0} with %1$s
-	str =  gsub(str,"{(%d)}", function(n) return "%"..(tonumber(n)+1).."$s" end);
-	return string.format(str,...)
+    -- TODO: replace {0} with %1$s
+    str =  gsub(str,"{(%d)}", function(n) return "%"..(tonumber(n)+1).."$s" end);
+    return string.format(str,...)
 end
 
 strsplittotable = function(d, str)
-	return {strsplit(d, str)};
+    return {strsplit(d, str)};
 end
 strjoinfromtable = function(d, t)
-	return strjoin(d, unpack(t));
+    return strjoin(d, unpack(t));
 end
 function strsubutf8(str, a, b) -- modified from http://wowprogramming.com/snippets/UTF-8_aware_stringsub_7
     assert(type(str) == "string" and type(a) == "number", "incorrect input strsubutf8");
@@ -67,5 +83,5 @@ function strsubutf8(str, a, b) -- modified from http://wowprogramming.com/snippe
 end
 
 function IsStringNullOrEmpty(str)
-	return str == nil or str == "";
+    return str == nil or str == "";
 end

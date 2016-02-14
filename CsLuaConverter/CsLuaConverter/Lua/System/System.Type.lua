@@ -96,6 +96,8 @@ local meta = {
             return self.namespace .. "." .. self.name .. generic;
         elseif index == "IsEnum" then
             return self.catagory == "Enum";
+        elseif index == "type" then
+            return typeType;
         end
     end,
 };
@@ -140,6 +142,10 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
     setmetatable(self, meta);
     typeCache[hash] = self;
     return self;
+end
+
+GetTypeFromHash = function(hash)
+    return typeCache[hash];
 end
 
 --objectType = typeCall("Object", "System"); -- TODO: Initialize in a way that does not require the type cache
