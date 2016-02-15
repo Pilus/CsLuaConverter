@@ -66,7 +66,7 @@ function strsubutf8(str, a, b) -- modified from http://wowprogramming.com/snippe
             currentIndex = currentIndex + 3
         elseif char > 192 then
             currentIndex = currentIndex + 2
-        else
+        else    
             currentIndex = currentIndex + 1
         end
 

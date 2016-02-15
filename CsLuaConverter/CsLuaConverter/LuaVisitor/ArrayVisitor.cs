@@ -9,6 +9,11 @@
         public void Visit(ArrayCreationExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("(System.Array[{");
+            if (element.ElementType is PredefinedType)
+            {
+                ((PredefinedType)element.ElementType).IsArray = false;
+            }
+            
             TypeOfExpressionVisitor.WriteTypeReference(element.ElementType, textWriter, providers);
             textWriter.Write("}]() % _M.DOT)");
 

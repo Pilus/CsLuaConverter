@@ -6,12 +6,13 @@
     replaceTypeRefs = function(obj)
         local t = {};
         for i,v in ipairs(obj) do
-            t[i] = {};
             for index, value in pairs(v) do
+                local strPrefix = type(index) == "string" and i.."_" or i.."#_";
+
                 if type(value) == "table" and value.__metaType == _M.MetaTypes.ClassObject then
-                    t[i][index] = replaceTypeRefs(value);
+                    t[strPrefix..index] = replaceTypeRefs(value);
                 else
-                    t[i][index] = value;
+                    t[strPrefix..index] = value;
                 end
             end
         end
@@ -24,13 +25,17 @@
     local replaceHashsWithTypes;
     replaceHashsWithTypes = function(obj)
         if type(obj) == "table" then
-            local t = {};
+            local t = {[1] = {}};
             for i,v in pairs(obj) do
                 if i == "type" and type(v) == "number" then
                     t[i] = GetTypeFromHash(v);
                     t.__metaType = _M.MetaTypes.ClassObject;
                 else
-                    t[i] = replaceHashsWithTypes(v);
+                    local level, isNum, index = string.match(i,"^(%d*)(#?)_(.*)");
+                    level = tonumber(level);
+                    index = not(isNum == nil) and tonumber(index) or index;
+                    t[level] = t[level] or {};
+                    t[level][index] = replaceHashsWithTypes(v);
                 end
             end
             return t;

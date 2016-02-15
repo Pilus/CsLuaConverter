@@ -37,16 +37,17 @@
 
             var res = Serializer.Serialize(theClass);
 
-            Assert("CsLuaTest.Serialization.ClassWithSubObject", res["__type"]);
-            var arrayRes = res["AnArray"] as NativeLuaTable;
-            //Assert("System.String[]", arrayRes["__type"]);
-            Assert(theClass.AnArray[0], arrayRes[0]);
-            Assert(theClass.AnArray[1], arrayRes[1]);
+            Assert(101098, res["type"]);
 
-            var subRes = res["AClass"] as NativeLuaTable;
-            Assert("CsLuaTest.Serialization.ClassWithNativeObjects", subRes["__type"]);
-            Assert(theClass.AClass.AString, subRes["AString"]);
-            Assert(theClass.AClass.ANumber, subRes["ANumber"]);
+            var arrayRes = res["2_AnArray"] as NativeLuaTable;
+            Assert(671268, arrayRes["type"]);
+            Assert(theClass.AnArray[0], arrayRes["2#_0"]);
+            Assert(theClass.AnArray[1], arrayRes["2#_1"]);
+
+            var subRes = res["2_AClass"] as NativeLuaTable;
+            Assert(223500, subRes["type"]);
+            Assert(theClass.AClass.AString, subRes["2_AString"]);
+            Assert(theClass.AClass.ANumber, subRes["2_ANumber"]);
 
             var processedClass = Serializer.Deserialize<ClassWithSubObject>(res);
 
@@ -66,7 +67,7 @@
 
             var res = Serializer.Serialize(list);
 
-            Assert(1, res["__size"]);
+            Assert(1, res["size"]);
             var subRes = res[0] as NativeLuaTable;
             Assert(theClass.AString, subRes["AString"]);
             Assert(theClass.ANumber, subRes["ANumber"]);

@@ -28,6 +28,23 @@
         end,
     });
 
+    _M.IM(members,'Length',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        types = {},
+        get = function(element)
+            return len(element);
+        end,
+    });
+
+    _M.IM(members,'#',{
+        level = typeObject.Level,
+        memberType = 'Indexer',
+        scope = 'Public',
+        types = {generics[1]},
+    });
+
     local constructors = {
         {
             types = {},
