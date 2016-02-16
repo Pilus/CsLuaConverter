@@ -53,13 +53,26 @@ local meta = {
             return function()
                 return self.hash;
             end
+        elseif index == "ToString" then
+            return function()
+                local fullName = self.namespace .. "." .. self.name;
+
+                if self.generics then
+                    local genericsNames = {};
+                    for i,v in pairs(self.generics) do
+                        genericsNames[i] = v.ToString();
+                    end
+                    return fullName.."<"..string.join(",", unpack(genericsNames))..">";
+                end
+                return fullName;
+            end;
         elseif index == "Equals" then
             return function(otherType)
                 return self.hash == otherType.GetHashCode();
             end
         elseif index == "IsInstanceOfType" then
             return function(instance)
-                local otherType = instance.type;
+                local otherType = (instance % _M.DOT).GetType();
                 if self.hash == otherType.hash then
                     return true;
                 end

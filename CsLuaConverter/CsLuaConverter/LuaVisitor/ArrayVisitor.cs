@@ -13,16 +13,21 @@
             {
                 ((PredefinedType)element.ElementType).IsArray = false;
             }
-            
+
+            if (element.ElementType is GenericName)
+            {
+                ((GenericName)element.ElementType).IsArray = false;
+            }
+
             TypeOfExpressionVisitor.WriteTypeReference(element.ElementType, textWriter, providers);
-            textWriter.Write("}]() % _M.DOT)");
+            textWriter.Write("}]() % _M.DOT).__Initialize");
 
             VisitorList.Visit(element.Initializer);
         }
 
         public void Visit(ArrayInitializerExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write(".__Initialize({");
+            textWriter.Write("({");
 
             if (element.ContainedElements.Count > 0)
             {
@@ -44,8 +49,7 @@
 
         public void Visit(ImplicitArrayCreationExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("(System.Array[{System.Object.__typeof}]() % _M.DOT)");
-
+            textWriter.Write("ImplicitArray");
             VisitorList.Visit(element.Initializer);
         }
     }

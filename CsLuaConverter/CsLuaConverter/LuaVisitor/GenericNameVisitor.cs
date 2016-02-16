@@ -34,6 +34,11 @@
         {
             VisitorList.WriteOpen(element.InnerElement);
 
+            if (element.IsArray)
+            {
+                textWriter.Write("System.Array[{");
+            }
+
             var names = skipLookup ? new List<string>() { element.Name } : providers.NameProvider.LookupVariableNameSplitted(new[] { element.Name }).ToList();
 
             textWriter.Write(new string('(', names.Count + (element.InnerElement != null ? 1 : 0)));
@@ -67,6 +72,11 @@
             }
 
             VisitorList.Visit(element.ArgumentList);
+
+            if (element.IsArray)
+            {
+                textWriter.Write(".__typeof}]");
+            }
 
             if (element.InnerElement != null)
             {

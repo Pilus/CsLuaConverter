@@ -40,7 +40,7 @@
             Assert(101098, res["type"]);
 
             var arrayRes = res["2_AnArray"] as NativeLuaTable;
-            Assert(671268, arrayRes["type"]);
+            Assert(789430, arrayRes["type"]);
             Assert(theClass.AnArray[0], arrayRes["2#_0"]);
             Assert(theClass.AnArray[1], arrayRes["2#_1"]);
 
@@ -67,10 +67,11 @@
 
             var res = Serializer.Serialize(list);
 
-            Assert(1, res["size"]);
-            var subRes = res[0] as NativeLuaTable;
-            Assert(theClass.AString, subRes["AString"]);
-            Assert(theClass.ANumber, subRes["ANumber"]);
+            Assert(593470, res["type"]);
+
+            var subRes = res["2#_0"] as NativeLuaTable;
+            Assert(theClass.AString, subRes["2_AString"]);
+            Assert(theClass.ANumber, subRes["2_ANumber"]);
 
             var processedClass = Serializer.Deserialize<List<ClassWithNativeObjects>>(res);
 

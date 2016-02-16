@@ -67,3 +67,34 @@
     end
     return "Class", typeObject, members, constructors, objectGenerator, nil, initialize;
 end})
+
+local areAllOfType = function(objs, type)
+    for _,v in pairs(objs) do
+        if not(type.IsInstanceOfType(v)) then
+            return false;
+        end
+    end
+    return true;
+end
+
+local getHighestCommonType = function(objs)
+    local type;
+    for i,v in pairs(objs) do
+        type = (v %_M.DOT).GetType();
+        break;
+    end
+
+    while (type) do
+        if areAllOfType(objs, type) then
+            return type;
+        end
+        type = type.BaseType;
+    end
+
+    error("No common type found");
+end
+
+ImplicitArray = function(t)
+    local type = getHighestCommonType(t);
+    return (System.Array[{type}]() % _M.DOT).__Initialize(t);
+end

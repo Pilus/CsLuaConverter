@@ -1,6 +1,5 @@
  
 --============= Argument Matching =============
-
 local ScoreArguments = function(expectedTypes, argTypes, args)
     local sum = 0;
     local str = "";
@@ -11,16 +10,16 @@ local ScoreArguments = function(expectedTypes, argTypes, args)
             return nil, ", - Skipping candidate. Did not have enough expected types. Expected "..#(expectedTypes).." had: "..#(argTypes);
         end
         
-        str = str .. "," .. expectedType.FullName;
+        str = str .. "," .. expectedType.ToString();
 
         local score = argType.GetMatchScore(expectedType, args[i]);
         if (score == nil) then
             local additional = ""
             for j = i + 1, #(expectedTypes) do
-                additional = ", " .. expectedTypes[j].FullName;
+                additional = ", " .. expectedTypes[j].ToString();
             end
 
-            return nil, str .. additional .. " - Skipping candidate. Arg did not match "..argType.FullName;
+            return nil, str .. additional .. " - Skipping candidate. Arg did not match "..argType.ToString();
         end
         sum = sum + score;
     end
