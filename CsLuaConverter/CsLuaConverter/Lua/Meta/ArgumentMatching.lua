@@ -1,11 +1,11 @@
  
 --============= Argument Matching =============
-local ScoreArguments = function(expectedTypes, argTypes, args)
+local ScoreArguments = function(expectedTypes, argTypes, args, isParams)
     local sum = 0;
     local str = "";
 
     for i,argType in ipairs(argTypes) do
-        local expectedType = expectedTypes[i];
+        local expectedType = expectedTypes[i] or (isParams and expectedTypes[#(expectedTypes)]);
         if (expectedType == nil) then
             return nil, ", - Skipping candidate. Did not have enough expected types. Expected "..#(expectedTypes).." had: "..#(argTypes);
         end
@@ -55,7 +55,7 @@ local SelectMatchingByTypes = function(list, args, methodGenerics)
             end
         end
 
-        local score, scoreStr = ScoreArguments(types, argTypes, args);
+        local score, scoreStr = ScoreArguments(types, argTypes, args, element.isParams);
         candidatesStr = candidatesStr .. "\n  " .. scoreStr;
 
         if not(score == nil) and (not(bestScore) or score > bestScore) then

@@ -34,6 +34,11 @@
                 textWriter.WriteLine("override = true,");
             }
 
+            if (ParameterListVisitor.IsParams(element.Parameters))
+            {
+                textWriter.WriteLine("isParams = true,");
+            }
+
             textWriter.Write("types = {");
             ParameterListVisitor.VisitParameterListTypeReferences(element.Parameters, textWriter, providers);
             textWriter.WriteLine("},");
@@ -59,6 +64,14 @@
 
             VisitorList.Visit(element.Parameters);
             textWriter.WriteLine(")");
+
+            if (ParameterListVisitor.IsParams(element.Parameters))
+            {
+                textWriter.Indent++;
+                ParameterListVisitor.WriteParamVariableInit(element.Parameters, textWriter, providers);
+                textWriter.Indent--;
+            }
+
             VisitorList.Visit(element.Block);
             textWriter.WriteLine("end");
 

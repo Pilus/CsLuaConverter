@@ -20,11 +20,20 @@
                     textWriter.Write(",");
                 }
 
-                foreach (var parameterElement in parameterElements)
+                var firstElement = parameterElements.FirstOrDefault();
+                var isParams = firstElement is Parameter && (firstElement as Parameter).IsParams;
+                if (isParams)
                 {
-                    if ((parameterElement is Parameter))
+                    textWriter.Write("...");
+                }
+                else
+                {
+                    foreach (var parameterElement in parameterElements)
                     {
-                        VisitorList.Visit(parameterElement);
+                        if ((parameterElement is Parameter) && !(isParams && parameterElement == firstElement))
+                        {
+                            VisitorList.Visit(parameterElement);
+                        }
                     }
                 }
 
@@ -32,6 +41,22 @@
             }
         }
 
+        public static bool IsParams(ParameterList element)
+        {
+            var first = element.ContainedElements.FirstOrDefault();
+            return first != null && first.FirstOrDefault() is Parameter &&
+                   ((Parameter) first.FirstOrDefault()).IsParams;
+        }
+
+        public static void WriteParamVariableInit(ParameterList element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (IsParams(element))
+            {
+                textWriter.Write("local ");
+                VisitorList.Visit(element.ContainedElements.First().Last(e => e is Parameter));
+                textWriter.WriteLine(" = {...};");
+            }
+        }
 
         public static void VisitParameterListTypeReferences(ParameterList element, IndentedTextWriter textWriter, IProviders providers)
         {
@@ -44,7 +69,17 @@
                     textWriter.Write(",");
                 }
 
-                TypeOfExpressionVisitor.WriteTypeReference(parameterElements.First(e => !(e is Parameter) || !((Parameter)e).IsParams), textWriter, providers);
+
+                var type = parameterElements.First(e => !(e is Parameter) || !((Parameter)e).IsParams);
+                if (parameterElements.Take(1).Any(e => (e is Parameter) && ((Parameter) e).IsParams))
+                {
+                    if (type is PredefinedType)
+                    {
+                        (type as PredefinedType).IsArray = false;
+                    }
+                }
+
+                TypeOfExpressionVisitor.WriteTypeReference(type, textWriter, providers);
                 first = false;
             }
         }
