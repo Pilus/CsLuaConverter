@@ -21,8 +21,8 @@
 
             var res = Serializer.Serialize(theClass);
 
-            Assert(theClass.AString, (res[2] as NativeLuaTable)["AString"]);
-            Assert(theClass.ANumber, (res[2] as NativeLuaTable)["ANumber"]);
+            Assert(theClass.AString, res["2_AString"]);
+            Assert(theClass.ANumber, res["2_ANumber"]);
             Assert(223500, res["type"]);
 
             var processedClass = Serializer.Deserialize<ClassWithNativeObjects>(res);
@@ -94,8 +94,8 @@
 
             var res = Serializer.Serialize(dict);
 
-            Assert(dict[43], res[43]);
-            Assert(dict["an index"], res["an index"]);
+            Assert(dict[43], res["2#_43"]);
+            Assert(dict["an index"], res["2_an index"]);
 
             var processedDict = Serializer.Deserialize<Dictionary<object, object>>(res);
 

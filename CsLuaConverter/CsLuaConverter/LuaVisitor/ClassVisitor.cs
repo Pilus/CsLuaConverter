@@ -118,8 +118,8 @@
                         if (type.IsInterface && type != typeof(ICsLuaAddOn))
                         {
                             textWriter.Write("table.insert(implements, ");
-                            VisitorList.Visit(identifierName);
-                            textWriter.WriteLine(".__typeof);");
+                            TypeOfExpressionVisitor.WriteTypeReference(identifierName, textWriter, providers);
+                            textWriter.WriteLine(");");
                         }
                     }
                     else if (containedElement is GenericName)
@@ -130,8 +130,8 @@
                         if (type.IsInterface)
                         {
                             textWriter.Write("table.insert(implements, ");
-                            VisitorList.Visit(genericName);
-                            textWriter.WriteLine(".__typeof);");
+                            TypeOfExpressionVisitor.WriteTypeReference(genericName, textWriter, providers);
+                            textWriter.WriteLine(");");
                         };
                     }
                 }

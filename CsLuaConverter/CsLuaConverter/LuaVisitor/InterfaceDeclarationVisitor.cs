@@ -19,6 +19,8 @@
             textWriter.WriteLine("{0} = _M.NE({{[{1}] = function(interactionElement, generics, staticValues)", element.Name, GetNumOfGenerics(element));
             textWriter.Indent++;
 
+            WriteImplements(element, textWriter, providers);
+
             textWriter.WriteLine(
                 "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements, interactionElement, 'Interface');",
                 typeObject.Name, typeObject.Namespace, GetNumOfGenerics(element));
@@ -44,6 +46,31 @@
             }
 
             providers.GenericsRegistry.SetGenerics(element.Generics.ContainedElements.OfType<TypeParameter>().Select(e => e.Name), GenericScope.Class);
+        }
+
+        private static void WriteImplements(InterfaceDeclaration element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write("local implements = {");
+
+            if (element.BaseList != null)
+            {
+                var first = true;
+                foreach (var baseElement in element.BaseList.ContainedElements)
+                {
+                    if (!first)
+                    {
+                        textWriter.Write(",");
+                    }
+                    else
+                    {
+                        first = false;
+                    }
+
+                    TypeOfExpressionVisitor.WriteTypeReference(baseElement, textWriter, providers);
+                }
+            }
+
+            textWriter.WriteLine("};");
         }
     }
 }

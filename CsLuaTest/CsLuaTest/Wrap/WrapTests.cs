@@ -2,11 +2,11 @@
 {
     class WrapTests : BaseTest
     {
-        /*
+        
         public WrapTests()
         {
             Name = "Wrap";
-            this.Tests["WrapSimpleInterface"] = WrapSimpleInterface;
+            /*this.Tests["WrapSimpleInterface"] = WrapSimpleInterface;
             this.Tests["WrapInheritingInterface"] = WrapInheritingInterface;
             this.Tests["WrapGenericInterface"] = WrapGenericInterface;
             this.Tests["WrapInheritingInterfaceWithGenericInterface"] = WrapInheritingInterfaceWithGenericInterface;
@@ -17,9 +17,10 @@
             this.Tests["WrapHandleRecursiveWrapping"] = WrapHandleRecursiveWrapping;
             this.Tests["WrapWithTargetTypeTranslation"] = WrapWithTargetTypeTranslation;
             this.Tests["CastOfWrappedObject"] = CastOfWrappedObject;
-            this.Tests["NonWrappedAsPropertyInWrappedObject"] = NonWrappedAsPropertyInWrappedObject;
+            this.Tests["NonWrappedAsPropertyInWrappedObject"] = NonWrappedAsPropertyInWrappedObject; // */
         }
 
+        /*
         private static void WrapSimpleInterface()
         {
             if (!GameEnvironment.IsExecutingInGame)
@@ -37,6 +38,7 @@
             Assert(20, interfaceImplementation.Value);
         }
 
+        
         public static void WrapGenericInterface()
         {
             if (!GameEnvironment.IsExecutingInGame)

@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
     using System.CodeDom.Compiler;
+    using System.Linq;
     using CodeElementAnalysis;
     using Providers;
 
@@ -23,7 +24,22 @@
                 }
 
                 VisitorList.Visit(containedElement);
-                textWriter.Write(".__typeof");
+
+                var isGeneric = false;
+
+                if (containedElement is IdentifierName)
+                {
+                    var identifierName = (containedElement as IdentifierName);
+                    if (identifierName.Names.Count == 1)
+                    {
+                        isGeneric = providers.GenericsRegistry.IsGeneric(identifierName.Names.Single());
+                    }
+                }
+
+                if (!isGeneric)
+                {
+                    textWriter.Write(".__typeof");
+                }
             }
 
             textWriter.Write("}]");
