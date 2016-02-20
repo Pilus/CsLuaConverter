@@ -153,6 +153,10 @@ local InteractionElement = function(metaProvider, generics)
             fittingMembers = getMembers("#", level, false); -- Look up indexers
         end
 
+        if #(fittingMembers) == 0 and type(key) == "table" then
+            return self[key];
+        end
+
         if #(fittingMembers) == 0 then
             error("Could not find member. Key: "..tostring(key)..". Object: "..typeObject.FullName.." Level: "..tostring(level));
         end
@@ -319,7 +323,7 @@ local InteractionElement = function(metaProvider, generics)
             -- Generate the base class element from constructor.GenerateBaseClass
             local classElement = elementGenerator();
             -- find the constructor fitting the arguments.
-            local constructor = _M.AM(constructors, {...});
+            local constructor, foldOutLast = _M.AM(constructors, {...});
             -- Call the constructor
             constructor.func(classElement, ...);
 

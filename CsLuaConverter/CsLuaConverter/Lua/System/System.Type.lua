@@ -111,6 +111,16 @@ local meta = {
             return self.catagory == "Enum";
         elseif index == "type" then
             return typeType;
+        elseif index == "GetGenericArguments" then
+            return function()
+                local t = {};
+
+                for i,v in pairs(self.generics) do
+                    t[i-1] = v;
+                end
+
+                return t;
+            end
         end
     end,
 };

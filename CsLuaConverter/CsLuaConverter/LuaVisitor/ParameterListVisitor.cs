@@ -24,7 +24,7 @@
                 var isParams = firstElement is Parameter && (firstElement as Parameter).IsParams;
                 if (isParams)
                 {
-                    textWriter.Write("...");
+                    textWriter.Write("firstParam,...");
                 }
                 else
                 {
@@ -43,9 +43,9 @@
 
         public static bool IsParams(ParameterList element)
         {
-            var first = element.ContainedElements.FirstOrDefault();
-            return first != null && first.FirstOrDefault() is Parameter &&
-                   ((Parameter) first.FirstOrDefault()).IsParams;
+            var last = element.ContainedElements.LastOrDefault();
+            return last != null && last.FirstOrDefault() is Parameter &&
+                   ((Parameter) last.FirstOrDefault()).IsParams;
         }
 
         public static void WriteParamVariableInit(ParameterList element, IndentedTextWriter textWriter, IProviders providers)
@@ -53,8 +53,10 @@
             if (IsParams(element))
             {
                 textWriter.Write("local ");
-                VisitorList.Visit(element.ContainedElements.First().Last(e => e is Parameter));
-                textWriter.WriteLine(" = {...};");
+                VisitorList.Visit(element.ContainedElements.Last().Last(e => e is Parameter));
+                textWriter.Write(" = ((System.Array %_M.DOT)[{");
+                TypeOfExpressionVisitor.WriteTypeReference(element.ContainedElements.Last().First(e => e is PredefinedType), textWriter, providers);
+                textWriter.WriteLine("}]() % _M.DOT).__Initialize({[0] = firstParam, ...});");
             }
         }
 

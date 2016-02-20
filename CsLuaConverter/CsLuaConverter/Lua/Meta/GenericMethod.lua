@@ -1,4 +1,32 @@
 ﻿
+local InvokeMethod = function(member, element, generics, args, foldOutArray)
+    if foldOutArray then
+        local i = #(args);
+
+        local value = args[i];
+        args[i] = nil;
+        for j = 0, (value % _M.DOT).Length - 1 do
+            args[i+j] = (value % _M.DOT)[j];
+        end
+    end
+
+    if member.generics then
+        return member.func(element, member.generics, generics, unpack(args));
+    else
+        return member.func(element, unpack(args));
+    end
+end
+
+local meta = {};
+setmetatable(meta,{
+    __index = function(_, index)
+        if index == "type" then
+            return System.Action.__typeof;
+        elseif index == "__metaType" then
+            return _M.MetaTypes.ClassObject;
+        end
+    end
+});
 
 local GenericMethod = function(members, elementOrStaticValues)
     
@@ -6,24 +34,18 @@ local GenericMethod = function(members, elementOrStaticValues)
 
     setmetatable(t,{
         __index = function(_, generics)
-            return function(...)
-                local member = _M.AM(members, {...}, generics);
+            if meta[generics] then
+                return meta[generics];
+            end
 
-                if member.generics then
-                    return member.func(elementOrStaticValues, member.generics, generics,...);
-                else
-                    return member.func(elementOrStaticValues,...);
-                end
+            return function(...)
+                local member, foldOutArray = _M.AM(members, {...}, generics);
+                return InvokeMethod(member, elementOrStaticValues, generics, {...}, foldOutArray);
             end
         end,
         __call = function(_, ...)
-            local member = _M.AM(members, {...});
-
-            if member.generics then
-                return member.func(elementOrStaticValues, member.generics, {},...);
-            else
-                return member.func(elementOrStaticValues,...);
-            end
+            local member, foldOutArray = _M.AM(members, {...});
+            return InvokeMethod(member, elementOrStaticValues, {}, {...}, foldOutArray);
         end,
     });
 
@@ -34,8 +56,8 @@ _M.GM = GenericMethod;
 
 local MethodGenerics = function(generics)
     local t = {};
-    setmetatable(t,{
-        __index = function(_, key)
+    setmetatable(t, {
+        __index = function(self, key)
             for i,v in pairs(generics) do
                 if v == key then
                     return i;
