@@ -54,6 +54,7 @@
                 }
                 else
                 {
+                    TestCount++;
                     lineWriter.WriteLine(testName);
                     ResetOutput();
                     test();

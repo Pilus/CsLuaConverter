@@ -15,6 +15,26 @@
         end,
     });
 
+    _M.IM(members,'Contains',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {typeObject},
+        func = function(element, str)
+            return not(string.find(element, str) == nil)
+        end,
+    });
+
+    _M.IM(members,'Length',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        types = {},
+        get = function(element)
+            return string.len(element);
+        end,
+    });
+
     _M.IM(members,'IsNullOrEmpty',{
         level = typeObject.Level,
         memberType = 'Method',
