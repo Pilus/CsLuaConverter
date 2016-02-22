@@ -1,13 +1,16 @@
 ﻿namespace CsLuaTest.Wrap
 {
+    using CsLuaFramework;
+    using CsLuaFramework.Wrapping;
+
     class WrapTests : BaseTest
     {
         
         public WrapTests()
         {
             Name = "Wrap";
-            /*this.Tests["WrapSimpleInterface"] = WrapSimpleInterface;
-            this.Tests["WrapInheritingInterface"] = WrapInheritingInterface;
+            this.Tests["WrapSimpleInterface"] = WrapSimpleInterface;
+            /*this.Tests["WrapInheritingInterface"] = WrapInheritingInterface;
             this.Tests["WrapGenericInterface"] = WrapGenericInterface;
             this.Tests["WrapInheritingInterfaceWithGenericInterface"] = WrapInheritingInterfaceWithGenericInterface;
             this.Tests["WrapInheritingInterfaceWithProvideSelf"] = WrapInheritingInterfaceWithProvideSelf;
@@ -20,16 +23,16 @@
             this.Tests["NonWrappedAsPropertyInWrappedObject"] = NonWrappedAsPropertyInWrappedObject; // */
         }
 
-        /*
+        
         private static void WrapSimpleInterface()
         {
-            if (!GameEnvironment.IsExecutingInGame)
+            if (!Environment.IsExecutingAsLua)
             {
                 return;
             }
 
-            GameEnvironment.ExecuteLuaCode("interfaceImplementation = { Method = function(str) return 'OK' .. str; end, Value = 10, };");
-            var interfaceImplementation = CsLuaStatic.Wrapper.WrapGlobalObject<ISimpleInterface>("interfaceImplementation");
+            Environment.ExecuteLuaCode("interfaceImplementation = { Method = function(str) return 'OK' .. str; end, Value = 10, };");
+            var interfaceImplementation = Wrapper.Wrap<ISimpleInterface>("interfaceImplementation");
 
             Assert("OKInput", interfaceImplementation.Method("Input"));
             Assert(10, interfaceImplementation.Value);
@@ -38,7 +41,7 @@
             Assert(20, interfaceImplementation.Value);
         }
 
-        
+        /*
         public static void WrapGenericInterface()
         {
             if (!GameEnvironment.IsExecutingInGame)

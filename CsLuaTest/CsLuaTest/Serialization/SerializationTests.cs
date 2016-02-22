@@ -17,6 +17,11 @@
         
         private static void TestBasicSerializableClass()
         {
+            if (!Environment.IsExecutingAsLua)
+            {
+                return;
+            }
+
             var theClass = new ClassWithNativeObjects();
 
             var res = Serializer.Serialize(theClass);
@@ -33,6 +38,11 @@
         
         private static void TestClassWithSubObject()
         {
+            if (!Environment.IsExecutingAsLua)
+            {
+                return;
+            }
+
             var theClass = new ClassWithSubObject();
 
             var res = Serializer.Serialize(theClass);
@@ -59,6 +69,11 @@
 
         private static void TestClassInCsLuaList()
         {
+            if (!Environment.IsExecutingAsLua)
+            {
+                return;
+            }
+
             var theClass = new ClassWithNativeObjects();
             var list = new List<ClassWithNativeObjects>()
             {
@@ -86,6 +101,11 @@
 
         private static void TestSerializeDictionary()
         {
+            if (!Environment.IsExecutingAsLua)
+            {
+                return;
+            }
+
             var dict = new Dictionary<object, object>()
             {
                 { 43, "something" },

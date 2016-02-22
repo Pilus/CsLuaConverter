@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\CsLuaTest\CsLuaConverter\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -44,6 +44,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Attributes\DefaultState.cs" />
+    <Compile Include="Environment.cs" />
     <Compile Include="ICsLuaAddOn.cs" />
     <Compile Include="Attributes\MetadataTagAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,6 +56,7 @@
     </Compile>
     <Compile Include="Serializer.cs" />
     <Compile Include="Wrapping\IMultipleValues.cs" />
+    <Compile Include="Wrapping\Wrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lua\Lua.csproj">
@@ -64,7 +66,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="aa.lua" />
+    <None Include="Environment.lua" />
     <None Include="Serializer.lua" />
+    <None Include="Wrapping\aa.lua" />
+    <None Include="Wrapping\WrappedLuaTable.lua" />
+    <None Include="Wrapping\Wrapper.lua" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

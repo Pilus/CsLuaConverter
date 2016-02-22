@@ -67,7 +67,7 @@
 
         public void Visit(LogicalNotExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("CsLuaMeta._not+");
+            textWriter.Write("_M.NOT+");
         }
 
         public void Visit(SubtractExpression element, IndentedTextWriter textWriter, IProviders providers)
