@@ -4,6 +4,7 @@ namespace CsLuaTest
     using System.Collections.Generic;
     using AmbigousMethods;
     using Arrays;
+    using Collections;
     using CsLuaFramework;
     using CsLuaFramework.Attributes;
     using DefaultValues;
@@ -40,9 +41,10 @@ namespace CsLuaTest
                 new ArraysTests(),
                 new SerializationTests(),
                 new InterfacesTests(),
-                new WrapTests(),
                 new ParamsTests(),
                 new StringExtensionTests(),
+                new CollectionsTests(),
+                new WrapTests(),
             };
 
             tests.ForEach(test => test.PerformTests(new IndentedLineWriter()));

@@ -7,7 +7,7 @@
 
     public class IsExpressionVisitor : IVisitor<IsExpression>
     {
-        public static void Visit(IsExpression element, IndentedTextWriter textWriter, IProviders providers, BaseElement comparedElement, IdentifierName typeElement)
+        public static void Visit(IsExpression element, IndentedTextWriter textWriter, IProviders providers, BaseElement comparedElement, BaseElement typeElement)
         {
             VisitorList.Visit(typeElement);
             textWriter.Write(".__is(");

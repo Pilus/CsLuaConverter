@@ -328,6 +328,9 @@
     <None Include="Lua\Meta\Throw.lua" />
     <None Include="Lua\Meta\Try.lua" />
     <None Include="Lua\Meta\aa._M.lua" />
+    <None Include="Lua\System\Collections\aa.lua" />
+    <None Include="Lua\System\Collections\Generic\aa.lua" />
+    <None Include="Lua\System\Collections\Generic\IList.lua" />
     <None Include="Lua\System\System.Func.lua" />
     <None Include="Lua\System\System.Enum.lua" />
     <None Include="Lua\System\System.Bool.lua" />
@@ -338,8 +341,8 @@
     <None Include="Lua\System\System.Int32.lua" />
     <None Include="Lua\System\System.Array.lua" />
     <None Include="Lua\System\System.Action.lua" />
-    <None Include="Lua\System\System.Collections.Generic.Dictionary.lua" />
-    <None Include="Lua\System\System.Collections.Generic.List.lua" />
+    <None Include="Lua\System\Collections\Generic\Dictionary.lua" />
+    <None Include="Lua\System\Collections\Generic\List.lua" />
     <None Include="Lua\System\System.Linq.lua" />
     <None Include="Lua\System\System.String.lua" />
     <None Include="Lua\System\System.Object.lua" />
@@ -364,6 +367,7 @@
       <Name>CsLuaFramework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ImportGroup Label="Targets">
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

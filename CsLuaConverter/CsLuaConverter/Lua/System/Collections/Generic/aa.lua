@@ -1,0 +1,1 @@
+﻿System.Collections.Generic = { __metaType = _M.MetaTypes.NameSpace };

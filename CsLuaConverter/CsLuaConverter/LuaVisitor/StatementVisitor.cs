@@ -45,7 +45,7 @@
                 }
                 else if (nextElement is IsExpression)
                 {
-                    IsExpressionVisitor.Visit(nextElement as IsExpression, textWriter, providers, element, elements[i+2] as IdentifierName);
+                    IsExpressionVisitor.Visit(nextElement as IsExpression, textWriter, providers, element, elements[i+2]);
                     i+=2;
                 }
                 else if (nextElement is AsExpression)

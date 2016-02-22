@@ -82,7 +82,7 @@
 
             var m = visitorType.GetMethod("Visit", BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod);
 
-            m.Invoke(visitor, new object[] {element, writer, providers });
+            InvokeAndRethrow<T>(m, visitor, element);
         }
 
         [System.Diagnostics.DebuggerNonUserCode]
@@ -103,7 +103,7 @@
 
             var m = visitorType.GetMethod("WriteOpen", BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod);
 
-            m.Invoke(visitor, new object[] { element, writer, providers });
+            InvokeAndRethrow<T>(m, visitor, element);
         }
 
         [System.Diagnostics.DebuggerNonUserCode]
@@ -124,7 +124,7 @@
 
             var m = visitorType.GetMethod("WriteClose", BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod);
 
-            m.Invoke(visitor, new object[] { element, writer, providers });
+            InvokeAndRethrow<T>(m, visitor, element);
         }
 
 
@@ -132,6 +132,19 @@
         private static bool IsType(IVisitor visitor)
         {
             return visitorType.IsInstanceOfType(visitor);
+        }
+
+        [System.Diagnostics.DebuggerNonUserCode]
+        private static void InvokeAndRethrow<T>(MethodInfo m, IVisitor visitor, T element)
+        {
+            try
+            {
+                m.Invoke(visitor, new object[] { element, writer, providers });
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
         }
     }
 }

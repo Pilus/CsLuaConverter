@@ -49,6 +49,12 @@
             this.LoadType(typeof(Dictionary<object, object>));
             this.LoadType(typeof(IList));
             this.LoadType(typeof(IList<object>));
+            this.LoadType(typeof(ICollection));
+            this.LoadType(typeof(ICollection<object>));
+            this.LoadType(typeof(IEnumerable));
+            this.LoadType(typeof(IEnumerable<object>));
+            this.LoadType(typeof(IReadOnlyList<object>));
+            this.LoadType(typeof(IReadOnlyCollection<object>));
             this.LoadType(typeof(List<object>));
             this.LoadType(typeof(Enumerable));
         }

@@ -1,1 +1,1 @@
-﻿System = { __metaType = _M.MetaTypes.NameSpace };
+﻿System.Generic = { __metaType = _M.MetaTypes.NameSpace };

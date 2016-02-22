@@ -1,8 +1,4 @@
-﻿
-System.Collections = System.Collections or { __metaType = _M.MetaTypes.NameSpace };
-System.Collections.Generic = System.Collections.Generic or { __metaType = _M.MetaTypes.NameSpace };
-
-System.Collections.Generic.Dictionary = _M.NE({[2] = function(interactionElement, generics, staticValues)
+﻿System.Collections.Generic.Dictionary = _M.NE({[2] = function(interactionElement, generics, staticValues)
     local implements = {};
     local baseTypeObject, members = System.Object.__meta(staticValues);
     local typeObject = System.Type('Dictionary','System.Collections.Generic',baseTypeObject,2,generics,implements,interactionElement);
