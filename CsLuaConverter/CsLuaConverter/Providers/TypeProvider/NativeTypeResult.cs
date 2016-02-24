@@ -29,6 +29,7 @@
         }
 
         public bool IsInterface => this.type.IsInterface;
+        public int NumGenerics => this.type.GetGenericArguments().Length;
 
         public IEnumerable<ScopeElement> GetScopeElements()
         {

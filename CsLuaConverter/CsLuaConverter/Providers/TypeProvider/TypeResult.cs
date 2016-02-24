@@ -51,6 +51,8 @@ namespace CsLuaConverter.Providers.TypeProvider
 
         public bool IsInterface => this.type.IsInterface;
 
+        public int NumGenerics => this.type.GetGenericArguments().Length;
+
         public string Name => this.type.Name;
 
         public string Namespace => this.type.Namespace;
@@ -62,6 +64,11 @@ namespace CsLuaConverter.Providers.TypeProvider
         public IEnumerable<ScopeElement> GetScopeElements()
         {
             var list = new List<ScopeElement>();
+
+            if (this.type.BaseType != null)
+            {
+                list = this.BaseType.GetScopeElements().ToList();
+            }
 
             IEnumerable<MemberInfo> methods = this.GetMethodsOfType(type);
             IEnumerable<MemberInfo> objectMethods = this.GetMethodsOfType(typeof(object));

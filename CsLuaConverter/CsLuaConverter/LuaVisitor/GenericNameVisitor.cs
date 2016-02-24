@@ -39,14 +39,25 @@
                 textWriter.Write("System.Array[{");
             }
 
-            var names = skipLookup ? new List<string>() { element.Name } : providers.NameProvider.LookupVariableNameSplitted(new[] { element.Name }).ToList();
+            var names = GetNames(element, textWriter, providers, skipLookup);
 
             textWriter.Write(new string('(', names.Count + (element.InnerElement != null ? 1 : 0)));
         }
 
+        private static int GetNumGenerics(GenericName element)
+        {
+            return element.ArgumentList.ContainedElements.Count;
+        }
+
+        private static List<string> GetNames(GenericName element, IndentedTextWriter textWriter, IProviders providers, bool skipLookup)
+        {
+            var numGenerics = GetNumGenerics(element);
+            return skipLookup ? new List<string>() { element.Name } : providers.NameProvider.LookupVariableNameSplitted(new[] { element.Name }, numGenerics).ToList();
+        }
+
         private static void WriteClose(GenericName element, IndentedTextWriter textWriter, IProviders providers, bool skipLookup)
         {
-            var names = skipLookup ? new List<string>(){element.Name} : providers.NameProvider.LookupVariableNameSplitted(new [] { element.Name } ).ToList();
+            var names = GetNames(element, textWriter, providers, skipLookup);
 
             for (var i = 0; i<names.Count; i++)
             {

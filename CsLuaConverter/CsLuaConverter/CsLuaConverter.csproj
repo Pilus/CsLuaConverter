@@ -267,6 +267,11 @@
     <None Include="Lua\Meta\aa._M.lua" />
     <None Include="Lua\System\Collections\aa.lua" />
     <None Include="Lua\System\Collections\Generic\aa.lua" />
+    <None Include="Lua\System\Collections\Generic\ICollection.lua" />
+    <None Include="Lua\System\Collections\Generic\IReadOnlyList.lua" />
+    <None Include="Lua\System\Collections\Generic\IReadOnlyCollection.lua" />
+    <None Include="Lua\System\Collections\Generic\IEnumerable.lua" />
+    <None Include="Lua\System\Collections\Generic\IList.lua" />
     <None Include="Lua\System\Collections\IEnumerable.lua" />
     <None Include="Lua\System\Collections\ICollection.lua" />
     <None Include="Lua\System\Collections\IList.lua" />

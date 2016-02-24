@@ -13,6 +13,8 @@
 
         public string Name;
 
+        public int GetNumGenerics => this.Type.GetGenericArguments().Length;
+
         public ITypeResult GetTypeResult()
         {
             return new TypeResult(this.Type);

@@ -39,7 +39,38 @@
         {
             this.LoadType(typeof(Type));
             this.LoadType(typeof(Action));
-            this.LoadType(typeof(Func<int>));
+            this.LoadType(typeof(Action<object>));
+            this.LoadType(typeof(Action<object, object>));
+            this.LoadType(typeof(Action<object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Func<object>));
+            this.LoadType(typeof(Func<object, object>));
+            this.LoadType(typeof(Func<object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
             this.LoadType(typeof(Exception));
             this.LoadType(typeof(NotImplementedException));
             this.LoadType(typeof(Enum));
@@ -138,7 +169,23 @@
             }
         }
 
+        public ITypeResult LookupType(IEnumerable<string> names)
+        {
+            return this.LookupTypeWithGenerics(names, null);
+        }
+
+        public ITypeResult LookupType(IEnumerable<string> names, int numGenerics)
+        {
+            return this.LookupTypeWithGenerics(names, numGenerics);
+        }
+
+
         public ITypeResult LookupType(string name)
+        {
+            return this.LookupTypeWithGenerics(name, null);
+        }
+
+        private ITypeResult LookupTypeWithGenerics(string name, int? numGenerics)
         {
             var nativeType = this.predefinedNativeTypeResults.FirstOrDefault(t => name.Equals(t.NativeName));
             if (nativeType != null)
@@ -151,17 +198,26 @@
             {
                 if (refenrecedNamespace.Types.ContainsKey(nameWithoutGenerics))
                 {
-                    return refenrecedNamespace.Types[nameWithoutGenerics].GetTypeResult();
+                    var types = refenrecedNamespace.Types[nameWithoutGenerics];
+                    foreach (var e in types)
+                    {
+                        var type = e.GetTypeResult();
+
+                        if (numGenerics == null || numGenerics == type.NumGenerics)
+                        {
+                            return type;
+                        }
+                    }
                 }
             }
             throw new ProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", name));
         }
 
-        public ITypeResult LookupType(IEnumerable<string> names)
+        private ITypeResult LookupTypeWithGenerics(IEnumerable<string> names, int? numGenerics)
         {
             if (names.Count() == 1)
             {
-                return this.LookupType(names.Single());
+                return this.LookupTypeWithGenerics(names.Single(), numGenerics);
             }
 
             var nameWithoutGenerics = StripGenerics(names.First());
@@ -169,7 +225,7 @@
             {
                 if (refenrecedNamespace.Types.ContainsKey(nameWithoutGenerics))
                 {
-                    return refenrecedNamespace.Types[nameWithoutGenerics].GetTypeResult(string.Join(".", names.Skip(1)));
+                    return refenrecedNamespace.Types[nameWithoutGenerics].Single().GetTypeResult(string.Join(".", names.Skip(1)));
                 }
                 
                 if (names.Count() > 1 && refenrecedNamespace.SubNamespaces.ContainsKey(nameWithoutGenerics))
@@ -184,9 +240,19 @@
 
                         if (current.Types.ContainsKey(name))
                         {
-                            return current.Types[name].GetTypeResult(string.Join(".", remainingNames));
+                            var types = current.Types[name];
+                            foreach (var e in types)
+                            {
+                                var type = e.GetTypeResult(string.Join(".", remainingNames));
+
+                                if (numGenerics == null || numGenerics == type.NumGenerics)
+                                {
+                                    return type;
+                                }
+                            }
                         }
-                        else if (current.SubNamespaces.ContainsKey(name))
+
+                        if (current.SubNamespaces.ContainsKey(name))
                         {
                             current = current.SubNamespaces[name];
                         }

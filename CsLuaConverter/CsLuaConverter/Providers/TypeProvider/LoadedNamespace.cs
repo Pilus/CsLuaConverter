@@ -25,8 +25,10 @@
             var name = StripGenerics(type.Name);
             if (!this.Types.ContainsKey(name))
             {
-                this.Types.Add(name, new LoadedType(type));
+                this.Types[name] = new List<LoadedType>();
             }
+
+            this.Types[name].Add(new LoadedType(type));
         }
 
         private static string StripGenerics(string name)
@@ -47,6 +49,6 @@
 
         public string Name;
         public Dictionary<string, LoadedNamespace> SubNamespaces = new Dictionary<string, LoadedNamespace>();
-        public Dictionary<string, LoadedType> Types = new Dictionary<string, LoadedType>();
+        public Dictionary<string, IList<LoadedType>> Types = new Dictionary<string, IList<LoadedType>>();
     }
 }

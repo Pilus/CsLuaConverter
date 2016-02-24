@@ -1,7 +1,14 @@
 ﻿
 System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, generics, staticValues)
     local implements = {
-        System.Collections.IList.__typeof
+        System.Collections.IList.__typeof,
+        System.Collections.Generic.IList[generics].__typeof,
+        System.Collections.ICollection.__typeof,
+        System.Collections.Generic.ICollection[generics].__typeof,
+        System.Collections.IEnumerable.__typeof,
+        System.Collections.Generic.IEnumerable[generics].__typeof,
+        System.Collections.Generic.IReadOnlyList[generics].__typeof,
+        System.Collections.Generic.IReadOnlyCollection[generics].__typeof,
     };
     local baseTypeObject, members = System.Object.__meta(staticValues);
     local typeObject = System.Type('List','System.Collections.Generic',baseTypeObject,1,generics,implements,interactionElement);

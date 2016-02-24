@@ -8,8 +8,6 @@
 
     internal class NameProvider : INameProvider
     {
-        private const string ClassPrefix = "element";
-
         private List<ScopeElement> currentScope;
         private readonly ITypeProvider typeProvider;
 
@@ -34,29 +32,14 @@
             this.currentScope.Add(element);
         }
 
-
-        private void AddAllInheritedMembersToScope(ITypeResult type)
+        public void AddAllInheritedMembersToScope(string typeName)
         {
+            var type = this.typeProvider.LookupType(typeName);
+
             foreach (var element in type.GetScopeElements())
             {
                 this.AddToScope(element);
             }
-
-            if (type.BaseType.FullName != "System.Object")
-            {
-                this.AddAllInheritedMembersToScope(type.BaseType);
-            }
-        }
-
-        public void AddAllInheritedMembersToScope(string typeName)
-        {
-            var type = this.typeProvider.LookupType(typeName);
-            this.AddAllInheritedMembersToScope(type);
-        }
-
-        public string LookupVariableName(IEnumerable<string> names)
-        {
-            return this.LookupVariableName(names, false);
         }
 
         public ScopeElement GetScopeElement(string name)
@@ -64,25 +47,7 @@
             return this.currentScope.LastOrDefault(element => element.Name.Equals(name));
         }
 
-        public string LookupVariableName(IEnumerable<string> names, bool isClassVariable)
-        {
-            var firstName = names.First();
-
-            var variable = this.currentScope.LastOrDefault(element => element.Name.Equals(firstName) && (!isClassVariable || element.IsFromClass));
-            if (variable != null)
-            {
-                var additionalString = string.Empty;
-                if (names.Count() > 1)
-                {
-                    additionalString = "." + string.Join(".", names.Skip(1));
-                }
-                return variable.ToString() + additionalString;
-            }
-
-            return this.typeProvider.LookupType(names).ToString();
-        }
-
-        public IEnumerable<string> LookupVariableNameSplitted(IEnumerable<string> names)
+        public IEnumerable<string> LookupVariableNameSplitted(IEnumerable<string> names, int numGenerics)
         {
             var firstName = names.First();
             var variable = this.currentScope.LastOrDefault(element => element.Name.Equals(firstName));
@@ -100,7 +65,7 @@
                 return variableNames;
             }
 
-            var type = this.typeProvider.LookupType(names);
+            var type = this.typeProvider.LookupType(names, numGenerics);
 
             return type.FullName.Split('`').First().Split('.');
         }

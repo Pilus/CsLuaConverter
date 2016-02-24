@@ -13,6 +13,8 @@ namespace CsLuaConverter.Providers.TypeProvider
         string ToString();
         bool IsInterface { get; }
 
+        int NumGenerics { get; }
+
         IEnumerable<ScopeElement> GetScopeElements();
 
     }
