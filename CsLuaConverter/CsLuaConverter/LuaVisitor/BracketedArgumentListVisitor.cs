@@ -26,7 +26,11 @@
         public void WriteClose(BracketedArgumentList element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("[");
-            VisitorList.Visit(element.ContainedElements.Single());
+            foreach (var e in element.ContainedElements)
+            {
+                VisitorList.Visit(e);
+            }
+            
             textWriter.Write("]" + (element.InnerElement == null ? "" : " % _M.DOT)"));
             VisitorList.WriteClose(element.InnerElement);
         }

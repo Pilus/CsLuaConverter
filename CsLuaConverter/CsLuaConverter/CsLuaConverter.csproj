@@ -151,6 +151,7 @@
     <Compile Include="CodeElementAnalysis\TypeOfExpression.cs" />
     <Compile Include="CodeElementAnalysis\TypeParameter.cs" />
     <Compile Include="CodeElementAnalysis\TypeParameterList.cs" />
+    <Compile Include="CodeElementAnalysis\UnaryMinusExpression.cs" />
     <Compile Include="CodeElementAnalysis\UsingDirective.cs" />
     <Compile Include="CodeElementAnalysis\VariableDeclarator.cs" />
     <Compile Include="ConverterException.cs" />
@@ -275,22 +276,23 @@
     <None Include="Lua\System\Collections\IEnumerable.lua" />
     <None Include="Lua\System\Collections\ICollection.lua" />
     <None Include="Lua\System\Collections\IList.lua" />
-    <None Include="Lua\System\System.Func.lua" />
-    <None Include="Lua\System\System.Enum.lua" />
-    <None Include="Lua\System\System.Bool.lua" />
-    <None Include="Lua\System\System.Double.lua" />
-    <None Include="Lua\System\System.Exception.lua" />
-    <None Include="Lua\System\System.Int.lua" />
-    <None Include="Lua\System\System.Int64.lua" />
-    <None Include="Lua\System\System.Int32.lua" />
-    <None Include="Lua\System\System.Array.lua" />
-    <None Include="Lua\System\System.Action.lua" />
+    <None Include="Lua\System\ArgumentOutOfRangeException.lua" />
+    <None Include="Lua\System\Func.lua" />
+    <None Include="Lua\System\Enum.lua" />
+    <None Include="Lua\System\Bool.lua" />
+    <None Include="Lua\System\Double.lua" />
+    <None Include="Lua\System\Exception.lua" />
+    <None Include="Lua\System\Int.lua" />
+    <None Include="Lua\System\Int64.lua" />
+    <None Include="Lua\System\Int32.lua" />
+    <None Include="Lua\System\Array.lua" />
+    <None Include="Lua\System\Action.lua" />
     <None Include="Lua\System\Collections\Generic\Dictionary.lua" />
     <None Include="Lua\System\Collections\Generic\List.lua" />
-    <None Include="Lua\System\System.Linq.lua" />
-    <None Include="Lua\System\System.String.lua" />
-    <None Include="Lua\System\System.Object.lua" />
-    <None Include="Lua\System\System.Type.lua" />
+    <None Include="Lua\System\Linq.lua" />
+    <None Include="Lua\System\String.lua" />
+    <None Include="Lua\System\Object.lua" />
+    <None Include="Lua\System\Type.lua" />
     <None Include="Lua\System\aa.System.lua" />
   </ItemGroup>
   <ItemGroup>

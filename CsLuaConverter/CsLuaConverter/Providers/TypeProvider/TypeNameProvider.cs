@@ -72,7 +72,8 @@
             this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
             this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
             this.LoadType(typeof(Exception));
-            this.LoadType(typeof(NotImplementedException));
+            this.LoadType(typeof(NotImplementedException)); 
+            this.LoadType(typeof(ArgumentOutOfRangeException));
             this.LoadType(typeof(Enum));
             this.LoadType(typeof(ICsLuaAddOn));
             this.LoadType(typeof(IDictionary));

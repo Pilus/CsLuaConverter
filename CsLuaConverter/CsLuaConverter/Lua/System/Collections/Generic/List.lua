@@ -39,11 +39,87 @@ System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, gene
         end,
     });
 
+    _M.IM(members,'Capacity',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        types = {},
+        get = function(element)
+            local c = getCount(element);
+            return c == 0 and c or math.max(4, c);
+        end,
+    });
+
+    local ThrowIfOutOfRange = function(element, index)
+        local c = getCount(element);
+        if not(type(index) == "number") or index < 0 or index >= c then
+            _M.Throw(System.ArgumentOutOfRangeException());
+        end
+    end
+
     _M.IM(members,'#',{
         level = typeObject.Level,
         memberType = 'Indexer',
         scope = 'Public',
         types = {generics[1]},
+        get = function(element, index)
+            ThrowIfOutOfRange(element, index);
+            return element[2][index];
+        end,
+        set = function(element, index, value)
+            ThrowIfOutOfRange(element, index);
+            element[2][index] = value;
+        end,
+    });
+
+    _M.IM(members,'Add',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {generics[1]},
+        func = function(element,value)
+            element[2][getCount(element)] = value;
+        end,
+    });
+
+    _M.IM(members,'IsFixedSize',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        types = {},
+        get = function(element)
+            return false;
+        end,
+    });
+
+    _M.IM(members,'IsReadOnly',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        types = {},
+        get = function(element)
+            return false;
+        end,
+    });
+
+    _M.IM(members,'IsSynchronized',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        types = {},
+        get = function(element)
+            return false;
+        end,
+    });
+
+    _M.IM(members,'SyncRoot',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        types = {},
+        get = function(element)
+            return System.Object();
+        end,
     });
 
     local constructors = {

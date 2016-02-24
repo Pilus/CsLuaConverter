@@ -177,6 +177,11 @@ local InteractionElement = function(metaProvider, generics)
 
         if fittingMembers[1].memberType == "Indexer" then
             expectOneMember(fittingMembers, "#");
+
+            if (fittingMembers[1].get) then
+                return fittingMembers[1].get(self, key);
+            end
+
             return self[fittingMembers[1].level][key];
         end
 
@@ -216,6 +221,12 @@ local InteractionElement = function(metaProvider, generics)
 
         if fittingMembers[1].memberType == "Indexer" then
             expectOneMember(fittingMembers, "#");
+
+            if (fittingMembers[1].set) then
+                fittingMembers[1].set(self, key, value);
+                return
+            end
+
             self[fittingMembers[1].level][key] = value;
             return
         end

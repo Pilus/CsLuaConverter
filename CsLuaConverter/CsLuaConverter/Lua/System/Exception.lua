@@ -22,6 +22,12 @@ System.Exception = _M.NE({[0] = function(interactionElement, generics, staticVal
 
     local constructors = {
         {
+            types = {},
+            func = function(element)
+                (element %_M.DOT).Message = "";
+            end,
+        },
+        {
             types = {System.String.__typeof},
             func = function(element, msg)
                 (element %_M.DOT).Message = msg;

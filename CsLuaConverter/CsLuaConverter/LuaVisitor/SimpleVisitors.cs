@@ -9,7 +9,7 @@
         IVisitor<NullLiteralExpression>, IVisitor<SimpleAssignmentExpression>, IVisitor<AddExpression>,
         IVisitor<CharacterLiteralExpression>, IVisitor<NotEqualsExpression>, IVisitor<ReturnStatement>, 
         IVisitor<EqualsExpression>, IVisitor<CastExpression>, IVisitor<LogicalNotExpression>, IVisitor<SubtractExpression>,
-        IVisitor<MultiplyExpression>
+        IVisitor<MultiplyExpression>, IVisitor<UnaryMinusExpression>
     {
         public void Visit(FalseLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
@@ -78,6 +78,11 @@
         public void Visit(MultiplyExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("*");
+        }
+
+        public void Visit(UnaryMinusExpression element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write("-");
         }
     }
 }
