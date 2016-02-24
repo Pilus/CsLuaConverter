@@ -4,7 +4,6 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using SyntaxAnalysis;
 
     public class NamespaceDeclaration : ContainerElement
     {
@@ -14,22 +13,22 @@
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
-            LuaElementHelper.CheckType(typeof(NamespaceDeclarationSyntax), token.Parent);
+            ExpectKind(SyntaxKind.NamespaceDeclaration, token.Parent.GetKind());
 
             token = token.GetNextToken();
-            LuaElementHelper.CheckType(typeof(IdentifierNameSyntax), token.Parent);
+            ExpectKind(SyntaxKind.IdentifierName, token.Parent.GetKind());
             this.FullName.Add(token.Text);
 
             token = token.GetNextToken();
             while (token.Parent is QualifiedNameSyntax && token.Text.Equals("."))
             {
                 token = token.GetNextToken();
-                LuaElementHelper.CheckType(typeof(IdentifierNameSyntax), token.Parent);
+                ExpectKind(SyntaxKind.IdentifierName, token.Parent.GetKind());
                 this.FullName.Add(token.Text);
                 token = token.GetNextToken();
             }
 
-            LuaElementHelper.CheckType(typeof(NamespaceDeclarationSyntax), token.Parent);
+            ExpectKind(SyntaxKind.NamespaceDeclaration, token.Parent.GetKind());
 
             this.closeBranceSyntax = ((NamespaceDeclarationSyntax) token.Parent).CloseBraceToken;
 

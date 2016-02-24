@@ -1,10 +1,10 @@
 ﻿namespace CsLuaConverter.Providers.TypeProvider
 {
-    using SyntaxAnalysis;
+    using System;
 
     public class NativeTypeResult : ITypeResult
     {
-        private readonly System.Type type;
+        private readonly Type type;
         private readonly string name;
 
         public NativeTypeResult(string name)
@@ -14,7 +14,7 @@
 
         public string Name { get { return this.name; } }
 
-        public NativeTypeResult(string name, System.Type type)
+        public NativeTypeResult(string name, Type type)
         {
             this.name = name;
             this.type = type;
@@ -30,7 +30,7 @@
             return false;
         }
 
-        public System.Type GetTypeObject()
+        public Type GetTypeObject()
         {
             return this.type;
         }

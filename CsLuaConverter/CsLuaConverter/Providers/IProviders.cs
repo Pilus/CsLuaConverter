@@ -1,8 +1,8 @@
 namespace CsLuaConverter.Providers
 {
-    using PartialElementRegistry;
     using GenericsRegistry;
     using NameProvider;
+    using PartialElementRegistry;
     using TypeProvider;
 
     public interface IProviders

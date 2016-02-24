@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter
 {
     using System.IO;
+    using System.Reflection;
     using AddOnConstruction;
 
     internal static class CsLuaMetaReader
@@ -11,7 +12,7 @@
         {
             if (content == null)
             {
-                var path = new FileInfo(System.Reflection.Assembly.GetEntryAssembly().Location).Directory;
+                var path = new FileInfo(Assembly.GetEntryAssembly().Location).Directory;
                 using (var sr = new StreamReader(path + @"\CsLua.lua"))
                 {
                     content = sr.ReadToEnd();

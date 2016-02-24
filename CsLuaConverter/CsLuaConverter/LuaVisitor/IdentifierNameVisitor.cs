@@ -1,8 +1,6 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
-    using System;
     using System.CodeDom.Compiler;
-    using System.Collections.Generic;
     using System.Linq;
     using CodeElementAnalysis;
     using Providers;

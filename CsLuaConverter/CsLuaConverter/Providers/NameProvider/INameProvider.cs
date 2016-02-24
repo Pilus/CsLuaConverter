@@ -1,7 +1,6 @@
 ﻿
 namespace CsLuaConverter.Providers.NameProvider
 {
-    using System;
     using System.Collections.Generic;
     using TypeProvider;
 

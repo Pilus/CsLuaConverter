@@ -7,7 +7,6 @@
     using ProjectAnalysis;
     using Providers;
     using ReferenceAnalysis;
-    using SyntaxAnalysis;
 
     internal class SolutionHandler
     {

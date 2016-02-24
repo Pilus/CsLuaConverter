@@ -6,11 +6,11 @@
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using ProjectInfo = ProjectAnalysis.ProjectInfo;
 
     public class Analyzer : ISyntaxAnalyser
     {
@@ -21,7 +21,7 @@
             this.documentVisitor = documentVisitor;
         }
 
-        public AnalyzedProjectInfo AnalyzeProject(ProjectAnalysis.ProjectInfo projectInfo)
+        public AnalyzedProjectInfo AnalyzeProject(ProjectInfo projectInfo)
         {
             return new AnalyzedProjectInfo()
             {

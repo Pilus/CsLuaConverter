@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using CsLuaFramework.Attributes;
     using Microsoft.CodeAnalysis;
-    using SyntaxAnalysis;
 
     public class ProjectInfo
     {

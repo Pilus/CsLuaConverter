@@ -2,10 +2,8 @@
 
 namespace CsLuaConverter.Providers.PartialElementRegistry
 {
-    using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
-    using CsLuaConverter.SyntaxAnalysis;
     using System.Linq;
 
     internal class PartialElementRegistry : IPartialElementRegistry
@@ -14,20 +12,10 @@ namespace CsLuaConverter.Providers.PartialElementRegistry
 
         private void AddElement(PartialElementWithUsings element)
         {
-            if (this.partialElements.ContainsKey(element.element.Name))
-            {
-                partialElements[element.element.Name].Add(element);
-            }
-            else
-            {
-                partialElements[element.element.Name] = new List<PartialElementWithUsings>()
-                {
-                    element
-                };
-            }
+
         }
 
-        public void Register(IPartialLuaElement element, string fullNamespaceName, List<string> usings)
+        public void Register(object element, string fullNamespaceName, List<string> usings)
         {
             this.AddElement(new PartialElementWithUsings()
             {
@@ -58,7 +46,7 @@ namespace CsLuaConverter.Providers.PartialElementRegistry
 
                 providers.TypeProvider.SetNamespaces(firstElement.fullNamespaceName, usings);
 
-                elements.ForEach(e => e.element.WriteLua(textWriter, providers));
+                //elements.ForEach(e => e.element.WriteLua(textWriter, providers));
             }
 
             this.partialElements = new Dictionary<string, List<PartialElementWithUsings>>();
@@ -67,7 +55,7 @@ namespace CsLuaConverter.Providers.PartialElementRegistry
 
     internal struct PartialElementWithUsings
     {
-        public IPartialLuaElement element;
+        public object element;
         public string fullNamespaceName;
         public List<string> usings;
     }

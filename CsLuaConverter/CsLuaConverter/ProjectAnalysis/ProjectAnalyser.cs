@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.ProjectAnalysis
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -30,7 +31,7 @@
         private static CsLuaAddOnAttribute GetCsLuaAddOnAttribute(Assembly assembly)
         {
             return assembly.GetTypes()
-                .Select(t => System.Attribute.GetCustomAttribute(t, typeof(CsLuaAddOnAttribute)) as CsLuaAddOnAttribute).FirstOrDefault(att => att != null);
+                .Select(t => Attribute.GetCustomAttribute(t, typeof(CsLuaAddOnAttribute)) as CsLuaAddOnAttribute).FirstOrDefault(att => att != null);
         }
 
         private static ProjectType DetermineProjectType(string projectName, Assembly assembly, CsLuaAddOnAttribute csLuaAddOnAttribute, string projectPath)

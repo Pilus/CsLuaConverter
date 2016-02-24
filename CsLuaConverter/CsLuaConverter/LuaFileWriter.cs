@@ -8,7 +8,6 @@
     using System.Text.RegularExpressions;
     using AddOnConstruction;
     using Providers;
-    using SyntaxAnalysis;
 
     static class LuaFileWriter
     {

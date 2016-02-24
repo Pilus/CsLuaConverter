@@ -2,13 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
     public abstract class BaseElement
     {
-        [System.Diagnostics.DebuggerNonUserCode]
+        [DebuggerNonUserCode]
         public static void ExpectKind(SyntaxKind expectedKind, SyntaxKind actualKind)
         {
             if (!expectedKind.Equals(actualKind))
@@ -17,7 +18,7 @@
             }
         }
 
-        [System.Diagnostics.DebuggerNonUserCode]
+        [DebuggerNonUserCode]
         public static void ExpectKind(SyntaxKind[] expectedKinds, SyntaxKind actualKind)
         {
             if (!expectedKinds.Contains(actualKind))

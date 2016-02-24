@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis
 {
+    using System;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
@@ -22,7 +23,7 @@
             {
                 return true;
             }
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)

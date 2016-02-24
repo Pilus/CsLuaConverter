@@ -1,17 +1,12 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
-    using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection.Emit;
     using CodeElementAnalysis;
     using CsLuaFramework;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers;
     using Providers.GenericsRegistry;
-    using Providers.TypeProvider;
-    using SyntaxAnalysis.ClassElements;
 
     public class ClassVisitor : IVisitor<ClassDeclaration>
     {

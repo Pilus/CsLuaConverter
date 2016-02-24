@@ -1,9 +1,8 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
-    using CodeElementAnalysis;
-    using System;
-    using Providers;
     using System.CodeDom.Compiler;
+    using CodeElementAnalysis;
+    using Providers;
 
     public class NumericLiteralExpressionVisitor : BaseOpenCloseVisitor<NumericLiteralExpression>
     {

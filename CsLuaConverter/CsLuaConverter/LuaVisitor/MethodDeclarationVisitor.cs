@@ -1,10 +1,9 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
-    using CodeElementAnalysis;
-    using System;
-    using System.Linq;
-    using Providers;
     using System.CodeDom.Compiler;
+    using System.Linq;
+    using CodeElementAnalysis;
+    using Providers;
     using Providers.GenericsRegistry;
 
     public class MethodDeclarationVisitor : IVisitor<MethodDeclaration>

@@ -1,9 +1,8 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
-    using System;
     using System.CodeDom.Compiler;
     using CodeElementAnalysis;
-    using CsLuaConverter.Providers;
+    using Providers;
 
     public class PostDecrementExpressionVisitor : IVisitor<PostDecrementExpression
         >

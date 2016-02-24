@@ -1,10 +1,10 @@
 ﻿
 namespace CsLuaConverter.Providers
 {
-    using PartialElementRegistry;
     using GenericsRegistry;
     using Microsoft.CodeAnalysis;
     using NameProvider;
+    using PartialElementRegistry;
     using TypeProvider;
 
     internal class Providers : IProviders

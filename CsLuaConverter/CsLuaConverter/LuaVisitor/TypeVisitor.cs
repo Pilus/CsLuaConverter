@@ -1,10 +1,8 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
-    using System;
     using System.CodeDom.Compiler;
     using CodeElementAnalysis;
     using Providers;
-    using Providers.GenericsRegistry;
 
     public class TypeVisitor : IVisitor<TypeParameterList>, IVisitor<TypeParameter>
     {

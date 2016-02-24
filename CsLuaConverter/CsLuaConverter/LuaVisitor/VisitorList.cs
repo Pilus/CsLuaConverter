@@ -3,6 +3,7 @@
     using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using CodeElementAnalysis;
@@ -60,13 +61,13 @@
         private static IProviders providers;
         private static Type visitorType;
 
-        [System.Diagnostics.DebuggerNonUserCode]
+        [DebuggerNonUserCode]
         public static void Visit<T>(T element)
         {
             Visit<T>(element, writer, providers);
         }
 
-        [System.Diagnostics.DebuggerNonUserCode]
+        [DebuggerNonUserCode]
         public static void Visit<T>(T element, IndentedTextWriter writer, IProviders providers)
         {
             VisitorList.writer = writer;
@@ -85,7 +86,7 @@
             InvokeAndRethrow<T>(m, visitor, element);
         }
 
-        [System.Diagnostics.DebuggerNonUserCode]
+        [DebuggerNonUserCode]
         public static void WriteOpen<T>(T element)
         {
             if (element == null)
@@ -106,7 +107,7 @@
             InvokeAndRethrow<T>(m, visitor, element);
         }
 
-        [System.Diagnostics.DebuggerNonUserCode]
+        [DebuggerNonUserCode]
         public static void WriteClose<T>(T element)
         {
             if (element == null)
@@ -128,13 +129,13 @@
         }
 
 
-        [System.Diagnostics.DebuggerNonUserCode]
+        [DebuggerNonUserCode]
         private static bool IsType(IVisitor visitor)
         {
             return visitorType.IsInstanceOfType(visitor);
         }
 
-        [System.Diagnostics.DebuggerNonUserCode]
+        [DebuggerNonUserCode]
         private static void InvokeAndRethrow<T>(MethodInfo m, IVisitor visitor, T element)
         {
             try

@@ -1,6 +1,5 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis
 {
-    using System;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Statements;

@@ -1,20 +1,14 @@
 ﻿namespace CsLuaConverter
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
-    using System.Linq;
-    using System.Reflection;
     using System.Threading.Tasks;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.MSBuild;
-    using Providers;
-    using System.Timers;
     using CodeElementAnalysis;
     using LuaVisitor;
-    using SyntaxAnalysis;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.MSBuild;
 
     internal class Program
     {
@@ -48,17 +42,7 @@
             var solution = GetSolution(solutionPath);
             var providers = new Providers.Providers(solution);
 
-            var useOriginal = false;
-            ISyntaxAnalyser analyzer = null;
-            if (useOriginal)
-            {
-                analyzer = new SyntaxAnalyser();
-            }
-            else
-            {
-                analyzer = new Analyzer(new LuaDocumentVisitor());
-            }
-
+            ISyntaxAnalyser analyzer = new Analyzer(new LuaDocumentVisitor());
 
             var solutionHandler = new SolutionHandler(analyzer);
             var addOns = solutionHandler.GenerateAddOnsFromSolution(solution, providers);
