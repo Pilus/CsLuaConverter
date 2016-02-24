@@ -9,7 +9,8 @@ end
 local typeType;
 local objectType;
 
-local GetMatchScore = function(self, otherType, otherValue)
+local GetMatchScore;
+GetMatchScore = function(self, otherType, otherValue)
     if otherType.GetHashCode() == self.hash then
         return self.level;
     end
@@ -17,7 +18,7 @@ local GetMatchScore = function(self, otherType, otherValue)
     if self.implements then
         local bestScore;
         for _,interfaceType in ipairs(self.implements) do
-            local score = interfaceType.GetMatchScore(otherType);
+            local score = GetMatchScore(interfaceType, otherType, otherValue);
             if score then
                 bestScore = bestScore and math.max(bestScore, score) or score;
             end

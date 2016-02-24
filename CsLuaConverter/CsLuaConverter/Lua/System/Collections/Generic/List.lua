@@ -1,6 +1,8 @@
 ﻿
 System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, generics, staticValues)
-    local implements = {};
+    local implements = {
+        System.Collections.IList.__typeof
+    };
     local baseTypeObject, members = System.Object.__meta(staticValues);
     local typeObject = System.Type('List','System.Collections.Generic',baseTypeObject,1,generics,implements,interactionElement);
 

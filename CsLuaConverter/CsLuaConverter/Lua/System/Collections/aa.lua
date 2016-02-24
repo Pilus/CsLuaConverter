@@ -1,1 +1,1 @@
-﻿System = { __metaType = _M.MetaTypes.NameSpace };
+﻿System.Collections = { __metaType = _M.MetaTypes.NameSpace };
