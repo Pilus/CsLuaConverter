@@ -34,69 +34,14 @@
             this.currentScope.Add(element);
         }
 
-        private IEnumerable<MemberInfo> GetMethodsOfType(Type type)
+
+        private void AddAllInheritedMembersToScope(ITypeResult type)
         {
-            List<MethodInfo> publicMethods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance).ToList();
-
-            List<MethodInfo> privateMethods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).ToList();
-            publicMethods.AddRange(privateMethods);
-            List<MethodInfo> staticPublicMethods = type.GetMethods(BindingFlags.Public | BindingFlags.Static).ToList();
-            publicMethods.AddRange(staticPublicMethods);
-            List<MethodInfo> staticPrivateMethods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Static).ToList();
-            publicMethods.AddRange(staticPrivateMethods);
-
-            return publicMethods;
-        }
-
-        private void AddMembersToScope(Type type)
-        {
-            IEnumerable<MemberInfo> methods = this.GetMethodsOfType(type);
-            IEnumerable<MemberInfo> objectMethods = this.GetMethodsOfType(typeof(object));
-            foreach (MemberInfo method in methods.Where(m => !objectMethods.Any(om => om.Name.Equals(m.Name))))
+            foreach (var element in type.GetScopeElements())
             {
-                this.AddToScope(new ScopeElement(method.Name)
-                {
-                    ClassPrefix = ClassPrefix,
-                    IsFromClass = true,
-                });
-            }
-            foreach (MemberInfo member in type.GetMembers()) // Variables and properties
-            {
-                if (!member.MemberType.Equals(MemberTypes.Method) && !member.MemberType.Equals(MemberTypes.Constructor))
-                {
-                    this.AddToScope(new ScopeElement(member.Name)
-                    {
-                        ClassPrefix = ClassPrefix,
-                        IsFromClass = true
-                    });
-                }
+                this.AddToScope(element);
             }
 
-            foreach (var property in type.GetRuntimeProperties())
-            {
-                this.AddToScope(new ScopeElement(property.Name)
-                {
-                    ClassPrefix = ClassPrefix,
-                    IsFromClass = true
-                });
-            }
-
-            foreach (var field in type.GetRuntimeFields())
-            {
-                if (!field.Name.EndsWith("__BackingField"))
-                {
-                    this.AddToScope(new ScopeElement(field.Name)
-                    {
-                        ClassPrefix = ClassPrefix,
-                        IsFromClass = true
-                    });
-                }
-            }
-        }
-
-        private void AddAllInheritedMembersToScope(Type type)
-        {
-            this.AddMembersToScope(type);
             if (type.BaseType.FullName != "System.Object")
             {
                 this.AddAllInheritedMembersToScope(type.BaseType);
@@ -106,7 +51,7 @@
         public void AddAllInheritedMembersToScope(string typeName)
         {
             var type = this.typeProvider.LookupType(typeName);
-            this.AddAllInheritedMembersToScope(type.GetTypeObject());
+            this.AddAllInheritedMembersToScope(type);
         }
 
         public string LookupVariableName(IEnumerable<string> names)

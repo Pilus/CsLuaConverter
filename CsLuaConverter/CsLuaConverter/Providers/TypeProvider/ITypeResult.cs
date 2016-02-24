@@ -1,9 +1,11 @@
 namespace CsLuaConverter.Providers.TypeProvider
 {
     using System;
+    using System.Collections.Generic;
 
     public interface ITypeResult
     {
+        ITypeResult BaseType { get; }
         string Name { get; }
         string Namespace { get; }
         string FullName { get; }
@@ -11,7 +13,7 @@ namespace CsLuaConverter.Providers.TypeProvider
         string ToString();
         bool IsInterface { get; }
 
-        [Obsolete("Use specific methods and properties instead.")]
-        Type GetTypeObject();
+        IEnumerable<ScopeElement> GetScopeElements();
+
     }
 }
