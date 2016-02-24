@@ -9,7 +9,7 @@
     {
         public void Visit(EnumDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
-            var type = providers.TypeProvider.LookupType(element.Name).GetTypeObject();
+            var type = providers.TypeProvider.LookupType(element.Name);
             textWriter.WriteLine("{0} = _M.EN({{", element.Name);
             textWriter.Indent++;
 

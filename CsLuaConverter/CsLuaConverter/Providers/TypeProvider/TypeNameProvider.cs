@@ -138,31 +138,9 @@
             }
         }
 
-        [Obsolete("Use LookupType instead.")]
-        public string LookupStaticVariableName(IEnumerable<string> names)
-        {
-            var firstName = names.First();
-            
-            foreach (var ns in this.refenrecedNamespaces)
-            {
-                if (ns.Types.ContainsKey(firstName))
-                {
-                    var type = ns.Types[firstName];
-                    var additionalName = string.Empty;
-                    if (names.Count() > 1)
-                    {
-                        additionalName = "." + string.Join(".", names.Skip(1).ToArray());
-                    }
-                    return type.Type.FullName + additionalName;
-                }
-            }
-
-            throw new ProviderException(string.Format("Could not find a variable for {0}", firstName));
-        }
-
         public ITypeResult LookupType(string name)
         {
-            var nativeType = this.predefinedNativeTypeResults.FirstOrDefault(t => name.Equals(t.Name));
+            var nativeType = this.predefinedNativeTypeResults.FirstOrDefault(t => name.Equals(t.NativeName));
             if (nativeType != null)
             {
                 return nativeType;

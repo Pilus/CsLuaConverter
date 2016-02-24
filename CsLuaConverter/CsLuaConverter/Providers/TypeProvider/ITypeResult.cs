@@ -4,9 +4,14 @@ namespace CsLuaConverter.Providers.TypeProvider
 
     public interface ITypeResult
     {
-        string ToQuotedString();
+        string Name { get; }
+        string Namespace { get; }
+        string FullName { get; }
+        bool IsClass { get; }
         string ToString();
-        bool IsInterface();
+        bool IsInterface { get; }
+
+        [Obsolete("Use specific methods and properties instead.")]
         Type GetTypeObject();
     }
 }

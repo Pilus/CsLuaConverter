@@ -5,35 +5,30 @@
     public class NativeTypeResult : ITypeResult
     {
         private readonly Type type;
-        private readonly string name;
+        private readonly string nativeName;
 
-        public NativeTypeResult(string name)
+        public string NativeName => this.nativeName;
+
+        public string Name => this.type.Name;
+
+        public string FullName => this.type.FullName;
+
+        public string Namespace => this.type.Namespace;
+
+        public NativeTypeResult(string nativeName, Type type)
         {
-            this.name = name;
-        }
-
-        public string Name { get { return this.name; } }
-
-        public NativeTypeResult(string name, Type type)
-        {
-            this.name = name;
+            this.nativeName = nativeName;
             this.type = type;
         }
 
-        public string ToQuotedString()
-        {
-            return "'" + this.name + "'";
-        }
-
-        public bool IsInterface()
-        {
-            return false;
-        }
+        public bool IsInterface => this.type.IsInterface;
 
         public Type GetTypeObject()
         {
             return this.type;
         }
+
+        public bool IsClass => this.type.IsClass;
 
         public override string ToString()
         {

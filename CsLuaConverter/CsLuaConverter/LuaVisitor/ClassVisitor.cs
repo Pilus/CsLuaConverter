@@ -44,7 +44,7 @@
             {
                 var type = providers.TypeProvider.LookupType(element.Name);
                 textWriter.Write("(");
-                textWriter.Write(type.GetTypeObject().FullName);
+                textWriter.Write(type.FullName);
                 textWriter.WriteLine("() % _M.DOT).Execute();");
             }
         }
@@ -73,7 +73,7 @@
             else if (firstBaseElementPair is GenericName)
             {
                 var identifierName = (GenericName)firstBaseElementPair;
-                var type = providers.TypeProvider.LookupType(identifierName.Name).GetTypeObject();
+                var type = providers.TypeProvider.LookupType(identifierName.Name);
 
                 if (type.IsClass)
                 {
@@ -90,7 +90,7 @@
             {
                 // TODO: Analyse the generics of the base element call and use them to initialize the right version of the base element.
                 // textWriter.Write("[{");
-                // this.baseLists[0].Name.Generics.WriteLua(textWriter, providers);
+                // this.baseLists[0].NativeName.Generics.WriteLua(textWriter, providers);
                 // textWriter.Write("}]");
             }
 
@@ -99,8 +99,6 @@
 
         private static void WriteTypeGeneration(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
-            var typeObject = providers.TypeProvider.LookupType(element.Name).GetTypeObject();
-
             if (element.BaseList != null)
             {
                 foreach (var containedElement in element.BaseList.ContainedElements)
@@ -110,7 +108,7 @@
                         var identifierName = (IdentifierName)containedElement;
                         var type = identifierName.GetTypeObject(providers);
 
-                        if (type.IsInterface && type != typeof(ICsLuaAddOn))
+                        if (type.IsInterface && type.FullName != typeof(ICsLuaAddOn).FullName)
                         {
                             textWriter.Write("table.insert(implements, ");
                             TypeOfExpressionVisitor.WriteTypeReference(identifierName, textWriter, providers);
@@ -120,7 +118,7 @@
                     else if (containedElement is GenericName)
                     {
                         var genericName = (GenericName)containedElement;
-                        var type = providers.TypeProvider.LookupType(genericName.Name).GetTypeObject();
+                        var type = providers.TypeProvider.LookupType(genericName.Name);
 
                         if (type.IsInterface)
                         {
@@ -132,7 +130,7 @@
                 }
             }
 
-
+            var typeObject = providers.TypeProvider.LookupType(element.Name);
             textWriter.WriteLine(
                 "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements, interactionElement);",
                 typeObject.Name, typeObject.Namespace, element.Generics?.ContainedElements.Count ?? 0);

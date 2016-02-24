@@ -14,7 +14,7 @@
 
             RegisterGenerics(element, textWriter, providers);
 
-            var typeObject = providers.TypeProvider.LookupType(element.Name).GetTypeObject();
+            var typeObject = providers.TypeProvider.LookupType(element.Name);
 
             textWriter.WriteLine("{0} = _M.NE({{[{1}] = function(interactionElement, generics, staticValues)", element.Name, GetNumOfGenerics(element));
             textWriter.Indent++;

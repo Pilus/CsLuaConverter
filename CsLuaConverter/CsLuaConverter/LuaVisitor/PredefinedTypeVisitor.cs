@@ -11,11 +11,11 @@
             var type = providers.TypeProvider.LookupType(element.Text);
             if (element.IsArray)
             {
-                textWriter.Write("System.Array[{{{0}.__typeof}}]", type.GetTypeObject().FullName);
+                textWriter.Write("System.Array[{{{0}.__typeof}}]", type.FullName);
             }
             else
             {
-                textWriter.Write("{0}", type.GetTypeObject().FullName);
+                textWriter.Write("{0}", type.FullName);
             }
         }
     }

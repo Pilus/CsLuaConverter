@@ -3,13 +3,13 @@
     using System;
     using CodeElementAnalysis;
     using Providers;
+    using Providers.TypeProvider;
 
     public static class Extensions
     {
-        public static Type GetTypeObject(this IdentifierName identifier, IProviders providers)
+        public static ITypeResult GetTypeObject(this IdentifierName identifier, IProviders providers)
         {
-            var result = providers.TypeProvider.LookupType(identifier.Names);
-            return result.GetTypeObject();
+            return providers.TypeProvider.LookupType(identifier.Names);
         }
     }
 }

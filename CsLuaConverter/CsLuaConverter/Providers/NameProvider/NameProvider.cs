@@ -157,7 +157,7 @@
 
             var type = this.typeProvider.LookupType(names);
 
-            return type.GetTypeObject().FullName.Split('`').First().Split('.');
+            return type.FullName.Split('`').First().Split('.');
         }
     }
 }
