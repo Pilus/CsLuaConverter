@@ -1,6 +1,6 @@
-﻿System.Array = _M.NE({["#"] = function(interactionElement, generics, staticValues)
+﻿System.Array = _M.NE({[1] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),nil,nil,interactionElement);
+    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,nil,interactionElement);
 
     local len = function(element)
         return (element[typeObject.level][0] and 1 or 0) + #(element[typeObject.level]);
@@ -28,6 +28,23 @@
         end,
     });
 
+    _M.IM(members,'Length',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        types = {},
+        get = function(element)
+            return len(element);
+        end,
+    });
+
+    _M.IM(members,'#',{
+        level = typeObject.Level,
+        memberType = 'Indexer',
+        scope = 'Public',
+        types = {generics[1]},
+    });
+
     local constructors = {
         {
             types = {},
@@ -40,6 +57,44 @@
             self[typeObject.Level][i] = v;
         end
     end;
-
-    return "Class", typeObject, members, constructors, function() return {[1] = {},[2] = {}, ["type"] = typeObject}; end, nil, initialize;
+    local objectGenerator = function() 
+        return {
+            [1] = {},
+            [2] = {}, 
+            ["type"] = typeObject,
+            __metaType = _M.MetaTypes.ClassObject,
+        }; 
+    end
+    return "Class", typeObject, members, constructors, objectGenerator, nil, initialize;
 end})
+
+local areAllOfType = function(objs, type)
+    for _,v in pairs(objs) do
+        if not(type.IsInstanceOfType(v)) then
+            return false;
+        end
+    end
+    return true;
+end
+
+local getHighestCommonType = function(objs)
+    local type;
+    for i,v in pairs(objs) do
+        type = (v %_M.DOT).GetType();
+        break;
+    end
+
+    while (type) do
+        if areAllOfType(objs, type) then
+            return type;
+        end
+        type = type.BaseType;
+    end
+
+    error("No common type found");
+end
+
+ImplicitArray = function(t)
+    local type = getHighestCommonType(t);
+    return (System.Array[{type}]() % _M.DOT).__Initialize(t);
+end

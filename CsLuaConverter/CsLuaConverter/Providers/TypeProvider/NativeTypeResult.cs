@@ -1,39 +1,41 @@
 ﻿namespace CsLuaConverter.Providers.TypeProvider
 {
-    using SyntaxAnalysis;
+    using System;
+    using System.Collections.Generic;
 
     public class NativeTypeResult : ITypeResult
     {
-        private readonly System.Type type;
-        private readonly string name;
+        private readonly Type type;
+        private readonly string nativeName;
 
-        public NativeTypeResult(string name)
+        public ITypeResult BaseType { get; private set; }
+
+        public string NativeName => this.nativeName;
+
+        public string Name => this.type.Name;
+
+        public string FullName => this.type.FullName;
+
+        public string Namespace => this.type.Namespace;
+
+        public NativeTypeResult(string nativeName, Type type)
         {
-            this.name = name;
-        }
-
-        public string Name { get { return this.name; } }
-
-        public NativeTypeResult(string name, System.Type type)
-        {
-            this.name = name;
+            this.nativeName = nativeName;
             this.type = type;
+            if (type.BaseType != null)
+            {
+                this.BaseType = new TypeResult(type.BaseType);
+            }
         }
 
-        public string ToQuotedString()
+        public bool IsInterface => this.type.IsInterface;
+
+        public IEnumerable<ScopeElement> GetScopeElements()
         {
-            return "'" + this.name + "'";
+            return new ScopeElement[] {};
         }
 
-        public bool IsInterface()
-        {
-            return false;
-        }
-
-        public System.Type GetTypeObject()
-        {
-            return this.type;
-        }
+        public bool IsClass => this.type.IsClass;
 
         public override string ToString()
         {

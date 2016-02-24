@@ -15,11 +15,45 @@
         end,
     });
 
+    _M.IM(members,'Contains',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {typeObject},
+        func = function(element, str)
+            return not(string.find(element, str) == nil)
+        end,
+    });
+
+    _M.IM(members,'Length',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        types = {},
+        get = function(element)
+            return string.len(element);
+        end,
+    });
+
+    _M.IM(members,'IsNullOrEmpty',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        static = true,
+        types = {typeObject},
+        func = function(_, str)
+            return str == nil or str == "";
+        end,
+    });
+
     local constructors = {
         {
             types = {},
             func = function() end,
         }
     };
-    return "Class", typeObject, members, constructors, function() return {[1] = {},[2] = {}, ["type"] = typeObject}; end;
+    local objectGenerator = function() 
+        return "";
+    end
+    return "Class", typeObject, members, constructors, objectGenerator;
 end})

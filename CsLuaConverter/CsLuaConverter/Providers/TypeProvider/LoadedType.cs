@@ -15,19 +15,12 @@
 
         public ITypeResult GetTypeResult()
         {
-            return new TypeResult()
-            {
-                Type = this.Type,
-            };
+            return new TypeResult(this.Type);
         }
 
         public ITypeResult GetTypeResult(string additionalString)
         {
-            return new TypeResult()
-            {
-                Type = this.Type,
-                AdditionalString = additionalString,
-            };
+            return new TypeResult(this.Type, additionalString);
         }
     }
 }

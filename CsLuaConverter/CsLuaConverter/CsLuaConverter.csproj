@@ -50,7 +50,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\..\Gryphonheart\CsLuaConverter\</OutputPath>
+    <OutputPath>..\..\CsLuaTest\CsLuaConverter\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -66,7 +66,7 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>powershell -ExecutionPolicy ByPass -file "$(SolutionDir)CsLuaConverter\CopyLuaToOutput.ps1" "$(SolutionDir)CsLuaConverter"</PostBuildEvent>
+    <PostBuildEvent>powershell -ExecutionPolicy ByPass -file "$(SolutionDir)CsLuaConverter\CopyLuaToOutput.ps1" "$(SolutionDir)."</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -76,10 +76,141 @@
     <Compile Include="AddOnConstruction\AddOn.cs" />
     <Compile Include="AddOnConstruction\AddOnConstructor.cs" />
     <Compile Include="AddOnConstruction\CodeFile.cs" />
+    <Compile Include="AnalyzedProjectInfo.cs" />
+    <Compile Include="CodeElementAnalysis\AccessorList.cs" />
+    <Compile Include="CodeElementAnalysis\AddAssignmentExpression.cs" />
+    <Compile Include="CodeElementAnalysis\AddExpression.cs" />
+    <Compile Include="CodeElementAnalysis\Analyzer.cs" />
+    <Compile Include="CodeElementAnalysis\ArgumentList.cs" />
+    <Compile Include="CodeElementAnalysis\ArrayCreationExpression.cs" />
+    <Compile Include="CodeElementAnalysis\ArrayInitializerExpression.cs" />
+    <Compile Include="CodeElementAnalysis\AsExpression.cs" />
+    <Compile Include="CodeElementAnalysis\AttributeArgumentList.cs" />
+    <Compile Include="CodeElementAnalysis\AttributeList.cs" />
+    <Compile Include="CodeElementAnalysis\BaseConstructorInitializer.cs" />
+    <Compile Include="CodeElementAnalysis\BaseExpression.cs" />
+    <Compile Include="CodeElementAnalysis\Block.cs" />
+    <Compile Include="CodeElementAnalysis\BracketedArgumentList.cs" />
+    <Compile Include="CodeElementAnalysis\CastExpression.cs" />
+    <Compile Include="CodeElementAnalysis\CatchDeclaration.cs" />
+    <Compile Include="CodeElementAnalysis\CharacterLiteralExpression.cs" />
+    <Compile Include="CodeElementAnalysis\CollectionInitializerExpression.cs" />
+    <Compile Include="CodeElementAnalysis\ComplexElementInitializerExpression.cs" />
+    <Compile Include="CodeElementAnalysis\ConditionalExpression.cs" />
+    <Compile Include="CodeElementAnalysis\DelimiteredContainerElement.cs" />
+    <Compile Include="CodeElementAnalysis\ElementWithInnerElement.cs" />
+    <Compile Include="CodeElementAnalysis\ElseClause.cs" />
+    <Compile Include="CodeElementAnalysis\EnumDeclaration.cs" />
+    <Compile Include="CodeElementAnalysis\EnumMemberDeclaration.cs" />
+    <Compile Include="CodeElementAnalysis\EqualsExpression.cs" />
+    <Compile Include="CodeElementAnalysis\EqualsValueClause.cs" />
+    <Compile Include="CodeElementAnalysis\FalseLiteralExpression.cs" />
+    <Compile Include="CodeElementAnalysis\FieldDeclaration.cs" />
+    <Compile Include="CodeElementAnalysis\ForEachStatement.cs" />
+    <Compile Include="CodeElementAnalysis\GenericName.cs" />
+    <Compile Include="CodeElementAnalysis\IDocumentVisitor.cs" />
+    <Compile Include="CodeElementAnalysis\IfStatement.cs" />
+    <Compile Include="CodeElementAnalysis\ImplicitArrayCreationExpression.cs" />
+    <Compile Include="CodeElementAnalysis\InterfaceDeclaration.cs" />
+    <Compile Include="CodeElementAnalysis\InterfaceElement.cs" />
+    <Compile Include="CodeElementAnalysis\IsExpression.cs" />
+    <Compile Include="CodeElementAnalysis\LogicalNotExpression.cs" />
+    <Compile Include="CodeElementAnalysis\MethodDeclaration.cs" />
+    <Compile Include="CodeElementAnalysis\MultiplyExpression.cs" />
+    <Compile Include="CodeElementAnalysis\NameEquals.cs" />
+    <Compile Include="CodeElementAnalysis\NotEqualsExpression.cs" />
+    <Compile Include="CodeElementAnalysis\NullLiteralExpression.cs" />
+    <Compile Include="CodeElementAnalysis\NumericLiteralExpression.cs" />
+    <Compile Include="CodeElementAnalysis\ObjectCreationExpression.cs" />
+    <Compile Include="CodeElementAnalysis\ObjectInitializerExpression.cs" />
+    <Compile Include="CodeElementAnalysis\Parameter.cs" />
+    <Compile Include="CodeElementAnalysis\ParenthesizedExpression.cs" />
+    <Compile Include="CodeElementAnalysis\ParenthesizedLambdaExpression.cs" />
+    <Compile Include="CodeElementAnalysis\PostDecrementExpression.cs" />
+    <Compile Include="CodeElementAnalysis\PostIncrementExpression.cs" />
+    <Compile Include="CodeElementAnalysis\PredefinedType.cs" />
+    <Compile Include="CodeElementAnalysis\PropertyDeclaration.cs" />
+    <Compile Include="CodeElementAnalysis\ReturnStatement.cs" />
+    <Compile Include="CodeElementAnalysis\Scope.cs" />
+    <Compile Include="CodeElementAnalysis\SimpleAssignmentExpression.cs" />
+    <Compile Include="CodeElementAnalysis\SimpleLambdaExpression.cs" />
+    <Compile Include="CodeElementAnalysis\SimpleMemberAccessExpression.cs" />
+    <Compile Include="CodeElementAnalysis\Statements\Statement.cs" />
+    <Compile Include="CodeElementAnalysis\Statements\StatementException.cs" />
+    <Compile Include="CodeElementAnalysis\Statements\StatementInfo.cs" />
+    <Compile Include="CodeElementAnalysis\Statements\StatementType.cs" />
+    <Compile Include="CodeElementAnalysis\StringLiteralExpression.cs" />
+    <Compile Include="CodeElementAnalysis\SubtractAssignmentExpression.cs" />
+    <Compile Include="CodeElementAnalysis\SubtractExpression.cs" />
+    <Compile Include="CodeElementAnalysis\ThisExpression.cs" />
+    <Compile Include="CodeElementAnalysis\ThrowStatement.cs" />
+    <Compile Include="CodeElementAnalysis\ThrowStatementVisitor.cs" />
+    <Compile Include="CodeElementAnalysis\TrueLiteralExpression.cs" />
+    <Compile Include="CodeElementAnalysis\TryStatement.cs" />
+    <Compile Include="CodeElementAnalysis\TypeArgumentList.cs" />
+    <Compile Include="CodeElementAnalysis\TypeOfExpression.cs" />
+    <Compile Include="CodeElementAnalysis\TypeParameter.cs" />
+    <Compile Include="CodeElementAnalysis\TypeParameterList.cs" />
+    <Compile Include="CodeElementAnalysis\UsingDirective.cs" />
+    <Compile Include="CodeElementAnalysis\VariableDeclarator.cs" />
     <Compile Include="ConverterException.cs" />
     <Compile Include="AddOnConstruction\IDeployableAddOn.cs" />
     <Compile Include="AddOnConstruction\LuaAddOn.cs" />
+    <Compile Include="ISyntaxAnalyser.cs" />
     <Compile Include="LuaFileWriter.cs" />
+    <Compile Include="LuaVisitor\ArgumentListVisitor.cs" />
+    <Compile Include="LuaVisitor\ArrayVisitor.cs" />
+    <Compile Include="LuaVisitor\AttributeListVisitor.cs" />
+    <Compile Include="LuaVisitor\BaseExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\BaseOpenCloseVisitor.cs" />
+    <Compile Include="LuaVisitor\BlockVisitor.cs" />
+    <Compile Include="LuaVisitor\BracketedArgumentListVisitor.cs" />
+    <Compile Include="LuaVisitor\ClassVisitor.cs" />
+    <Compile Include="LuaVisitor\CollectionInitializerExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\ComplexElementInitializerExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\ConditionalExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\EnumDeclarationVisitor.cs" />
+    <Compile Include="LuaVisitor\EnumMemberDeclarationVisitor.cs" />
+    <Compile Include="LuaVisitor\Extensions.cs" />
+    <Compile Include="LuaVisitor\ForEachStatementVisitor.cs" />
+    <Compile Include="LuaVisitor\GenericNameVisitor.cs" />
+    <Compile Include="LuaVisitor\IdentifierNameVisitor.cs" />
+    <Compile Include="LuaVisitor\IfStatementVisitor.cs" />
+    <Compile Include="LuaVisitor\InterfaceDeclarationVisitor.cs" />
+    <Compile Include="LuaVisitor\IOpenCloseVisitor.cs" />
+    <Compile Include="LuaVisitor\IsExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\LuaVisitorException.cs" />
+    <Compile Include="LuaVisitor\MethodDeclarationVisitor.cs" />
+    <Compile Include="LuaVisitor\NumericLiteralExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\FieldDeclarationVisitor.cs" />
+    <Compile Include="LuaVisitor\ObjectCreationExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\ObjectInitializerExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\ParameterListVisitor.cs" />
+    <Compile Include="LuaVisitor\ParameterVisitor.cs" />
+    <Compile Include="LuaVisitor\ParenthesizedExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\PostDecrementExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\PostIncrementExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\PredefinedTypeVisitor.cs" />
+    <Compile Include="LuaVisitor\PropertyDeclarationVisitor.cs" />
+    <Compile Include="LuaVisitor\SimpleLambdaExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\SimpleMemberAccessExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\SimpleVisitors.cs" />
+    <Compile Include="LuaVisitor\StatementVisitor.cs" />
+    <Compile Include="LuaVisitor\StringLiteralExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\AssignmentExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\ThisExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\TryStatementVisitor.cs" />
+    <Compile Include="LuaVisitor\TypeArgumentListVisitor.cs" />
+    <Compile Include="LuaVisitor\TypeOfExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\TypeVisitor.cs" />
+    <Compile Include="LuaVisitor\VariableDeclaratorVisitor.cs" />
+    <Compile Include="LuaVisitor\VisitorList.cs" />
+    <Compile Include="LuaVisitor\IVisitor.cs" />
+    <Compile Include="LuaVisitor\LuaDocumentVisitor.cs" />
+    <Compile Include="LuaVisitor\Namespace.cs" />
+    <Compile Include="LuaVisitor\NamespaceElement.cs" />
+    <Compile Include="LuaVisitor\NamespaceExtractor.cs" />
+    <Compile Include="LuaVisitor\NamespaceVisitor.cs" />
     <Compile Include="ProjectType.cs" />
     <Compile Include="Providers\GenericsRegistry\GenericScope.cs" />
     <Compile Include="Providers\GenericsRegistry\GenericsRegistry.cs" />
@@ -106,105 +237,56 @@
     <Compile Include="ReferenceAnalysis\HostGraphNode.cs" />
     <Compile Include="ReferenceAnalysis\ReferenceAnalyzer.cs" />
     <Compile Include="SolutionHandler.cs" />
-    <Compile Include="SyntaxAnalysis\AnalyzedProjectInfo.cs" />
-    <Compile Include="SyntaxAnalysis\BaseList.cs" />
-    <Compile Include="SyntaxAnalysis\BracketedArgumentList.cs" />
-    <Compile Include="SyntaxAnalysis\ArgumentList.cs" />
-    <Compile Include="SyntaxAnalysis\ArrayCreation.cs" />
-    <Compile Include="SyntaxAnalysis\Attribute.cs" />
-    <Compile Include="SyntaxAnalysis\BinaryExpression.cs" />
-    <Compile Include="SyntaxAnalysis\Block.cs" />
-    <Compile Include="SyntaxAnalysis\Cast.cs" />
-    <Compile Include="SyntaxAnalysis\Class.cs" />
-    <Compile Include="SyntaxAnalysis\ClassElements\Constructors.cs" />
-    <Compile Include="SyntaxAnalysis\ClassElements\ElementType.cs" />
-    <Compile Include="SyntaxAnalysis\ClassElements\IClassMember.cs" />
-    <Compile Include="SyntaxAnalysis\ClassElements\Interfaces.cs" />
-    <Compile Include="SyntaxAnalysis\ClassElements\LuaFormatter.cs" />
-    <Compile Include="SyntaxAnalysis\ClassElements\Methods.cs" />
-    <Compile Include="SyntaxAnalysis\ClassElements\Properties.cs" />
-    <Compile Include="SyntaxAnalysis\ClassElements\Serializability.cs" />
-    <Compile Include="SyntaxAnalysis\ClassElements\Variables.cs" />
-    <Compile Include="SyntaxAnalysis\ClassVariable.cs" />
-    <Compile Include="SyntaxAnalysis\Constructor.cs" />
-    <Compile Include="SyntaxAnalysis\Creator.cs" />
-    <Compile Include="SyntaxAnalysis\Delegate.cs" />
-    <Compile Include="SyntaxAnalysis\Else.cs" />
-    <Compile Include="SyntaxAnalysis\EnumElement.cs" />
-    <Compile Include="SyntaxAnalysis\ForeachLoop.cs" />
-    <Compile Include="SyntaxAnalysis\ForLoop.cs" />
-    <Compile Include="SyntaxAnalysis\GenericsDefinition.cs" />
-    <Compile Include="SyntaxAnalysis\GenericsParsing.cs" />
-    <Compile Include="SyntaxAnalysis\IfStatement.cs" />
-    <Compile Include="SyntaxAnalysis\IFunction.cs" />
-    <Compile Include="SyntaxAnalysis\ILuaElement.cs" />
-    <Compile Include="SyntaxAnalysis\Initializer.cs" />
-    <Compile Include="SyntaxAnalysis\Interface.cs" />
-    <Compile Include="SyntaxAnalysis\IPartialLuaElement.cs" />
-    <Compile Include="SyntaxAnalysis\LambdaExpression.cs" />
-    <Compile Include="SyntaxAnalysis\LiteralExpression.cs" />
-    <Compile Include="SyntaxAnalysis\LuaElementHelper.cs" />
+    <Compile Include="CodeElementAnalysis\BaseElement.cs" />
     <Compile Include="CsLuaMetaReader.cs" />
-    <Compile Include="SyntaxAnalysis\MainCode.cs" />
-    <Compile Include="SyntaxAnalysis\Method.cs" />
-    <Compile Include="SyntaxAnalysis\NameSpace.cs" />
-    <Compile Include="SyntaxAnalysis\NameSpacePart.cs" />
-    <Compile Include="SyntaxAnalysis\New.cs" />
-    <Compile Include="SyntaxAnalysis\Parameter.cs" />
-    <Compile Include="SyntaxAnalysis\ParameterList.cs" />
-    <Compile Include="SyntaxAnalysis\ParenthesizedLambdaExpression.cs" />
-    <Compile Include="SyntaxAnalysis\PlusPlus.cs" />
-    <Compile Include="SyntaxAnalysis\PredefinedType.cs" />
-    <Compile Include="SyntaxAnalysis\PredeterminedElement.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="SyntaxAnalysis\Property.cs" />
-    <Compile Include="SyntaxAnalysis\ReferencedVariableName.cs" />
-    <Compile Include="SyntaxAnalysis\Scope.cs" />
-    <Compile Include="SyntaxAnalysis\Struct.cs" />
-    <Compile Include="SyntaxAnalysis\Switch.cs" />
-    <Compile Include="SyntaxAnalysis\SyntaxAnalyser.cs" />
-    <Compile Include="SyntaxAnalysis\This.cs" />
-    <Compile Include="SyntaxAnalysis\Throw.cs" />
-    <Compile Include="SyntaxAnalysis\Try.cs" />
-    <Compile Include="SyntaxAnalysis\TypeLookupException.cs" />
-    <Compile Include="SyntaxAnalysis\Var.cs" />
-    <Compile Include="SyntaxAnalysis\VariableName.cs" />
-    <Compile Include="SyntaxAnalysis\VariableDefinition.cs" />
-    <Compile Include="SyntaxAnalysis\WhileLoop.cs" />
+    <Compile Include="CodeElementAnalysis\BaseList.cs" />
+    <Compile Include="CodeElementAnalysis\ClassDeclaration.cs" />
+    <Compile Include="CodeElementAnalysis\ConstructorDeclaration.cs" />
+    <Compile Include="CodeElementAnalysis\ContainerElement.cs" />
+    <Compile Include="CodeElementAnalysis\DocumentElement.cs" />
+    <Compile Include="CodeElementAnalysis\IdentifierName.cs" />
+    <Compile Include="CodeElementAnalysis\NamespaceDeclaration.cs" />
+    <Compile Include="CodeElementAnalysis\ParameterList.cs" />
+    <Compile Include="CodeElementAnalysis\SyntaxTokenExtension.cs" />
     <Compile Include="AddOnConstruction\TocBuilder.cs" />
     <Compile Include="WrappingException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CopyLuaToOutput.ps1" />
-    <None Include="Lua\CsLuaMeta.lua" />
+    <None Include="Lua\Meta\Add.lua" />
     <None Include="Lua\Meta\ArgumentMatching.lua" />
     <None Include="Lua\Meta\DefaultValue.lua" />
     <None Include="Lua\Meta\Dot.lua" />
+    <None Include="Lua\Meta\Enum.lua" />
+    <None Include="Lua\Meta\GenericMethod.lua" />
     <None Include="Lua\Meta\InteractionElement.lua" />
     <None Include="Lua\Meta\NamespaceElement.lua" />
     <None Include="Lua\Meta\Throw.lua" />
     <None Include="Lua\Meta\Try.lua" />
     <None Include="Lua\Meta\aa._M.lua" />
+    <None Include="Lua\System\Collections\aa.lua" />
+    <None Include="Lua\System\Collections\Generic\aa.lua" />
+    <None Include="Lua\System\Collections\IEnumerable.lua" />
+    <None Include="Lua\System\Collections\ICollection.lua" />
+    <None Include="Lua\System\Collections\IList.lua" />
+    <None Include="Lua\System\System.Func.lua" />
+    <None Include="Lua\System\System.Enum.lua" />
     <None Include="Lua\System\System.Bool.lua" />
     <None Include="Lua\System\System.Double.lua" />
     <None Include="Lua\System\System.Exception.lua" />
     <None Include="Lua\System\System.Int.lua" />
+    <None Include="Lua\System\System.Int64.lua" />
     <None Include="Lua\System\System.Int32.lua" />
     <None Include="Lua\System\System.Array.lua" />
     <None Include="Lua\System\System.Action.lua" />
-    <None Include="Lua\System\System.Collections.Generic.Dictionary.lua" />
-    <None Include="Lua\System\System.Collections.Generic.List.lua" />
+    <None Include="Lua\System\Collections\Generic\Dictionary.lua" />
+    <None Include="Lua\System\Collections\Generic\List.lua" />
     <None Include="Lua\System\System.Linq.lua" />
     <None Include="Lua\System\System.String.lua" />
     <None Include="Lua\System\System.Object.lua" />
     <None Include="Lua\System\System.Type.lua" />
     <None Include="Lua\System\aa.System.lua" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CsLuaAttributes\CsLuaAttributes.csproj">
-      <Project>{3ec1fd14-1402-4adc-bbd0-07cf30e3a654}</Project>
-      <Name>CsLuaAttributes</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -217,6 +299,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CsLuaFramework\CsLuaFramework.csproj">
+      <Project>{3ec1fd14-1402-4adc-bbd0-07cf30e3a654}</Project>
+      <Name>CsLuaFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ImportGroup Label="Targets">

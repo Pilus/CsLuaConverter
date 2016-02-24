@@ -9,7 +9,8 @@ end
 local typeType;
 local objectType;
 
-local GetMatchScore = function(self, otherType)
+local GetMatchScore;
+GetMatchScore = function(self, otherType, otherValue)
     if otherType.GetHashCode() == self.hash then
         return self.level;
     end
@@ -17,7 +18,7 @@ local GetMatchScore = function(self, otherType)
     if self.implements then
         local bestScore;
         for _,interfaceType in ipairs(self.implements) do
-            local score = interfaceType.GetMatchScore(otherType);
+            local score = GetMatchScore(interfaceType, otherType, otherValue);
             if score then
                 bestScore = bestScore and math.max(bestScore, score) or score;
             end
@@ -28,6 +29,12 @@ local GetMatchScore = function(self, otherType)
         end
     end
     
+    if otherType.catagory == "Enum" and self.Equals(System.String.__typeof) then
+        if (System.Enum % _M.DOT).Parse(otherType, otherValue) then
+            return 0;
+        end
+    end
+
     if self.baseType then
         return self.baseType.GetMatchScore(otherType);
     end
@@ -37,7 +44,9 @@ end
 
 local meta = {
     __index = function(self, index)
-        if index == "GetType" then
+        if index == "__metaType" then
+            return _M.MetaTypes.TypeObject;
+        elseif index == "GetType" then
             return function()
                 return typeType;
             end
@@ -45,23 +54,36 @@ local meta = {
             return function()
                 return self.hash;
             end
+        elseif index == "ToString" then
+            return function()
+                local fullName = self.namespace .. "." .. self.name;
+
+                if self.generics then
+                    local genericsNames = {};
+                    for i,v in pairs(self.generics) do
+                        genericsNames[i] = v.ToString();
+                    end
+                    return fullName.."<"..string.join(",", unpack(genericsNames))..">";
+                end
+                return fullName;
+            end;
         elseif index == "Equals" then
             return function(otherType)
                 return self.hash == otherType.GetHashCode();
             end
         elseif index == "IsInstanceOfType" then
             return function(instance)
-                local otherType = (instance %_M.DOT).GetType();
-                if self.Equals(otherType) then
+                local otherType = (instance % _M.DOT).GetType();
+                if self.hash == otherType.hash then
                     return true;
                 end
 
-                if self.baseType and self.baseType.IsInstanceOfType(instance) then
+                if otherType.baseType and self.IsInstanceOfType({type = otherType.baseType}) then
                     return true;
                 end
 
-                for _,imp in ipairs(self.implements or {}) do
-                    if imp.IsInstanceOfType(instance) then
+                for _,imp in ipairs(otherType.implements or {}) do
+                    if self.IsInstanceOfType({type = imp}) then
                         return true;
                     end
                 end
@@ -76,7 +98,7 @@ local meta = {
         elseif index == "Level" then
             return self.level;
         elseif index == "GetMatchScore" then
-            return function(otherType) return GetMatchScore(self, otherType); end;
+            return function(otherType, otherValue) return GetMatchScore(self, otherType, otherValue); end;
         elseif index == "InteractionElement" then
             return self.interactionElement;
         elseif index == "FullName" then
@@ -86,6 +108,20 @@ local meta = {
             end
 
             return self.namespace .. "." .. self.name .. generic;
+        elseif index == "IsEnum" then
+            return self.catagory == "Enum";
+        elseif index == "type" then
+            return typeType;
+        elseif index == "GetGenericArguments" then
+            return function()
+                local t = {};
+
+                for i,v in pairs(self.generics) do
+                    t[i-1] = v;
+                end
+
+                return t;
+            end
         end
     end,
 };
@@ -114,7 +150,8 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
         error("The type object "..tostring(name).." was already created.");
     end
 
-    local self = { 
+    local self = {
+        catagory = catagory, 
         namespace = namespace,
         name = name, 
         numberOfGenerics = numberOfGenerics,
@@ -129,6 +166,10 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
     setmetatable(self, meta);
     typeCache[hash] = self;
     return self;
+end
+
+GetTypeFromHash = function(hash)
+    return typeCache[hash];
 end
 
 --objectType = typeCall("Object", "System"); -- TODO: Initialize in a way that does not require the type cache

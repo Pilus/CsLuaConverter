@@ -19,14 +19,17 @@ local DotMeta = function(fIndex, fNewIndex, fCall)
 end
 
 local GetType = function(obj, index)
-    if type(obj) == "table" and obj.type then
-        return obj.type;
+    if type(obj) == "table" then
+        if type(obj.type) == "table" and obj.type.__metaType == _M.MetaTypes.TypeObject then
+            return obj.type;
+        end
+        return Lua.NativeLuaTable.__typeof;
     elseif type(obj) == "string" then
         return System.String.__typeof;
     elseif type(obj) == "function" then
         return System.Action.__typeof;
     elseif type(obj) == "boolean" then
-        return System.Bool.__typeof;
+        return System.Boolean.__typeof;
     elseif type(obj) == "number" then
         if obj == math.floor(obj) then
             return System.Int.__typeof;
@@ -41,9 +44,14 @@ _M.DOT_LVL = function(level)
     return DotMeta(
         function(obj, index)  -- useage:  a%_M.dot%b
             assert(not(obj == nil), "Attempted to read index "..tostring(index).." on a nil value.");
+            --assert(not(type(obj) == "table") or not(obj.__metaType == nil), "Attempted to read index "..tostring(index).." on a obj value with no meta type");
 
-            if (type(obj) == "table" and (obj.__isNamespace == true or obj.__isNamespaceElement)) then
+            if (type(obj) == "table" and (obj.__metaType ~= _M.MetaTypes.ClassObject and obj.__metaType ~= _M.MetaTypes.StaticValues) and not(index == "GetType")) then
                 return obj[index];
+            end
+
+            if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.NameSpaceElement)) then
+                return obj.__index(obj, index, level); 
             end
 
             local typeObject = GetType(obj, index);
@@ -55,16 +63,22 @@ _M.DOT_LVL = function(level)
         end, 
         function(obj, index, value)
             assert(not(obj == nil), "Attempted to write index "..tostring(index).." to a nil value.");
+            assert(not(type(obj) == "table") or not(obj.__metaType == nil), "Attempted to write index "..tostring(index).." on a obj value with no meta type");
 
-            if (type(obj) == "table" and (obj.__isNamespaceElement)) then
+            if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.NameSpaceElement)) then
                 return obj.__newindex(obj, index, value, level);
+            end
+
+            if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.InteractionElement)) then
+                obj[index] = value;
+                return;
             end
 
             local typeObject = GetType(obj, index);
             return typeObject.interactionElement.__newindex(obj, index, value, level); 
         end,
         function(obj, ...)
-            assert(type(obj) == "function", "Attempted to invoke a "..type(obj).." value.");
+            assert(type(obj) == "function" or type(obj) == "table", "Attempted to invoke a "..type(obj).." value.");
             return obj(...);
         end
     );

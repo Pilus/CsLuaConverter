@@ -5,11 +5,47 @@
             -- Note: GetType is implemented as a shortcut inside DOT, to avoid additional looks through AM.
         },
     };
+
+    _M.IM(members,'Equals',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {typeObject},
+        func = function(element, obj)
+            return element == obj;
+        end,
+    });
+
+    _M.IM(members,'ToString',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {},
+        func = function(element)
+            if type(element) == "table" then
+                return ((element %_M.DOT).GetType() %_M).FullName;
+            elseif type(element) == "boolean" then
+                return element and "True" or "False";
+            end
+
+            return tostring(element);
+        end,
+    });
+
     local constructors = {
         {
             types = {},
             func = function() end,
         }
     };
-    return "Class", typeObject, members, constructors, function() return {[1] = {}, ["type"] = typeObject}; end;
+
+    local elementGenerator = function() 
+        return {
+            [1] = {},
+            ["type"] = typeObject,
+            __metaType = _M.MetaTypes.ClassObject,
+        }; 
+    end
+
+    return "Class", typeObject, members, constructors, elementGenerator;
 end})

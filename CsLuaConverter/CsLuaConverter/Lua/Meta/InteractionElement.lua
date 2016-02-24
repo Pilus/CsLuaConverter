@@ -20,8 +20,8 @@ clone = function(t,dept)
 end
 
 local InteractionElement = function(metaProvider, generics)
-    local element = {};
-    local staticValues = {};
+    local element = { __metaType = _M.MetaTypes.InteractionElement };
+    local staticValues = {__metaType = _M.MetaTypes.StaticValues};
     local extendedMethods = {};
 
     local catagory, typeObject, members, constructors, elementGenerator, implements, initialize = metaProvider(element, generics, staticValues);
@@ -45,19 +45,116 @@ local InteractionElement = function(metaProvider, generics)
     local getMembers = function(key, level, staticOnly)
         return where(members[key] or {}, function(member)
             assert(member.memberType, "Member without member type in "..typeObject.FullName..". Key: "..key.." Level: "..tostring(member.level));
-            return (not(staticOnly) or member.static == true) and (member.scope == "Public" or (member.scope == "Protected" and level) or member.level == level);
+            local static = member.static;
+            local public = member.scope == "Public";
+            local protected = member.scope == "Protected";
+            local memberLevel = member.level;
+            local levelProvided = not(level == nil);
+            local typeLevel = typeObject.level;
+
+            return (not(staticOnly) or static) and
+            (
+                (levelProvided and memberLevel <= level) or
+                (not(levelProvided) and (public or protected) and memberLevel <= typeLevel) or
+                (not(levelProvided) and not(public or protected) and memberLevel == typeLevel)
+            );
+
+            --return (not(staticOnly) or member.static == true) and (member.scope == "Public" or (member.scope == "Protected" and level) or member.level == level or (not(level) and member.level == typeObject.level)) and (not(level) or level >= member.level);
         end, extendedMethods[key] or {});
     end
 
+    local matchesAll = function(t1, t2)
+        if not(#(t1) == #(t2)) then
+            return false;
+        end
+
+        for i,_ in ipairs(t1) do
+            if not(t1[i] == t2[i]) then
+                return false;
+            end
+        end
+
+        return true;
+    end
+
+    local orderByLevel = function(members)
+        local t = {};
+
+        for _,member in ipairs(members) do
+            local inserted = false;
+
+            for i,v in ipairs(t) do
+                if member.level > v.level then
+                    table.insert(t, i, member);
+                    inserted = true;
+                    break;
+                end
+            end
+
+            if (inserted == false) then
+                table.insert(t, member);
+            end
+        end
+
+        return t;
+    end
+
+    local filterOverrides = function(fittingMembers, level)
+        if #(fittingMembers) == 1 then
+            return fittingMembers;
+        end
+        
+        fittingMembers = orderByLevel(fittingMembers);
+
+        local skippedMembers = {};
+        local acceptedMembers = {};
+
+        for i,member in ipairs(fittingMembers) do
+            if not(acceptedMembers[i]) and not(skippedMembers[i]) then
+                acceptedMembers[i] = true;
+                if member.override then
+                    for j,otherMember in ipairs(fittingMembers) do
+                        if not(j == i) and matchesAll(member.types, otherMember.types) then
+                            if member.level > otherMember.level then
+                                acceptedMembers[i] = true;
+                                skippedMembers[j] = true;
+                                acceptedMembers[j] = false;
+                            else
+                                acceptedMembers[j] = true;
+                                skippedMembers[i] = true;
+                                acceptedMembers[i] = false;
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        local result = {};
+        for i,v in pairs(acceptedMembers) do
+            if v then
+                table.insert(result, fittingMembers[i]);
+            end
+        end
+
+        return result;
+    end
+
     local index = function(self, key, level)
+        if (key == "__metaType") then return _M.MetaTypes.InteractionElement; end
+
         if (key == "__Initialize") and initialize then
             return function(values) initialize(self, values); return self; end
         end
 
-        local fittingMembers = getMembers(key, level, false);
+        local fittingMembers = filterOverrides(getMembers(key, level, false), level or typeObject.level);
 
         if #(fittingMembers) == 0 then
             fittingMembers = getMembers("#", level, false); -- Look up indexers
+        end
+
+        if #(fittingMembers) == 0 and type(key) == "table" then
+            return self[key];
         end
 
         if #(fittingMembers) == 0 then
@@ -68,7 +165,7 @@ local InteractionElement = function(metaProvider, generics)
             assert(type(fittingMembers[i].memberType) == "string", "Missing member type on member. Object: "..typeObject.FullName..". Key: "..tostring(key).." Level: "..tostring(level).." Member #: "..tostring(i))
         end
 
-        if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then
+        if fittingMembers[1].memberType == "Field" or fittingMembers[1].memberType == "AutoProperty" then
             expectOneMember(fittingMembers, key);
 
             if fittingMembers[1].static then
@@ -84,10 +181,7 @@ local InteractionElement = function(metaProvider, generics)
         end
 
         if fittingMembers[1].memberType == "Method" then
-            return function(...)
-                local member = _M.AM(fittingMembers, {...});
-                return member.func(self,...);
-            end
+            return _M.GM(fittingMembers, self);
         end
 
         if fittingMembers[1].memberType == "Property" then
@@ -105,10 +199,10 @@ local InteractionElement = function(metaProvider, generics)
         end
 
         if #(fittingMembers) == 0 then
-            error("Could not find member. Key: "..tostring(key)..". Object: "..typeObject.FullName);
+            error("Could not find member (set). Key: "..tostring(key)..". Object: "..typeObject.FullName.." Level: "..tostring(level));
         end
 
-        if fittingMembers[1].memberType == "Variable" or fittingMembers[1].memberType == "AutoProperty" then
+        if fittingMembers[1].memberType == "Field" or fittingMembers[1].memberType == "AutoProperty" then
             expectOneMember(fittingMembers, key);
 
             if (fittingMembers[1].static) then
@@ -126,6 +220,12 @@ local InteractionElement = function(metaProvider, generics)
             return
         end
 
+        if fittingMembers[1].memberType == "Property" then
+            expectOneMember(fittingMembers, key);
+            fittingMembers[1].set(self, value);
+            return 
+        end
+
         error("Could not handle member (set). Object: "..typeObject.FullName.." Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key)..". Num members: "..#(fittingMembers));
     end
 
@@ -141,7 +241,7 @@ local InteractionElement = function(metaProvider, generics)
         end,
         __index = index,
         __newindex = newIndex,
-        __isNamespace = false,
+        __metaType = _M.MetaTypes.InteractionElement,
         __extend = function(extensions) 
             for _,v in ipairs(extensions) do
                 if not(extendedMethods[v.name]) then
@@ -174,16 +274,27 @@ local InteractionElement = function(metaProvider, generics)
 
             local fittingMembers = getMembers(key, nil, true);
 
+            if #(fittingMembers) == 0 then
+                error("Could not find static member. Key: "..tostring(key)..". Object: "..typeObject.FullName);
+            end
+
             if (fittingMembers[1].memberType == "Method") then
-                return function(...)
-                    local member = _M.AM(fittingMembers, {...});
-                    return member.func(staticValues,...);
-                end
+                return _M.GM(fittingMembers, staticValues);
             end
 
             expectOneMember(fittingMembers, key);
-            assert(fittingMembers[1].memberType == "Variable", "Expected variable member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..". Object: "..typeObject.FullName..".");
-            return staticValues[typeObject.level][key];
+            local member = fittingMembers[1];
+
+            if member.memberType == "Property" then
+                return member.get(staticValues);
+            end
+
+            if member.memberType == "AutoProperty" then
+                return staticValues[member.level][key];
+            end
+
+            assert(member.memberType == "Field", "Expected field member for key "..tostring(key)..". Got "..tostring(member.memberType)..". Object: "..typeObject.FullName..".");
+            return staticValues[member.level][key];
         end,
         __newindex = function(_, key, value)
             if not(catagory == "Class") then
@@ -192,15 +303,27 @@ local InteractionElement = function(metaProvider, generics)
 
             local fittingMembers = getMembers(key, nil, true);
             expectOneMember(fittingMembers, key);
-            assert(fittingMembers[1].memberType == "Variable", "Expected variable member for key "..tostring(key)..". Got "..tostring(fittingMembers[1].memberType)..". Object: "..typeObject.FullName..".");
-            staticValues[typeObject.level][key] = value;
+            local member = fittingMembers[1];
+
+            if member.memberType == "Property" then
+                member.set(staticValues, value);
+                return 
+            end
+
+            if member.memberType == "AutoProperty" then
+                staticValues[member.level][key] = value;
+                return;
+            end
+
+            assert(member.memberType == "Field", "Expected field member for key "..tostring(key)..". Got "..tostring(member.memberType)..". Object: "..typeObject.FullName..".");
+            staticValues[member.level][key] = value;
         end,
         __call = function(_, ...)
             assert(type(constructors)=="table" and #(constructors) > 0, "Class did not provide any constructors. Type: "..typeObject.FullName);
             -- Generate the base class element from constructor.GenerateBaseClass
             local classElement = elementGenerator();
             -- find the constructor fitting the arguments.
-            local constructor = _M.AM(constructors, {...});
+            local constructor, foldOutLast = _M.AM(constructors, {...});
             -- Call the constructor
             constructor.func(classElement, ...);
 
@@ -221,3 +344,9 @@ local InsertMember = function(members, key, member)
     table.insert(members[key], member);
 end
 _M.IM = InsertMember;
+
+local BaseCstor = function(classElement, baseConstructors, ...)
+    local constructor = _M.AM(baseConstructors, {...});
+    constructor.func(classElement, ...);
+end
+_M.BC = BaseCstor;

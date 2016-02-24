@@ -2,7 +2,6 @@
 namespace CsLuaConverter.ReferenceAnalysis
 {
     using System.Collections.Generic;
-    using CsLuaConverter.SyntaxAnalysis;
 
     class HostGraphNode
     {

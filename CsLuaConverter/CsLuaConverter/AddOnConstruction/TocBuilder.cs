@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
     using System.IO;
-    using CsLuaAttributes;
+    using CsLuaFramework.Attributes;
 
     class TocBuilder
     {

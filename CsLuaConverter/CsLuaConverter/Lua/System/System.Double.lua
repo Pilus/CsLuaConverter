@@ -1,4 +1,4 @@
-﻿System.Bool = _M.NE({[0] = function(interactionElement, generics, staticValues)
+﻿System.Double = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
     local typeObject = System.Type('Double','System',baseTypeObject,0,nil,nil,interactionElement);
 
@@ -8,5 +8,13 @@
             func = function() end,
         }
     };
-    return "Class", typeObject, members, constructors, function() return {[1] = {},[2] = {}, ["type"] = typeObject}; end;
+    local objectGenerator = function() 
+        return {
+            [1] = {},
+            [2] = {}, 
+            ["type"] = typeObject,
+            __metaType = _M.MetaTypes.ClassObject,
+        }; 
+    end
+    return "Class", typeObject, members, constructors, objectGenerator;
 end})

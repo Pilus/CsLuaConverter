@@ -1,13 +1,13 @@
 ﻿namespace CsLuaConverter.Providers.TypeProvider
 {
-    using CsLuaAttributes;
-    using Microsoft.CodeAnalysis;
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using CsLuaFramework;
+    using Microsoft.CodeAnalysis;
 
     public class TypeNameProvider : ITypeProvider
     {
@@ -30,6 +30,8 @@
         {
             this.rootNamespace = new LoadedNamespace(null);
             this.LoadSystemTypes();
+            this.LoadAssembly(Assembly.Load("Lua"));
+            this.LoadAssembly(Assembly.Load("CsLuaFramework"));
             this.LoadSolution(solution);
         }
 
@@ -47,6 +49,12 @@
             this.LoadType(typeof(Dictionary<object, object>));
             this.LoadType(typeof(IList));
             this.LoadType(typeof(IList<object>));
+            this.LoadType(typeof(ICollection));
+            this.LoadType(typeof(ICollection<object>));
+            this.LoadType(typeof(IEnumerable));
+            this.LoadType(typeof(IEnumerable<object>));
+            this.LoadType(typeof(IReadOnlyList<object>));
+            this.LoadType(typeof(IReadOnlyCollection<object>));
             this.LoadType(typeof(List<object>));
             this.LoadType(typeof(Enumerable));
         }
@@ -130,31 +138,9 @@
             }
         }
 
-        [Obsolete("Use LookupType instead.")]
-        public string LookupStaticVariableName(IEnumerable<string> names)
-        {
-            var firstName = names.First();
-            
-            foreach (var ns in this.refenrecedNamespaces)
-            {
-                if (ns.Types.ContainsKey(firstName))
-                {
-                    var type = ns.Types[firstName];
-                    var additionalName = string.Empty;
-                    if (names.Count() > 1)
-                    {
-                        additionalName = "." + string.Join(".", names.Skip(1).ToArray());
-                    }
-                    return type.Type.FullName + additionalName;
-                }
-            }
-
-            throw new ProviderException(string.Format("Could not find a variable for {0}", firstName));
-        }
-
         public ITypeResult LookupType(string name)
         {
-            var nativeType = this.predefinedNativeTypeResults.FirstOrDefault(t => name.Equals(t.Name));
+            var nativeType = this.predefinedNativeTypeResults.FirstOrDefault(t => name.Equals(t.NativeName));
             if (nativeType != null)
             {
                 return nativeType;
