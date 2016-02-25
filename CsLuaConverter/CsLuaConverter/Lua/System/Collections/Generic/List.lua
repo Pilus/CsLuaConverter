@@ -1,5 +1,4 @@
-﻿
-System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, generics, staticValues)
+﻿System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, generics, staticValues)
     local implements = {
         System.Collections.IList.__typeof,
         System.Collections.Generic.IList[generics].__typeof,
@@ -14,7 +13,7 @@ System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, gene
     local typeObject = System.Type('List','System.Collections.Generic',baseTypeObject,1,generics,implements,interactionElement);
 
     local getCount = function(element)
-        return not(element[2][0] == nil) and (#(element[2]) + 1) or 0;
+        return not(element[typeObject.level][0] == nil) and (#(element[typeObject.level]) + 1) or 0;
     end
 
     _M.IM(members,'ForEach',{
@@ -24,7 +23,7 @@ System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, gene
         types = {System.Action[{generics[1]}].__typeof},
         func = function(element,action)
             for i = 0,getCount(element)-1 do
-                (action%_M.DOT)(element[2][i]);
+                (action%_M.DOT)(element[typeObject.level][i]);
             end
         end,
     });
@@ -64,11 +63,11 @@ System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, gene
         types = {generics[1]},
         get = function(element, index)
             ThrowIfOutOfRange(element, index);
-            return element[2][index];
+            return element[typeObject.level][index];
         end,
         set = function(element, index, value)
             ThrowIfOutOfRange(element, index);
-            element[2][index] = value;
+            element[typeObject.level][index] = value;
         end,
     });
 
@@ -78,7 +77,21 @@ System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, gene
         scope = 'Public',
         types = {generics[1]},
         func = function(element,value)
-            element[2][getCount(element)] = value;
+            element[typeObject.level][getCount(element)] = value;
+        end,
+    });
+
+    _M.IM(members,'GetEnumerator',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {},
+        func = function(element)
+            local t = {};
+            for i = 0, getCount(element) do
+                t[i+1] = element[typeObject.level][i];
+            end
+            return pairs(t);
         end,
     });
 
@@ -126,12 +139,22 @@ System.Collections.Generic.List = _M.NE({[1] = function(interactionElement, gene
         {
             types = {},
             func = function() end,
-        }
+        },
+        {
+            types = {System.Collections.Generic.IEnumerable[{generics[1]}].__typeof},
+            func = function(element, values)
+                local c = 0;
+                for _,v in (values %_M.DOT).GetEnumerator() do
+                    element[typeObject.level][c] = v;
+                    c = c + 1;
+                end
+            end,
+        },
     };
 
     local initialize = function(element, values)
         for i=1,#(values) do
-            element[2][i-1] = values[i];
+            element[typeObject.level][i-1] = values[i];
         end
     end
 

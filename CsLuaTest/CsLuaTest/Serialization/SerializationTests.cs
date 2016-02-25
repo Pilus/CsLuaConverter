@@ -51,8 +51,8 @@
 
             var arrayRes = res["2_AnArray"] as NativeLuaTable;
             Assert(789430, arrayRes["type"]);
-            Assert(theClass.AnArray[0], arrayRes["2#_0"]);
-            Assert(theClass.AnArray[1], arrayRes["2#_1"]);
+            Assert(theClass.AnArray[0], arrayRes["3#_0"]);
+            Assert(theClass.AnArray[1], arrayRes["3#_1"]);
 
             var subRes = res["2_AClass"] as NativeLuaTable;
             Assert(223500, subRes["type"]);

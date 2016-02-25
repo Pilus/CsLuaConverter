@@ -50,6 +50,9 @@
             Assert(43, list[0]);
             Assert(5, list[1]);
 
+            list[1] = 6;
+            Assert(6, list[1]);
+
             try
             {
                 var x = list[-1];
@@ -61,7 +64,30 @@
                     ex.Message);
             }
 
+            try
+            {
+                list[2] = 10;
+                throw new Exception("Expected IndexOutOfRangeException");
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                Assert("Index was out of range. Must be non-negative and less than the size of the collection.\r\nParameter name: index",
+                    ex.Message);
+            }
 
+            var verificationList = new List<int>();
+            foreach (var item in list)
+            {
+                verificationList.Add(item);
+            }
+
+            Assert(list.Count, verificationList.Count);
+            Assert(list[0], verificationList[0]);
+            Assert(list[1], verificationList[1]);
+
+            var list2 = new List<int>(new [] {7, 9, 13});
+            Assert(3, list2.Count);
+            Assert(7, list2[0]);
         }
     }
 }

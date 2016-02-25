@@ -33,8 +33,11 @@
         {
             if (element.InnerElement != null)
             {
-                VisitorList.WriteOpen(element.InnerElement);
-                textWriter.Write("(");
+                if (!(element.InnerElement is GenericName))
+                {
+                    VisitorList.WriteOpen(element.InnerElement);
+                    textWriter.Write("(");
+                }
             }
             
 
@@ -49,6 +52,7 @@
                 case IdentifyerType.AsVar:
                 case IdentifyerType.AsGeneric:
                 case IdentifyerType.AsScope:
+                case IdentifyerType.AsGenericName:
                     break;
             }
         }
@@ -74,12 +78,21 @@
                 case IdentifyerType.AsScope:
                     WriteAsScopeClose(element, textWriter, providers);
                     break;
+                case IdentifyerType.AsGenericName:
+                    break;
             }
 
             if (element.InnerElement != null)
             {
-                textWriter.Write(" % _M.DOT)");
-                VisitorList.WriteClose(element.InnerElement);
+                if (!(element.InnerElement is GenericName))
+                { 
+                    textWriter.Write(" % _M.DOT)");
+                    VisitorList.WriteClose(element.InnerElement);
+                }
+                else
+                {
+                    GenericNameVisitor.Visit(element.InnerElement as GenericName, textWriter, providers, false, element.Names);
+                }
             }
             
         }
@@ -92,7 +105,7 @@
                 return IdentifyerType.AsVar;
             }
 
-            if (providers.GenericsRegistry.IsGeneric(element.Names.SingleOrDefault()))
+            if (element.Names.Count == 1 && providers.GenericsRegistry.IsGeneric(element.Names.SingleOrDefault()))
             {
                 return IdentifyerType.AsGeneric;
             }
@@ -100,6 +113,11 @@
             if (providers.NameProvider.GetScopeElement(element.Names.First()) != null)
             {
                 return IdentifyerType.AsScope;
+            }
+
+            if (element.InnerElement is GenericName)
+            {
+                return IdentifyerType.AsGenericName;
             }
 
             return IdentifyerType.AsRef;
@@ -180,5 +198,6 @@
         AsRef,
         AsGeneric,
         AsScope,
+        AsGenericName
     }
 }

@@ -1,6 +1,43 @@
-﻿System.Array = _M.NE({[1] = function(interactionElement, generics, staticValues)
+﻿System.Array = _M.NE({[0] = function(interactionElement, generics, staticValues)
+    local implements = {
+        System.Collections.IList.__typeof,
+        System.Collections.ICollection.__typeof,
+        System.Collections.IEnumerable.__typeof,
+    };
+
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,nil,interactionElement);
+    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement);
+
+    local constructors = {
+        {
+            types = {},
+            func = function() end,
+        }
+    };
+
+    local initialize = function(self, values)
+    end;
+    local objectGenerator = function() 
+        return {
+            [1] = {},
+            [2] = {}, 
+            ["type"] = typeObject,
+            __metaType = _M.MetaTypes.ClassObject,
+        }; 
+    end
+    return "Class", typeObject, members, constructors, objectGenerator, nil, initialize;
+end,
+[1] = function(interactionElement, generics, staticValues)
+    local implements = {
+        System.Collections.Generic.IList[generics].__typeof,
+        System.Collections.Generic.ICollection[generics].__typeof,
+        System.Collections.Generic.IEnumerable[generics].__typeof,
+        System.Collections.Generic.IReadOnlyList[generics].__typeof,
+        System.Collections.Generic.IReadOnlyCollection[generics].__typeof,
+    };
+    
+    local baseTypeObject, members = System.Array.__meta(staticValues);
+    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement);
 
     local len = function(element)
         return (element[typeObject.level][0] and 1 or 0) + #(element[typeObject.level]);
@@ -61,6 +98,7 @@
         return {
             [1] = {},
             [2] = {}, 
+            [3] = {}, 
             ["type"] = typeObject,
             __metaType = _M.MetaTypes.ClassObject,
         }; 

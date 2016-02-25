@@ -89,6 +89,7 @@
             this.LoadType(typeof(IReadOnlyCollection<object>));
             this.LoadType(typeof(List<object>));
             this.LoadType(typeof(Enumerable));
+            this.LoadType(typeof(Array));
         }
 
         private void LoadSolution(Solution solution)

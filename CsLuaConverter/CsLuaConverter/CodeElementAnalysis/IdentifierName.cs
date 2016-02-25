@@ -45,6 +45,13 @@
                 return token;
             }
 
+            if (token.Is(SyntaxKind.GenericName, SyntaxKind.IdentifierToken))
+            {
+                this.InnerElement = new GenericName();
+                token = this.InnerElement.Analyze(token);
+                return token;
+            }
+
             return token.GetPreviousToken();
         }
     }

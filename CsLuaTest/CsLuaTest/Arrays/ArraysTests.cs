@@ -1,12 +1,28 @@
 ﻿namespace CsLuaTest.Arrays
 {
+    using System;
+
     public class ArraysTests : BaseTest
     {
         public ArraysTests()
         {
             this.Name = "Arrays";
+            this.Tests["ArrayImplementsInterfaces"] = ArrayImplementsInterfaces;
             this.Tests["ArrayInitializationAndAmbigurity"] = ArrayInitializationAndAmbigurity;
             this.Tests["ArraysAsMethodArgument"] = ArraysAsMethodArgument;
+        }
+
+        private static void ArrayImplementsInterfaces()
+        {
+            var a = new string[] {"a"};
+            Assert(true, a is string[]);
+            Assert(true, a is System.Array);
+            Assert(true, a is System.Collections.IList);
+            Assert(true, a is System.Collections.Generic.IList<string>);
+            Assert(true, a is System.Collections.ICollection);
+            Assert(true, a is System.Collections.Generic.ICollection<string>);
+            Assert(true, a is System.Collections.IEnumerable);
+            Assert(true, a is System.Collections.Generic.IEnumerable<string>);
         }
 
         private static void ArrayInitializationAndAmbigurity()
