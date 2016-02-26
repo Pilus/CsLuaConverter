@@ -77,7 +77,9 @@
         scope = 'Public',
         types = {generics[1]},
         func = function(element,value)
-            element[typeObject.level][getCount(element)] = value;
+            local c = getCount(element);
+            element[typeObject.level][c] = value;
+            return c;
         end,
     });
 

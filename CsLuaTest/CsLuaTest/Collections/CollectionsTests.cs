@@ -45,6 +45,7 @@
             Assert(false, iList.SyncRoot == null);
 
             list.Add(5);
+            Assert(2, iList.Add(50));
 
             // Test Index
             Assert(43, list[0]);
@@ -66,7 +67,7 @@
 
             try
             {
-                list[2] = 10;
+                list[3] = 10;
                 throw new Exception("Expected IndexOutOfRangeException");
             }
             catch (ArgumentOutOfRangeException ex)
