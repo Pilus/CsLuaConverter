@@ -49,9 +49,15 @@
         end,
     });
 
+    local ThrowIfIndexNotNumber = function(element, index)
+        if not(type(index) == "number") then
+            _M.Throw(System.Exception("Attempted to index list with a non number index: "..tostring(index)));
+        end
+    end
+
     local ThrowIfOutOfRange = function(element, index)
         local c = getCount(element);
-        if not(type(index) == "number") or index < 0 or index >= c then
+        if index < 0 or index >= c then
             _M.Throw(System.ArgumentOutOfRangeException());
         end
     end
@@ -62,10 +68,12 @@
         scope = 'Public',
         types = {generics[1]},
         get = function(element, index)
+            ThrowIfIndexNotNumber(element, index);
             ThrowIfOutOfRange(element, index);
             return element[typeObject.level][index];
         end,
         set = function(element, index, value)
+            ThrowIfIndexNotNumber(element, index);
             ThrowIfOutOfRange(element, index);
             element[typeObject.level][index] = value;
         end,
@@ -80,6 +88,20 @@
             local c = getCount(element);
             element[typeObject.level][c] = value;
             return c;
+        end,
+    });
+
+    _M.IM(members,'AddRange',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {System.Collections.Generic.IEnumerable[generics].__typeof},
+        func = function(element,value)
+            local c = getCount(element);
+            for _,v in (value  % _M.DOT).GetEnumerator() do
+                element[typeObject.level][c] = v;
+                c = c + 1;
+            end
         end,
     });
 
@@ -134,6 +156,152 @@
         types = {},
         get = function(element)
             return System.Object();
+        end,
+    });
+
+    _M.IM(members,'Clear',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {},
+        func = function(element)
+            element[typeObject.level] = {};
+        end,
+    });
+
+    _M.IM(members,'Contains',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {generics[1]},
+        func = function(element,value)
+            for i = 0,getCount(element)-1 do
+                if (element[typeObject.level][i] % _M.DOT).Equals(value) then
+                    return true;
+                end
+            end
+            return false;
+        end,
+    });
+
+    _M.IM(members,'Find',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {System.Func[generics].__typeof},
+        func = function(element,f)
+            for i = 0,getCount(element)-1 do
+                local v = element[typeObject.level][i];
+                if f(v) then
+                    return v;
+                end
+            end
+        end,
+    });
+
+    _M.IM(members,'FindIndex',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {System.Func[generics].__typeof},
+        func = function(element,f)
+            for i = 0,getCount(element)-1 do
+                local v = element[typeObject.level][i];
+                if f(v) then
+                    return i;
+                end
+            end
+        end,
+    });
+
+    _M.IM(members,'FindLast',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {System.Func[generics].__typeof},
+        func = function(element,f)
+            for i = getCount(element)-1,0,-1 do
+                local v = element[typeObject.level][i];
+                if f(v) then
+                    return v;
+                end
+            end
+        end,
+    });
+
+    _M.IM(members,'FindLastIndex',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {System.Func[generics].__typeof},
+        func = function(element,f)
+            for i = getCount(element)-1,0,-1 do
+                local v = element[typeObject.level][i];
+                if f(v) then
+                    return i;
+                end
+            end
+        end,
+    });
+
+    _M.IM(members,'FindAll',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {System.Func[generics].__typeof},
+        func = function(element,f)
+            local list = System.Collections.Generic.List[generics]();
+            for i = 0,getCount(element)-1 do
+                local v = element[typeObject.level][i];
+                if f(v) then
+                    (list % _M.DOT).Add(v);
+                end
+            end
+            return list;
+        end,
+    });
+
+    _M.IM(members,'IndexOf',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {generics[1]},
+        func = function(element,value)
+            for i = 0,getCount(element)-1 do
+                local v = element[typeObject.level][i];
+                if (v % _M.DOT).Equals(value) then
+                    return i;
+                end
+            end
+        end,
+    });
+
+    _M.IM(members,'LastIndexOf',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {generics[1]},
+        func = function(element,value)
+            for i = getCount(element)-1,0,-1 do
+                local v = element[typeObject.level][i];
+                if (v % _M.DOT).Equals(value) then
+                    return i;
+                end
+            end
+        end,
+    });
+
+    _M.IM(members,'Insert',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {System.Int.__typeof, generics[1]},
+        func = function(element,index,value)
+            local c = getCount(element);
+            for i = getCount(element)-1,index,-1 do
+                element[typeObject.level][i+1] = element[typeObject.level][i];
+            end
+            element[typeObject.level][index] = value;
         end,
     });
 

@@ -89,6 +89,36 @@
             var list2 = new List<int>(new [] {7, 9, 13});
             Assert(3, list2.Count);
             Assert(7, list2[0]);
+
+            list2.AddRange(new[] {21, 28});
+            Assert(5, list2.Count);
+            Assert(21, list2[3]);
+            Assert(28, list2[4]);
+
+            list2.Clear();
+
+            Assert(0, list2.Count);
+
+            Assert(true, list.Contains(6));
+
+            list.Add(6);
+
+            Assert(6, list.Find(i => i == 6));
+            Assert(1, list.FindIndex(i => i == 6));
+            Assert(6, list.FindLast(i => i == 6));
+            Assert(3, list.FindLastIndex(i => i == 6));
+
+            var all = list.FindAll(i => i == 6);
+            Assert(2, all.Count);
+            Assert(6, all[0]);
+            Assert(6, all[1]);
+
+            Assert(1, list.IndexOf(6));
+            Assert(3, list.LastIndexOf(6));
+
+            list.Insert(1, 24);
+            Assert(list.Count, 5);
+            Assert(24, list[1]);
         }
     }
 }
