@@ -50,7 +50,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\CsLuaTest\CsLuaConverter\</OutputPath>
+    <OutputPath>..\..\CsLuaProjects\CsLuaConverter\</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
