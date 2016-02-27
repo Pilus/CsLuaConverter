@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class CollectionsTests : BaseTest
     {
@@ -11,6 +12,7 @@
             this.Name = "Collections";
             this.Tests["1_TestListInterfaces"] = TestListInterfaces;
             this.Tests["2_TestListImplementation"] = TestListImplementation;
+            this.Tests["3_TestListImplementation"] = TestLinq;
         }
 
         private static void TestListInterfaces()
@@ -139,6 +141,30 @@
 
             Assert(true, list.Remove(50));
             Assert(false, list.Remove(50));
+        }
+
+
+        private static void TestLinq()
+        {
+            var a = new int[] {2, 4, 8, 16, 32, 64};
+            Assert(true, a.Any());
+            Assert(6, a.Count());
+
+            var list = new List<string>();
+            list.Add("a");
+            list.Add("b");
+
+            Assert(true, list.Any());
+            Assert(2, list.Count());
+
+            var enumerable = a.Where(e => e > 10 && e < 50);
+            Assert(2, enumerable.Count());
+            Assert(2, enumerable.Count()); // Test of multiple enumerations of enumerable
+
+            var enumerable2 = list.Where(e => e.Length == 1);
+            Assert(2, enumerable2.Count());
+            list.Add("c");
+            Assert(3, enumerable2.Count());
         }
     }
 }

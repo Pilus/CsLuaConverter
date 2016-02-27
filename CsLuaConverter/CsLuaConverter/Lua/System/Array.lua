@@ -80,6 +80,13 @@ end,
         memberType = 'Indexer',
         scope = 'Public',
         types = {generics[1]},
+        get = function(element, key)
+            assert(type(key) == "number", "Attempted to address array with a non number index: "..tostring(key));
+            return element[typeObject.Level][key];
+        end,
+        set = function(element, key, value)
+            element[typeObject.Level][key] = value;
+        end
     });
 
     local constructors = {
@@ -103,7 +110,7 @@ end,
             __metaType = _M.MetaTypes.ClassObject,
         }; 
     end
-    return "Class", typeObject, members, constructors, objectGenerator, nil, initialize;
+    return "Class", typeObject, members, constructors, objectGenerator, implements, initialize;
 end})
 
 local areAllOfType = function(objs, type)

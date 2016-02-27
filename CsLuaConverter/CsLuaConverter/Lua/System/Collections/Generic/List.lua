@@ -111,13 +111,22 @@
         scope = 'Public',
         types = {},
         func = function(element)
-            local t = {};
-            for i = 0, getCount(element) do
-                t[i+1] = element[typeObject.level][i];
-            end
-            return pairs(t);
+            return function(_, prevKey) 
+                local key;
+                if prevKey == nil then
+                    key = 0;
+                else
+                    key = prevKey + 1;
+                end
+
+                if key < getCount(element) then
+                    return key, element[typeObject.level][key];
+                end
+                return nil, nil;
+            end;
         end,
     });
+    
 
     _M.IM(members,'IsFixedSize',{
         level = typeObject.Level,

@@ -19,28 +19,45 @@ clone = function(t,dept)
     return t2;
 end
 
+local where = function(list, evaluator)
+    local t = {};
+    for _, value in ipairs(list) do
+        if evaluator(value) then
+            table.insert(t, value);
+        end
+    end
+    return t;
+end
+
+local joinTablesDistinct = function(tables)
+    local res = {};
+
+    for _,t in pairs(tables) do
+        for _,v in pairs(t) do
+            if not(tContains(res, v)) then
+                table.insert(res, v);
+            end
+        end
+    end
+
+    return res;
+end
+
+local join = function(t1, t2)
+    local t3 = {};
+    for _,v in pairs(t1) do table.insert(t3, v); end
+    for _,v in pairs(t2) do table.insert(t3, v); end
+    return t3;
+end
+
 local InteractionElement = function(metaProvider, generics)
     local element = { __metaType = _M.MetaTypes.InteractionElement };
     local staticValues = {__metaType = _M.MetaTypes.StaticValues};
-    local extendedMethods = {};
-
+    local extensions = {};
     local catagory, typeObject, members, constructors, elementGenerator, implements, initialize = metaProvider(element, generics, staticValues);
     staticValues.type = typeObject;
 
-    local where = function(list, evaluator, otherList)
-        local t = {};
-        for _, value in ipairs(list) do
-            if evaluator(value) then
-                table.insert(t, value);
-            end
-        end
-        for _, value in ipairs(otherList) do
-            if evaluator(value) then
-                table.insert(t, value);
-            end
-        end
-        return t;
-    end
+
 
     local getMembers = function(key, level, staticOnly)
         return where(members[key] or {}, function(member)
@@ -58,9 +75,29 @@ local InteractionElement = function(metaProvider, generics)
                 (not(levelProvided) and (public or protected) and memberLevel <= typeLevel) or
                 (not(levelProvided) and not(public or protected) and memberLevel == typeLevel)
             );
+        end);
+    end
 
-            --return (not(staticOnly) or member.static == true) and (member.scope == "Public" or (member.scope == "Protected" and level) or member.level == level or (not(level) and member.level == typeObject.level)) and (not(level) or level >= member.level);
-        end, extendedMethods[key] or {});
+    local getExtensions = function()
+        local ext = {_M.GE(typeObject.FullName, generics)};
+
+        if not(typeObject.BaseType == nil) then
+            table.insert(ext, typeObject.BaseType.InteractionElement.__getExtensions());
+        end
+
+        for _, imp in pairs(implements or {}) do
+            table.insert(ext, imp.InteractionElement.__getExtensions());
+        end
+        return joinTablesDistinct(ext);
+    end
+
+    local extensions = nil;
+    local getFittingExtensions = function(key)
+        if (extensions == nil) then
+            extensions = getExtensions();
+        end
+
+        return where(extensions, function(ext) return ext.name == key; end);
     end
 
     local matchesAll = function(t1, t2)
@@ -140,6 +177,8 @@ local InteractionElement = function(metaProvider, generics)
         return result;
     end
 
+    
+
     local index = function(self, key, level)
         if (key == "__metaType") then return _M.MetaTypes.InteractionElement; end
 
@@ -148,6 +187,10 @@ local InteractionElement = function(metaProvider, generics)
         end
 
         local fittingMembers = filterOverrides(getMembers(key, level, false), level or typeObject.level);
+
+        local fittingExtensions = getFittingExtensions(key);
+
+        fittingMembers = join(fittingMembers, fittingExtensions);
 
         if #(fittingMembers) == 0 then
             fittingMembers = getMembers("#", level, false); -- Look up indexers
@@ -262,6 +305,7 @@ local InteractionElement = function(metaProvider, generics)
                 table.insert(extendedMethods[v.name], v);
             end
         end,
+        __getExtensions = getExtensions,
     };
 
     

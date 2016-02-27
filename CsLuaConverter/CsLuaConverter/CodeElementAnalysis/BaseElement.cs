@@ -94,6 +94,9 @@
             { SyntaxKind.ConditionalExpression,                 () => new ConditionalExpression() },
             { SyntaxKind.SubtractExpression,                    () => new SubtractExpression() },
             { SyntaxKind.UnaryMinusExpression,                  () => new UnaryMinusExpression() },
+            { SyntaxKind.GreaterThanExpression,                 () => new GreaterThanExpression() },
+            { SyntaxKind.LessThanExpression,                    () => new LessThanExpression() },
+            { SyntaxKind.LogicalAndExpression,                  () => new LogicalAndExpression() },
         };
 
         public abstract SyntaxToken Analyze(SyntaxToken token);
