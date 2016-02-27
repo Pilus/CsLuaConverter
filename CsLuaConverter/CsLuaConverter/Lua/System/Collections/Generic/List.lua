@@ -273,6 +273,7 @@
                     return i;
                 end
             end
+            return -1;
         end,
     });
 
@@ -297,11 +298,78 @@
         scope = 'Public',
         types = {System.Int.__typeof, generics[1]},
         func = function(element,index,value)
-            local c = getCount(element);
             for i = getCount(element)-1,index,-1 do
                 element[typeObject.level][i+1] = element[typeObject.level][i];
             end
             element[typeObject.level][index] = value;
+        end,
+    });
+
+    _M.IM(members,'GetRange',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {System.Int.__typeof, System.Int.__typeof},
+        func = function(element, start, num)
+            local list = System.Collections.Generic.List[generics]();
+            for i = start, start + num - 1 do
+                (list % _M.DOT).Add(element[typeObject.level][i]);
+            end
+            return list;
+        end,
+    });
+
+    _M.IM(members,'InsertRange',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {System.Int.__typeof, System.Collections.Generic.IEnumerable[generics].__typeof},
+        func = function(element,start, value)
+            local count = 0;
+            for _,v in (value  % _M.DOT).GetEnumerator() do
+                count = count + 1;
+            end
+            
+            for i = getCount(element)-1,start,-1 do
+                element[typeObject.level][i+count] = element[typeObject.level][i];
+            end
+
+            local c = start;
+            for _,v in (value  % _M.DOT).GetEnumerator() do
+                element[typeObject.level][c] = v;
+                c = c + 1;
+            end
+        end,
+    });
+
+    _M.IM(members,'Remove',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {generics[1]},
+        func = function(element, obj)
+            local index = (element % _M.DOT).IndexOf(obj);
+            if index < 0 then
+                return false;
+            end
+            local count = getCount(element);
+            for i = index, count do
+                element[typeObject.level][i] = element[typeObject.level][i+1];
+            end
+            return true;
+        end,
+    });
+
+    _M.IM(members,'RemoveRange',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {System.Int.__typeof, System.Int.__typeof},
+        func = function(element, start, num)
+            local count = getCount(element);
+            for i = start, count do
+                element[typeObject.level][i] = element[typeObject.level][i+num];
+            end
         end,
     });
 

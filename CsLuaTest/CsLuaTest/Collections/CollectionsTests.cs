@@ -114,11 +114,31 @@
             Assert(6, all[1]);
 
             Assert(1, list.IndexOf(6));
+            Assert(-1, list.IndexOf(500));
             Assert(3, list.LastIndexOf(6));
 
             list.Insert(1, 24);
-            Assert(list.Count, 5);
+            Assert(5, list.Count);
             Assert(24, list[1]);
+
+            var res = list.GetRange(1, 2);
+            Assert(2, res.Count);
+            Assert(24, res[0]);
+            Assert(6, res[1]);
+
+            list.InsertRange(1, new [] {110, 120});
+            Assert(7, list.Count);
+            Assert(110, list[1]);
+            Assert(120, list[2]);
+
+            list.RemoveRange(2, 2);
+            Assert(5, list.Count);
+            Assert(110, list[1]);
+            Assert(6, list[2]);
+            Assert(50, list[3]);
+
+            Assert(true, list.Remove(50));
+            Assert(false, list.Remove(50));
         }
     }
 }
