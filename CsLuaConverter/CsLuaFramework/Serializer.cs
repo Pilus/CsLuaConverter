@@ -3,16 +3,16 @@
     using System.Runtime.Serialization;
     using Lua;
 
-    public static class Serializer
+    public class Serializer : ISerializer
     {
-        public static NativeLuaTable Serialize<T>(T graph)
+        public NativeLuaTable Serialize<T>(T graph) where T : class
         {
-            throw new System.NotImplementedException();
+            return new NativeLuaTable {["obj"] = graph };
         }
 
-        public static T Deserialize<T>(NativeLuaTable t)
+        public T Deserialize<T>(NativeLuaTable t) where T : class
         {
-            throw new System.NotImplementedException();
+            return t["obj"] as T;
         }
     }
 }

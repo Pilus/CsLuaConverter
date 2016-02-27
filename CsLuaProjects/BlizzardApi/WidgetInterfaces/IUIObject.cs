@@ -12,11 +12,5 @@
         bool IsForbidden();
         bool IsObjectType(string type);
         void SetAlpha(double alpha);
-
-        INativeUIObject __obj
-        {
-            get;
-            set;
-        }
     }
 }

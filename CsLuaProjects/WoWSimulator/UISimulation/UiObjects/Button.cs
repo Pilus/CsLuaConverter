@@ -312,32 +312,32 @@
             throw new NotImplementedException();
         }
 
-        public void SetScript(ButtonHandler handler, Action<INativeUIObject> function)
+        public void SetScript(ButtonHandler handler, Action<IUIObject> function)
         {
             this.scriptHandler.SetScript(handler, function);
         }
 
-        public void SetScript(ButtonHandler handler, Action<INativeUIObject, object> function)
+        public void SetScript(ButtonHandler handler, Action<IUIObject, object> function)
         {
             this.scriptHandler.SetScript(handler, function);
         }
 
-        public void SetScript(ButtonHandler handler, Action<INativeUIObject, object, object> function)
+        public void SetScript(ButtonHandler handler, Action<IUIObject, object, object> function)
         {
             this.scriptHandler.SetScript(handler, function);
         }
 
-        public void SetScript(ButtonHandler handler, Action<INativeUIObject, object, object, object> function)
+        public void SetScript(ButtonHandler handler, Action<IUIObject, object, object, object> function)
         {
             this.scriptHandler.SetScript(handler, function);
         }
 
-        public void SetScript(ButtonHandler handler, Action<INativeUIObject, object, object, object, object> function)
+        public void SetScript(ButtonHandler handler, Action<IUIObject, object, object, object, object> function)
         {
             this.scriptHandler.SetScript(handler, function);
         }
 
-        public Action<INativeUIObject, object, object, object, object> GetScript(ButtonHandler handler)
+        public Action<IButton, object, object, object, object> GetScript(ButtonHandler handler)
         {
             return this.scriptHandler.GetScript(handler);
         }
@@ -347,7 +347,7 @@
             return this.scriptHandler.HasScript(handler);
         }
 
-        public void HookScript(ButtonHandler handler, Action<INativeUIObject, object, object, object, object> function)
+        public void HookScript(ButtonHandler handler, Action<IUIObject, object, object, object, object> function)
         {
             this.scriptHandler.HookScript(handler, function);
         }

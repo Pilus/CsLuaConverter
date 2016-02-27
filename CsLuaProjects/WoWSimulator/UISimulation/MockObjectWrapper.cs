@@ -2,9 +2,10 @@
 {
     using System;
     using BlizzardApi.Global;
+    using CsLuaFramework.Wrapping;
     using Lua;
 
-    public class MockObjectWrapper //: IWrapper
+    public class MockObjectWrapper : IWrapper
     {
         private IApi api;
 
@@ -13,40 +14,20 @@
             this.api = api;
         }
 
-        public object TryUnwrapObject<T>(T obj)
+        public NativeLuaTable Unwrap<T>(string globalVarName) where T : class
         {
             throw new NotImplementedException();
         }
 
-        public T WrapGlobalObject<T>(string name)
+        public T Wrap<T>(string globalVarName) where T : class
         {
-            return this.WrapGlobalObject<T>(name, false, null);
+            var obj = this.api.GetGlobal(globalVarName);
+            throw new NotImplementedException();
         }
 
-        public T WrapGlobalObject<T>(string name, bool skipValidation)
+        public T Wrap<T>(NativeLuaTable luaTable) where T : class
         {
-            return this.WrapGlobalObject<T>(name, skipValidation, null);
-        }
-
-        public T WrapGlobalObject<T>(string name, bool skipValidation, Func<NativeLuaTable, string> targetTypeTranslator)
-        {
-            var obj = this.api.GetGlobal(name);
-            return this.WrapObject<T>(obj, skipValidation, null);
-        }
-
-        public T WrapObject<T>(object obj)
-        {
-            return this.WrapObject<T>(obj, false, null);
-        }
-
-        public T WrapObject<T>(object obj, bool skipValidation)
-        {
-            return this.WrapObject<T>(obj, skipValidation, null);
-        }
-
-        public T WrapObject<T>(object obj, bool skipValidation, Func<NativeLuaTable, string> targetTypeTranslator)
-        {
-            return (T) obj;
+            throw new NotImplementedException();
         }
     }
 }

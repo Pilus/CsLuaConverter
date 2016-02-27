@@ -69,19 +69,6 @@
             this.alpha = alpha;
         }
 
-        public INativeUIObject __obj
-        {
-            get
-            {
-                //throw new UiSimuationException("Native object is not available in simulation");
-                return new Mock<INativeUIObject>().Object;
-            }
-            set
-            {
-                throw new UiSimuationException("Native object is not available in simulation");
-            }
-        }
-
         public object this[object key]
         {
             get

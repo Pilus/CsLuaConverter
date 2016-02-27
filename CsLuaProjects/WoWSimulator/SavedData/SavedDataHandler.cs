@@ -7,6 +7,8 @@
 
     public class SavedDataHandler
     {
+        private const bool SanitationDisabled = true; // TODO: Enable sanitation once C# serializer is implemented.
+
         private readonly Mock<IApi> apiMock;
         private readonly List<string> savedVariablesNames;
 
@@ -47,9 +49,13 @@
 
         private static object SanitizeValue(object value)
         {
+            if (SanitationDisabled)
+                return value;
+        
             if (value == null) return null;
             if (value is string || value is bool || value is int || value is double || value is float) return value;
             if (!(value is NativeLuaTable)) return null;
+
 
             var t = new NativeLuaTable();
             (value as NativeLuaTable).__Foreach((k, v) =>

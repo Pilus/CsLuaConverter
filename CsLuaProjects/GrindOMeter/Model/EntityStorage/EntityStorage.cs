@@ -11,7 +11,13 @@
         public const string TrackedEntitiesSavedVariableName = "GrindOMeter_TrackedEntities";
 
         private List<TrackedEntity> trackedEntities;
-        
+        private readonly ISerializer serializer;
+
+        public EntityStorage()
+        {
+            this.serializer = new Serializer();
+        }
+
         public List<TrackedEntity> LoadTrackedEntities()
         {
             if (this.trackedEntities != null) return this.trackedEntities;
@@ -19,7 +25,7 @@
             var savedData = (NativeLuaTable)Global.Api.GetGlobal(TrackedEntitiesSavedVariableName);
             this.trackedEntities = savedData == null
                 ? new List<TrackedEntity>()
-                : Serializer.Deserialize<List<TrackedEntity>>(savedData);
+                : this.serializer.Deserialize<List<TrackedEntity>>(savedData);
 
             return this.trackedEntities;
         }
@@ -48,7 +54,7 @@
 
         private void SaveTrackedEntities()
         {
-            Global.Api.SetGlobal(TrackedEntitiesSavedVariableName, Serializer.Serialize(this.trackedEntities));
+            Global.Api.SetGlobal(TrackedEntitiesSavedVariableName, this.serializer.Serialize(this.trackedEntities));
         }
 
         private void ThrowIfEntitiesNotLoaded()

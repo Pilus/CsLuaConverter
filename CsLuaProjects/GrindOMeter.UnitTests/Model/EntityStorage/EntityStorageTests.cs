@@ -3,20 +3,28 @@
     using System.Collections.Generic;
     using System.Linq;
     using BlizzardApi.Global;
+    using CsLuaFramework;
     using GrindOMeter.Model.Entity;
     using GrindOMeter.Model.EntityStorage;
+    using Lua;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
 
     [TestClass]
     public class EntityStorageTests
     {
+        private EntityStorage storageUnderTest;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            MockGlobalGetSet();
+            this.storageUnderTest = new EntityStorage();
+        }
+
         [TestMethod]
         public void EntityStorageSavedAndLoadsAsIntended()
         {
-            MockGlobalGetSet();
-            var storageUnderTest = new EntityStorage();
-
             var intialTrackedEntities = storageUnderTest.LoadTrackedEntities();
 
             Assert.AreEqual(0, intialTrackedEntities.Count);
@@ -43,9 +51,6 @@
         [ExpectedException(typeof(EntityStorageException))]
         public void EntityStorageThrowsOnAdd()
         {
-            MockGlobalGetSet();
-            var storageUnderTest = new EntityStorage();
-
             storageUnderTest.AddTrackedEntityIfMissing(new TrackedEntity(EntityType.Item, 1));
         }
 
@@ -53,9 +58,6 @@
         [ExpectedException(typeof(EntityStorageException))]
         public void EntityStorageThrowsOnRemove()
         {
-            MockGlobalGetSet();
-            var storageUnderTest = new EntityStorage();
-
             storageUnderTest.RemoveTrackedEntity(new TrackedEntity(EntityType.Item, 1));
         }
 
@@ -63,9 +65,6 @@
         [ExpectedException(typeof(EntityStorageException))]
         public void EntityStorageThrowsOnRemoveIfNotAdded()
         {
-            MockGlobalGetSet();
-            var storageUnderTest = new EntityStorage();
-
             storageUnderTest.LoadTrackedEntities();
             storageUnderTest.RemoveTrackedEntity(new TrackedEntity(EntityType.Item, 1));
         }

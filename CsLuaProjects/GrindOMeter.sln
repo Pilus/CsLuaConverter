@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlizzardApi", "BlizzardApi\BlizzardApi.csproj", "{4FA81A8F-BE0D-4DAD-9E55-0AD7146FC259}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrindOMeter", "GrindOMeter\GrindOMeter.csproj", "{3F5F4BA0-A433-46DF-AE6E-71B2132051C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrindOMeter.IntegrationTests", "GrindOMeter.IntegrationTests\GrindOMeter.IntegrationTests.csproj", "{8EF6C7B3-AA92-46E4-8B02-995D8359E865}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrindOMeter.UnitTests", "GrindOMeter.UnitTests\GrindOMeter.UnitTests.csproj", "{F3D5BAC3-2210-4A97-B8FE-872A19BDF058}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WoWSimulator", "WoWSimulator\WoWSimulator.csproj", "{90089C84-D04E-4953-BE7D-3B2A9BE1C819}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestUtils", "TestUtils\TestUtils.csproj", "{52B30640-CBF4-43DB-93B1-7B1D66C48924}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4FA81A8F-BE0D-4DAD-9E55-0AD7146FC259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FA81A8F-BE0D-4DAD-9E55-0AD7146FC259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FA81A8F-BE0D-4DAD-9E55-0AD7146FC259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FA81A8F-BE0D-4DAD-9E55-0AD7146FC259}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F5F4BA0-A433-46DF-AE6E-71B2132051C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F5F4BA0-A433-46DF-AE6E-71B2132051C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F5F4BA0-A433-46DF-AE6E-71B2132051C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F5F4BA0-A433-46DF-AE6E-71B2132051C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EF6C7B3-AA92-46E4-8B02-995D8359E865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EF6C7B3-AA92-46E4-8B02-995D8359E865}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EF6C7B3-AA92-46E4-8B02-995D8359E865}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EF6C7B3-AA92-46E4-8B02-995D8359E865}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3D5BAC3-2210-4A97-B8FE-872A19BDF058}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3D5BAC3-2210-4A97-B8FE-872A19BDF058}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3D5BAC3-2210-4A97-B8FE-872A19BDF058}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3D5BAC3-2210-4A97-B8FE-872A19BDF058}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90089C84-D04E-4953-BE7D-3B2A9BE1C819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90089C84-D04E-4953-BE7D-3B2A9BE1C819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90089C84-D04E-4953-BE7D-3B2A9BE1C819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90089C84-D04E-4953-BE7D-3B2A9BE1C819}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52B30640-CBF4-43DB-93B1-7B1D66C48924}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52B30640-CBF4-43DB-93B1-7B1D66C48924}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52B30640-CBF4-43DB-93B1-7B1D66C48924}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52B30640-CBF4-43DB-93B1-7B1D66C48924}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
