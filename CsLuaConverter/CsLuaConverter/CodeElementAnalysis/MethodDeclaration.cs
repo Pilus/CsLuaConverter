@@ -68,7 +68,16 @@
 
             ExpectKind(SyntaxKind.Block, token.Parent.GetKind());
             ExpectKind(SyntaxKind.OpenBraceToken, token.GetKind());
-            this.Block = new Block();
+
+            try
+            {
+                this.Block = new Block();
+            }
+            catch (Exception ex)
+            {
+                throw new WrappingException(string.Format("In anlysis of method: {0}", this.Text), ex);
+            }
+            
             return this.Block.Analyze(token);
         }
     }

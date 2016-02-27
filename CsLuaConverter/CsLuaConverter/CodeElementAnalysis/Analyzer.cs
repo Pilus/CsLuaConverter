@@ -64,12 +64,21 @@
 
         private static DocumentElement AnalyzeDocument(Document document)
         {
-            SyntaxNode syntaxTreeRoot = GetSyntaxTreeRoot(document);
-            var token = syntaxTreeRoot.FindToken(syntaxTreeRoot.SpanStart);
-            firstToken = token;
-            var element = new DocumentElement();
-            element.Analyze(token);
-            return element;
+            try
+            {
+                SyntaxNode syntaxTreeRoot = GetSyntaxTreeRoot(document);
+                var token = syntaxTreeRoot.FindToken(syntaxTreeRoot.SpanStart);
+                firstToken = token;
+                var element = new DocumentElement();
+                element.Analyze(token);
+                return element;
+            }
+            catch (Exception ex)
+            {
+                
+                throw new WrappingException(string.Format("In analysis of document: {0}.", document.Name), ex);
+            }
+            
         }
 
         public static string DisplayKinds(SyntaxToken focusToken)
