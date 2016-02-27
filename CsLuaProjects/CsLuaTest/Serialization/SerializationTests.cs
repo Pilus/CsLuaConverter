@@ -22,15 +22,17 @@
                 return;
             }
 
+            var serializer = new Serializer();
+
             var theClass = new ClassWithNativeObjects();
 
-            var res = Serializer.Serialize(theClass);
+            var res = serializer.Serialize(theClass);
 
             Assert(theClass.AString, res["2_AString"]);
             Assert(theClass.ANumber, res["2_ANumber"]);
             Assert(223500, res["type"]);
 
-            var processedClass = Serializer.Deserialize<ClassWithNativeObjects>(res);
+            var processedClass = serializer.Deserialize<ClassWithNativeObjects>(res);
 
             Assert(theClass.AString, processedClass.AString);
             Assert(theClass.ANumber, processedClass.ANumber);
@@ -43,9 +45,11 @@
                 return;
             }
 
+            var serializer = new Serializer();
+
             var theClass = new ClassWithSubObject();
 
-            var res = Serializer.Serialize(theClass);
+            var res = serializer.Serialize(theClass);
 
             Assert(101098, res["type"]);
 
@@ -59,7 +63,7 @@
             Assert(theClass.AClass.AString, subRes["2_AString"]);
             Assert(theClass.AClass.ANumber, subRes["2_ANumber"]);
 
-            var processedClass = Serializer.Deserialize<ClassWithSubObject>(res);
+            var processedClass = serializer.Deserialize<ClassWithSubObject>(res);
 
             Assert(theClass.AnArray[0], processedClass.AnArray[0]);
             Assert(theClass.AnArray[1], processedClass.AnArray[1]);
@@ -80,7 +84,9 @@
                 theClass,
             };
 
-            var res = Serializer.Serialize(list);
+            var serializer = new Serializer();
+
+            var res = serializer.Serialize(list);
 
             Assert(593470, res["type"]);
 
@@ -88,7 +94,7 @@
             Assert(theClass.AString, subRes["2_AString"]);
             Assert(theClass.ANumber, subRes["2_ANumber"]);
 
-            var processedClass = Serializer.Deserialize<List<ClassWithNativeObjects>>(res);
+            var processedClass = serializer.Deserialize<List<ClassWithNativeObjects>>(res);
 
             Assert(1, processedClass.Count);
             var res1 = processedClass[0];
@@ -106,18 +112,20 @@
                 return;
             }
 
+            var serializer = new Serializer();
+
             var dict = new Dictionary<object, object>()
             {
                 { 43, "something" },
                 { "an index", "Someting else" }
             };
 
-            var res = Serializer.Serialize(dict);
+            var res = serializer.Serialize(dict);
 
             Assert(dict[43], res["2#_43"]);
             Assert(dict["an index"], res["2_an index"]);
 
-            var processedDict = Serializer.Deserialize<Dictionary<object, object>>(res);
+            var processedDict = serializer.Deserialize<Dictionary<object, object>>(res);
 
             Assert(dict[43], processedDict[43]);
             Assert(dict["an index"], processedDict["an index"]);

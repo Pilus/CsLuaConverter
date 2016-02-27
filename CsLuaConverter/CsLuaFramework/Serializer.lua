@@ -48,7 +48,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
-        static = true,
+        static = false,
         types = {System.Object.__typeof},
         func = function(_, obj)
             return replaceTypeRefs(obj);
@@ -59,7 +59,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
-        static = true,
+        static = false,
         types = {System.Object.__typeof},
         func = function(_, obj)
             return replaceHashsWithTypes(obj);

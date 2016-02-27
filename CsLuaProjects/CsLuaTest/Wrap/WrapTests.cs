@@ -31,8 +31,10 @@
                 return;
             }
 
+            var wrapper = new Wrapper();
+
             Environment.ExecuteLuaCode("interfaceImplementation = { Method = function(str) return 'OK' .. str; end, Value = 10, };");
-            var interfaceImplementation = Wrapper.Wrap<ISimpleInterface>("interfaceImplementation");
+            var interfaceImplementation = wrapper.Wrap<ISimpleInterface>("interfaceImplementation");
 
             Assert("OKInput", interfaceImplementation.Method("Input"));
             Assert(10, interfaceImplementation.Value);

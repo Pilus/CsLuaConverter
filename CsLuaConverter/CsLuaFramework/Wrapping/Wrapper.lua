@@ -9,7 +9,7 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
-        static = true,
+        static = false,
         types = {System.String.__typeof},
         generics = methodGenericsMapping,
         func = function(element,methodGenericsMapping,methodGenerics,globalVarName)
