@@ -19,7 +19,7 @@
             if (token.Parent.IsKind(
                 SyntaxKind.StringLiteralExpression, SyntaxKind.NumericLiteralExpression, 
                 SyntaxKind.TrueLiteralExpression, SyntaxKind.ObjectCreationExpression,
-                SyntaxKind.ObjectInitializerExpression))
+                SyntaxKind.ObjectInitializerExpression, SyntaxKind.IdentifierName))
             {
                 return true;
             }

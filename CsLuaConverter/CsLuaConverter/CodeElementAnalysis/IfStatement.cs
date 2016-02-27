@@ -25,7 +25,17 @@
 
             token = token.GetNextToken();
             this.Block = new Block();
-            token = this.Block.Analyze(token);
+
+            if (token.Parent.IsKind(SyntaxKind.Block))
+            {
+                token = this.Block.Analyze(token);
+            }
+            else
+            {
+                var statement = new Statement();
+                token = statement.Analyze(token);
+                this.Block.Statements.Add(statement);
+            }
 
             var nextToken = token.GetNextToken();
             if (nextToken.Parent.IsKind(SyntaxKind.ElseClause))

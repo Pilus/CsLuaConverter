@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis
 {
     using System;
+    using System.Diagnostics;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
@@ -69,16 +70,21 @@
             ExpectKind(SyntaxKind.Block, token.Parent.GetKind());
             ExpectKind(SyntaxKind.OpenBraceToken, token.GetKind());
 
+            this.Block = new Block();
+
+            if (Debugger.IsAttached)
+            {
+                return this.Block.Analyze(token);
+            }
+
             try
             {
-                this.Block = new Block();
+                return this.Block.Analyze(token);
             }
             catch (Exception ex)
             {
-                throw new WrappingException(string.Format("In anlysis of method: {0}", this.Text), ex);
+                throw new WrappingException(string.Format("In analysis of method: {0}", this.Text), ex);
             }
-            
-            return this.Block.Analyze(token);
         }
     }
 }

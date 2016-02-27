@@ -14,7 +14,7 @@
             ExpectKind(SyntaxKind.OpenBraceToken, token.GetKind());
 
             token = token.GetNextToken();
-            ExpectKind(new []{ SyntaxKind.StringLiteralExpression, SyntaxKind.NumericLiteralExpression }, token.Parent.GetKind());
+            ExpectKind(new []{ SyntaxKind.StringLiteralExpression, SyntaxKind.NumericLiteralExpression, SyntaxKind.IdentifierName }, token.Parent.GetKind());
             this.KeyElement = GenerateMatchingElement(token);
             token = this.KeyElement.Analyze(token);
             token = token.GetNextToken();

@@ -3,6 +3,7 @@
     using System;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Statements;
 
     public class FieldDeclaration : BaseElement
     {
@@ -48,9 +49,10 @@
             if (token.Parent.IsKind(SyntaxKind.EqualsValueClause))
             {
                 token = token.GetNextToken();
-                this.Value = GenerateMatchingElement(token);
-                token = this.Value.Analyze(token);
-                token = token.GetNextToken();
+                var statement = new Statement();
+                token = statement.Analyze(token);
+                statement.EndToken = "";
+                this.Value = statement;
             }
 
             ExpectKind(SyntaxKind.SemicolonToken, token.GetKind());

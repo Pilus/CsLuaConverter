@@ -25,6 +25,12 @@
                         token = token.GetNextToken();
                     }
 
+                    if (token.IsKind(SyntaxKind.PrivateKeyword))
+                    {
+                        token = token.GetNextToken();
+                    }
+
+
                     ExpectKind(SyntaxKind.GetKeyword, token.GetKind());
                     token = token.GetNextToken();
 
@@ -45,6 +51,12 @@
                     {
                         token = token.GetNextToken();
                     }
+
+                    if (token.IsKind(SyntaxKind.PrivateKeyword))
+                    {
+                        token = token.GetNextToken();
+                    }
+
 
                     ExpectKind(SyntaxKind.SetKeyword, token.GetKind());
                     token = token.GetNextToken();

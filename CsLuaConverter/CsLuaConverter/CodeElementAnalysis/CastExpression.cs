@@ -5,7 +5,7 @@
 
     public class CastExpression : BaseElement
     {
-        public IdentifierName Type;
+        public BaseElement Type;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -13,9 +13,7 @@
             ExpectKind(SyntaxKind.OpenParenToken, token.GetKind());
             token = token.GetNextToken();
 
-            ExpectKind(SyntaxKind.IdentifierName, token.Parent.GetKind());
-            ExpectKind(SyntaxKind.IdentifierToken, token.GetKind());
-            this.Type = new IdentifierName();
+            this.Type = GenerateMatchingElement(token);
             token = token.GetNextToken();
 
             ExpectKind(SyntaxKind.CastExpression, token.Parent.GetKind());

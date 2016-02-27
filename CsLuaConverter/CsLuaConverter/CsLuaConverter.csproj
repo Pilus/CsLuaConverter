@@ -110,8 +110,10 @@
     <Compile Include="CodeElementAnalysis\FalseLiteralExpression.cs" />
     <Compile Include="CodeElementAnalysis\FieldDeclaration.cs" />
     <Compile Include="CodeElementAnalysis\ForEachStatement.cs" />
+    <Compile Include="CodeElementAnalysis\ForStatement.cs" />
     <Compile Include="CodeElementAnalysis\GenericName.cs" />
     <Compile Include="CodeElementAnalysis\GreaterThanExpression.cs" />
+    <Compile Include="CodeElementAnalysis\GreaterThanOrEqualExpression.cs" />
     <Compile Include="CodeElementAnalysis\IDocumentVisitor.cs" />
     <Compile Include="CodeElementAnalysis\IfStatement.cs" />
     <Compile Include="CodeElementAnalysis\ImplicitArrayCreationExpression.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="CodeElementAnalysis\InterfaceElement.cs" />
     <Compile Include="CodeElementAnalysis\IsExpression.cs" />
     <Compile Include="CodeElementAnalysis\LessThanExpression.cs" />
+    <Compile Include="CodeElementAnalysis\LessThanOrEqualExpression.cs" />
     <Compile Include="CodeElementAnalysis\LogicalAndExpression.cs" />
     <Compile Include="CodeElementAnalysis\LogicalNotExpression.cs" />
     <Compile Include="CodeElementAnalysis\MethodDeclaration.cs" />

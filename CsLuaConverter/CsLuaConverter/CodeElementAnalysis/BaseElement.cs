@@ -102,6 +102,9 @@
             { SyntaxKind.SwitchStatement,                       () => new SwitchStatement() },
             { SyntaxKind.DivideExpression,                      () => new DivideExpression() },
             { SyntaxKind.BreakStatement,                        () => new BreakStatement() },
+            { SyntaxKind.ForStatement,                          () => new ForStatement() },
+            { SyntaxKind.LessThanOrEqualExpression,             () => new LessThanOrEqualExpression() },
+            { SyntaxKind.GreaterThanOrEqualExpression,          () => new GreaterThanOrEqualExpression() },
         };
 
         public abstract SyntaxToken Analyze(SyntaxToken token);

@@ -22,7 +22,7 @@
 
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
-            return !token.Parent.IsKind(SyntaxKind.Block);
+            return !(token.Parent.IsKind(SyntaxKind.Block) && token.IsKind(SyntaxKind.CloseBraceToken));
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)

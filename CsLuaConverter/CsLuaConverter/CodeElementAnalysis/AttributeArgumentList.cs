@@ -18,7 +18,8 @@
             return token.Parent.IsKind(SyntaxKind.StringLiteralExpression) || 
                    token.Parent.IsKind(SyntaxKind.NumericLiteralExpression) ||
                    token.Parent.IsKind(SyntaxKind.IdentifierName) ||
-                   token.Parent.IsKind(SyntaxKind.NameEquals);
+                   token.Parent.IsKind(SyntaxKind.NameEquals) || 
+                   token.Parent.IsKind(SyntaxKind.ImplicitArrayCreationExpression);
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)
