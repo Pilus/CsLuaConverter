@@ -12,6 +12,7 @@
         public BaseList BaseList;
         public TypeParameterList Generics;
         public IList<InterfaceElement> Elements = new List<InterfaceElement>();
+        public bool IsPartial;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -21,8 +22,14 @@
                 token = token.GetNextToken();
             }
 
-            
             ExpectKind(SyntaxKind.InterfaceDeclaration, token.Parent.GetKind());
+            if (token.IsKind(SyntaxKind.PartialKeyword))
+            {
+                IsPartial = true;
+                token = token.GetNextToken();
+                ExpectKind(SyntaxKind.InterfaceDeclaration, token.Parent.GetKind());
+            }
+
             ExpectKind(SyntaxKind.InterfaceKeyword, token.GetKind());
 
             token = token.GetNextToken();

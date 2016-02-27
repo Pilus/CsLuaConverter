@@ -97,6 +97,11 @@
             { SyntaxKind.GreaterThanExpression,                 () => new GreaterThanExpression() },
             { SyntaxKind.LessThanExpression,                    () => new LessThanExpression() },
             { SyntaxKind.LogicalAndExpression,                  () => new LogicalAndExpression() },
+            { SyntaxKind.BracketedParameterList,                () => new BracketedParameterList() },
+            { SyntaxKind.WhileStatement,                        () => new WhileStatement() },
+            { SyntaxKind.SwitchStatement,                       () => new SwitchStatement() },
+            { SyntaxKind.DivideExpression,                      () => new DivideExpression() },
+            { SyntaxKind.BreakStatement,                        () => new BreakStatement() },
         };
 
         public abstract SyntaxToken Analyze(SyntaxToken token);

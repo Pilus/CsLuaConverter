@@ -1,6 +1,4 @@
-﻿using CsLuaFramework.Attributes;
-
-[assembly:CsLuaLibrary]
+﻿[assembly: CsLuaFramework.Attributes.CsLuaLibrary]
 
 namespace BlizzardApi.Global
 {

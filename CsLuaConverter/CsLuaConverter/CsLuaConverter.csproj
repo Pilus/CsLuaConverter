@@ -91,6 +91,8 @@
     <Compile Include="CodeElementAnalysis\BaseExpression.cs" />
     <Compile Include="CodeElementAnalysis\Block.cs" />
     <Compile Include="CodeElementAnalysis\BracketedArgumentList.cs" />
+    <Compile Include="CodeElementAnalysis\BracketedParameterList.cs" />
+    <Compile Include="CodeElementAnalysis\BreakStatement.cs" />
     <Compile Include="CodeElementAnalysis\CastExpression.cs" />
     <Compile Include="CodeElementAnalysis\CatchDeclaration.cs" />
     <Compile Include="CodeElementAnalysis\CharacterLiteralExpression.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="CodeElementAnalysis\ComplexElementInitializerExpression.cs" />
     <Compile Include="CodeElementAnalysis\ConditionalExpression.cs" />
     <Compile Include="CodeElementAnalysis\DelimiteredContainerElement.cs" />
+    <Compile Include="CodeElementAnalysis\DivideExpression.cs" />
     <Compile Include="CodeElementAnalysis\ElementWithInnerElement.cs" />
     <Compile Include="CodeElementAnalysis\ElseClause.cs" />
     <Compile Include="CodeElementAnalysis\EnumDeclaration.cs" />
@@ -145,6 +148,7 @@
     <Compile Include="CodeElementAnalysis\StringLiteralExpression.cs" />
     <Compile Include="CodeElementAnalysis\SubtractAssignmentExpression.cs" />
     <Compile Include="CodeElementAnalysis\SubtractExpression.cs" />
+    <Compile Include="CodeElementAnalysis\SwitchStatement.cs" />
     <Compile Include="CodeElementAnalysis\ThisExpression.cs" />
     <Compile Include="CodeElementAnalysis\ThrowStatement.cs" />
     <Compile Include="CodeElementAnalysis\ThrowStatementVisitor.cs" />
@@ -157,6 +161,7 @@
     <Compile Include="CodeElementAnalysis\UnaryMinusExpression.cs" />
     <Compile Include="CodeElementAnalysis\UsingDirective.cs" />
     <Compile Include="CodeElementAnalysis\VariableDeclarator.cs" />
+    <Compile Include="CodeElementAnalysis\WhileStatement.cs" />
     <Compile Include="ConverterException.cs" />
     <Compile Include="AddOnConstruction\IDeployableAddOn.cs" />
     <Compile Include="AddOnConstruction\LuaAddOn.cs" />
@@ -202,6 +207,7 @@
     <Compile Include="LuaVisitor\StatementVisitor.cs" />
     <Compile Include="LuaVisitor\StringLiteralExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\AssignmentExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\SwitchStatementVisitor.cs" />
     <Compile Include="LuaVisitor\ThisExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\TryStatementVisitor.cs" />
     <Compile Include="LuaVisitor\TypeArgumentListVisitor.cs" />

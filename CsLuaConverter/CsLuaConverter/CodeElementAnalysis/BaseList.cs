@@ -9,14 +9,20 @@
         {
             ExpectKind(SyntaxKind.BaseList, token.Parent.GetKind());
             ExpectKind(SyntaxKind.ColonToken, token.GetKind());
-            token = token.GetNextToken();
-            token = base.Analyze(token);
+
+            while (token.Parent.IsKind(SyntaxKind.BaseList))
+            {
+                token = token.GetNextToken();
+                token = base.Analyze(token);
+            }
+
             return token;
         }
 
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
-            return token.Parent.IsKind(SyntaxKind.IdentifierName) || token.Parent.IsKind(SyntaxKind.GenericName);
+            return token.Parent.IsKind(SyntaxKind.IdentifierName) 
+                || token.Parent.IsKind(SyntaxKind.GenericName);
         }
 
         public override bool ShouldContainerBreak(SyntaxToken token)

@@ -12,8 +12,15 @@
         {
             ExpectKind(SyntaxKind.AttributeList, token.Parent.GetKind());
             ExpectKind(SyntaxKind.OpenBracketToken, token.GetKind());
-
             token = token.GetNextToken();
+
+            if (token.Parent.IsKind(SyntaxKind.AttributeTargetSpecifier))
+            {
+                token = token.GetNextToken();
+                ExpectKind(SyntaxKind.AttributeTargetSpecifier, token.Parent.GetKind());
+                token = token.GetNextToken();
+            }
+
             this.IdentifierName = new IdentifierName();
             token = this.IdentifierName.Analyze(token);
             token = token.GetNextToken();

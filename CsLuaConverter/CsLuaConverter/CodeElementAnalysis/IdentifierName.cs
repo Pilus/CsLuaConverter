@@ -7,6 +7,8 @@
     public class IdentifierName : ElementWithInnerElement
     {
         public readonly List<string> Names = new List<string>();
+        public bool IsNullable;
+        public bool IsArray;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -22,6 +24,23 @@
                 {
                     token = token.GetNextToken();
                 }
+            }
+
+            if (token.Parent.IsKind(SyntaxKind.NullableType))
+            {
+                ExpectKind(SyntaxKind.QuestionToken, token.GetKind());
+                this.IsNullable = true;
+                token = token.GetNextToken();
+            }
+
+            if (token.Parent.IsKind(SyntaxKind.ArrayRankSpecifier))
+            {
+                ExpectKind(SyntaxKind.OpenBracketToken, token.GetKind());
+                this.IsArray = true;
+                token = token.GetNextToken();
+
+                ExpectKind(SyntaxKind.CloseBracketToken, token.GetKind());
+                token = token.GetNextToken();
             }
 
             if (token.Is(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.DotToken))

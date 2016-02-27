@@ -10,6 +10,7 @@
         public ParameterList ParameterList;
         public TypeParameterList Generics;
         public bool IsProperty;
+        public bool IsIndexer;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -37,6 +38,22 @@
                 ExpectKind(SyntaxKind.IdentifierToken, token.GetKind());
                 this.Name = token.Text;
                 this.IsProperty = true;
+
+                token = token.GetNextToken();
+                var accessor = new AccessorList();
+                token = accessor.Analyze(token);
+                return token;
+            }
+
+            if (token.Parent.IsKind(SyntaxKind.IndexerDeclaration))
+            {
+                ExpectKind(SyntaxKind.ThisKeyword, token.GetKind());
+                this.IsProperty = true;
+                this.IsIndexer = true;
+
+                token = token.GetNextToken();
+                var bracketList = new BracketedParameterList();
+                token = bracketList.Analyze(token);
 
                 token = token.GetNextToken();
                 var accessor = new AccessorList();

@@ -49,3 +49,4 @@
 /CsLuaProjects/WoWSimulator/bin/Debug
 /CsLuaProjects/WoWSimulator/obj/Debug
 *.user
+*.manifest

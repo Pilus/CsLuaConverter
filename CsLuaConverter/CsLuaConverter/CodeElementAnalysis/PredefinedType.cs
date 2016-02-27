@@ -7,6 +7,7 @@
     {
         public string Text;
         public bool IsArray;
+        public bool IsNullable;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -21,6 +22,13 @@
                 ExpectKind(SyntaxKind.ArrayRankSpecifier, token.Parent.GetKind());
                 ExpectKind(SyntaxKind.CloseBracketToken, token.GetKind());
                 this.IsArray = true;
+            }
+
+            if (token.GetNextToken().Parent.IsKind(SyntaxKind.NullableType))
+            {
+                token = token.GetNextToken();
+                ExpectKind(SyntaxKind.QuestionToken, token.GetKind());
+                this.IsNullable = true;
             }
 
             token = token.GetNextToken();

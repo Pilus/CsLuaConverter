@@ -24,7 +24,7 @@
 
             if (token.Is(SyntaxKind.BracketedArgumentList, SyntaxKind.OpenBracketToken))
             {
-                this.InnerElement = new BracketedArgumentList();
+                this.InnerElement = new BracketedParameterList();
                 token = this.InnerElement.Analyze(token);
                 return token;
             }

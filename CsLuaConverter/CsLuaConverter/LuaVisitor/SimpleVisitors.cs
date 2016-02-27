@@ -10,7 +10,7 @@
         IVisitor<CharacterLiteralExpression>, IVisitor<NotEqualsExpression>, IVisitor<ReturnStatement>, 
         IVisitor<EqualsExpression>, IVisitor<CastExpression>, IVisitor<LogicalNotExpression>, IVisitor<SubtractExpression>,
         IVisitor<MultiplyExpression>, IVisitor<UnaryMinusExpression>, IVisitor<GreaterThanExpression>, IVisitor<LessThanExpression>,
-        IVisitor<LogicalAndExpression>
+        IVisitor<LogicalAndExpression>, IVisitor<DivideExpression>, IVisitor<BreakStatement>
     {
         public void Visit(FalseLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
@@ -99,6 +99,16 @@
         public void Visit(LogicalAndExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write(" and ");
+        }
+
+        public void Visit(DivideExpression element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write("/");
+        }
+
+        public void Visit(BreakStatement element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write("break");
         }
     }
 }

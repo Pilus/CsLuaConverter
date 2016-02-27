@@ -55,6 +55,7 @@
             new ParenthesizedExpressionVisitor(),
             new BaseExpressionVisitor(),
             new ThisExpressionVisitor(),
+            new SwitchStatementVisitor(),
         };
 
         private static IndentedTextWriter writer;
