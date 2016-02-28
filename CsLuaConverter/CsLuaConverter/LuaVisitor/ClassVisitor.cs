@@ -29,7 +29,7 @@
             WriteMembers(element, textWriter, providers);
             WriteConstructors(element, textWriter, providers);
 
-            textWriter.Write("return 'Class', typeObject, members, constructors, elementGenerator, nil, initialize;");
+            textWriter.WriteLine("return 'Class', typeObject, members, constructors, elementGenerator, nil, initialize;");
 
             textWriter.Indent--;
             textWriter.Write("end,");

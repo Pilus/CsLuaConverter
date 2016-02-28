@@ -68,6 +68,11 @@
                     VisitorList.Visit(element);
                     textWriter.Write(" % _M.DOT)");
                 }
+                else if (nextElement is ParenthesizedLambdaExpression)
+                {
+                    ParenthesizedLambdaExpressionVisitor.Visit(nextElement as ParenthesizedLambdaExpression, textWriter, providers, element as ParameterList, elements.Skip(i+2));
+                    return;
+                }
                 else
                 {
                     VisitorList.Visit(element);

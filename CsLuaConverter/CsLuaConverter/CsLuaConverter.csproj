@@ -185,6 +185,7 @@
     <Compile Include="LuaVisitor\EnumMemberDeclarationVisitor.cs" />
     <Compile Include="LuaVisitor\Extensions.cs" />
     <Compile Include="LuaVisitor\ForEachStatementVisitor.cs" />
+    <Compile Include="LuaVisitor\ForStatementVisitor.cs" />
     <Compile Include="LuaVisitor\GenericNameVisitor.cs" />
     <Compile Include="LuaVisitor\IdentifierNameVisitor.cs" />
     <Compile Include="LuaVisitor\IfStatementVisitor.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="LuaVisitor\ParameterListVisitor.cs" />
     <Compile Include="LuaVisitor\ParameterVisitor.cs" />
     <Compile Include="LuaVisitor\ParenthesizedExpressionVisitor.cs" />
+    <Compile Include="LuaVisitor\ParenthesizedLambdaExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\PostDecrementExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\PostIncrementExpressionVisitor.cs" />
     <Compile Include="LuaVisitor\PredefinedTypeVisitor.cs" />
@@ -224,6 +226,7 @@
     <Compile Include="LuaVisitor\NamespaceElement.cs" />
     <Compile Include="LuaVisitor\NamespaceExtractor.cs" />
     <Compile Include="LuaVisitor\NamespaceVisitor.cs" />
+    <Compile Include="LuaVisitor\WhileStatementVisitor.cs" />
     <Compile Include="ProjectType.cs" />
     <Compile Include="Providers\GenericsRegistry\GenericScope.cs" />
     <Compile Include="Providers\GenericsRegistry\GenericsRegistry.cs" />

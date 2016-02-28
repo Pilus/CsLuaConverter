@@ -56,6 +56,8 @@
             new BaseExpressionVisitor(),
             new ThisExpressionVisitor(),
             new SwitchStatementVisitor(),
+            new WhileStatementVisitor(),
+            new ForStatementVisitor(),
         };
 
         private static IndentedTextWriter writer;

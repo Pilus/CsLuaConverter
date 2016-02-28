@@ -10,7 +10,8 @@
         IVisitor<CharacterLiteralExpression>, IVisitor<NotEqualsExpression>, IVisitor<ReturnStatement>, 
         IVisitor<EqualsExpression>, IVisitor<CastExpression>, IVisitor<LogicalNotExpression>, IVisitor<SubtractExpression>,
         IVisitor<MultiplyExpression>, IVisitor<UnaryMinusExpression>, IVisitor<GreaterThanExpression>, IVisitor<LessThanExpression>,
-        IVisitor<LogicalAndExpression>, IVisitor<DivideExpression>, IVisitor<BreakStatement>
+        IVisitor<LogicalAndExpression>, IVisitor<DivideExpression>, IVisitor<BreakStatement>, IVisitor<LessThanOrEqualExpression>,
+        IVisitor<GreaterThanOrEqualExpression>
     {
         public void Visit(FalseLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
@@ -78,22 +79,22 @@
 
         public void Visit(MultiplyExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("*");
+            textWriter.Write(" * ");
         }
 
         public void Visit(UnaryMinusExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("-");
+            textWriter.Write(" - ");
         }
 
         public void Visit(GreaterThanExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write(">");
+            textWriter.Write(" > ");
         }
 
         public void Visit(LessThanExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("<");
+            textWriter.Write(" < ");
         }
 
         public void Visit(LogicalAndExpression element, IndentedTextWriter textWriter, IProviders providers)
@@ -109,6 +110,16 @@
         public void Visit(BreakStatement element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("break");
+        }
+
+        public void Visit(LessThanOrEqualExpression element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write(" <= ");
+        }
+
+        public void Visit(GreaterThanOrEqualExpression element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write(" >= ");
         }
     }
 }

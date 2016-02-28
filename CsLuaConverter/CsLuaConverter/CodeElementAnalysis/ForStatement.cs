@@ -7,7 +7,7 @@
     public class ForStatement : BaseElement
     {
         public BaseElement IteratorType;
-        public BaseElement IteratorName;
+        public VariableDeclarator IteratorName;
         public Statement StartValue;
         public Statement Condition;
         public Statement Incrementor;
@@ -27,7 +27,7 @@
             token = this.IteratorType.Analyze(token);
             token = token.GetNextToken();
 
-            this.IteratorName = GenerateMatchingElement(token);
+            this.IteratorName = new VariableDeclarator();
             token = this.IteratorName.Analyze(token);
             token = token.GetNextToken();
 
