@@ -50,3 +50,9 @@
 /CsLuaProjects/WoWSimulator/obj/Debug
 *.user
 *.manifest
+/CsLuaProjects/GrindOMeter.CsLuaTrigger/bin/Debug
+/CsLuaProjects/GrindOMeter.CsLuaTrigger/obj/Debug
+/CsLuaProjects/MyAddOn/bin/Debug
+/CsLuaProjects/MyAddOn/obj/Debug
+/CsLuaProjects/MyAddOn.CsLuaTrigger/bin/Debug
+/CsLuaProjects/MyAddOn.CsLuaTrigger/obj/Debug

@@ -39,12 +39,11 @@
     <Reference Include="CsLuaFramework">
       <HintPath>..\CsLuaConverter\CsLuaFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Lua, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\WoWSimulator\bin\Debug\Lua.dll</HintPath>
+    <Reference Include="Lua">
+      <HintPath>..\CsLuaConverter\Lua.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
-      <HintPath>.\Moq.dll</HintPath>
+      <HintPath>..\CsLuaConverter\Moq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.XML" />

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BCB19055-FBF5-4600-9471-FD0E1A3DB74B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GrindOMeter.CsLuaTrigger</RootNamespace>
+    <AssemblyName>GrindOMeter.CsLuaTrigger</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BlizzardApi\BlizzardApi.csproj">
+      <Project>{4fa81a8f-be0d-4dad-9e55-0ad7146fc259}</Project>
+      <Name>BlizzardApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrindOMeter.IntegrationTests\GrindOMeter.IntegrationTests.csproj">
+      <Project>{8ef6c7b3-aa92-46e4-8b02-995d8359e865}</Project>
+      <Name>GrindOMeter.IntegrationTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrindOMeter.UnitTests\GrindOMeter.UnitTests.csproj">
+      <Project>{f3d5bac3-2210-4a97-b8fe-872a19bdf058}</Project>
+      <Name>GrindOMeter.UnitTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrindOMeter\GrindOMeter.csproj">
+      <Project>{3f5f4ba0-a433-46df-ae6e-71b2132051c8}</Project>
+      <Name>GrindOMeter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestUtils\TestUtils.csproj">
+      <Project>{52b30640-cbf4-43db-93b1-7b1d66c48924}</Project>
+      <Name>TestUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WoWSimulator\WoWSimulator.csproj">
+      <Project>{90089c84-d04e-4953-be7d-3b2a9be1c819}</Project>
+      <Name>WoWSimulator</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>cmd /c ""$(SolutionDir)CsLuaConverter\CsLuaConverter.exe" "$(SolutionPath)" "$(SolutionDir)..\..\AddOns""</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
