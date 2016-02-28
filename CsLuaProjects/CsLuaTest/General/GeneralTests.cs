@@ -17,6 +17,7 @@
             this.Tests["TestClassWithInitializerAndConstructor"] = TestClassWithInitializerAndConstructor;
             this.Tests["TestClassWithProperties"] = TestClassWithProperties;
             this.Tests["TestSwitch"] = TestSwitch;
+            this.Tests["TestClassReferencingSelfInMethod"] = TestClassReferencingSelfInMethod;
         }
 
         private static void NonStaticClassWithStaticMethod()
@@ -126,6 +127,13 @@
             Assert(6, ClassWithSwitch.Switch("XX"));
 
             Assert(0, ClassWithSwitch.Switch2("XX"));
+        }
+
+        private static void TestClassReferencingSelfInMethod()
+        {
+            var a = new NonStaticClass() {Value = 3};
+            var b = new NonStaticClass() {Value = 7};
+            Assert(10, a.CallWithSameClass(b));
         }
     }
 }

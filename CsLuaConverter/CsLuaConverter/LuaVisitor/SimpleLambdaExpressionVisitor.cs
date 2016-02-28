@@ -2,6 +2,7 @@
 {
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
+    using System.Linq;
     using CodeElementAnalysis;
     using Providers;
 
@@ -14,6 +15,8 @@
 
         public static void Visit(IEnumerable<BaseElement> parameters, IEnumerable<BaseElement> body, IndentedTextWriter textWriter, IProviders providers)
         {
+            var bodyElements = body.ToList();
+
             textWriter.Write("function(");
             var first = true;
 
@@ -31,11 +34,17 @@
                 VisitorList.Visit(parameter);
             }
 
-            textWriter.Write(") return ");
+            textWriter.Write(")");
 
-            foreach (var element in body)
+            if (bodyElements.Count == 1 && bodyElements[0] is Block)
             {
-                VisitorList.Visit(element);
+                textWriter.WriteLine("");
+                VisitorList.Visit(bodyElements[0]);
+            }
+            else
+            {
+                textWriter.Write(" return ");
+                bodyElements.ForEach(VisitorList.Visit);
             }
 
             textWriter.Write(" end");

@@ -2,6 +2,13 @@
 {
     public class NonStaticClass
     {
+        public int Value;
+
+        public int CallWithSameClass(NonStaticClass other)
+        {
+            return other.Value + this.Value;
+        }
+
         public static void StaticMethod(int x)
         {
             GeneralTests.Output = "StaticMethodInt";
@@ -11,5 +18,7 @@
         {
             GeneralTests.Output = "StaticMethodString";
         }
+
+
     }
 }

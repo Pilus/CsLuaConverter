@@ -49,49 +49,35 @@
             }
         }
 
+        private static bool IsClass(BaseElement elemment, IProviders providers)
+        {
+            if (elemment is IdentifierName)
+            {
+                var identifierName = (IdentifierName)elemment;
+                return identifierName.GetTypeObject(providers).IsClass;
+            }
+            else if (elemment is GenericName)
+            {
+                var identifierName = (GenericName)elemment;
+                return providers.TypeProvider.LookupType(identifierName.Name).IsClass;
+            }
+
+            return false;
+        }
 
         private static void WriteBaseInheritance(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
             var firstBaseElementPair = element.BaseList?.ContainedElements.First();
-            var baseTypeNamespace = "System";
-            var baseTypeName = "Object";
-
-            BaseElement inhetitedClass = null;
-
-            if (firstBaseElementPair is IdentifierName)
-            {
-                var identifierName = (IdentifierName)firstBaseElementPair;
-                var type = identifierName.GetTypeObject(providers);
-
-                if (type.IsClass)
-                {
-                    inhetitedClass = identifierName;
-                    baseTypeNamespace = type.Namespace;
-                    baseTypeName = type.Name;
-                }
-            }
-            else if (firstBaseElementPair is GenericName)
-            {
-                var identifierName = (GenericName)firstBaseElementPair;
-                var type = providers.TypeProvider.LookupType(identifierName.Name);
-
-                if (type.IsClass)
-                {
-                    inhetitedClass = identifierName;
-                    baseTypeNamespace = type.Namespace;
-                    baseTypeName = type.Name;
-                };
-            }
 
             textWriter.Write("local baseTypeObject, members, baseConstructors, baseElementGenerator, implements, baseInitialize = ");
-            textWriter.Write("{0}.{1}", baseTypeNamespace, baseTypeName);
 
-            if (inhetitedClass != null)
+            if (IsClass(firstBaseElementPair, providers))
             {
-                // TODO: Analyse the generics of the base element call and use them to initialize the right version of the base element.
-                // textWriter.Write("[{");
-                // this.baseLists[0].NativeName.Generics.WriteLua(textWriter, providers);
-                // textWriter.Write("}]");
+                VisitorList.Visit(firstBaseElementPair);
+            }
+            else
+            {
+                textWriter.Write("System.Object");
             }
 
             textWriter.WriteLine(".__meta(staticValues);");
