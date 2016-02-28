@@ -22,7 +22,7 @@
             this.name = projectInfo.Info.Name;
 
             this.codeFiles = new List<CodeFile>();
-            if (!projectInfo.RefersTo.Any())
+            if (!projectInfo.RefersTo.Any(pi => pi.Info.ProjectType.Equals(ProjectType.CsLuaAddOn)))
             {
                 this.codeFiles.Add(CsLuaMetaReader.GetMetaFile());
             }
