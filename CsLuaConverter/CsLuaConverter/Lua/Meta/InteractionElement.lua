@@ -54,13 +54,17 @@ local InteractionElement = function(metaProvider, generics)
     local element = { __metaType = _M.MetaTypes.InteractionElement };
     local staticValues = {__metaType = _M.MetaTypes.StaticValues};
     local extensions = {};
-    local catagory, typeObject, members, constructors, elementGenerator, implements, initialize = metaProvider(element, generics, staticValues);
+    local catagory, typeObject, memberProvider, constructors, elementGenerator, implements, initialize = metaProvider(element, generics, staticValues);
     staticValues.type = typeObject;
 
-
+    local cachedMembers = nil;
 
     local getMembers = function(key, level, staticOnly)
-        return where(members[key] or {}, function(member)
+        if not(cachedMembers) then
+            cachedMembers = _M.RTEF(memberProvider);
+        end
+
+        return where(cachedMembers[key] or {}, function(member)
             assert(member.memberType, "Member without member type in "..typeObject.FullName..". Key: "..key.." Level: "..tostring(member.level));
             local static = member.static;
             local public = member.scope == "Public";
@@ -291,7 +295,11 @@ local InteractionElement = function(metaProvider, generics)
                 inheritingStaticValues[i] = staticValues[i];
             end
 
-            return typeObject, clone(members, 2), clone(constructors or {},2), elementGenerator, clone(implements or {},1), initialize; 
+            if not(cachedMembers) then
+                cachedMembers = _M.RTEF(memberProvider);
+            end
+
+            return typeObject, clone(cachedMembers, 2), clone(constructors or {},2), elementGenerator, clone(implements or {},1), initialize; 
         end,
         __index = index,
         __newindex = newIndex,
@@ -405,3 +413,8 @@ local BaseCstor = function(classElement, baseConstructors, ...)
     constructor.func(classElement, ...);
 end
 _M.BC = BaseCstor;
+
+local ReturnTableOrExecuteFunction = function(t)
+    return type(t) == "table" and t or t();
+end
+_M.RTEF = ReturnTableOrExecuteFunction;

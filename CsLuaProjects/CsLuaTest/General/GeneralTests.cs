@@ -5,7 +5,6 @@
         public GeneralTests()
         {
             Name = "General";
-            this.Tests["NonStaticClassWithStaticMethod"] = NonStaticClassWithStaticMethod;
             this.Tests["TestVariableTypeVsVariableName"] = TestVariableTypeVsVariableName;
             this.Tests["GetConstValueFromBase"] = GetConstValueFromBase;
             this.Tests["ConstructorShouldUseArgumentsOverClassElements"] = ConstructorShouldUseArgumentsOverClassElements;
@@ -17,6 +16,7 @@
             this.Tests["TestClassWithInitializerAndConstructor"] = TestClassWithInitializerAndConstructor;
             this.Tests["TestClassWithProperties"] = TestClassWithProperties;
             this.Tests["TestSwitch"] = TestSwitch;
+            this.Tests["NonStaticClassWithStaticMethod"] = NonStaticClassWithStaticMethod;
             this.Tests["TestClassReferencingSelfInMethod"] = TestClassReferencingSelfInMethod;
         }
 

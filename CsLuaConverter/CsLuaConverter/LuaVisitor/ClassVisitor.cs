@@ -29,7 +29,7 @@
             WriteMembers(element, textWriter, providers);
             WriteConstructors(element, textWriter, providers);
 
-            textWriter.WriteLine("return 'Class', typeObject, members, constructors, elementGenerator, nil, initialize;");
+            textWriter.WriteLine("return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;");
 
             textWriter.Indent--;
             textWriter.Write("end,");
@@ -69,7 +69,7 @@
         {
             var firstBaseElementPair = element.BaseList?.ContainedElements.First();
 
-            textWriter.Write("local baseTypeObject, members, baseConstructors, baseElementGenerator, implements, baseInitialize = ");
+            textWriter.Write("local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = ");
 
             if (IsClass(firstBaseElementPair, providers))
             {
@@ -238,10 +238,18 @@
 
         private static void WriteMembers(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
+            textWriter.WriteLine("local getMembers = function()");
+            textWriter.Indent++;
+            textWriter.WriteLine("local members = _M.RTEF(getBaseMembers);");
+
             foreach (var member in element.ContainedElements.Where(m => !(m is ConstructorDeclaration)).OrderBy(GetMemberOrder))
             {
                 VisitorList.Visit(member);
             }
+
+            textWriter.WriteLine("return members;");
+            textWriter.Indent--;
+            textWriter.WriteLine("end");
         }
 
         private static int GetMemberOrder(BaseElement element)
