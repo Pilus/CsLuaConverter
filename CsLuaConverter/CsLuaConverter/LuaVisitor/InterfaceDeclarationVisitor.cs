@@ -25,12 +25,15 @@
                 "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements, interactionElement, 'Interface');",
                 typeObject.Name, typeObject.Namespace, GetNumOfGenerics(element));
 
-            textWriter.WriteLine("return 'Interface', typeObject, nil, nil, nil;");
+            WriteMembers(element, textWriter, providers);
+
+            textWriter.WriteLine("return 'Interface', typeObject, memberProvider, nil, nil;");
 
             textWriter.Indent--;
             textWriter.WriteLine("end}),");
 
             providers.NameProvider.SetScope(originalScope);
+            providers.GenericsRegistry.ClearScope(GenericScope.Class);
         }
 
         private static int GetNumOfGenerics(InterfaceDeclaration element)
@@ -71,6 +74,22 @@
             }
 
             textWriter.WriteLine("};");
+        }
+
+        private static void WriteMembers(InterfaceDeclaration element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.WriteLine("local memberProvider = function()");
+            textWriter.Indent++;
+            textWriter.WriteLine("local members = {};");
+
+            foreach (var member in element.Elements)
+            {
+                VisitorList.Visit(member);
+            }
+
+            textWriter.WriteLine("return members;");
+            textWriter.Indent--;
+            textWriter.WriteLine("end");
         }
     }
 }

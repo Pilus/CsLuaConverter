@@ -58,6 +58,7 @@
             new SwitchStatementVisitor(),
             new WhileStatementVisitor(),
             new ForStatementVisitor(),
+            new InterfaceElementVisitor(),
         };
 
         private static IndentedTextWriter writer;
