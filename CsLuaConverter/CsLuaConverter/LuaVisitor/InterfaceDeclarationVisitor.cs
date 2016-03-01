@@ -1,6 +1,8 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
+    using System;
     using System.CodeDom.Compiler;
+    using System.Collections.Generic;
     using System.Linq;
     using CodeElementAnalysis;
     using Providers;
@@ -10,13 +12,22 @@
     {
         public void Visit(InterfaceDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
+            throw new LuaVisitorException("Cannot visit interface without attribute knowledge.");
+        }
+
+        public static void Visit(Tuple<InterfaceDeclaration, AttributeList[], string, string[]>[] elements, IndentedTextWriter textWriter, IProviders providers)
+        {
+            var element = elements.Single().Item1;
+
+            providers.TypeProvider.SetNamespaces(elements.Single().Item3, elements.Single().Item4);
+
             var originalScope = providers.NameProvider.CloneScope();
 
             RegisterGenerics(element, textWriter, providers);
 
             var typeObject = providers.TypeProvider.LookupType(element.Name);
 
-            textWriter.WriteLine("{0} = _M.NE({{[{1}] = function(interactionElement, generics, staticValues)", element.Name, GetNumOfGenerics(element));
+            textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", GetNumOfGenerics(element));
             textWriter.Indent++;
 
             WriteImplements(element, textWriter, providers);
@@ -30,13 +41,13 @@
             textWriter.WriteLine("return 'Interface', typeObject, memberProvider, nil, nil;");
 
             textWriter.Indent--;
-            textWriter.WriteLine("end}),");
+            textWriter.WriteLine("end,");
 
             providers.NameProvider.SetScope(originalScope);
             providers.GenericsRegistry.ClearScope(GenericScope.Class);
         }
 
-        private static int GetNumOfGenerics(InterfaceDeclaration element)
+        public static int GetNumOfGenerics(InterfaceDeclaration element)
         {
             return element.Generics?.ContainedElements.Count ?? 0;
         }

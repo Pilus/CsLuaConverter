@@ -1,12 +1,13 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
+    using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
     using CodeElementAnalysis;
     using Providers;
 
-    public class NamespaceVisitor : IVisitor<Namespace>, IVisitor<NamespaceElement>
+    public class NamespaceVisitor : IVisitor<Namespace> //, IVisitor<NamespaceElement>
     {
         public void Visit(Namespace element, IndentedTextWriter textWriter, IProviders providers)
         {
@@ -14,22 +15,49 @@
             textWriter.Indent++;
             textWriter.WriteLine("__metaType = _M.MetaTypes.NameSpace,");
 
-            element.Elements.Where(e => !(e.Element is ClassDeclaration)).ToList().ForEach(VisitorList.Visit);
-            var classPairs = element.Elements.Where(e => e.Element is ClassDeclaration)
-                .GroupBy(e => (e.Element as ClassDeclaration).Name);
+            foreach (var enumNamespaceElement in element.Elements.Where(e => (e.Element is EnumDeclaration)))
+            {
+                providers.TypeProvider.SetNamespaces(enumNamespaceElement.NamespaceLocation, CollectUsings(enumNamespaceElement.Usings));
+                VisitorList.Visit(enumNamespaceElement.Element);
+            }
 
-            foreach (var pair in classPairs)
+            var pairs = element.Elements.Where(e => !(e.Element is EnumDeclaration)).GroupBy(e => GetName(e.Element));
+
+            foreach (var pair in pairs)
             {
                 textWriter.Write("{0} = _M.NE({{", pair.Key);
-                
-                foreach (var classNamespaceElement in pair)
+
+                var partialPairs = pair.GroupBy(e => GetNumGenerics(e.Element));
+                foreach (var partialPair in partialPairs)
                 {
-                    VisitorList.Visit(classNamespaceElement);
+                    if (partialPair.First().Element is ClassDeclaration)
+                    {
+                        var elements = partialPair.Select(
+                                e => new Tuple<ClassDeclaration, AttributeList[], string, string[]>(
+                                    e.Element as ClassDeclaration,
+                                    e.Attributes.ToArray(),
+                                    e.NamespaceLocation,
+                                    CollectUsings(e.Usings))).ToArray();
+                        ClassVisitor.Visit(elements, textWriter, providers);
+                    }
+                    else if (partialPair.First().Element is InterfaceDeclaration)
+                    {
+                        var elements = partialPair.Select(
+                                e => new Tuple<InterfaceDeclaration, AttributeList[], string, string[]>(
+                                    e.Element as InterfaceDeclaration,
+                                    e.Attributes.ToArray(),
+                                    e.NamespaceLocation,
+                                    CollectUsings(e.Usings))).ToArray();
+                        InterfaceDeclarationVisitor.Visit(elements, textWriter, providers);
+                    }
+                    else
+                    {
+                        throw new LuaVisitorException("Unexpected namespace element " + partialPair.First().Element.GetType().Name);
+                    }
                 }
 
                 textWriter.WriteLine("}),");
             }
-
 
             element.SubNamespaces.ForEach(VisitorList.Visit);
 
@@ -39,18 +67,12 @@
             WriteFooter(element, textWriter, providers);
         }
 
-        public void Visit(NamespaceElement element, IndentedTextWriter textWriter, IProviders providers)
+        public static string[] CollectUsings(List<UsingDirective> usings)
         {
-            providers.TypeProvider.SetNamespaces(element.NamespaceLocation, this.CollectUsings(element.Usings));
-            VisitorList.Visit(element.Element, textWriter, providers);
+            return usings.Select(GetFullNameOfUsing).ToArray();
         }
 
-        public IEnumerable<string> CollectUsings(List<UsingDirective> usings)
-        {
-            return usings.Select(this.GetFullNameOfUsing);
-        }
-
-        public string GetFullNameOfUsing(UsingDirective theUsing)
+        public static string GetFullNameOfUsing(UsingDirective theUsing)
         {
             return string.Join(".", theUsing.Name.Names);
         }
@@ -69,5 +91,41 @@
                 ClassVisitor.WriteFooter((ClassDeclaration) element.Element, textWriter, providers, element.Attributes);
             }
         }
+
+        private static string GetName(BaseElement element)
+        {
+            if (element is ClassDeclaration)
+            {
+                return ((ClassDeclaration) element).Name;
+            }
+
+            if (element is InterfaceDeclaration)
+            {
+                return ((InterfaceDeclaration)element).Name;
+            }
+
+            throw new LuaVisitorException("Cannot get name of object " + element.GetType().Name);
+        }
+
+        private static int GetNumGenerics(BaseElement element)
+        {
+            if (element is ClassDeclaration)
+            {
+                return ClassVisitor.GetNumOfGenerics((ClassDeclaration)element);
+            }
+
+            if (element is InterfaceDeclaration)
+            {
+                return InterfaceDeclarationVisitor.GetNumOfGenerics((InterfaceDeclaration)element);
+            }
+
+            throw new LuaVisitorException("Cannot get num of generic of object " + element.GetType().Name);
+        }
+    }
+
+    internal struct NamespaceElementWithAttributes
+    {
+        public NamespaceElement Element;
+        public AttributeList[] Attributes;
     }
 }

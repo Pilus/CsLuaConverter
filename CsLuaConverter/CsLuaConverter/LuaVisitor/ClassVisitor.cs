@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
+    using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
@@ -12,7 +13,16 @@
     {
         public void Visit(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
+            throw new LuaVisitorException("Cannot visit class without attribute knowledge.");
+        }
+
+        public static void Visit(Tuple<ClassDeclaration, AttributeList[], string, string[]>[] elements, IndentedTextWriter textWriter, IProviders providers)
+        {
+            var element = elements.Single().Item1;
             var originalScope = providers.NameProvider.CloneScope();
+
+            providers.TypeProvider.SetNamespaces(elements.Single().Item3, elements.Single().Item4);
+
             providers.NameProvider.AddAllInheritedMembersToScope(element.Name);
 
             textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", GetNumOfGenerics(element));
@@ -205,7 +215,7 @@
             textWriter.WriteLine("end");
         }
 
-        private static int GetNumOfGenerics(ClassDeclaration element)
+        public static int GetNumOfGenerics(ClassDeclaration element)
         {
             return element.Generics?.ContainedElements.Count ?? 0;
         }
