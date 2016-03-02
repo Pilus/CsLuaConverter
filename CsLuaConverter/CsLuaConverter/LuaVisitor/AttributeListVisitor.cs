@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
     using System.CodeDom.Compiler;
+    using System.Linq;
     using CodeElementAnalysis;
     using Providers;
 
@@ -8,7 +9,11 @@
     {
         public void Visit(AttributeList element, IndentedTextWriter textWriter, IProviders providers)
         {
-            // Ignoring Attributes as they are not supported in cslua.
+            var attributeName = element.IdentifierName.Names.SingleOrDefault();
+            if (attributeName == "ProvideSelf")
+            {
+                textWriter.WriteLine("provideSelf = true,");
+            }
         }
     }
 }

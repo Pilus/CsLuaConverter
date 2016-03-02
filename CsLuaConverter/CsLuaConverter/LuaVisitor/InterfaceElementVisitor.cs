@@ -31,7 +31,11 @@
             }
             else
             {
+                textWriter.Write("types = {");
+                ParameterListVisitor.VisitParameterListTypeReferences(element.ParameterList, textWriter, providers);
+                textWriter.WriteLine("},");
                 textWriter.WriteLine("memberType = 'Method',");
+                textWriter.WriteLine("provideSelf = attributes.provideSelf,");
             }
 
             textWriter.Write("returnType = ");

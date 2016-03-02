@@ -17,6 +17,7 @@
 
         public static void Visit(Tuple<InterfaceDeclaration, AttributeList[], string, string[]>[] elements, IndentedTextWriter textWriter, IProviders providers)
         {
+            var attributes = elements.SelectMany(e => e.Item2).Distinct();
             var element = elements.Single().Item1;
 
             providers.TypeProvider.SetNamespaces(elements.Single().Item3, elements.Single().Item4);
@@ -30,13 +31,16 @@
             textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", GetNumOfGenerics(element));
             textWriter.Indent++;
 
+            WriteGenericsMapping(element, textWriter, providers);
             WriteImplements(element, textWriter, providers);
 
             textWriter.WriteLine(
                 "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements, interactionElement, 'Interface');",
                 typeObject.Name, typeObject.Namespace, GetNumOfGenerics(element));
 
-            WriteMembers(element, textWriter, providers);
+            WriteAttributes(attributes, textWriter, providers);
+
+            WriteMembers(elements.Select(e => e.Item1).ToArray(), textWriter, providers);
 
             textWriter.WriteLine("return 'Interface', typeObject, memberProvider, nil, nil;");
 
@@ -87,13 +91,13 @@
             textWriter.WriteLine("};");
         }
 
-        private static void WriteMembers(InterfaceDeclaration element, IndentedTextWriter textWriter, IProviders providers)
+        private static void WriteMembers(InterfaceDeclaration[] element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.WriteLine("local memberProvider = function()");
             textWriter.Indent++;
             textWriter.WriteLine("local members = {};");
 
-            foreach (var member in element.Elements)
+            foreach (var member in element.SelectMany(e => e.Elements))
             {
                 VisitorList.Visit(member);
             }
@@ -101,6 +105,36 @@
             textWriter.WriteLine("return members;");
             textWriter.Indent--;
             textWriter.WriteLine("end");
+        }
+
+        private static void WriteAttributes(IEnumerable<AttributeList> attributes, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.WriteLine("local attributes = {");
+            textWriter.Indent++;
+
+            foreach (var attribute in attributes)
+            {
+                VisitorList.Visit(attribute);
+            }
+
+            textWriter.Indent--;
+            textWriter.WriteLine("};");
+        }
+
+        private static void WriteGenericsMapping(InterfaceDeclaration element, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write("local genericsMapping = ");
+
+            if (element.Generics != null)
+            {
+                textWriter.Write("{");
+                VisitorList.Visit(element.Generics);
+                textWriter.WriteLine("};");
+            }
+            else
+            {
+                textWriter.WriteLine("{};");
+            }
         }
     }
 }

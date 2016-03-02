@@ -5,6 +5,7 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
 
     local methodGenericsMapping = {['T'] = 1};
     local methodGenerics = _M.MG(methodGenericsMapping);
+
     _M.IM(members,'Wrap',{
         level = typeObject.Level,
         memberType = 'Method',
@@ -13,7 +14,19 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
         types = {System.String.__typeof},
         generics = methodGenericsMapping,
         func = function(element,methodGenericsMapping,methodGenerics,globalVarName)
-            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics]();
+            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics](_G[globalVarName]);
+        end,
+    });
+
+    _M.IM(members,'Wrap',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        static = false,
+        types = {Lua.NativeLuaTable.__typeof},
+        generics = methodGenericsMapping,
+        func = function(element,methodGenericsMapping,methodGenerics,value)
+            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics](value);
         end,
     });
 

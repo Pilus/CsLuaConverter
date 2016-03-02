@@ -10,7 +10,7 @@
         {
             Name = "Wrap";
             this.Tests["WrapSimpleInterface"] = WrapSimpleInterface;
-            /*this.Tests["WrapInheritingInterface"] = WrapInheritingInterface;
+            this.Tests["WrapInheritingInterface"] = WrapInheritingInterface;
             this.Tests["WrapGenericInterface"] = WrapGenericInterface;
             this.Tests["WrapInheritingInterfaceWithGenericInterface"] = WrapInheritingInterfaceWithGenericInterface;
             this.Tests["WrapInheritingInterfaceWithProvideSelf"] = WrapInheritingInterfaceWithProvideSelf;
@@ -18,12 +18,12 @@
             this.Tests["WrapGenericWithProperty"] = WrapGenericWithProperty;
             this.Tests["WrapHandleMultipleValues"] = WrapHandleMultipleValues;
             this.Tests["WrapHandleRecursiveWrapping"] = WrapHandleRecursiveWrapping;
-            this.Tests["WrapWithTargetTypeTranslation"] = WrapWithTargetTypeTranslation;
+            /*this.Tests["WrapWithTargetTypeTranslation"] = WrapWithTargetTypeTranslation;
             this.Tests["CastOfWrappedObject"] = CastOfWrappedObject;
             this.Tests["NonWrappedAsPropertyInWrappedObject"] = NonWrappedAsPropertyInWrappedObject; // */
         }
 
-        
+
         private static void WrapSimpleInterface()
         {
             if (!Environment.IsExecutingAsLua)
@@ -43,29 +43,32 @@
             Assert(20, interfaceImplementation.Value);
         }
 
-        /*
         public static void WrapGenericInterface()
         {
-            if (!GameEnvironment.IsExecutingInGame)
+            if (!Environment.IsExecutingAsLua)
             {
                 return;
             }
 
-            GameEnvironment.ExecuteLuaCode("interfaceImplementation = { Method = function(n) return 'OK' .. n; end, };");
-            var interfaceImplementation = CsLuaStatic.Wrapper.WrapGlobalObject<IInterfaceWithGenerics<int>>("interfaceImplementation");
+            var wrapper = new Wrapper();
+
+            Environment.ExecuteLuaCode("interfaceImplementation = { Method = function(n) return 'OK' .. n; end, };");
+            var interfaceImplementation = wrapper.Wrap<IInterfaceWithGenerics<int>>("interfaceImplementation");
 
             Assert("OK10", interfaceImplementation.Method(10));
         }
 
         public static void WrapGenericWithProperty()
         {
-            if (!GameEnvironment.IsExecutingInGame)
+            if (!Environment.IsExecutingAsLua)
             {
                 return;
             }
 
-            GameEnvironment.ExecuteLuaCode("interfaceImplementation = { Method = function() end, Property = { Value = 43, Method = function() end}, };");
-            var interfaceImplementation = CsLuaStatic.Wrapper.WrapGlobalObject<IInterfaceWithGenerics<ISimpleInterface>>("interfaceImplementation");
+            var wrapper = new Wrapper();
+
+            Environment.ExecuteLuaCode("interfaceImplementation = { Method = function() end, Property = { Value = 43, Method = function() end}, };");
+            var interfaceImplementation = wrapper.Wrap<IInterfaceWithGenerics<ISimpleInterface>>("interfaceImplementation");
 
             var inner = interfaceImplementation.Property;
             Assert(43, inner.Value);
@@ -73,13 +76,15 @@
 
         private static void WrapInheritingInterface()
         {
-            if (!GameEnvironment.IsExecutingInGame)
+            if (!Environment.IsExecutingAsLua)
             {
                 return;
             }
 
-            GameEnvironment.ExecuteLuaCode("interfaceImplementation = { Method = function(str) return 'OK' .. str; end, Value = 10, };");
-            var interfaceImplementation = CsLuaStatic.Wrapper.WrapGlobalObject<IInheritingInterface>("interfaceImplementation");
+            var wrapper = new Wrapper();
+
+            Environment.ExecuteLuaCode("interfaceImplementation = { Method = function(str) return 'OK' .. str; end, Value = 10, };");
+            var interfaceImplementation = wrapper.Wrap<IInheritingInterface>("interfaceImplementation");
 
             Assert("OKInput", interfaceImplementation.Method("Input"));
             Assert(10, interfaceImplementation.Value);
@@ -90,26 +95,30 @@
 
         public static void WrapInheritingInterfaceWithGenericInterface()
         {
-            if (!GameEnvironment.IsExecutingInGame)
+            if (!Environment.IsExecutingAsLua)
             {
                 return;
             }
 
-            GameEnvironment.ExecuteLuaCode("interfaceImplementation = { Method = function(n) return 'OK' .. n; end, };");
-            var interfaceImplementation = CsLuaStatic.Wrapper.WrapGlobalObject<IInheritingInterfaceWithGenerics<string,int>>("interfaceImplementation");
+            var wrapper = new Wrapper();
+
+            Environment.ExecuteLuaCode("interfaceImplementation = { Method = function(n) return 'OK' .. n; end, };");
+            var interfaceImplementation = wrapper.Wrap<IInheritingInterfaceWithGenerics<string,int>>("interfaceImplementation");
 
             Assert("OK10", interfaceImplementation.Method(10));
         }
 
         public static void WrapInheritingInterfaceWithProvideSelf()
         {
-            if (!GameEnvironment.IsExecutingInGame)
+            if (!Environment.IsExecutingAsLua)
             {
                 return;
             }
 
-            GameEnvironment.ExecuteLuaCode("interfaceImplementation = { Method = function(self, str) return 'OK' .. str; end, Method2 = function(self,a,b,c) return tostring(a)..tostring(b)..tostring(c); end  };");
-            var interfaceImplementation = CsLuaStatic.Wrapper.WrapGlobalObject<ISetSelfInterface>("interfaceImplementation");
+            var wrapper = new Wrapper();
+
+            Environment.ExecuteLuaCode("interfaceImplementation = { Method = function(self, str) return 'OK' .. str; end, Method2 = function(self,a,b,c) return tostring(a)..tostring(b)..tostring(c); end  };");
+            var interfaceImplementation = wrapper.Wrap<ISetSelfInterface>("interfaceImplementation");
 
             Assert("OKmore", interfaceImplementation.Method("more"));
             Assert("nilbc", interfaceImplementation.Method2(null, "b", "c"));
@@ -117,13 +126,15 @@
 
         public static void WrapHandleMultipleValues()
         {
-            if (!GameEnvironment.IsExecutingInGame)
+            if (!Environment.IsExecutingAsLua)
             {
                 return;
             }
 
-            GameEnvironment.ExecuteLuaCode("interfaceImplementation = { Method = function() return 'OK', 43, true; end, };");
-            var interfaceImplementation = CsLuaStatic.Wrapper.WrapGlobalObject<IInterfaceWithMultipleReturnValues<bool>>("interfaceImplementation");
+            var wrapper = new Wrapper();
+
+            Environment.ExecuteLuaCode("interfaceImplementation = { Method = function() return 'OK', 43, true; end, };");
+            var interfaceImplementation = wrapper.Wrap<IInterfaceWithMultipleReturnValues<bool>>("interfaceImplementation");
 
             var multiple = interfaceImplementation.Method();
             Assert("OK", multiple.Value1);
@@ -133,12 +144,12 @@
 
         public static void WrapHandleRecursiveWrapping()
         {
-            if (!GameEnvironment.IsExecutingInGame)
+            if (!Environment.IsExecutingAsLua)
             {
                 return;
             }
 
-            GameEnvironment.ExecuteLuaCode(@"
+            Environment.ExecuteLuaCode(@"
                 local recursiveInterfaceGenerator = function(inner, value)
                     return {
                         GetInner = function() return inner; end,
@@ -153,7 +164,9 @@
                 C = recursiveInterfaceGenerator(B, 'c');
             ");
 
-            var C = CsLuaStatic.Wrapper.WrapGlobalObject<IInterfaceWithWrappedValues>("C");
+            var wrapper = new Wrapper();
+
+            var C = wrapper.Wrap<IInterfaceWithWrappedValues>("C");
             Assert('c', C.GetValue());
 
             var B = C.Inner;
@@ -162,15 +175,15 @@
             var A = B.GetInner();
             Assert('a', A.GetValue());
         }
-
+        /*
         public static void WrapWithTargetTypeTranslation()
         {
-            if (!GameEnvironment.IsExecutingInGame)
+            if (!Environment.IsExecutingAsLua)
             {
                 return;
             }
 
-            GameEnvironment.ExecuteLuaCode(@"
+            Environment.ExecuteLuaCode(@"
                 retTrue = function() return true; end;
 
                 A = {
@@ -189,7 +202,9 @@
                 };
             ");
 
-            var producer = CsLuaStatic.Wrapper.WrapGlobalObject<IProducer>("P", false, table => "CsLuaTest.Wrap." + ((table["IsA"] != null) ? "IA" : "IB"));
+            var wrapper = new Wrapper();
+
+            var producer = wrapper.Wrap<IProducer>("P", false, table => "CsLuaTest.Wrap." + ((table["IsA"] != null) ? "IA" : "IB"));
 
             var a = producer.Produce("A");
             Assert(true, a is IA);
@@ -201,12 +216,14 @@
 
         public static void CastOfWrappedObject()
         {
-            if (!GameEnvironment.IsExecutingInGame)
+            if (!Environment.IsExecutingAsLua)
             {
                 return;
             }
 
-            GameEnvironment.ExecuteLuaCode(@"
+            var wrapper = new Wrapper();
+
+            Environment.ExecuteLuaCode(@"
                 retTrue = function() return true; end;
 
                 A = {
@@ -225,7 +242,7 @@
                 };
             ");
 
-            var producer = CsLuaStatic.Wrapper.WrapGlobalObject<IProducer>("P");
+            var producer = wrapper.Wrap<IProducer>("P");
 
             var a = producer.Produce("A");
             var aCast = (IA) a;
@@ -236,14 +253,16 @@
 
         public static void NonWrappedAsPropertyInWrappedObject()
         {
-            if (!GameEnvironment.IsExecutingInGame)
+            if (!Environment.IsExecutingAsLua)
             {
                 return;
             }
 
-            GameEnvironment.ExecuteLuaCode("A = {};");
+            var wrapper = new Wrapper();
 
-            var obj = CsLuaStatic.Wrapper.WrapGlobalObject<INonWrappedProperty>("A");
+            Environment.ExecuteLuaCode("A = {};");
+
+            var obj = wrapper.Wrap<INonWrappedProperty>("A");
             var cA = new ClassA() {Value = "ok"};
             obj.Property = cA;
 
@@ -253,8 +272,8 @@
 
             Assert("2", obj.Property.Value);
 
-            GameEnvironment.ExecuteLuaCode("A2 = A");
-            var objRef2 = CsLuaStatic.Wrapper.WrapGlobalObject<INonWrappedProperty>("A2");
+            Environment.ExecuteLuaCode("A2 = A");
+            var objRef2 = wrapper.Wrap<INonWrappedProperty>("A2");
             Assert(true, objRef2.Property == cA);
         } //*/
     }
