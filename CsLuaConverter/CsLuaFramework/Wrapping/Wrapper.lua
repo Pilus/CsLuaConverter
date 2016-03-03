@@ -1,7 +1,7 @@
 ﻿
 CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('CsLuaFramework.Wrapping','Wrapper',baseTypeObject,0,nil,nil,interactionElement);
+    local typeObject = System.Type('Wrapper','CsLuaFramework.Wrapping',baseTypeObject,0,nil,nil,interactionElement);
 
     local methodGenericsMapping = {['T'] = 1};
     local methodGenerics = _M.MG(methodGenericsMapping);
