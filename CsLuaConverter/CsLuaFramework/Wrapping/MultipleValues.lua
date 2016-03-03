@@ -6,13 +6,13 @@ CsLuaFramework.Wrapping.MultipleValues = _M.NE({['#'] = function(interactionElem
     local typeObject = System.Type('MultipleValues','CsLuaFramework.Wrapping',baseTypeObject,#(generics),generics,implements,interactionElement);
     
     for i=1,#(generics) do
-        _M.IM(members,'Item'..i,{
+        _M.IM(members,'Value'..i,{
             level = typeObject.Level,
             memberType = 'Property',
             scope = 'Public',
             types = {generics[i]},
             get = function(element)
-                return element[typeObject.level]["Item"..i];
+                return element[typeObject.level]["Value"..i];
             end,
         });
     end
@@ -22,7 +22,7 @@ CsLuaFramework.Wrapping.MultipleValues = _M.NE({['#'] = function(interactionElem
             types = generics,
             func = function(element, ...)
                 for i = 1, #(generics) do
-                    element[typeObject.level]["Item"..i] = select(i, ...);
+                    element[typeObject.level]["Value"..i] = select(i, ...);
                 end
             end,
         },

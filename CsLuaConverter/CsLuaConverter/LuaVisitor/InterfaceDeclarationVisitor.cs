@@ -40,6 +40,7 @@
 
             WriteAttributes(attributes, textWriter, providers);
 
+
             WriteMembers(elements.Select(e => e.Item1).ToArray(), textWriter, providers);
 
             textWriter.WriteLine("return 'Interface', typeObject, memberProvider, nil, nil;");
@@ -96,6 +97,8 @@
             textWriter.WriteLine("local memberProvider = function()");
             textWriter.Indent++;
             textWriter.WriteLine("local members = {};");
+
+            textWriter.WriteLine("_M.GAM(members, implements);");
 
             foreach (var member in element.SelectMany(e => e.Elements))
             {

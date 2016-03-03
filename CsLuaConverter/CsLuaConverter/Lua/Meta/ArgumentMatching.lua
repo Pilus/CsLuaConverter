@@ -94,3 +94,16 @@ local SelectMatchingByTypes = function(list, args, methodGenerics)
 end
 
 _M.AM = SelectMatchingByTypes;
+
+local GetAllMembers = function(members, implements)
+    for _, implement in pairs(implements) do
+        local _, interfaceMembers = implement.interactionElement.__meta({});
+
+        for name, memberPair in pairs(interfaceMembers) do
+            for _, member in pairs(memberPair) do
+                _M.IM(members, name, member);
+            end 
+        end
+    end
+end
+_M.GAM = GetAllMembers;

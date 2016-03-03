@@ -97,6 +97,8 @@ local meta = {
             return self.baseType;
         elseif index == "Level" then
             return self.level;
+        elseif index == "Generics" then
+            return self.generics;
         elseif index == "GetMatchScore" then
             return function(otherType, otherValue) return GetMatchScore(self, otherType, otherValue); end;
         elseif index == "InteractionElement" then

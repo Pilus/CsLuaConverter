@@ -1,5 +1,8 @@
 ﻿
-local wrap = function(typeObj, value)
+local wrap = function(typeObj, value, ...)
+    if (typeObj.FullName == "CsLuaFramework.Wrapping.IMultipleValues") then
+        return CsLuaFramework.Wrapping.MultipleValues[typeObj.Generics](value, ...);
+    end
     return value;
 end
 
@@ -33,7 +36,7 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
     local interfaceType = generics[1];
 
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('CsLuaFramework.Wrapping','WrappedLuaTable_'..interfaceType.name,baseTypeObject,0,nil,nil,interactionElement);
+    local typeObject = System.Type('WrappedLuaTable_'..interfaceType.name,'CsLuaFramework.Wrapping',baseTypeObject,#(generics),generics,nil,interactionElement);
 
     local _, interfaceMembers = interfaceType.interactionElement.__meta({});
 
@@ -45,8 +48,6 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
             end,
         }
     };
-
-    
 
     for name,memberSet in pairs(interfaceMembers) do
         for _, member in pairs(memberSet) do
