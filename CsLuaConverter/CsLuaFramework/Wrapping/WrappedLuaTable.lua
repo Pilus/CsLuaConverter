@@ -1,9 +1,18 @@
 ﻿
-local wrap = function(typeObj, value, ...)
+local wrap = function(typeObj, typeTranslator, value, ...)
     if (typeObj.FullName == "CsLuaFramework.Wrapping.IMultipleValues") then
         return CsLuaFramework.Wrapping.MultipleValues[typeObj.Generics](value, ...);
     end
-    return value;
+    
+    if not(type(value) == "table") then
+        return value;
+    end
+    
+    if (typeTranslator) then
+        typeObj = typeTranslator(value) or typeObj;
+    end
+    
+    return CsLuaFramework.Wrapping.WrappedLuaTable[{typeObj}](value, typeTranslator);
 end
 
 local unwrap = function(value)
@@ -46,6 +55,13 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
             func = function(element, luaTable) 
                 element[typeObject.level].luaTable = luaTable
             end,
+        },
+        {
+            types = {Lua.NativeLuaTable.__typeof, System.Func[{Lua.NativeLuaTable.__typeof, System.Type.__typeof}].__typeof},
+            func = function(element, luaTable, typeTranslator) 
+                element[typeObject.level].luaTable = luaTable;
+                element[typeObject.level].typeTranslator = typeTranslator;
+            end,
         }
     };
 
@@ -60,7 +76,7 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
 
             if member.memberType == "Property" then
                 m.get = function(element)
-                    return wrap(member.returnType, element[typeObject.level].luaTable[name]);
+                    return wrap(member.returnType, element[typeObject.level].typeTranslator, element[typeObject.level].luaTable[name]);
                 end;
                 m.set = function(element, value)
                     element[typeObject.level].luaTable[name] = unwrap(value);
@@ -72,7 +88,7 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
                     if member.provideSelf then
                         args = insert(args, 1, element[typeObject.level].luaTable);
                     end
-                    return wrap(member.returnType, element[typeObject.level].luaTable[name](unpack(args)));
+                    return wrap(member.returnType, element[typeObject.level].typeTranslator, element[typeObject.level].luaTable[name](unpack(args)));
                 end;
             end
 
