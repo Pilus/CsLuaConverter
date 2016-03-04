@@ -23,10 +23,34 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
         memberType = 'Method',
         scope = 'Public',
         static = false,
+        types = {System.String.__typeof, System.Func[{Lua.NativeLuaTable.__typeof, System.Type.__typeof}].__typeof},
+        generics = methodGenericsMapping,
+        func = function(element,methodGenericsMapping,methodGenerics, globalVarName, typeTranslator)
+            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics](_G[globalVarName], typeTranslator);
+        end,
+    });
+
+    _M.IM(members,'Wrap',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        static = false,
         types = {Lua.NativeLuaTable.__typeof},
         generics = methodGenericsMapping,
         func = function(element,methodGenericsMapping,methodGenerics,value)
             return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics](value);
+        end,
+    });
+
+    _M.IM(members,'Wrap',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        static = false,
+        types = {Lua.NativeLuaTable.__typeof, System.Func[{Lua.NativeLuaTable.__typeof, System.Type.__typeof}].__typeof},
+        generics = methodGenericsMapping,
+        func = function(element,methodGenericsMapping,methodGenerics,value, typeTranslator)
+            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics](value, typeTranslator);
         end,
     });
 
