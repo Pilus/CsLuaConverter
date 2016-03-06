@@ -53,11 +53,11 @@
             textWriter.Indent++;
 
             WriteGenericsMapping(element, textWriter, providers);
-            WriteImplements(element, textWriter, providers);
 
             textWriter.WriteLine(
-                "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements, interactionElement, 'Interface');",
+                "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Interface');",
                 typeObject.Name, typeObject.Namespace, GetNumOfGenerics(element));
+            WriteImplements(element, textWriter, providers);
 
             WriteAttributes(attributes, textWriter, providers);
 
@@ -111,6 +111,7 @@
             }
 
             textWriter.WriteLine("};");
+            textWriter.WriteLine("typeObject.implements = implements;");
         }
 
         private static void WriteMembers(Tuple<InterfaceDeclaration, AttributeList[], string, string[], string>[] element, IndentedTextWriter textWriter, IProviders providers)
