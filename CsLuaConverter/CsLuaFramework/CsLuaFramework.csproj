@@ -73,6 +73,7 @@
     <None Include="Serializer.lua" />
     <None Include="Wrapping\aa.lua" />
     <None Include="Wrapping\IMultipleValues.lua" />
+    <None Include="Wrapping\IWrapper.lua" />
     <None Include="Wrapping\MultipleValues.lua" />
     <None Include="Wrapping\WrappedLuaTable.lua" />
     <None Include="Wrapping\Wrapper.lua" />

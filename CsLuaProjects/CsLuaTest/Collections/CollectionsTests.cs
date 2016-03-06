@@ -12,7 +12,8 @@
             this.Name = "Collections";
             this.Tests["1_TestListInterfaces"] = TestListInterfaces;
             this.Tests["2_TestListImplementation"] = TestListImplementation;
-            this.Tests["3_TestListImplementation"] = TestLinq;
+            this.Tests["3_TestDictionaryInterfaces"] = TestDictionaryInterfaces;
+            this.Tests["4_TestLinq"] = TestLinq;
         }
 
         private static void TestListInterfaces()
@@ -143,6 +144,18 @@
             Assert(false, list.Remove(50));
         }
 
+        private static void TestDictionaryInterfaces()
+        {
+            var list = new Dictionary<int, string>();
+            Assert(true, list is IDictionary);
+            Assert(true, list is IDictionary<int, string>);
+            Assert(true, list is ICollection);
+            Assert(true, list is ICollection<KeyValuePair<int, string>>);
+            Assert(true, list is IEnumerable);
+            Assert(true, list is IEnumerable<KeyValuePair<int, string>>);
+            Assert(true, list is IReadOnlyDictionary<int, string>);
+            Assert(true, list is IReadOnlyCollection<KeyValuePair<int, string>>);
+        }
 
         private static void TestLinq()
         {

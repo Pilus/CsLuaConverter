@@ -1,5 +1,14 @@
 ﻿System.Collections.Generic.Dictionary = _M.NE({[2] = function(interactionElement, generics, staticValues)
-    local implements = {};
+    local implements = {
+        System.Collections.Generic.IDictionary[generics].__typeof,
+        System.Collections.IDictionary.__typeof,
+        System.Collections.ICollection.__typeof,
+        System.Collections.Generic.ICollection[{System.Collections.Generic.KeyValuePair[generics].__typeof}].__typeof,
+        System.Collections.IEnumerable.__typeof,
+        System.Collections.Generic.IEnumerable[{System.Collections.Generic.KeyValuePair[generics].__typeof}].__typeof,
+        System.Collections.Generic.IReadOnlyDictionary[generics].__typeof,
+        System.Collections.Generic.IReadOnlyCollection[{System.Collections.Generic.KeyValuePair[generics].__typeof}].__typeof,
+    };
     local baseTypeObject, members = System.Object.__meta(staticValues);
     local typeObject = System.Type('Dictionary','System.Collections.Generic',baseTypeObject,2,generics,implements,interactionElement);
     
