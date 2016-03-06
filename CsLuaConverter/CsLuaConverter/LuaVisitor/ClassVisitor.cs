@@ -31,8 +31,9 @@
             RegisterGenerics(element, textWriter, providers);
 
             WriteGenericsMapping(element, textWriter, providers);
-            WriteBaseInheritance(element, textWriter, providers);
             WriteTypeGeneration(element, textWriter, providers);
+            WriteBaseInheritance(element, textWriter, providers);
+            WriteTypePopulation(element, textWriter, providers);
             WriteElementGeneratorFunction(element, textWriter, providers);
             WriteStaticValues(element, textWriter, providers);
             WriteInitialize(element, textWriter, providers);
@@ -93,7 +94,7 @@
             textWriter.WriteLine(".__meta(staticValues);");
         }
 
-        private static void WriteTypeGeneration(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
+        private static void WriteTypePopulation(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
             if (element.BaseList != null)
             {
@@ -126,9 +127,16 @@
                 }
             }
 
+            textWriter.WriteLine("typeObject.baseType = baseTypeObject;");
+            textWriter.WriteLine("typeObject.level = baseTypeObject.level + 1;");
+            textWriter.WriteLine("typeObject.implements = implements;");
+        }
+
+        private static void WriteTypeGeneration(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
+        {
             var typeObject = providers.TypeProvider.LookupType(element.Name);
             textWriter.WriteLine(
-                "local typeObject = System.Type('{0}','{1}', baseTypeObject, {2}, generics, implements, interactionElement);",
+                "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement);",
                 typeObject.Name, typeObject.Namespace, element.Generics?.ContainedElements.Count ?? 0);
         }
 

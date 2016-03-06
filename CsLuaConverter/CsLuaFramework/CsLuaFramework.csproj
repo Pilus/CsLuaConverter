@@ -69,6 +69,7 @@
   <ItemGroup>
     <None Include="aa.lua" />
     <None Include="Environment.lua" />
+    <None Include="ISerializer.lua" />
     <None Include="Serializer.lua" />
     <None Include="Wrapping\aa.lua" />
     <None Include="Wrapping\IMultipleValues.lua" />

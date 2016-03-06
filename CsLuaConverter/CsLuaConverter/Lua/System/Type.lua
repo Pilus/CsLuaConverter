@@ -152,18 +152,21 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
         error("The type object "..tostring(name).." was already created.");
     end
 
-    local self = {
-        catagory = catagory, 
-        namespace = namespace,
-        name = name, 
-        numberOfGenerics = numberOfGenerics,
-        hash = hash,
-        generics = generics,
-        baseType = baseType,
-        level = (baseType and baseType.Level or 0) + 1,
-        implements = implements,
-        interactionElement = interactionElement,
-    };
+    local self = interactionElement.__typeof or {};
+    self.GetType = nil;
+
+    self.catagory = catagory; 
+    self.namespace = namespace;
+    self.name = name; 
+    self.numberOfGenerics = numberOfGenerics;
+    self.hash = hash;
+    self.generics = generics;
+    self.baseType = baseType;
+    self.level = (baseType and baseType.Level or 0) + 1;
+    self.implements = implements;
+    self.interactionElement = interactionElement;
+    self.interactionElement.__typeof = self;
+    
     
     setmetatable(self, meta);
     typeCache[hash] = self;

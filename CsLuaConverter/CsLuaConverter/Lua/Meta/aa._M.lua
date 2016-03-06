@@ -19,3 +19,18 @@ _M.AddRange = function(t1, t2)
         table.insert(t1, v);
     end
 end
+
+local recursive = {};
+local RecursiveProtectionLock = function(value)
+    if (recursive[value] == true) then
+        error("Unexpected recursion detected");
+    end
+
+    recursive[value] = true;
+end;
+_M.RPL = RecursiveProtectionLock;
+
+local RecursiveProtectionRelease = function(value)
+    recursive[value] = nil;
+end;
+_M.RPR = RecursiveProtectionRelease;

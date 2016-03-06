@@ -14,6 +14,7 @@
             this.Tests["TestGenericStatic"] = TestGenericStatic;
             this.Tests["TestGenericsInAmbMethods"] = TestGenericsInAmbMethods;
             this.Tests["TestGenericsInStaticMethods"] = TestGenericsInStaticMethods;
+            this.Tests["TestSelfRefInInterface"] = TestSelfRefInInterface;
         }
 
         private static void TestGenericMethod()
@@ -119,6 +120,15 @@
             Assert("Y", ClassWithGenericElements<bool>.StaticString);
 
             Assert("Z", ClassWithGenericElements.StaticString);
+        }
+
+        private static void TestSelfRefInInterface()
+        {
+            var c1 = new ClassWithSelfInGenericInterface();
+            var c2 = new ClassWithSelfInGenericInterface();
+
+            Assert(true, c1.Method(c1));
+            Assert(false, c1.Method(c2));
         }
     }
 }

@@ -30,7 +30,10 @@ local NamespaceElement = function(metaProviders)
         local hash = getHashOfGenerics(generics);
         if not(interactionElements[hash]) then
             assert(metaProviders[#(generics)] or metaProviders["#"], string.format("Could not find meta provider fitting number of generics: %s or '#'", #(generics)));
-            interactionElements[hash] = _M.IE(metaProviders[#(generics)] or metaProviders["#"], generics);
+
+            local selfObj = { __metaType = _M.MetaTypes.InteractionElement };
+            interactionElements[hash] = selfObj;
+            _M.IE(metaProviders[#(generics)] or metaProviders["#"], generics, selfObj);
         end
         
         return interactionElements[hash];

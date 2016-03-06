@@ -11,6 +11,11 @@
             ExpectKind(SyntaxKind.ThisKeyword, token.GetKind());
             token = token.GetNextToken();
 
+            if (!token.Parent.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+            {
+                return token.GetPreviousToken();
+            }
+
             ExpectKind(SyntaxKind.SimpleMemberAccessExpression, token.Parent.GetKind());
             ExpectKind(SyntaxKind.DotToken, token.GetKind());
             token = token.GetNextToken();

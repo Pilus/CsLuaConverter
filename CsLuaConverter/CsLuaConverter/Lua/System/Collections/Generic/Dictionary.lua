@@ -22,6 +22,16 @@
         end,
     });
 
+    _M.IM(members,'Add',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {generics[1], generics[2]},
+        func = function(element, key, value)
+            element[2][key] = value;
+        end,
+    });
+
     _M.IM(members,'#',{
         level = typeObject.Level,
         memberType = 'Indexer',

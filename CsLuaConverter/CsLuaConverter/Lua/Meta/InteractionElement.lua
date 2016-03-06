@@ -50,10 +50,13 @@ local join = function(t1, t2)
     return t3;
 end
 
-local InteractionElement = function(metaProvider, generics)
-    local element = { __metaType = _M.MetaTypes.InteractionElement };
+local InteractionElement = function(metaProvider, generics, selfObj)
+    local element = selfObj or { __metaType = _M.MetaTypes.InteractionElement };
     local staticValues = {__metaType = _M.MetaTypes.StaticValues};
     local extensions = {};
+
+    _M.RPL(tostring(metaProvider));
+
     local catagory, typeObject, memberProvider, constructors, elementGenerator, implements, initialize = metaProvider(element, generics, staticValues);
     staticValues.type = typeObject;
 
@@ -393,6 +396,8 @@ local InteractionElement = function(metaProvider, generics)
             return classElement;
         end,
     });
+
+    _M.RPR(tostring(metaProvider));
 
     return element;
 end
