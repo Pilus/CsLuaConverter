@@ -7,6 +7,7 @@
     using System.Linq;
     using System.Reflection;
     using CsLuaFramework;
+    using CsLuaFramework.Wrapping;
     using Microsoft.CodeAnalysis;
 
     public class TypeNameProvider : ITypeProvider
@@ -90,6 +91,18 @@
             this.LoadType(typeof(List<object>));
             this.LoadType(typeof(Enumerable));
             this.LoadType(typeof(Array));
+            this.LoadType(typeof(IMultipleValues<object>));
+            this.LoadType(typeof(IMultipleValues<object, object>));
+            this.LoadType(typeof(IMultipleValues<object, object, object>));
+            this.LoadType(typeof(IMultipleValues<object, object, object, object>));
+            this.LoadType(typeof(IMultipleValues<object, object, object, object, object>));
+            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object>));
+            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object, object>));
+            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object, object, object, object, object, object, object>));
         }
 
         private void LoadSolution(Solution solution)

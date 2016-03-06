@@ -60,7 +60,7 @@
                     }
                     else
                     {
-                        list.Add(this.GenerateNamespaceElement(string.Join(".", ns.FullName), element, outerUsings, innerUsings, attributes));
+                        list.Add(this.GenerateNamespaceElement(string.Join(".", ns.FullName), element, outerUsings, innerUsings, attributes, document));
                         attributes = new List<AttributeList>();
                     }
                 }
@@ -69,7 +69,7 @@
             return list;
         }
 
-        private NamespaceElement GenerateNamespaceElement(string namespaceName, BaseElement element, IEnumerable<UsingDirective> outerUsings, IEnumerable<UsingDirective> innerUsings, IEnumerable<AttributeList> attributes)
+        private NamespaceElement GenerateNamespaceElement(string namespaceName, BaseElement element, IEnumerable<UsingDirective> outerUsings, IEnumerable<UsingDirective> innerUsings, IEnumerable<AttributeList> attributes, DocumentElement document)
         {
             var usings = new List<UsingDirective>();
             if (outerUsings != null)
@@ -87,7 +87,8 @@
                 Element = element,
                 NamespaceLocation = namespaceName,  
                 Usings = usings,
-                Attributes = attributes.ToList()
+                Attributes = attributes.ToList(),
+                Document = document.Name,
             };
         }
     }

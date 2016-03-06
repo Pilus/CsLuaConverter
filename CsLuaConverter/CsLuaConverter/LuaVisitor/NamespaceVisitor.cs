@@ -25,38 +25,7 @@
 
             foreach (var pair in pairs)
             {
-                textWriter.Write("{0} = _M.NE({{", pair.Key);
-
-                var partialPairs = pair.GroupBy(e => GetNumGenerics(e.Element));
-                foreach (var partialPair in partialPairs)
-                {
-                    if (partialPair.First().Element is ClassDeclaration)
-                    {
-                        var elements = partialPair.Select(
-                                e => new Tuple<ClassDeclaration, AttributeList[], string, string[]>(
-                                    e.Element as ClassDeclaration,
-                                    e.Attributes.ToArray(),
-                                    e.NamespaceLocation,
-                                    CollectUsings(e.Usings))).ToArray();
-                        ClassVisitor.Visit(elements, textWriter, providers);
-                    }
-                    else if (partialPair.First().Element is InterfaceDeclaration)
-                    {
-                        var elements = partialPair.Select(
-                                e => new Tuple<InterfaceDeclaration, AttributeList[], string, string[]>(
-                                    e.Element as InterfaceDeclaration,
-                                    e.Attributes.ToArray(),
-                                    e.NamespaceLocation,
-                                    CollectUsings(e.Usings))).ToArray();
-                        InterfaceDeclarationVisitor.Visit(elements, textWriter, providers);
-                    }
-                    else
-                    {
-                        throw new LuaVisitorException("Unexpected namespace element " + partialPair.First().Element.GetType().Name);
-                    }
-                }
-
-                textWriter.WriteLine("}),");
+                WriteNamespaceElements(pair, textWriter, providers);
             }
 
             element.SubNamespaces.ForEach(VisitorList.Visit);
@@ -65,6 +34,43 @@
             textWriter.WriteLine("}" + (element.IsRoot ? "" : ","));
 
             WriteFooter(element, textWriter, providers);
+        }
+
+        private static void WriteNamespaceElements(IGrouping<string, NamespaceElement> pair, IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write("{0} = _M.NE({{", pair.Key);
+
+            var partialPairs = pair.GroupBy(e => GetNumGenerics(e.Element));
+            foreach (var partialPair in partialPairs)
+            {
+                if (partialPair.First().Element is ClassDeclaration)
+                {
+                    var elements = partialPair.Select(
+                            e => new Tuple<ClassDeclaration, AttributeList[], string, string[]>(
+                                e.Element as ClassDeclaration,
+                                e.Attributes.ToArray(),
+                                e.NamespaceLocation,
+                                CollectUsings(e.Usings))).ToArray();
+                    ClassVisitor.Visit(elements, textWriter, providers);
+                }
+                else if (partialPair.First().Element is InterfaceDeclaration)
+                {
+                    var elements = partialPair.Select(
+                            e => new Tuple<InterfaceDeclaration, AttributeList[], string, string[], string>(
+                                e.Element as InterfaceDeclaration,
+                                e.Attributes.ToArray(),
+                                e.NamespaceLocation,
+                                CollectUsings(e.Usings),
+                                e.Document)).ToArray();
+                    InterfaceDeclarationVisitor.Visit(elements, textWriter, providers);
+                }
+                else
+                {
+                    throw new LuaVisitorException("Unexpected namespace element " + partialPair.First().Element.GetType().Name);
+                }
+            }
+
+            textWriter.WriteLine("}),");
         }
 
         public static string[] CollectUsings(List<UsingDirective> usings)

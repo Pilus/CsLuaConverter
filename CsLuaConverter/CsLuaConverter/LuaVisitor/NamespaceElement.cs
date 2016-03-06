@@ -12,5 +12,7 @@
         public string NamespaceLocation;
 
         public BaseElement Element;
+
+        public string Document;
     }
 }

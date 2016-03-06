@@ -3,6 +3,7 @@
     using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using CodeElementAnalysis;
     using Providers;
@@ -15,7 +16,27 @@
             throw new LuaVisitorException("Cannot visit interface without attribute knowledge.");
         }
 
-        public static void Visit(Tuple<InterfaceDeclaration, AttributeList[], string, string[]>[] elements, IndentedTextWriter textWriter, IProviders providers)
+        public static void Visit(Tuple<InterfaceDeclaration, AttributeList[], string, string[], string>[] elements, IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (Debugger.IsAttached)
+            {
+                TryVisit(elements, textWriter, providers);
+                return;
+            }
+
+            try
+            {
+                TryVisit(elements, textWriter, providers);
+                return;
+            }
+            catch (Exception ex)
+            {
+                var e = elements.First();
+                throw new WrappingException(string.Format("In interface: {0}.", e.Item1.Name), ex);
+            }
+        }
+
+        private static void TryVisit(Tuple<InterfaceDeclaration, AttributeList[], string, string[], string>[] elements, IndentedTextWriter textWriter, IProviders providers)
         {
             var attributes = elements.SelectMany(e => e.Item2).Distinct();
             var element = elements.First().Item1;
@@ -41,7 +62,7 @@
             WriteAttributes(attributes, textWriter, providers);
 
 
-            WriteMembers(elements.Select(e => e.Item1).ToArray(), textWriter, providers);
+            WriteMembers(elements, textWriter, providers);
 
             textWriter.WriteLine("return 'Interface', typeObject, memberProvider, nil, nil;");
 
@@ -92,7 +113,7 @@
             textWriter.WriteLine("};");
         }
 
-        private static void WriteMembers(InterfaceDeclaration[] element, IndentedTextWriter textWriter, IProviders providers)
+        private static void WriteMembers(Tuple<InterfaceDeclaration, AttributeList[], string, string[], string>[] element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.WriteLine("local memberProvider = function()");
             textWriter.Indent++;
@@ -100,9 +121,32 @@
 
             textWriter.WriteLine("_M.GAM(members, implements);");
 
-            foreach (var member in element.SelectMany(e => e.Elements))
+            foreach (var memberCollection in element)
             {
-                VisitorList.Visit(member);
+                providers.TypeProvider.SetNamespaces(memberCollection.Item3, memberCollection.Item4);
+
+                if (Debugger.IsAttached)
+                {
+                    foreach (var member in memberCollection.Item1.Elements)
+                    {
+                        VisitorList.Visit(member);
+                    }
+                }
+                else
+                { 
+                    try
+                    {
+                        foreach (var member in memberCollection.Item1.Elements)
+                        {
+                            VisitorList.Visit(member);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw new WrappingException(string.Format("In file: {0}.", memberCollection.Item5), ex);
+                    }
+                }
             }
 
             textWriter.WriteLine("return members;");

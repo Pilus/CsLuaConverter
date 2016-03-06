@@ -5,6 +5,8 @@
 
     public class DocumentElement : ContainerElement
     {
+        public string Name;
+
         public override bool IsTokenAcceptedInContainer(SyntaxToken token)
         {
             return token.Parent.IsKind(SyntaxKind.NamespaceDeclaration) ||

@@ -68,7 +68,11 @@
             SyntaxNode syntaxTreeRoot = GetSyntaxTreeRoot(document);
             var token = syntaxTreeRoot.FindToken(syntaxTreeRoot.SpanStart);
             firstToken = token;
-            var element = new DocumentElement();
+            var element = new DocumentElement()
+            {
+                Name = document.Name
+            };
+
             if (Debugger.IsAttached)
             {
                 element.Analyze(token);
