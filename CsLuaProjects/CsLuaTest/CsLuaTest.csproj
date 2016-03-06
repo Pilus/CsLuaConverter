@@ -147,6 +147,8 @@
     <Compile Include="Wrap\IInterfaceWithMultipleReturnValues.cs" />
     <Compile Include="Wrap\IInterfaceWithWrappedValues.cs" />
     <Compile Include="Wrap\INonWrappedProperty.cs" />
+    <Compile Include="Wrap\IPartialA.cs" />
+    <Compile Include="Wrap\IPartialB.cs" />
     <Compile Include="Wrap\IProducer.cs" />
     <Compile Include="Wrap\ISetSelfInterface.cs" />
     <Compile Include="Wrap\ISimpleInterface.cs" />

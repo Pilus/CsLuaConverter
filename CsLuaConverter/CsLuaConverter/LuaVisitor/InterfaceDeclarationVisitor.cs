@@ -18,9 +18,9 @@
         public static void Visit(Tuple<InterfaceDeclaration, AttributeList[], string, string[]>[] elements, IndentedTextWriter textWriter, IProviders providers)
         {
             var attributes = elements.SelectMany(e => e.Item2).Distinct();
-            var element = elements.Single().Item1;
+            var element = elements.First().Item1;
 
-            providers.TypeProvider.SetNamespaces(elements.Single().Item3, elements.Single().Item4);
+            providers.TypeProvider.SetNamespaces(elements.First().Item3, elements.First().Item4);
 
             var originalScope = providers.NameProvider.CloneScope();
 

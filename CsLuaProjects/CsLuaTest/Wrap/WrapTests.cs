@@ -2,7 +2,6 @@
 {
     using CsLuaFramework;
     using CsLuaFramework.Wrapping;
-    using Lua;
 
     class WrapTests : BaseTest
     {
@@ -20,7 +19,8 @@
             this.Tests["WrapHandleMultipleValues"] = WrapHandleMultipleValues;
             this.Tests["WrapHandleRecursiveWrapping"] = WrapHandleRecursiveWrapping;
             this.Tests["WrapWithTargetTypeTranslation"] = WrapWithTargetTypeTranslation;
-            this.Tests["NonWrappedAsPropertyInWrappedObject"] = NonWrappedAsPropertyInWrappedObject; 
+            this.Tests["NonWrappedAsPropertyInWrappedObject"] = NonWrappedAsPropertyInWrappedObject;
+            this.Tests["WrappedObjectWithPartialInterface"] = WrappedObjectWithPartialInterface;
         }
 
 
@@ -238,6 +238,31 @@
             Environment.ExecuteLuaCode("A2 = A");
             var objRef2 = wrapper.Wrap<INonWrappedProperty>("A2");
             Assert(true, objRef2.Property == cA);
+        }
+
+        public static void WrappedObjectWithPartialInterface()
+        {
+            if (!Environment.IsExecutingAsLua)
+            {
+                return;
+            }
+
+            Environment.ExecuteLuaCode(@"
+                P = {
+                    MethodA = function()
+                        return 'MA';
+                    end,
+                    MethodB = function()
+                        return 'MB';
+                    end
+                };
+            ");
+            var wrapper = new Wrapper();
+
+            var obj = wrapper.Wrap<IPartial>("P");
+
+            Assert("MA", obj.MethodA());
+            Assert("MB", obj.MethodB());
         }
     }
 }
