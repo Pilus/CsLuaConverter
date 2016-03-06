@@ -7,6 +7,10 @@ local wrap = function(typeObj, typeTranslator, value, ...)
     if not(type(value) == "table") then
         return value;
     end
+
+    if (type(value.type) == "table" and value.type.type == System.Type.__typeof) then
+        return value;
+    end
     
     if (typeTranslator) then
         typeObj = typeTranslator(value) or typeObj;
@@ -16,6 +20,10 @@ local wrap = function(typeObj, typeTranslator, value, ...)
 end
 
 local unwrap = function(value)
+    if type(value) == "table" and type(value[2]) == "table" and type(value[2].luaTable) == "table" then
+        return value[2].luaTable;
+    end
+
     return value;
 end
 
@@ -44,8 +52,12 @@ end
 CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionElement, generics, staticValues)
     local interfaceType = generics[1];
 
+    local implements = {
+        interfaceType
+    };
+
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('WrappedLuaTable_'..interfaceType.name,'CsLuaFramework.Wrapping',baseTypeObject,#(generics),generics,nil,interactionElement);
+    local typeObject = System.Type('WrappedLuaTable_'..interfaceType.name,'CsLuaFramework.Wrapping',baseTypeObject,#(generics),generics,implements,interactionElement);
 
     local _, interfaceMembers = interfaceType.interactionElement.__meta({});
 
@@ -104,5 +116,5 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
             __metaType = _M.MetaTypes.ClassObject,
         }; 
     end
-    return "Class", typeObject, members, constructors, objectGenerator;
+    return "Class", typeObject, members, constructors, objectGenerator, implements;
 end})

@@ -2,6 +2,7 @@
 {
     using CsLuaFramework;
     using CsLuaFramework.Wrapping;
+    using Lua;
 
     class WrapTests : BaseTest
     {
@@ -18,9 +19,8 @@
             this.Tests["WrapGenericWithProperty"] = WrapGenericWithProperty;
             this.Tests["WrapHandleMultipleValues"] = WrapHandleMultipleValues;
             this.Tests["WrapHandleRecursiveWrapping"] = WrapHandleRecursiveWrapping;
-            /*this.Tests["WrapWithTargetTypeTranslation"] = WrapWithTargetTypeTranslation;
-            this.Tests["CastOfWrappedObject"] = CastOfWrappedObject;
-            this.Tests["NonWrappedAsPropertyInWrappedObject"] = NonWrappedAsPropertyInWrappedObject; // */
+            this.Tests["WrapWithTargetTypeTranslation"] = WrapWithTargetTypeTranslation;
+            this.Tests["NonWrappedAsPropertyInWrappedObject"] = NonWrappedAsPropertyInWrappedObject; 
         }
 
 
@@ -175,7 +175,7 @@
             var A = B.GetInner();
             Assert('a', A.GetValue());
         }
-        /*
+        
         public static void WrapWithTargetTypeTranslation()
         {
             if (!Environment.IsExecutingAsLua)
@@ -204,7 +204,7 @@
 
             var wrapper = new Wrapper();
 
-            var producer = wrapper.Wrap<IProducer>("P", false, table => "CsLuaTest.Wrap." + ((table["IsA"] != null) ? "IA" : "IB"));
+            var producer = wrapper.Wrap<IProducer>("P", table => ((table["IsA"] != null) ? typeof(IA) : typeof(IB)));
 
             var a = producer.Produce("A");
             Assert(true, a is IA);
@@ -212,43 +212,6 @@
 
             var b = (IB)producer.Produce("B");
             Assert(true, b.IsB());
-        }
-
-        public static void CastOfWrappedObject()
-        {
-            if (!Environment.IsExecutingAsLua)
-            {
-                return;
-            }
-
-            var wrapper = new Wrapper();
-
-            Environment.ExecuteLuaCode(@"
-                retTrue = function() return true; end;
-
-                A = {
-                    IsBase = retTrue,
-                    IsA = retTrue,
-                }
-                B = {
-                    IsBase = retTrue,
-                    IsB = retTrue,
-                }
-
-                P = {
-                    Produce = function(s)
-                        return _G[s];
-                    end
-                };
-            ");
-
-            var producer = wrapper.Wrap<IProducer>("P");
-
-            var a = producer.Produce("A");
-            var aCast = (IA) a;
-
-            Assert(true, aCast is IA);
-            Assert(true, aCast.IsA());
         }
 
         public static void NonWrappedAsPropertyInWrappedObject()
@@ -275,6 +238,6 @@
             Environment.ExecuteLuaCode("A2 = A");
             var objRef2 = wrapper.Wrap<INonWrappedProperty>("A2");
             Assert(true, objRef2.Property == cA);
-        } //*/
+        }
     }
 }
