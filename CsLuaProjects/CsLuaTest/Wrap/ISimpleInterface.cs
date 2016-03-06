@@ -5,5 +5,7 @@
         string Method(string input);
 
         int Value { get; set; }
+
+        void MethodVoid(bool value);
     }
 }

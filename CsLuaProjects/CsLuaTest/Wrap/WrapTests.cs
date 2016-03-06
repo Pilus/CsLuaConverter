@@ -33,7 +33,7 @@
 
             var wrapper = new Wrapper();
 
-            Environment.ExecuteLuaCode("interfaceImplementation = { Method = function(str) return 'OK' .. str; end, Value = 10, };");
+            Environment.ExecuteLuaCode("interfaceImplementation = { Method = function(str) return 'OK' .. str; end, Value = 10, MethodVoid = function() end, };");
             var interfaceImplementation = wrapper.Wrap<ISimpleInterface>("interfaceImplementation");
 
             Assert("OKInput", interfaceImplementation.Method("Input"));
@@ -41,6 +41,8 @@
 
             interfaceImplementation.Value = 20;
             Assert(20, interfaceImplementation.Value);
+
+            interfaceImplementation.MethodVoid(true);
         }
 
         public static void WrapGenericInterface()

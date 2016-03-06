@@ -1,5 +1,9 @@
 ﻿
 local wrap = function(typeObj, typeTranslator, value, ...)
+    if (typeObj == nil) then -- void
+        return;
+    end
+
     if (typeObj.FullName == "CsLuaFramework.Wrapping.IMultipleValues") then
         return CsLuaFramework.Wrapping.MultipleValues[typeObj.Generics](value, ...);
     end

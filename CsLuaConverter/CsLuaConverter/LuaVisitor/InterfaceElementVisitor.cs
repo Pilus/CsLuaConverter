@@ -39,7 +39,15 @@
             }
 
             textWriter.Write("returnType = ");
-            TypeOfExpressionVisitor.WriteTypeReference(element.Type, textWriter, providers);
+            if (element.Type is PredefinedType && (element.Type as PredefinedType).Text == "void")
+            {
+                textWriter.WriteLine("nil");
+            }
+            else
+            {
+                TypeOfExpressionVisitor.WriteTypeReference(element.Type, textWriter, providers);
+            }
+            
             textWriter.WriteLine(",");
 
             textWriter.Indent--;
