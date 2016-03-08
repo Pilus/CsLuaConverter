@@ -14,7 +14,7 @@ local ScoreArguments = function(expectedTypes, argTypes, args, isParams)
                 return nil, ", - Skipping candidate. Did not have enough expected types. Expected "..#(expectedTypes).." had: "..#(argTypes);
             end
         
-            str = str .. "," .. expectedType.ToString();
+            str = str .. ", " .. expectedType.ToString();
 
             local score = argType.GetMatchScore(expectedType, args[i]);
 

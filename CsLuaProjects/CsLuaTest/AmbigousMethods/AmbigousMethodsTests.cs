@@ -14,6 +14,7 @@
             this.Tests["TestNullPickingCorrectMethods"] = TestNullPickingCorrectMethods;
             this.Tests["TestAmbigousMethodsWithEnum"] = TestAmbigousMethodsWithEnum;
             this.Tests["TestAmbigousMethodsWithGenerics"] = TestAmbigousMethodsWithGenerics;
+            this.Tests["TestNumberMethod"] = TestNumberMethod;
         }
 
         private static void TestAmbiguousMethodWith1Arg()
@@ -119,6 +120,19 @@
             ResetOutput();
             theClass.GenericPicking(new ClassWithGenerics<int>());
             Assert("GenericPicking_int", Output);
+        }
+
+        
+        private static void TestNumberMethod()
+        {
+            var theClass = new ClassWithAmbigousMethods();
+
+            theClass.GenericPickingNumber(4);
+            Assert("GenericPickingNumber_double", Output);
+
+            ResetOutput();
+            theClass.GenericPickingNumber(4.5);
+            Assert("GenericPickingNumber_double", Output);
         }
 
         // TODO scenario where a class overrides a method with one signature, but not one with another. Call both from the base class. 

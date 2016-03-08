@@ -1,9 +1,8 @@
 ﻿
 System.Int64 = _M.NE({["#"] = function(interactionElement, generics, staticValues)
-    local baseTypeObject, members = System.Object.__meta({});
+    local baseTypeObject, members = System.Int32.__meta({});
     local typeObject = System.Type('Int64','System',baseTypeObject,0,nil,nil,interactionElement);
-    local level = 2;
-    members[level] = {};
+    members[typeObject.level] = {};
 
     _M.IM(members,'Parse',{
         level = typeObject.Level,

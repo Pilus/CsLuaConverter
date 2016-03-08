@@ -78,5 +78,10 @@
         {
             AmbigousMethodsTests.Output = "GenericPicking_bool";
         }
+
+        public void GenericPickingNumber(double x)
+        {
+            AmbigousMethodsTests.Output = "GenericPickingNumber_double";
+        }
     }
 }
