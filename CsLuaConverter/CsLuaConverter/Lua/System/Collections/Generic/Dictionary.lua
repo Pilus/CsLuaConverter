@@ -17,7 +17,16 @@
         memberType = 'Property',
         scope = 'Public',
         get = function(element)
-            return System.Collections.Generic.KeyCollection[generics](element);
+            return System.Collections.Generic.KeyCollection[{generics[1}](element);
+        end,
+    });
+
+    _M.IM(members,'Values',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        get = function(element)
+            return System.Collections.Generic.KeyCollection[{generics[2}](element);
         end,
     });
 
@@ -27,9 +36,9 @@
         scope = 'Public',
         types = {},
         func = function(element)
-            local ith = pairs(element[2]);
+            local ith, t, s = pairs(element[2]);
             return function(_, prevKey)
-                local k,v = ith(_ or {}, prevKey);
+                local k,v = ith(t , prevKey);
                 if (k == nil) then
                     return nil;
                 end
@@ -81,8 +90,13 @@
     return "Class", typeObject, members, constructors, objectGenerator, implements, initialize;
 end})
 
-System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElement, generics, staticValues)
-    local implements = {};
+System.Collections.Generic.KeyCollection = _M.NE({[1] = function(interactionElement, generics, staticValues)
+    local implements = {
+        System.Collections.IEnumerable.__typeof,
+        System.Collections.Generic.IEnumerable[generics].__typeof,
+        System.Collections.ICollection.__typeof,
+        System.Collections.Generic.ICollection[generics].__typeof,
+    };
     local baseTypeObject, members = System.Object.__meta(staticValues);
     local typeObject = System.Type('KeyCollection','System.Collections.Generic',baseTypeObject,1,generics,implements,interactionElement);
     
@@ -102,6 +116,49 @@ System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElem
             func = function(element, dictionary) 
                 for key,_ in pairs(dictionary[2]) do
                     table.insert(element[2],key);
+                end
+            end,
+        }
+    };
+
+    local objectGenerator = function() 
+        return {
+            [1] = {},
+            [2] = {}, 
+            ["type"] = typeObject,
+            __metaType = _M.MetaTypes.ClassObject,
+        }; 
+    end
+
+    return "Class", typeObject, members, constructors, objectGenerator;
+end})
+
+System.Collections.Generic.ValueCollection = _M.NE({[1] = function(interactionElement, generics, staticValues)
+    local implements = {
+        System.Collections.IEnumerable.__typeof,
+        System.Collections.Generic.IEnumerable[generics].__typeof,
+        System.Collections.ICollection.__typeof,
+        System.Collections.Generic.ICollection[generics].__typeof,
+    };
+    local baseTypeObject, members = System.Object.__meta(staticValues);
+    local typeObject = System.Type('ValueCollection','System.Collections.Generic',baseTypeObject,1,generics,implements,interactionElement);
+    
+    _M.IM(members,'GetEnumerator',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {},
+        func = function(element)
+            return pairs(element[2]);
+        end,
+    });
+
+    local constructors = {
+        {
+            types = {System.Collections.Generic.Dictionary[generics].__typeof},
+            func = function(element, dictionary) 
+                for _,value in pairs(dictionary[2]) do
+                    table.insert(element[2],value);
                 end
             end,
         }
