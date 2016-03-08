@@ -33,7 +33,7 @@ local ScoreArguments = function(expectedTypes, argTypes, args, isParams)
                     additional = ", " .. expectedTypes[j].ToString();
                 end
 
-                return nil, str .. additional .. " - Skipping candidate. Arg did not match "..argType.ToString();
+                return nil, str .. additional .. " - Skipping candidate. Arg ("..argType.ToString() .. ") did not match expected arg ("..expectedType.ToString()..")";
             end
             sum = sum + score;
         end

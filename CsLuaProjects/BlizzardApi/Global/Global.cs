@@ -5,6 +5,8 @@ namespace BlizzardApi.Global
     using System;
     using CsLuaFramework.Wrapping;
     using Lua;
+    using WidgetEnums;
+    using WidgetInterfaces;
 
     public static class Global
     {
@@ -51,7 +53,7 @@ namespace BlizzardApi.Global
             {
                 if (frameProvider == null)
                 {
-                    frameProvider = Wrapper.Wrap<IFrameProvider>("_G");
+                    frameProvider = Wrapper.Wrap<IFrameProvider>("_G", FrameTypeTranslator);
                 }
                 return frameProvider;
             }
@@ -61,14 +63,30 @@ namespace BlizzardApi.Global
             }
         }
 
-        private static string FrameTypeTranslator(NativeLuaTable obj) // TODO: Give this to the frame Wrapper
+        private static Type FrameTypeTranslator(NativeLuaTable obj) 
         {
-            if (obj["GetObjectType"] != null)
-            {
-                return "BlizzardApi.WidgetInterfaces.I" + (obj["GetObjectType"] as Func<NativeLuaTable, string>)(obj);
-            }
+            if (obj["GetObjectType"] == null) return null;
 
-            return null;
+            var type = (obj["GetObjectType"] as Func<NativeLuaTable, string>)(obj);
+            var frameType = (FrameType)Enum.Parse(typeof (FrameType), type);
+
+            switch (frameType)
+            {
+                case FrameType.Frame:
+                    return typeof (IFrame);
+                case FrameType.Button:
+                    return typeof(IButton);
+                case FrameType.CheckButton:
+                    return typeof(ICheckButton);
+                case FrameType.EditBox:
+                    return typeof(IEditBox);
+                case FrameType.GameTooltip:
+                    return typeof(IGameTooltip);
+                case FrameType.ScrollFrame:
+                    return typeof(IScrollFrame);
+                default:
+                    throw new Exception("Could not translate frame type " + type);
+            }
         }
     }
 }
