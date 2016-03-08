@@ -28,7 +28,7 @@ setmetatable(meta,{
     end
 });
 
-local GenericMethod = function(members, elementOrStaticValues)
+local GenericMethod = function(members, elementOrStaticValues, name)
     
     local t = {};
 
@@ -39,12 +39,12 @@ local GenericMethod = function(members, elementOrStaticValues)
             end
 
             return function(...)
-                local member, foldOutArray = _M.AM(members, {...}, generics);
+                local member, foldOutArray = _M.AM(members, {...}, name, generics);
                 return InvokeMethod(member, elementOrStaticValues, generics, {...}, foldOutArray);
             end
         end,
         __call = function(_, ...)
-            local member, foldOutArray = _M.AM(members, {...});
+            local member, foldOutArray = _M.AM(members, {...}, name);
             return InvokeMethod(member, elementOrStaticValues, {}, {...}, foldOutArray);
         end,
     });

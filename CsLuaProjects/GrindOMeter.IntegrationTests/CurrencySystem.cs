@@ -23,9 +23,9 @@
                     if (id >= 77 && id <= 160)
                     {
                         return TestUtil.StructureMultipleValues("CurrencyName" + id, this.GetAmount(id), "iconPath" + id,
-                            7, 100, 1000, id < 100);
+                            7, 100, 1000, id < 100, 1);
                     }
-                    return TestUtil.StructureMultipleValues("", 0, "", 0, 0, 0, false);
+                    return TestUtil.StructureMultipleValues("", 0, "", 0, 0, 0, false, 1);
                 });
         }
     }

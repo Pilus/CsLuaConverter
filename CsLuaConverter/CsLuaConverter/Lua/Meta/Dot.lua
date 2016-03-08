@@ -63,13 +63,13 @@ _M.DOT_LVL = function(level)
         end, 
         function(obj, index, value)
             assert(not(obj == nil), "Attempted to write index "..tostring(index).." to a nil value.");
-            assert(not(type(obj) == "table") or not(obj.__metaType == nil), "Attempted to write index "..tostring(index).." on a obj value with no meta type");
+            --assert(not(type(obj) == "table") or not(obj.__metaType == nil), "Attempted to write index "..tostring(index).." on a obj value with no meta type");
 
             if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.NameSpaceElement)) then
                 return obj.__newindex(obj, index, value, level);
             end
 
-            if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.InteractionElement)) then
+            if (type(obj) == "table" and ((obj.__metaType == _M.MetaTypes.InteractionElement) or obj.__metaType == nil)) then
                 obj[index] = value;
                 return;
             end

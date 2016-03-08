@@ -4,7 +4,7 @@
 
     public class Currency : IEntity
     {
-        public Currency(int id, IMultipleValues<string, int, string, int, int, int, bool> currencyInfo)
+        public Currency(int id, IMultipleValues<string, int, string, int, int, int, bool, int> currencyInfo)
         {
             this.Id = id;
             this.Name = currencyInfo.Value1;

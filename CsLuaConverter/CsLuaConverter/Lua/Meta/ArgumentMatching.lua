@@ -42,9 +42,11 @@ local ScoreArguments = function(expectedTypes, argTypes, args, isParams)
     return sum, str, foldOutArray;
 end
 
-local SelectMatchingByTypes = function(list, args, methodGenerics)
+local SelectMatchingByTypes = function(list, args, name, methodGenerics)
     assert(type(list) == "table", "Expected a table as 1th argument to _M.AM, got "..type(list))
     assert(type(args) == "table", "Expected a table as 2th argument to _M.AM, got "..type(args))
+    assert(type(name) == "string", "Expected a string as 3rd argument to _M.AM, got "..type(args))
+    assert(methodGenerics == nil or type(methodGenerics) == "table", "Expected a table as 4th argument to _M.AM, got "..type(args))
     local argTypes = {num = #(args)};
     local argTypeStr = "";
 
@@ -87,7 +89,7 @@ local SelectMatchingByTypes = function(list, args, methodGenerics)
     end
     
     if not(bestMatch) then
-        error(string.format("No match found.\nArgs: %s.\n%s", argTypeStr, candidatesStr));
+        error(string.format("No signature match found for method (%s).\nArgs: %s.\n%s", name, argTypeStr, candidatesStr));
     end
     
     return bestMatch, bestFoldOutArray;

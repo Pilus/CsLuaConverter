@@ -27,7 +27,15 @@
         scope = 'Public',
         types = {},
         func = function(element)
-            return pairs(element[2]);
+            local ith = pairs(element[2]);
+            return function(_, prevKey)
+                local k,v = ith(_ or {}, prevKey);
+                if (k == nil) then
+                    return nil;
+                end
+
+                return k, System.Collections.Generic.KeyValuePair[generics](k, v);
+            end
         end,
     });
 

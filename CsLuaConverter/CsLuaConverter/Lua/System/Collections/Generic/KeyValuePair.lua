@@ -4,18 +4,35 @@
     local baseTypeObject, members = System.Object.__meta(staticValues);
     local typeObject = System.Type('KeyValuePair','System.Collections.Generic',baseTypeObject,2,generics,implements,interactionElement);
     
+    _M.IM(members,'Key',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        types = {generics[1]},
+        get = function(element)
+            return element[typeObject.level].key;
+        end,
+    });
+
+    _M.IM(members,'Value',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        types = {generics[2]},
+        get = function(element)
+            return element[typeObject.level].Value;
+        end,
+    });
+
     local constructors = {
         {
-            types = {},
-            func = function() end,
+            types = {generics[1], generics[2]},
+            func = function(element, key, value)
+                element[typeObject.level].key = key;
+                element[typeObject.level].value = value;
+            end,
         }
     };
-
-    local initialize = function(element, values)
-        for i,v in pairs(values) do
-            element[2][i] = v;
-        end
-    end
 
     local objectGenerator = function() 
         return {
@@ -26,5 +43,5 @@
         }; 
     end
 
-    return "Class", typeObject, members, constructors, objectGenerator, implements, initialize;
+    return "Class", typeObject, members, constructors, objectGenerator, implements, nil;
 end})

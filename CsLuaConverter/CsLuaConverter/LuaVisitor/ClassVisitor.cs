@@ -304,7 +304,7 @@
                 textWriter.Indent++;
 
                 textWriter.WriteLine("types = {},");
-                textWriter.WriteLine("func = function(element) _M.AM(baseConstructors, {}).func(element); end,");
+                textWriter.WriteLine("func = function(element) _M.AM(baseConstructors, {}, 'Base constructor').func(element); end,");
 
                 textWriter.Indent--;
                 textWriter.WriteLine("}");

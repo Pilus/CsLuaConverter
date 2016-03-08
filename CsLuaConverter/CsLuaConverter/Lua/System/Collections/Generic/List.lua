@@ -397,6 +397,16 @@
                 end
             end,
         },
+        {
+            types = {System.Action.__typeof},
+            func = function(element, values)
+                local c = 0;
+                for _,v in values do
+                    element[typeObject.level][c] = v;
+                    c = c + 1;
+                end
+            end,
+        },
     };
 
     local initialize = function(element, values)

@@ -5,6 +5,7 @@
     using BlizzardApi.Global;
     using BlizzardApi.WidgetEnums;
     using BlizzardApi.WidgetInterfaces;
+    using CsLuaFramework.Wrapping;
     using GrindOMeter.Model.Entity;
     using GrindOMeter.Presenter;
     using GrindOMeter.View;
@@ -21,6 +22,7 @@
         private Mock<IApi> apiMock;
         private Mock<IGrindOMeterFrame> frameMock;
         private Mock<IEntitySelectionDropdownHandler> entitySelectionDropdownHandlerMock;
+        private Mock<IWrapper> wrapperMock;
 
         [TestInitialize]
         public void TestInitialize()
@@ -41,7 +43,7 @@
         [TestMethod]
         public void ViewShowsGrindOMeterFrameOnInit()
         {
-            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object);
+            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object, this.wrapperMock.Object);
 
             this.frameMock.Verify(f => f.Show(), Times.Once);
             this.frameMock.Verify(f => f.Hide(), Times.Never);
@@ -53,7 +55,7 @@
             var buttonMock = new Mock<IButton>();
             this.frameMock.SetupGet(frame => frame.TrackButton).Returns(buttonMock.Object);
 
-            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object);
+            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object, this.wrapperMock.Object);
 
             var invoked = 0;
             Action clickAction = new Action(() => { invoked++; });
@@ -88,7 +90,7 @@
                     return mock.Object;
             });
 
-            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object);
+            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object, this.wrapperMock.Object);
 
             viewUnderTest.AddTrackingEntity(new Mock<IEntityId>().Object, "EntityA", "IconA");
             viewUnderTest.AddTrackingEntity(new Mock<IEntityId>().Object, "EntityB", "IconB");
@@ -125,7 +127,7 @@
                     return mock.Object;
                 });
 
-            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object);
+            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object, this.wrapperMock.Object);
 
             var entityIdB = new Mock<IEntityId>().Object;
             viewUnderTest.AddTrackingEntity(new Mock<IEntityId>().Object, "EntityA", "IconA");
@@ -156,7 +158,7 @@
             this.frameMock.Setup(frame => frame.SetScript(FrameHandler.OnUpdate, It.IsAny<Action<IUIObject>>()))
                 .Callback<FrameHandler, Action<IFrame>>((handler, action) => frameOnUpdate = action);
 
-            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object);
+            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object, this.wrapperMock.Object);
 
             var startTime = 100000;
             Core.mockTime = startTime;
@@ -202,7 +204,7 @@
                     return mock.Object;
                 });
 
-            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object);
+            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object, this.wrapperMock.Object);
 
             IEntityId resetId = null;
             IEntityId removeId = null;
@@ -240,7 +242,7 @@
                     return mock.Object;
                 });
 
-            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object);
+            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object, this.wrapperMock.Object);
 
             viewUnderTest.AddTrackingEntity(new EntityId(EntityType.Item, 1), "EntityA", "IconA");
             viewUnderTest.AddTrackingEntity(new EntityId(EntityType.Item, 2), "EntityB", "IconB");
@@ -265,7 +267,7 @@
                     shownSelection = selection;
                 });
 
-            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object);
+            var viewUnderTest = new View(this.entitySelectionDropdownHandlerMock.Object, this.wrapperMock.Object);
 
             var entitySelectionMock = new Mock<IEntitySelection>();
 
@@ -417,10 +419,6 @@
                 .Callback((string key, object obj) => { globalObjects[key] = obj; });
             apiMock.Setup(api => api.GetGlobal(It.IsAny<string>()))
                 .Returns((string key) => globalObjects.ContainsKey(key) ? globalObjects[key] : null);
-            apiMock.Setup(api => api.GetGlobal(It.IsAny<string>(), It.IsAny<Type>()))
-                .Returns((string key, Type t) => globalObjects.ContainsKey(key) ? globalObjects[key] : null);
-            apiMock.Setup(api => api.GetGlobal(It.IsAny<string>(), It.IsAny<Type>(), It.IsAny<bool>()))
-                .Returns((string key, Type t, bool skip) => globalObjects.ContainsKey(key) ? globalObjects[key] : null);
         }
     }
 }

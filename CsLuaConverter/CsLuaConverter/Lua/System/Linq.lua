@@ -19,6 +19,16 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
         end,
     });
 
+    _M.IM(members,'ToList',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {},
+        func = function(element)
+            return ((System.Collections.Generic.List % _M.DOT)[generics] % _M.DOT)(element[typeObject.level]["Enumerator"]);
+        end,
+    });
+
     local constructors = {
         {
             types = {System.Action.__typeof},
@@ -50,6 +60,18 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             end
         },
         {
+            name = "Any",
+            types = {System.Action.__typeof},
+            func = function(element, predicate)
+                for _,v in (element % _M.DOT).GetEnumerator() do
+                    if (predicate(v)) then
+                        return true;
+                    end
+                end
+                return false;
+            end
+        },
+        {
             name = "Count",
             types = {},
             func = function(element)
@@ -73,6 +95,20 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
                         end
                         prevKey = key;
                     end
+                end);
+            end
+        },
+        {
+            name = "Select",
+            types = {System.Action.__typeof},
+            func = function(element, predicate)
+                local enumerator = (element % _M.DOT).GetEnumerator();
+                return System.Linq.Iterator[generics](function(_, prevKey)
+                    local key, value = enumerator(_, prevKey);
+                    if (key == nil) then
+                        return nil;
+                    end
+                    return key, predicate(value);
                 end);
             end
         },

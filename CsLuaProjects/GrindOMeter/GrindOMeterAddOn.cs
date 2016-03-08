@@ -3,6 +3,7 @@ namespace GrindOMeter
 {
     using CsLuaFramework;
     using CsLuaFramework.Attributes;
+    using CsLuaFramework.Wrapping;
     using Lua;
     using Model.EntityAdaptor;
     using Model.EntityStorage;
@@ -17,7 +18,7 @@ namespace GrindOMeter
         public void Execute()
         {
             var model = new Model.Model(new EntityAdaptorFactory(), new EntityStorage());
-            var view = new View.View(new EntitySelectionDropdownHandler());
+            var view = new View.View(new EntitySelectionDropdownHandler(), new Wrapper());
             var presenter = new Presenter.Presenter(model, view);
 
             Core.print("Grind-O-Meter loaded.");

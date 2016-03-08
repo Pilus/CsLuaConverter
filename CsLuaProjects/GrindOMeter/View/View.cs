@@ -5,6 +5,7 @@
     using System.Linq;
     using BlizzardApi.Global;
     using BlizzardApi.WidgetEnums;
+    using CsLuaFramework.Wrapping;
     using Lua;
     using Xml;
 
@@ -19,9 +20,9 @@
         private Action<IEntityId> onReset;
         private Action<IEntityId> onRemove;
 
-        public View(IEntitySelectionDropdownHandler entitySelectionDropdownHandler)
+        public View(IEntitySelectionDropdownHandler entitySelectionDropdownHandler, IWrapper wrapper)
         {
-            this.frame = (IGrindOMeterFrame)Global.Api.GetGlobal("GrindOMeterFrame", typeof(IGrindOMeterFrame), true);
+            this.frame = wrapper.Wrap<IGrindOMeterFrame>("GrindOMeterFrame");
             this.frame.Show();
             this.trackingRows = new List<IGrindOMeterTrackingRow>();
             this.entitySelectionDropdownHandler = entitySelectionDropdownHandler;

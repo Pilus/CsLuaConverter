@@ -236,7 +236,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         end
 
         if fittingMembers[1].memberType == "Method" then
-            return _M.GM(fittingMembers, self);
+            return _M.GM(fittingMembers, self, key);
         end
 
         if fittingMembers[1].memberType == "Property" then
@@ -345,7 +345,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             end
 
             if (fittingMembers[1].memberType == "Method") then
-                return _M.GM(fittingMembers, staticValues);
+                return _M.GM(fittingMembers, staticValues, key);
             end
 
             expectOneMember(fittingMembers, key);
@@ -389,7 +389,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             -- Generate the base class element from constructor.GenerateBaseClass
             local classElement = elementGenerator();
             -- find the constructor fitting the arguments.
-            local constructor, foldOutLast = _M.AM(constructors, {...});
+            local constructor, foldOutLast = _M.AM(constructors, {...}, "Constructor");
             -- Call the constructor
             constructor.func(classElement, ...);
 
@@ -414,12 +414,12 @@ end
 _M.IM = InsertMember;
 
 local BaseCstor = function(classElement, baseConstructors, ...)
-    local constructor = _M.AM(baseConstructors, {...});
+    local constructor = _M.AM(baseConstructors, {...}, "Base constructor");
     constructor.func(classElement, ...);
 end
 _M.BC = BaseCstor;
 
 local ReturnTableOrExecuteFunction = function(t)
-    return type(t) == "table" and t or t();
+    return type(t) == "table" and t or t();
 end
 _M.RTEF = ReturnTableOrExecuteFunction;

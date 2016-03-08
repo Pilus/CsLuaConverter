@@ -51,7 +51,8 @@
         {
             if (SanitationDisabled)
                 return value;
-        
+            
+            // TODO: Reenable variable sanitization when there a C# serializer is implemented.
             if (value == null) return null;
             if (value is string || value is bool || value is int || value is double || value is float) return value;
             if (!(value is NativeLuaTable)) return null;
