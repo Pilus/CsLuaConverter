@@ -1,6 +1,7 @@
 ﻿
 namespace GrindOMeter
 {
+    using BlizzardApi.Global;
     using CsLuaFramework;
     using CsLuaFramework.Attributes;
     using CsLuaFramework.Wrapping;
@@ -18,7 +19,7 @@ namespace GrindOMeter
         public void Execute()
         {
             var model = new Model.Model(new EntityAdaptorFactory(), new EntityStorage());
-            var view = new View.View(new EntitySelectionDropdownHandler(), new Wrapper());
+            var view = new View.View(new EntitySelectionDropdownHandler(), Global.Wrapper);
             var presenter = new Presenter.Presenter(model, view);
 
             Core.print("Grind-O-Meter loaded.");

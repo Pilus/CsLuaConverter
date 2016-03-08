@@ -21,7 +21,7 @@
 
         public T Wrap<T>(string globalVarName) where T : class
         {
-            throw new NotImplementedException();
+            return (T)this.api.GetGlobal(globalVarName);
         }
 
         public T Wrap<T>(string globalVarName, Func<NativeLuaTable, Type> typeTranslator) where T : class

@@ -38,6 +38,9 @@
             Global.Api.SetGlobal("GrindOMeterFrame", this.frameMock.Object);
 
             this.entitySelectionDropdownHandlerMock = new Mock<IEntitySelectionDropdownHandler>();
+
+            this.wrapperMock = new Mock<IWrapper>();
+            this.wrapperMock.Setup(w => w.Wrap<IGrindOMeterFrame>("GrindOMeterFrame")).Returns(this.frameMock.Object);
         }
 
         [TestMethod]
