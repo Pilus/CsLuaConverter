@@ -2,6 +2,7 @@
 namespace CsLuaTest
 {
     using System.Collections.Generic;
+    using ActionsFunctions;
     using AmbigousMethods;
     using Arrays;
     using Collections;
@@ -43,8 +44,9 @@ namespace CsLuaTest
                 new InterfacesTests(),
                 new ParamsTests(),
                 new StringExtensionTests(),
-                new CollectionsTests(),
                 new WrapTests(),
+                new ActionsFunctionsTests(),
+                new CollectionsTests(),
             };
 
             tests.ForEach(test => test.PerformTests(new IndentedLineWriter()));

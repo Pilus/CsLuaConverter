@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionsFunctions\ActionsFunctionsTests.cs" />
     <Compile Include="AmbigousMethods\AmbigousMethodsTests.cs" />
     <Compile Include="AmbigousMethods\ClassC1.cs" />
     <Compile Include="AmbigousMethods\ClassA.cs" />

@@ -17,7 +17,7 @@
         memberType = 'Property',
         scope = 'Public',
         get = function(element)
-            return System.Collections.Generic.KeyCollection[{generics[1}](element);
+            return System.Collections.Generic.KeyCollection[generics](element);
         end,
     });
 
@@ -26,7 +26,7 @@
         memberType = 'Property',
         scope = 'Public',
         get = function(element)
-            return System.Collections.Generic.KeyCollection[{generics[2}](element);
+            return System.Collections.Generic.ValueCollection[generics](element);
         end,
     });
 
@@ -90,15 +90,15 @@
     return "Class", typeObject, members, constructors, objectGenerator, implements, initialize;
 end})
 
-System.Collections.Generic.KeyCollection = _M.NE({[1] = function(interactionElement, generics, staticValues)
+System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElement, generics, staticValues)
     local implements = {
         System.Collections.IEnumerable.__typeof,
-        System.Collections.Generic.IEnumerable[generics].__typeof,
+        System.Collections.Generic.IEnumerable[{generics[1]}].__typeof,
         System.Collections.ICollection.__typeof,
-        System.Collections.Generic.ICollection[generics].__typeof,
+        System.Collections.Generic.ICollection[{generics[1]}].__typeof,
     };
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('KeyCollection','System.Collections.Generic',baseTypeObject,1,generics,implements,interactionElement);
+    local typeObject = System.Type('KeyCollection','System.Collections.Generic',baseTypeObject,#(generics),generics,implements,interactionElement);
     
     _M.IM(members,'GetEnumerator',{
         level = typeObject.Level,
@@ -133,15 +133,15 @@ System.Collections.Generic.KeyCollection = _M.NE({[1] = function(interactionElem
     return "Class", typeObject, members, constructors, objectGenerator;
 end})
 
-System.Collections.Generic.ValueCollection = _M.NE({[1] = function(interactionElement, generics, staticValues)
+System.Collections.Generic.ValueCollection = _M.NE({[2] = function(interactionElement, generics, staticValues)
     local implements = {
         System.Collections.IEnumerable.__typeof,
-        System.Collections.Generic.IEnumerable[generics].__typeof,
+        System.Collections.Generic.IEnumerable[{generics[2]}].__typeof,
         System.Collections.ICollection.__typeof,
-        System.Collections.Generic.ICollection[generics].__typeof,
+        System.Collections.Generic.ICollection[{generics[2]}].__typeof,
     };
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('ValueCollection','System.Collections.Generic',baseTypeObject,1,generics,implements,interactionElement);
+    local typeObject = System.Type('ValueCollection','System.Collections.Generic',baseTypeObject,#(generics),generics,implements,interactionElement);
     
     _M.IM(members,'GetEnumerator',{
         level = typeObject.Level,
