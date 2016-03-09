@@ -14,6 +14,7 @@
             this.Tests["2_TestListImplementation"] = TestListImplementation;
             this.Tests["3_TestDictionaryInterfaces"] = TestDictionaryInterfaces;
             this.Tests["4_TestLinq"] = TestLinq;
+            this.Tests["5_TestSelect"] = TestSelect; 
         }
 
         private static void TestListInterfaces()
@@ -178,6 +179,22 @@
             Assert(2, enumerable2.Count());
             list.Add("c");
             Assert(3, enumerable2.Count());
+        }
+
+        private static void TestSelect()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+
+            var l1 = a.Select(v => v.ToString()).ToList();
+            Assert(true, l1 is List<string>);
+
+            var l2 = a.Select(ToFloat).ToList();
+            Assert(true, l2 is List<float>);
+        }
+
+        private static float ToFloat(int value)
+        {
+            return value;
         }
     }
 }
