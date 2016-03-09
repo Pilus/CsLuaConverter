@@ -278,6 +278,7 @@
     <None Include="Lua\Meta\Enum.lua" />
     <None Include="Lua\Meta\GenericMethod.lua" />
     <None Include="Lua\Meta\InteractionElement.lua" />
+    <None Include="Lua\Meta\Lambda.lua" />
     <None Include="Lua\Meta\NamespaceElement.lua" />
     <None Include="Lua\Meta\Throw.lua" />
     <None Include="Lua\Meta\Try.lua" />

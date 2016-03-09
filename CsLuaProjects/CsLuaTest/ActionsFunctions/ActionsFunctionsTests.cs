@@ -22,6 +22,9 @@
 
             action.Invoke(43);
             Assert(43, invokedValue);
+
+            action(10);
+            Assert(10, invokedValue);
         }
     }
 }

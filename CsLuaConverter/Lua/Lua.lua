@@ -3,31 +3,15 @@ table.Foreach = foreach;
 table.contains = tcontains;
 
 _G.__isNamespace = true;
-Lua = {
-    __isNamespace = true;
-    Core = _G,
-    Strings = _G,
-    LuaMath = _G,
-    Table = table,
+Lua = Lua or {};
+Lua.__isNamespace = true;
+Lua.Core = _G;
+Lua.Strings = _G;
+Lua.LuaMath = _G;
+Lua.Table = table;
 
-    NativeLuaTable = function() return {__Cstor = function() return {}; end}; end,    
-};
+    --NativeLuaTable = function() return {__Cstor = function() return {}; end}; end,    
 
-Lua.NativeLuaTable = _M.NE({[0] = function(interactionElement, generics, staticValues)
-    local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('NativeLuaTable','Lua',baseTypeObject,0,nil,nil,interactionElement);
-
-    local constructors = {
-        {
-            types = {},
-            func = function() end,
-        }
-    };
-    local objectGenerator = function() 
-        return {};
-    end
-    return "Class", typeObject, members, constructors, objectGenerator;
-end});
 
 Lua.Strings.format = function(str,...)
     -- TODO: replace {0} with %1$s

@@ -27,7 +27,7 @@ local GetType = function(obj, index)
     elseif type(obj) == "string" then
         return System.String.__typeof;
     elseif type(obj) == "function" then
-        return System.Action.__typeof;
+        return Lua.Function.__typeof;
     elseif type(obj) == "boolean" then
         return System.Boolean.__typeof;
     elseif type(obj) == "number" then

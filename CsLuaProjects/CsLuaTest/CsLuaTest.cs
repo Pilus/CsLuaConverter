@@ -44,8 +44,8 @@ namespace CsLuaTest
                 new InterfacesTests(),
                 new ParamsTests(),
                 new StringExtensionTests(),
-                new WrapTests(),
                 new ActionsFunctionsTests(),
+                new WrapTests(),
                 new CollectionsTests(),
             };
 

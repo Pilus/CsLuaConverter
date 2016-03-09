@@ -17,7 +17,7 @@
         {
             var bodyElements = body.ToList();
 
-            textWriter.Write("function(");
+            textWriter.Write("_M.LB(function(");
             var first = true;
 
             foreach (var parameter in parameters)
@@ -47,7 +47,7 @@
                 bodyElements.ForEach(VisitorList.Visit);
             }
 
-            textWriter.Write(" end");
+            textWriter.Write(" end)");
         }
     }
 }
