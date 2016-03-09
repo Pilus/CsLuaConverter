@@ -59,12 +59,12 @@
             if (elements.Any(e => e is SimpleLambdaExpression))
             {
                 var index = elements.IndexOf(elements.First(e => e is SimpleLambdaExpression));
-                SimpleLambdaExpressionVisitor.Visit(elements.Take(index), elements.Skip(index + 1), textWriter, providers);
+                SimpleLambdaExpressionVisitor.Visit(elements.Take(index), elements.Skip(index + 1).ToArray(), textWriter, providers);
             }
             else if (elements.Any(e => e is ParenthesizedLambdaExpression))
             {
                 var index = elements.IndexOf(elements.First(e => e is ParenthesizedLambdaExpression));
-                SimpleLambdaExpressionVisitor.Visit(elements.Take(index), elements.Skip(index + 1), textWriter, providers);
+                SimpleLambdaExpressionVisitor.Visit(elements.Take(index), elements.Skip(index + 1).ToArray(), textWriter, providers);
             }
             else
             {

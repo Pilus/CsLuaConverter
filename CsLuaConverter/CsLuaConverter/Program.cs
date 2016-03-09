@@ -42,10 +42,10 @@
             var solution = GetSolution(solutionPath);
             var providers = new Providers.Providers(solution);
 
-            ISyntaxAnalyser analyzer = new Analyzer(new LuaDocumentVisitor());
+            ISyntaxAnalyser analyzer = new Analyzer(providers);
 
             var solutionHandler = new SolutionHandler(analyzer);
-            var addOns = solutionHandler.GenerateAddOnsFromSolution(solution, providers);
+            var addOns = solutionHandler.GenerateAddOnsFromSolution(solution);
 
             foreach (var addon in addOns)
             {

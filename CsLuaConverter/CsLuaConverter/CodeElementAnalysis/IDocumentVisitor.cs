@@ -7,6 +7,6 @@
 
     public interface IDocumentVisitor
     {
-        Dictionary<string, Action<IndentedTextWriter, IProviders>> Visit(IEnumerable<DocumentElement> documents);
+        Dictionary<string, Action<IndentedTextWriter>> Visit(IEnumerable<DocumentElement> documents);
     }
 }

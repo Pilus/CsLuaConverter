@@ -17,7 +17,7 @@ namespace CsLuaConverter
         }
 
         public ProjectInfo Info { get; set; }
-        public Dictionary<string, Action<IndentedTextWriter, IProviders>> Namespaces { get; set; }
+        public Dictionary<string, Action<IndentedTextWriter>> Namespaces { get; set; }
         public List<AnalyzedProjectInfo> Referenders { get; private set; }
         public List<AnalyzedProjectInfo> RequiredAddOns { get; private set; }
         public List<AnalyzedProjectInfo> HostOf { get; private set; }

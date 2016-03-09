@@ -13,10 +13,8 @@
             throw new LuaVisitorException("Use the SimpleLambdaExpression with arg infomation parsed.");
         }
 
-        public static void Visit(IEnumerable<BaseElement> parameters, IEnumerable<BaseElement> body, IndentedTextWriter textWriter, IProviders providers)
+        public static void Visit(IEnumerable<BaseElement> parameters, BaseElement[] body, IndentedTextWriter textWriter, IProviders providers)
         {
-            var bodyElements = body.ToList();
-
             textWriter.Write("_M.LB(function(");
             var first = true;
 
@@ -36,18 +34,45 @@
 
             textWriter.Write(")");
 
-            if (bodyElements.Count == 1 && bodyElements[0] is Block)
+            if (body.Length == 1 && body[0] is Block)
             {
                 textWriter.WriteLine("");
-                VisitorList.Visit(bodyElements[0]);
+                VisitorList.Visit(body[0]);
             }
             else
             {
                 textWriter.Write(" return ");
-                bodyElements.ForEach(VisitorList.Visit);
+                foreach (var b in body)
+                {
+                    VisitorList.Visit(b);
+                }
             }
 
-            textWriter.Write(" end)");
+            textWriter.Write(" end");
+            WriteLambdaTypes(parameters, body, textWriter, providers);
+            textWriter.Write(")");
+        }
+
+        private static void WriteLambdaTypes(IEnumerable<BaseElement> parameters, BaseElement[] body, IndentedTextWriter textWriter, IProviders providers)
+        {
+            string returnType = null;
+            if (body.Length == 1 && body[0] is Block)
+            {
+                throw new System.NotImplementedException();
+            }
+            else
+            {
+                returnType = providers.TypeKnowledgeRegistry.Get(body.First()).ToString();
+            }
+
+            if (string.IsNullOrEmpty(returnType))
+            {
+                textWriter.Write(",nil");
+            }
+            else
+            {
+                textWriter.Write("," + returnType);
+            }
         }
     }
 }

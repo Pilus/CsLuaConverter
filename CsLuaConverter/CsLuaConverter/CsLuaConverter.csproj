@@ -154,7 +154,7 @@
     <Compile Include="CodeElementAnalysis\SwitchStatement.cs" />
     <Compile Include="CodeElementAnalysis\ThisExpression.cs" />
     <Compile Include="CodeElementAnalysis\ThrowStatement.cs" />
-    <Compile Include="CodeElementAnalysis\ThrowStatementVisitor.cs" />
+    <Compile Include="LuaVisitor\ThrowStatementVisitor.cs" />
     <Compile Include="CodeElementAnalysis\TrueLiteralExpression.cs" />
     <Compile Include="CodeElementAnalysis\TryStatement.cs" />
     <Compile Include="CodeElementAnalysis\TypeArgumentList.cs" />
@@ -235,10 +235,11 @@
     <Compile Include="Providers\IProviders.cs" />
     <Compile Include="Providers\NameProvider\INameProvider.cs" />
     <Compile Include="Providers\NameProvider\NameProvider.cs" />
-    <Compile Include="Providers\PartialElementRegistry\IPartialElementRegistry.cs" />
-    <Compile Include="Providers\PartialElementRegistry\PartialElementRegistry.cs" />
     <Compile Include="Providers\ProviderException.cs" />
     <Compile Include="Providers\Providers.cs" />
+    <Compile Include="Providers\TypeKnowledgeRegistry\ITypeKnowledgeRegistry.cs" />
+    <Compile Include="Providers\TypeKnowledgeRegistry\TypeKnowledge.cs" />
+    <Compile Include="Providers\TypeKnowledgeRegistry\TypeKnowledgeRegistry.cs" />
     <Compile Include="Providers\TypeProvider\ITypeProvider.cs" />
     <Compile Include="Providers\TypeProvider\ITypeResult.cs" />
     <Compile Include="Providers\TypeProvider\LoadedNamespace.cs" />
@@ -267,6 +268,13 @@
     <Compile Include="CodeElementAnalysis\ParameterList.cs" />
     <Compile Include="CodeElementAnalysis\SyntaxTokenExtension.cs" />
     <Compile Include="AddOnConstruction\TocBuilder.cs" />
+    <Compile Include="TypeKnowledgeVisitor\ConstructorDeclarationVisitor.cs" />
+    <Compile Include="TypeKnowledgeVisitor\DefaultContainerVisitor.cs" />
+    <Compile Include="TypeKnowledgeVisitor\DefaultDelimiteredContainerElementVisitor.cs" />
+    <Compile Include="TypeKnowledgeVisitor\IVisitor.cs" />
+    <Compile Include="TypeKnowledgeVisitor\ParameterListVisitor.cs" />
+    <Compile Include="TypeKnowledgeVisitor\TypeKnowledgeDocumentVisitor.cs" />
+    <Compile Include="TypeKnowledgeVisitor\VisitorList.cs" />
     <Compile Include="WrappingException.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -337,6 +345,7 @@
   <ItemGroup>
     <None Include="Lua\Meta\Extensions.lua" />
   </ItemGroup>
+  <ItemGroup />
   <ImportGroup Label="Targets">
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

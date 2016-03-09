@@ -2,7 +2,7 @@ namespace CsLuaConverter.Providers
 {
     using GenericsRegistry;
     using NameProvider;
-    using PartialElementRegistry;
+    using TypeKnowledgeRegistry;
     using TypeProvider;
 
     public interface IProviders
@@ -10,6 +10,6 @@ namespace CsLuaConverter.Providers
         ITypeProvider TypeProvider { get; }
         INameProvider NameProvider { get; }
         IGenericsRegistry GenericsRegistry { get; }
-        IPartialElementRegistry PartialElementRegistry { get; }
+        ITypeKnowledgeRegistry TypeKnowledgeRegistry { get; }
     }
 }

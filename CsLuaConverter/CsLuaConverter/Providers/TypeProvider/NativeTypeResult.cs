@@ -18,6 +18,8 @@
 
         public string Namespace => this.type.Namespace;
 
+        public Type TypeObject => this.type;
+
         public NativeTypeResult(string nativeName, Type type)
         {
             this.nativeName = nativeName;

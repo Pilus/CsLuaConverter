@@ -5,7 +5,7 @@ local lambda = function(f, retArg, ...)
         return System.Action[{...}](f);
     end
 
-    return System.Func[{retArg, ...}](f);
+    return System.Func[{..., retArg}](f);
 end
 
 _M.LB = lambda;

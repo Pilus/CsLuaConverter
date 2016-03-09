@@ -4,6 +4,7 @@ namespace CsLuaConverter.Providers.TypeProvider
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using TypeKnowledgeRegistry;
 
     public class TypeResult : ITypeResult
     {
@@ -61,6 +62,8 @@ namespace CsLuaConverter.Providers.TypeProvider
 
         public string FullName => this.type.FullName;
 
+        public Type TypeObject => this.type;
+
         public IEnumerable<ScopeElement> GetScopeElements()
         {
             var list = new List<ScopeElement>();
@@ -72,19 +75,21 @@ namespace CsLuaConverter.Providers.TypeProvider
 
             IEnumerable<MemberInfo> methods = this.GetMethodsOfType(type);
             IEnumerable<MemberInfo> objectMethods = this.GetMethodsOfType(typeof(object));
+
             foreach (MemberInfo method in methods.Where(m => !objectMethods.Any(om => om.Name.Equals(m.Name))))
             {
-                list.Add(new ScopeElement(method.Name)
+                list.Add(new ScopeElement(method.Name, GetTypeKnowledge(method))
                 {
                     ClassPrefix = ClassPrefix,
                     IsFromClass = true,
                 });
             }
+
             foreach (MemberInfo member in type.GetMembers()) // Variables and properties
             {
                 if (!member.MemberType.Equals(MemberTypes.Method) && !member.MemberType.Equals(MemberTypes.Constructor))
                 {
-                    list.Add(new ScopeElement(member.Name)
+                    list.Add(new ScopeElement(member.Name, GetTypeKnowledge(member))
                     {
                         ClassPrefix = ClassPrefix,
                         IsFromClass = true
@@ -115,6 +120,52 @@ namespace CsLuaConverter.Providers.TypeProvider
 
             return list;
         }
+
+        private TypeKnowledge GetTypeKnowledge(MemberInfo member)
+        {
+            var methodInfo = member as MethodInfo;
+            if (methodInfo != null)
+            {
+                var parameterTypes = methodInfo.GetParameters().Select(p => p.ParameterType).ToList();
+
+                var type = this.Actions[parameterTypes.Count];
+                if (methodInfo.ReturnType != typeof(void))
+                {
+                    type = this.Funcs[parameterTypes.Count];
+                    parameterTypes.Add(methodInfo.ReturnType);
+                }
+
+                if (parameterTypes.Count == 0)
+                {
+                    return new TypeKnowledge(typeof(Action));
+                }
+
+                var methodType = type.MakeGenericType(parameterTypes.ToArray());
+                return new TypeKnowledge(methodType);
+            }
+            throw new System.NotImplementedException();
+        }
+
+        private List<Type> Actions = new List<Type>()
+        {
+            typeof (Action),
+            typeof (Action<>),
+            typeof (Action<,>),
+            typeof (Action<,,>),
+            typeof (Action<,,,>),
+            typeof (Action<,,,,>),
+            typeof (Action<,,,,,>),
+        };
+
+        private List<Type> Funcs = new List<Type>()
+        {
+            typeof (Func<>),
+            typeof (Func<,>),
+            typeof (Func<,,>),
+            typeof (Func<,,,>),
+            typeof (Func<,,,,>),
+            typeof (Func<,,,,,>),
+        };
 
         private IEnumerable<MemberInfo> GetMethodsOfType(Type type)
         {

@@ -9,16 +9,22 @@
 
     public class LuaDocumentVisitor : IDocumentVisitor
     {
+        private readonly IProviders providers;
         private readonly NamespaceExtractor namespaceExtractor = new NamespaceExtractor();
 
-        public Dictionary<string, Action<IndentedTextWriter, IProviders>> Visit(IEnumerable<DocumentElement> documents)
+        public LuaDocumentVisitor(IProviders providers)
+        {
+            this.providers = providers;
+        }
+
+        public Dictionary<string, Action<IndentedTextWriter>> Visit(IEnumerable<DocumentElement> documents)
         {
             //var documentElements = documents.ToList();
 
             var namespaces = this.namespaceExtractor.Extract(documents);
 
-            return namespaces.ToDictionary<Namespace, string, Action<IndentedTextWriter, IProviders>>(
-                ns => ns.Name, ns => (writer, providers) => VisitorList.Visit(ns, writer, providers));
+            return namespaces.ToDictionary<Namespace, string, Action<IndentedTextWriter>>(
+                ns => ns.Name, ns => (writer) => VisitorList.Visit(ns, writer, this.providers));
         }
     }
 }

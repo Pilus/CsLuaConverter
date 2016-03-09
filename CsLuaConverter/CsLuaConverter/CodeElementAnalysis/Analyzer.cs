@@ -7,18 +7,24 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using LuaVisitor;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using TypeKnowledgeVisitor;
     using ProjectInfo = ProjectAnalysis.ProjectInfo;
 
     public class Analyzer : ISyntaxAnalyser
     {
-        private IDocumentVisitor documentVisitor;
+        private readonly IDocumentVisitor documentVisitor;
+        private readonly TypeKnowledgeDocumentVisitor typeKnowledgeVisitor;
+        private readonly IProviders providers;
 
-        public Analyzer(IDocumentVisitor documentVisitor)
+        public Analyzer(IProviders providers)
         {
-            this.documentVisitor = documentVisitor;
+            this.providers = providers;
+            this.documentVisitor = new LuaDocumentVisitor(providers);
+            //this.typeKnowledgeVisitor = new TypeKnowledgeDocumentVisitor();
         }
 
         public AnalyzedProjectInfo AnalyzeProject(ProjectInfo projectInfo)
@@ -30,7 +36,7 @@
             };
         }
 
-        private Dictionary<string, Action<IndentedTextWriter, IProviders>> GetNamespaces(Project project)
+        private Dictionary<string, Action<IndentedTextWriter>> GetNamespaces(Project project)
         {
             if (Debugger.IsAttached)
             {
@@ -48,14 +54,16 @@
             }
         }
 
-        private Dictionary<string, Action<IndentedTextWriter, IProviders>> GetNamespacesFromProject(Project project)
+        private Dictionary<string, Action<IndentedTextWriter>> GetNamespacesFromProject(Project project)
         {
             IEnumerable<Document> docs = project.Documents
                 .Where(doc => doc.Folders.FirstOrDefault() != "Properties"
                               && !doc.FilePath.EndsWith("AssemblyAttributes.cs")
                 );
 
-            var documentElements = docs.Select(AnalyzeDocument);
+            var documentElements = docs.Select(AnalyzeDocument).ToArray();
+
+            //this.typeKnowledgeVisitor.Visit(documentElements, this.providers);
 
             return this.documentVisitor.Visit(documentElements);
         }

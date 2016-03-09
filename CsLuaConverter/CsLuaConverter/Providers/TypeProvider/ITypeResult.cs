@@ -15,6 +15,8 @@ namespace CsLuaConverter.Providers.TypeProvider
 
         int NumGenerics { get; }
 
+        Type TypeObject { get; }
+
         IEnumerable<ScopeElement> GetScopeElements();
 
     }

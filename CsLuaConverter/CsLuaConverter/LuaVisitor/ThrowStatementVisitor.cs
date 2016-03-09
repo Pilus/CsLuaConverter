@@ -1,8 +1,8 @@
-﻿namespace CsLuaConverter.CodeElementAnalysis
+﻿namespace CsLuaConverter.LuaVisitor
 {
     using System;
     using System.CodeDom.Compiler;
-    using LuaVisitor;
+    using CodeElementAnalysis;
     using Providers;
 
     public class ThrowStatementVisitor : IVisitor<ThrowStatement>
