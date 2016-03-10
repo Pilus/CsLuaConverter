@@ -8,6 +8,8 @@
     using CsLuaFramework;
     using Providers;
     using Providers.GenericsRegistry;
+    using Providers.TypeKnowledgeRegistry;
+    using Providers.TypeProvider;
 
     public class ClassVisitor : IVisitor<ClassDeclaration>
     {
@@ -260,10 +262,17 @@
             textWriter.Indent++;
             textWriter.WriteLine("local members = _M.RTEF(getBaseMembers);");
 
+            var scope = providers.NameProvider.CloneScope();
+            var classTypeResult = providers.TypeProvider.LookupType(element.Name);
+            providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(classTypeResult.TypeObject)));
+            providers.NameProvider.AddToScope(new ScopeElement("base", new TypeKnowledge(classTypeResult.TypeObject.BaseType)));
+
             foreach (var member in element.ContainedElements.Where(m => !(m is ConstructorDeclaration)).OrderBy(GetMemberOrder))
             {
                 VisitorList.Visit(member);
             }
+
+            providers.NameProvider.SetScope(scope);
 
             textWriter.WriteLine("return members;");
             textWriter.Indent--;

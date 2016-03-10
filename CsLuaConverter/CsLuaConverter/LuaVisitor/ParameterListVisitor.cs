@@ -26,12 +26,14 @@
                 }
                 else
                 {
+                    BaseElement prevElement = null;
                     foreach (var parameterElement in parameterElements)
                     {
                         if ((parameterElement is Parameter) && !(isParams && parameterElement == firstElement))
                         {
-                            VisitorList.Visit(parameterElement);
+                            ParameterVisitor.Visit(parameterElement as Parameter, prevElement, textWriter, providers);
                         }
+                        prevElement = parameterElement;
                     }
                 }
 

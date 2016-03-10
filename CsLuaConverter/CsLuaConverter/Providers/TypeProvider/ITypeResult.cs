@@ -9,6 +9,7 @@ namespace CsLuaConverter.Providers.TypeProvider
         string Name { get; }
         string Namespace { get; }
         string FullName { get; }
+        string AdditionalString { get; }
         bool IsClass { get; }
         string ToString();
         bool IsInterface { get; }

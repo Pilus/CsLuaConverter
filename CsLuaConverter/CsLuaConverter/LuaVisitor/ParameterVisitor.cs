@@ -2,6 +2,7 @@
 {
     using System.CodeDom.Compiler;
     using CodeElementAnalysis;
+    using CodeElementAnalysis.Helpers;
     using Providers;
     using Providers.TypeProvider;
 
@@ -15,6 +16,13 @@
             }
 
             providers.NameProvider.AddToScope(new ScopeElement(element.Name));
+            textWriter.Write(element.Name);
+        }
+
+        public static void Visit(Parameter element, BaseElement typeElement, IndentedTextWriter textWriter, IProviders providers)
+        {
+            var typeKnowledge = TypeKnowledgeHelper.GetTypeKnowledge(typeElement, providers);
+            providers.NameProvider.AddToScope(new ScopeElement(element.Name, typeKnowledge));
             textWriter.Write(element.Name);
         }
     }

@@ -49,6 +49,7 @@ namespace CsLuaConverter.Providers.TypeProvider
             return genericStrippedFullName + "." + this.additionalString;
         }
 
+        public string AdditionalString => this.additionalString;
 
         public bool IsInterface => this.type.IsInterface;
 
@@ -78,7 +79,7 @@ namespace CsLuaConverter.Providers.TypeProvider
 
             foreach (MemberInfo method in methods.Where(m => !objectMethods.Any(om => om.Name.Equals(m.Name))))
             {
-                list.Add(new ScopeElement(method.Name, GetTypeKnowledge(method))
+                list.Add(new ScopeElement(method.Name, new TypeKnowledge(method))
                 {
                     ClassPrefix = ClassPrefix,
                     IsFromClass = true,
@@ -89,7 +90,7 @@ namespace CsLuaConverter.Providers.TypeProvider
             {
                 if (!member.MemberType.Equals(MemberTypes.Method) && !member.MemberType.Equals(MemberTypes.Constructor))
                 {
-                    list.Add(new ScopeElement(member.Name, GetTypeKnowledge(member))
+                    list.Add(new ScopeElement(member.Name, new TypeKnowledge(member))
                     {
                         ClassPrefix = ClassPrefix,
                         IsFromClass = true
@@ -97,6 +98,7 @@ namespace CsLuaConverter.Providers.TypeProvider
                 }
             }
 
+            /*
             foreach (var property in type.GetRuntimeProperties())
             {
                 list.Add(new ScopeElement(property.Name)
@@ -116,56 +118,10 @@ namespace CsLuaConverter.Providers.TypeProvider
                         IsFromClass = true
                     });
                 }
-            }
+            } */
 
             return list;
         }
-
-        private TypeKnowledge GetTypeKnowledge(MemberInfo member)
-        {
-            var methodInfo = member as MethodInfo;
-            if (methodInfo != null)
-            {
-                var parameterTypes = methodInfo.GetParameters().Select(p => p.ParameterType).ToList();
-
-                var type = this.Actions[parameterTypes.Count];
-                if (methodInfo.ReturnType != typeof(void))
-                {
-                    type = this.Funcs[parameterTypes.Count];
-                    parameterTypes.Add(methodInfo.ReturnType);
-                }
-
-                if (parameterTypes.Count == 0)
-                {
-                    return new TypeKnowledge(typeof(Action));
-                }
-
-                var methodType = type.MakeGenericType(parameterTypes.ToArray());
-                return new TypeKnowledge(methodType);
-            }
-            throw new System.NotImplementedException();
-        }
-
-        private List<Type> Actions = new List<Type>()
-        {
-            typeof (Action),
-            typeof (Action<>),
-            typeof (Action<,>),
-            typeof (Action<,,>),
-            typeof (Action<,,,>),
-            typeof (Action<,,,,>),
-            typeof (Action<,,,,,>),
-        };
-
-        private List<Type> Funcs = new List<Type>()
-        {
-            typeof (Func<>),
-            typeof (Func<,>),
-            typeof (Func<,,>),
-            typeof (Func<,,,>),
-            typeof (Func<,,,,>),
-            typeof (Func<,,,,,>),
-        };
 
         private IEnumerable<MemberInfo> GetMethodsOfType(Type type)
         {

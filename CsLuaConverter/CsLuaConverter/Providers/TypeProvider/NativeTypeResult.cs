@@ -20,6 +20,8 @@
 
         public Type TypeObject => this.type;
 
+        public string AdditionalString => null;
+
         public NativeTypeResult(string nativeName, Type type)
         {
             this.nativeName = nativeName;
