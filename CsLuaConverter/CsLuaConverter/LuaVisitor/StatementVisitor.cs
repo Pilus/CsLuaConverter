@@ -73,6 +73,11 @@
                     ParenthesizedLambdaExpressionVisitor.Visit(nextElement as ParenthesizedLambdaExpression, textWriter, providers, element as ParameterList, elements.Skip(i+2));
                     return;
                 }
+                else if (nextElement is VariableDeclarator)
+                {
+                    VariableDeclaratorVisitor.Visit((VariableDeclarator)nextElement, textWriter, providers, element, elements.Skip(i+3).ToArray());
+                    i++;
+                }
                 else
                 {
                     VisitorList.Visit(element);

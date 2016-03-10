@@ -59,9 +59,24 @@
             return new TypeKnowledge(enumerableType);
         }
 
+        public TypeKnowledge GetIndexerIndexType()
+        {
+            var indexParameters = this.type.GetProperties().Single(p => p.GetIndexParameters().Length > 0).GetIndexParameters().Single();
+
+            return new TypeKnowledge(indexParameters.ParameterType);
+        }
+
+
+        public TypeKnowledge GetIndexerValueType()
+        {
+            var indexParameters = this.type.GetProperties().Single(p => p.GetIndexParameters().Length > 0).GetIndexParameters().Single();
+
+            return new TypeKnowledge((indexParameters.Member as PropertyInfo).PropertyType);
+        }
+
         private TypeKnowledge[] GetMembers(string name)
         {
-            var members = type.GetMember(name);
+            var members = this.type.GetMember(name);
 
             return members.Select(m => new TypeKnowledge(m)).ToArray();
         }

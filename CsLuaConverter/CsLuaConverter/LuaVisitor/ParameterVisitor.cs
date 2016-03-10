@@ -10,13 +10,7 @@
     {
         public void Visit(Parameter element, IndentedTextWriter textWriter, IProviders providers)
         {
-            if (element.IsParams)
-            {
-                return;
-            }
-
-            providers.NameProvider.AddToScope(new ScopeElement(element.Name));
-            textWriter.Write(element.Name);
+            throw new LuaVisitorException("Use other visit method");
         }
 
         public static void Visit(Parameter element, BaseElement typeElement, IndentedTextWriter textWriter, IProviders providers)

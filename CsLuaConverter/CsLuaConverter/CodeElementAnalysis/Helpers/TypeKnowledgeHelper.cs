@@ -22,12 +22,14 @@
                     return GetTypeKnowledge((ThisExpression)element, providers, onType);
                 case nameof(SimpleMemberAccessExpression):
                     return GetTypeKnowledge((SimpleMemberAccessExpression)element, providers, onType);
+                case nameof(BracketedArgumentList):
+                    return GetTypeKnowledge((BracketedArgumentList)element, providers, onType);
                 default:
                     throw new Exception("Can not find type knowledge from type: " + element.GetType().Name);
             }
         }
 
-        private static TypeKnowledge GetTypeKnowledge(IdentifierName element, IProviders providers, TypeKnowledge onType = null)
+        private static TypeKnowledge GetTypeKnowledge(IdentifierName element, IProviders providers, TypeKnowledge onType)
         {
             TypeKnowledge typeKnowledge = null;
             string additionalString = null;
@@ -42,7 +44,8 @@
                 var variableResult = providers.NameProvider.GetScopeElement(element.Names.First());
                 if (variableResult != null)
                 {
-                    throw new NotImplementedException();
+                    typeKnowledge = variableResult.Type;
+                    additionalString = string.Join(".", element.Names.Skip(1));
                 }
                 else
                 {
@@ -66,18 +69,18 @@
             return GetTypeKnowledge(element.InnerElement, providers, typeKnowledge);
         }
 
-        private static TypeKnowledge GetTypeKnowledge(PredefinedType element, IProviders providers, TypeKnowledge onType = null)
+        private static TypeKnowledge GetTypeKnowledge(PredefinedType element, IProviders providers, TypeKnowledge onType)
         {
             var type = providers.TypeProvider.LookupType(element.Text).TypeObject;
             return new TypeKnowledge(element.IsArray ? type.MakeArrayType() : type);
         }
 
-        private static TypeKnowledge GetTypeKnowledge(Statement element, IProviders providers, TypeKnowledge onType = null)
+        private static TypeKnowledge GetTypeKnowledge(Statement element, IProviders providers, TypeKnowledge onType)
         {
             return GetTypeKnowledge(element.ContainedElements.Single(), providers);
         }
 
-        private static TypeKnowledge GetTypeKnowledge(ThisExpression element, IProviders providers, TypeKnowledge onType = null)
+        private static TypeKnowledge GetTypeKnowledge(ThisExpression element, IProviders providers, TypeKnowledge onType)
         {
             var typeKnowledge = providers.NameProvider.GetScopeElement("this").Type;
 
@@ -89,7 +92,7 @@
             return GetTypeKnowledge(element.InnerElement, providers, typeKnowledge);
         }
         
-        private static TypeKnowledge GetTypeKnowledge(SimpleMemberAccessExpression element, IProviders providers, TypeKnowledge onType = null)
+        private static TypeKnowledge GetTypeKnowledge(SimpleMemberAccessExpression element, IProviders providers, TypeKnowledge onType)
         {
             if (onType == null)
             {
@@ -97,6 +100,18 @@
             }
 
             return GetTypeKnowledge(element.InnerElement, providers, onType);
+        }
+
+        private static TypeKnowledge GetTypeKnowledge(BracketedArgumentList element, IProviders providers, TypeKnowledge onType)
+        {
+            var typeKnowledge = onType.GetIndexerValueType();
+
+            if (element.InnerElement == null)
+            {
+                return typeKnowledge;
+            }
+
+            return GetTypeKnowledge(element.InnerElement, providers, typeKnowledge);
         }
     }
 }

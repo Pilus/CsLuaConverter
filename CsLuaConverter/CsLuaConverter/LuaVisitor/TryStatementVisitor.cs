@@ -1,8 +1,11 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
+    using System;
     using System.CodeDom.Compiler;
     using CodeElementAnalysis;
+    using CodeElementAnalysis.Helpers;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
     using Providers.TypeProvider;
 
     public class TryStatementVisitor : IVisitor<TryStatement>
@@ -24,11 +27,12 @@
                 textWriter.Indent++;
 
                 var variableName = string.Empty;
-
+                TypeKnowledge exceptionType = null;
                 if (pair.Declaration != null)
                 {
                     textWriter.Write("type = ");
                     VisitorList.Visit(pair.Declaration.ExceptionType);
+                    exceptionType = TypeKnowledgeHelper.GetTypeKnowledge(pair.Declaration.ExceptionType, providers);
                     variableName = pair.Declaration.ExceptionVariableName;
                     textWriter.WriteLine(".__typeof,");
                 }
@@ -38,7 +42,7 @@
                 var scope = providers.NameProvider.CloneScope();
                 if (!string.IsNullOrEmpty(variableName))
                 {
-                    providers.NameProvider.AddToScope(new ScopeElement(variableName));
+                    providers.NameProvider.AddToScope(new ScopeElement(variableName, exceptionType));
                 }
 
                 VisitorList.Visit(pair.Block);
