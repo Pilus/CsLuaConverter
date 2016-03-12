@@ -4,6 +4,7 @@
     using System.CodeDom.Compiler;
     using CodeElementAnalysis;
     using CodeElementAnalysis.Helpers;
+    using CodeElementAnalysis.Statements;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
     using Providers.TypeProvider;

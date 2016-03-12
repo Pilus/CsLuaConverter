@@ -11,7 +11,7 @@
             var scope = providers.NameProvider.CloneScope();
             textWriter.Indent++;
 
-            foreach (var subElement in element.Statements)
+            foreach (var subElement in element.Elements)
             {
                 VisitorList.Visit(subElement);
             }

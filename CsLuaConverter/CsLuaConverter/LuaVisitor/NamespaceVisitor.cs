@@ -128,10 +128,4 @@
             throw new LuaVisitorException("Cannot get num of generic of object " + element.GetType().Name);
         }
     }
-
-    internal struct NamespaceElementWithAttributes
-    {
-        public NamespaceElement Element;
-        public AttributeList[] Attributes;
-    }
 }

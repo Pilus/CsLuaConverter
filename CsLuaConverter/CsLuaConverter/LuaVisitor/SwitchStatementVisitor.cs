@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Security.Principal;
     using CodeElementAnalysis;
+    using CodeElementAnalysis.Statements;
     using Providers;
 
     public class SwitchStatementVisitor : IVisitor<SwitchStatement>
@@ -71,7 +72,7 @@
 
                 foreach (var subElement in e.Statements)
                 {
-                    if (!subElement.ContainedElements.Any(ele => ele is BreakStatement))
+                    if (!(subElement is BreakStatement))
                     {
                         VisitorList.Visit(subElement);
                     }

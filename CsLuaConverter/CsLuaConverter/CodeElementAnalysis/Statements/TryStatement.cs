@@ -1,10 +1,10 @@
-﻿namespace CsLuaConverter.CodeElementAnalysis
+﻿namespace CsLuaConverter.CodeElementAnalysis.Statements
 {
     using System.Collections.Generic;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class TryStatement : BaseElement
+    public class TryStatement : BaseStatement
     {
         public Block TryBlock;
         public Block FinallyBlock;

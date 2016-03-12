@@ -2,6 +2,7 @@
 {
     using System.CodeDom.Compiler;
     using CodeElementAnalysis;
+    using CodeElementAnalysis.Statements;
     using Providers;
 
     public class IfStatementVisitor : IVisitor<IfStatement>, IVisitor<ElseClause>
@@ -9,7 +10,7 @@
         public void Visit(IfStatement element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("if (");
-            VisitorList.Visit(element.Statement);
+            VisitorList.Visit(element.Expression);
             textWriter.WriteLine(") then");
             VisitorList.Visit(element.Block);
 

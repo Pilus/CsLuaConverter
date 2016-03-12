@@ -1,16 +1,15 @@
-﻿namespace CsLuaConverter.CodeElementAnalysis
+﻿namespace CsLuaConverter.CodeElementAnalysis.Statements
 {
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Statements;
 
-    public class ForStatement : BaseElement
+    public class ForStatement : BaseStatement
     {
         public BaseElement IteratorType;
         public VariableDeclarator IteratorName;
-        public Statement StartValue;
-        public Statement Condition;
-        public Statement Incrementor;
+        public BaseStatement StartValue;
+        public Expression Condition;
+        public BaseStatement Incrementor;
         public Block Block;
 
         public override SyntaxToken Analyze(SyntaxToken token)
@@ -35,15 +34,15 @@
             ExpectKind(SyntaxKind.EqualsToken, token.GetKind());
             token = token.GetNextToken();
 
-            this.StartValue = new Statement();
+            this.StartValue = CreateStatement(token);
             token = this.StartValue.Analyze(token);
             token = token.GetNextToken();
 
-            this.Condition = new Statement();
+            this.Condition = new Expression();
             token = this.Condition.Analyze(token);
             token = token.GetNextToken();
 
-            this.Incrementor = new Statement();
+            this.Incrementor = CreateStatement(token);
             token = this.Incrementor.Analyze(token);
             token = token.GetNextToken();
 

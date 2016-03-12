@@ -5,7 +5,6 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Statements;
 
     public class ObjectInitializerExpression : BaseElement
     {
@@ -42,8 +41,8 @@
                 ExpectKind(SyntaxKind.EqualsToken, token.GetKind());
 
                 token = token.GetNextToken();
-                pair.Statement = new Statement();
-                token = pair.Statement.Analyze(token);
+                pair.Expression = new Expression();
+                token = pair.Expression.Analyze(token);
 
                 this.Pairs.Add(pair);
             }
@@ -71,6 +70,6 @@
     public struct ObjectInitializerPair
     {
         public IdentifierName Name;
-        public Statement Statement;
+        public Expression Expression;
     }
 }

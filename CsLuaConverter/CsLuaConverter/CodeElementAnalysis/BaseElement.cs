@@ -6,6 +6,7 @@
     using System.Linq;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Statements;
 
     public abstract class BaseElement
     {
@@ -35,7 +36,6 @@
             { SyntaxKind.IdentifierName,                        () => new IdentifierName() },
             { SyntaxKind.ConstructorDeclaration,                () => new ConstructorDeclaration() },
             { SyntaxKind.Block,                                 () => new Block() },
-            { SyntaxKind.SimpleAssignmentExpression,            () => new SimpleAssignmentExpression() },
             { SyntaxKind.StringLiteralExpression,               () => new StringLiteralExpression() },
             { SyntaxKind.ThisExpression,                        () => new ThisExpression() },
             { SyntaxKind.BracketedArgumentList,                 () => new BracketedArgumentList() },

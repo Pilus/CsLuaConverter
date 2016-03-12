@@ -1,24 +1,23 @@
-﻿namespace CsLuaConverter.CodeElementAnalysis
+﻿namespace CsLuaConverter.CodeElementAnalysis.Statements
 {
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Statements;
 
-    public class ThrowStatement : BaseElement
+    public class ThrowStatement : BaseStatement
     {
-        public Statement Statement;
+        public Expression Expression;
         public override SyntaxToken Analyze(SyntaxToken token)
         {
             ExpectKind(SyntaxKind.ThrowStatement, token.Parent.GetKind());
             ExpectKind(SyntaxKind.ThrowKeyword, token.GetKind());
 
             token = token.GetNextToken();
-            this.Statement = new Statement();
-            token = this.Statement.Analyze(token);
+            this.Expression = new Expression();
+            token = this.Expression.Analyze(token);
 
             ExpectKind(SyntaxKind.ThrowStatement, token.Parent.GetKind());
             ExpectKind(SyntaxKind.SemicolonToken, token.GetKind());
-            return token.GetPreviousToken();
+            return token;
         }
     }
 }

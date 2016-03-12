@@ -4,8 +4,8 @@
     using System.Linq;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
-    using Statements;
 
+    [Obsolete("Move this cide inside the visitors")]
     public static class TypeKnowledgeHelper
     {
         public static TypeKnowledge GetTypeKnowledge(BaseElement element, IProviders providers, TypeKnowledge onType = null)
@@ -16,8 +16,6 @@
                     return GetTypeKnowledge((IdentifierName)element, providers, onType);
                 case nameof(PredefinedType):
                     return GetTypeKnowledge((PredefinedType)element, providers, onType);
-                case nameof(Statement):
-                    return GetTypeKnowledge((Statement)element, providers, onType);
                 case nameof(ThisExpression):
                     return GetTypeKnowledge((ThisExpression)element, providers, onType);
                 case nameof(SimpleMemberAccessExpression):
@@ -73,11 +71,6 @@
         {
             var type = providers.TypeProvider.LookupType(element.Text).TypeObject;
             return new TypeKnowledge(element.IsArray ? type.MakeArrayType() : type);
-        }
-
-        private static TypeKnowledge GetTypeKnowledge(Statement element, IProviders providers, TypeKnowledge onType)
-        {
-            return GetTypeKnowledge(element.ContainedElements.Single(), providers);
         }
 
         private static TypeKnowledge GetTypeKnowledge(ThisExpression element, IProviders providers, TypeKnowledge onType)

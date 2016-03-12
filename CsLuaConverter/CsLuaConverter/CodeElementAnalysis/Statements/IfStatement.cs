@@ -1,12 +1,11 @@
-﻿namespace CsLuaConverter.CodeElementAnalysis
+﻿namespace CsLuaConverter.CodeElementAnalysis.Statements
 {
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Statements;
 
-    public class IfStatement : BaseElement
+    public class IfStatement : BaseStatement
     {
-        public Statement Statement;
+        public Expression Expression;
         public Block Block;
         public ElseClause Else;
 
@@ -20,8 +19,8 @@
             ExpectKind(SyntaxKind.OpenParenToken, token.GetKind());
 
             token = token.GetNextToken();
-            this.Statement = new Statement();
-            token = this.Statement.Analyze(token);
+            this.Expression = new Expression();
+            token = this.Expression.Analyze(token);
 
             token = token.GetNextToken();
             this.Block = new Block();
@@ -32,9 +31,9 @@
             }
             else
             {
-                var statement = new Statement();
+                var statement = CreateStatement(token);
                 token = statement.Analyze(token);
-                this.Block.Statements.Add(statement);
+                this.Block.Elements.Add(statement);
             }
 
             var nextToken = token.GetNextToken();

@@ -3,7 +3,6 @@
     using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
-    using Providers;
 
     public interface IDocumentVisitor
     {

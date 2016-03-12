@@ -9,7 +9,7 @@
         protected  override void Write(ParenthesizedExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("(");
-            VisitorList.Visit(element.Statement);
+            VisitorList.Visit(element.Expression);
             textWriter.Write(")");
         }
     }

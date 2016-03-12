@@ -2,11 +2,12 @@
 {
     using System.CodeDom.Compiler;
     using CodeElementAnalysis;
+    using CodeElementAnalysis.Statements;
     using Providers;
 
     public class SimpleVisitors : 
         IVisitor<FalseLiteralExpression>, IVisitor<EqualsValueClause>, IVisitor<TrueLiteralExpression>,
-        IVisitor<NullLiteralExpression>, IVisitor<SimpleAssignmentExpression>, IVisitor<AddExpression>,
+        IVisitor<NullLiteralExpression>, IVisitor<AddExpression>,
         IVisitor<CharacterLiteralExpression>, IVisitor<NotEqualsExpression>, IVisitor<ReturnStatement>, 
         IVisitor<EqualsExpression>, IVisitor<CastExpression>, IVisitor<LogicalNotExpression>, IVisitor<SubtractExpression>,
         IVisitor<MultiplyExpression>, IVisitor<UnaryMinusExpression>, IVisitor<GreaterThanExpression>, IVisitor<LessThanExpression>,
@@ -31,11 +32,6 @@
         public void Visit(NullLiteralExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("nil");
-        }
-
-        public void Visit(SimpleAssignmentExpression element, IndentedTextWriter textWriter, IProviders providers)
-        {
-            textWriter.Write(" = ");
         }
 
         public void Visit(AddExpression element, IndentedTextWriter textWriter, IProviders providers)

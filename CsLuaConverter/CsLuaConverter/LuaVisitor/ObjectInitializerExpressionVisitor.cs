@@ -36,7 +36,7 @@
 
                 IdentifierNameVisitor.Visit(pair.Name, textWriter, providers, IdentifyerType.AsIs);
                 textWriter.Write(" = ");
-                VisitorList.Visit(pair.Statement);
+                VisitorList.Visit(pair.Expression);
             }
 
             textWriter.Write("})");

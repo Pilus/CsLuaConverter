@@ -1,8 +1,8 @@
-﻿namespace CsLuaConverter.CodeElementAnalysis
+﻿namespace CsLuaConverter.CodeElementAnalysis.Statements
 {
     using Microsoft.CodeAnalysis;
 
-    public class BreakStatement : BaseElement
+    public class BreakStatement : BaseStatement
     {
         public override SyntaxToken Analyze(SyntaxToken token)
         {

@@ -9,7 +9,7 @@
 
     public class Block : BaseElement
     {
-        public IList<Statement> Statements = new List<Statement>();
+        public List<BaseStatement> Elements = new List<BaseStatement>();
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -20,10 +20,9 @@
 
             while (!(token.Parent.IsKind(SyntaxKind.Block) && token.IsKind(SyntaxKind.CloseBraceToken)))
             {
-                var statement = new Statement();
-
-                token = statement.Analyze(token);
-                this.Statements.Add(statement);
+                var element = BaseStatement.CreateStatement(token);
+                token = element.Analyze(token);
+                this.Elements.Add(element);
 
                 if (token != parent.CloseBraceToken)
                 {

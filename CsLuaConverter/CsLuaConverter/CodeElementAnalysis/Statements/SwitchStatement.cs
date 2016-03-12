@@ -1,11 +1,10 @@
-﻿namespace CsLuaConverter.CodeElementAnalysis
+﻿namespace CsLuaConverter.CodeElementAnalysis.Statements
 {
     using System.Collections.Generic;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Statements;
 
-    public class SwitchStatement : BaseElement
+    public class SwitchStatement : BaseStatement
     {
         public BaseElement SwitchTarget;
         public List<SwitchElement> SwitchElements = new List<SwitchElement>();
@@ -35,7 +34,7 @@
             while (!(token.Parent.IsKind(SyntaxKind.SwitchStatement) && token.IsKind(SyntaxKind.CloseBraceToken)))
             {
                 var element = new SwitchElement();
-                element.Statements = new List<Statement>();
+                element.Statements = new List<BaseElement>();
 
                 ExpectKind(new[] {SyntaxKind.CaseSwitchLabel, SyntaxKind.DefaultSwitchLabel}, token.Parent.GetKind());
                 ExpectKind(new[] {SyntaxKind.CaseKeyword, SyntaxKind.DefaultKeyword}, token.GetKind());
@@ -61,7 +60,7 @@
                       || token.Parent.IsKind(SyntaxKind.SwitchStatement) 
                       || token.Parent.IsKind(SyntaxKind.DefaultSwitchLabel)))
                 {
-                    var statement = new Statement();
+                    var statement = CreateStatement(token);
 
                     token = statement.Analyze(token);
                     element.Statements.Add(statement);
@@ -80,7 +79,7 @@
     public struct SwitchElement
     {
         public BaseElement Identifier;
-        public List<Statement> Statements;
+        public List<BaseElement> Statements;
         public bool Default;
     }
 }

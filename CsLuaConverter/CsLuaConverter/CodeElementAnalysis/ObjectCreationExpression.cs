@@ -3,8 +3,9 @@
     using System;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Statements;
 
-    public class ObjectCreationExpression : BaseElement
+    public class ObjectCreationExpression : BaseStatement
     {
         public BaseElement TypeElement;
 

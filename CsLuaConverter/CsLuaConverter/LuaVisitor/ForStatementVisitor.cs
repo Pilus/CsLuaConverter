@@ -3,6 +3,7 @@
     using System;
     using System.CodeDom.Compiler;
     using CodeElementAnalysis;
+    using CodeElementAnalysis.Statements;
     using Providers;
     using Providers.TypeProvider;
 
@@ -17,13 +18,11 @@
             VisitorList.Visit(element.StartValue);
             
             textWriter.Write("while (");
-            element.Condition.EndToken = string.Empty;
             VisitorList.Visit(element.Condition);
             textWriter.WriteLine(") do");
             VisitorList.Visit(element.Block);
 
             textWriter.Indent++;
-            element.Incrementor.EndToken = ";";
             VisitorList.Visit(element.Incrementor);
             textWriter.Indent--;
 

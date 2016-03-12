@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
+    using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
@@ -7,21 +8,23 @@
     using CodeElementAnalysis.Statements;
     using Providers;
 
-    public class StatementVisitor : IVisitor<Statement>
+    public class StatementVisitor : IVisitor<ExpressionStatement>
     {
-        public void Visit(Statement statement, IndentedTextWriter textWriter, IProviders providers)
+        public void Visit(ExpressionStatement statement, IndentedTextWriter textWriter, IProviders providers)
         {
-            var elements = statement.ContainedElements.ToList();
+            throw new NotImplementedException();
+            /*var elements = statement.ContainedElements.ToList();
             Visit(elements, textWriter, providers);
 
             if (statement.EndToken.Equals(";"))
             {
                 textWriter.WriteLine(statement.EndToken);
-            }
+            } */
         }
 
         public static void Visit(IList<BaseElement> elements, IndentedTextWriter textWriter, IProviders providers)
         {
+            throw new NotImplementedException();
             for (var i = 0; i < elements.Count; i++)
             {
                 var element = elements[i];
