@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis.Statements
 {
+    using Expressions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
@@ -7,7 +8,7 @@
     {
         public BaseElement IteratorType;
         public string IteratorName;
-        public Expression EnumeratorExpression;
+        public ExpressionBase EnumeratorExpression;
         public Block Block;
 
         public override SyntaxToken Analyze(SyntaxToken token)
@@ -41,7 +42,7 @@
             ExpectKind(SyntaxKind.InKeyword, token.GetKind());
 
             token = token.GetNextToken();
-            this.EnumeratorExpression = new Expression();
+            this.EnumeratorExpression = ExpressionBase.CreateExpression(token);
             token = this.EnumeratorExpression.Analyze(token);
 
             token = token.GetNextToken();

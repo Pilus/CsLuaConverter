@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis.Statements
 {
+    using Expressions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
@@ -7,7 +8,7 @@
     {
         public BaseElement Type;
         public VariableDeclarator Name;
-        public Expression Value;
+        public ExpressionBase Value;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -23,7 +24,7 @@
             ExpectKind(SyntaxKind.EqualsToken, token.GetKind());
             token = token.GetNextToken();
 
-            this.Value = new Expression();
+            this.Value = ExpressionBase.CreateExpression(token);
             token = this.Value.Analyze(token);
 
             return token;

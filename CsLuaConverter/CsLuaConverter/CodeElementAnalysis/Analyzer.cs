@@ -147,6 +147,29 @@
             return new FileInfo("debug.txt").FullName;
         }
 
+        private static string ShowAllTokens(SyntaxToken token)
+        {
+            var sw = new StringWriter();
+
+            while (token != null && token.Parent != null)
+            {
+                var line = token.GetKind().ToString();
+                var parent = token.Parent;
+
+                while (parent != null)
+                {
+                    line = parent.GetKind() + "\t" + line;
+                    parent = parent.Parent;
+                }
+
+                line = token.Text + "\t" + line;
+                sw.WriteLine(line);
+                token = token.GetNextToken();
+            }
+
+            return sw.ToString();
+        }
+
         private static SyntaxNode GetSyntaxTreeRoot(Document doc)
         {
             Task<SyntaxTree> task = doc.GetSyntaxTreeAsync();

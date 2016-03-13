@@ -26,5 +26,17 @@
         {
             return token.GetKind().Equals(kind) && token.Parent.GetKind().Equals(parentKind);
         }
+
+        public static SyntaxNode GetChildOfAnchestor(this SyntaxToken token, SyntaxNode anchestor)
+        {
+            var node = token.Parent;
+
+            while (node != null && node.Parent != anchestor)
+            {
+                node = node.Parent;
+            }
+
+            return node;
+        }
     }
 }

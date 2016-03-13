@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis.Statements
 {
+    using Expressions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
@@ -8,7 +9,7 @@
         public BaseElement IteratorType;
         public VariableDeclarator IteratorName;
         public BaseStatement StartValue;
-        public Expression Condition;
+        public ExpressionBase Condition;
         public BaseStatement Incrementor;
         public Block Block;
 
@@ -38,7 +39,7 @@
             token = this.StartValue.Analyze(token);
             token = token.GetNextToken();
 
-            this.Condition = new Expression();
+            this.Condition = ExpressionBase.CreateExpression(token);
             token = this.Condition.Analyze(token);
             token = token.GetNextToken();
 

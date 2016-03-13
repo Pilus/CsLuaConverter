@@ -1,11 +1,12 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis
 {
+    using Expressions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
     public class ParenthesizedExpression : ElementWithInnerElement
     {
-        public Expression Expression;
+        public ExpressionBase Expression;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -13,7 +14,7 @@
             ExpectKind(SyntaxKind.OpenParenToken, token.GetKind());
 
             token = token.GetNextToken();
-            this.Expression = new Expression();
+            this.Expression = ExpressionBase.CreateExpression(token);
             token = this.Expression.Analyze(token);
 
             token = token.GetNextToken();

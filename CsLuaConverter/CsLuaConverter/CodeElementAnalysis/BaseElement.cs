@@ -28,6 +28,15 @@
             }
         }
 
+        [DebuggerNonUserCode]
+        public static void ExpectTrue(bool value, string text)
+        {
+            if (!value)
+            {
+                throw new Exception($"Unexpected analysis scenario: {text}");
+            }
+        }
+
         private static readonly Dictionary<SyntaxKind, Func<BaseElement>> NodeMappings = new Dictionary
             <SyntaxKind, Func<BaseElement>>()
         {

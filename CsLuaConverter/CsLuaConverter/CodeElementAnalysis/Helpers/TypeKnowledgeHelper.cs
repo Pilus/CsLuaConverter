@@ -16,8 +16,8 @@
                     return GetTypeKnowledge((IdentifierName)element, providers, onType);
                 case nameof(PredefinedType):
                     return GetTypeKnowledge((PredefinedType)element, providers, onType);
-                case nameof(ThisExpression):
-                    return GetTypeKnowledge((ThisExpression)element, providers, onType);
+                //case nameof(ThisExpression):
+                    //return GetTypeKnowledge((ThisExpression)element, providers, onType);
                 case nameof(SimpleMemberAccessExpression):
                     return GetTypeKnowledge((SimpleMemberAccessExpression)element, providers, onType);
                 case nameof(BracketedArgumentList):
@@ -73,6 +73,7 @@
             return new TypeKnowledge(element.IsArray ? type.MakeArrayType() : type);
         }
 
+        /*
         private static TypeKnowledge GetTypeKnowledge(ThisExpression element, IProviders providers, TypeKnowledge onType)
         {
             var typeKnowledge = providers.NameProvider.GetScopeElement("this").Type;
@@ -83,7 +84,7 @@
             }
 
             return GetTypeKnowledge(element.InnerElement, providers, typeKnowledge);
-        }
+        }*/
         
         private static TypeKnowledge GetTypeKnowledge(SimpleMemberAccessExpression element, IProviders providers, TypeKnowledge onType)
         {

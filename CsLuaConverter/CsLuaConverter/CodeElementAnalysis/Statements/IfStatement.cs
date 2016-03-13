@@ -1,11 +1,12 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis.Statements
 {
+    using Expressions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
     public class IfStatement : BaseStatement
     {
-        public Expression Expression;
+        public ExpressionBase Expression;
         public Block Block;
         public ElseClause Else;
 
@@ -19,7 +20,7 @@
             ExpectKind(SyntaxKind.OpenParenToken, token.GetKind());
 
             token = token.GetNextToken();
-            this.Expression = new Expression();
+            this.Expression = ExpressionBase.CreateExpression(token);
             token = this.Expression.Analyze(token);
 
             token = token.GetNextToken();

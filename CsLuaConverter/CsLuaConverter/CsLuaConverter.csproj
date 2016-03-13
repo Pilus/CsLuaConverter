@@ -85,6 +85,12 @@
     <Compile Include="CodeElementAnalysis\ArrayCreationExpression.cs" />
     <Compile Include="CodeElementAnalysis\ArrayInitializerExpression.cs" />
     <Compile Include="CodeElementAnalysis\AsExpression.cs" />
+    <Compile Include="CodeElementAnalysis\Expressions\ElementAccessExpression.cs" />
+    <Compile Include="CodeElementAnalysis\Expressions\ExpressionBase.cs" />
+    <Compile Include="CodeElementAnalysis\Expressions\SimpleAssignmentExpression.cs" />
+    <Compile Include="CodeElementAnalysis\Expressions\SimpleMemberAccessExpression.cs" />
+    <Compile Include="CodeElementAnalysis\Expressions\StringLiteralExpression.cs" />
+    <Compile Include="CodeElementAnalysis\Expressions\ThisExpression.cs" />
     <Compile Include="CodeElementAnalysis\Statements\ExpressionStatement.cs" />
     <Compile Include="CodeElementAnalysis\AttributeArgumentList.cs" />
     <Compile Include="CodeElementAnalysis\AttributeList.cs" />
@@ -146,7 +152,6 @@
     <Compile Include="CodeElementAnalysis\Scope.cs" />
     <Compile Include="CodeElementAnalysis\SimpleLambdaExpression.cs" />
     <Compile Include="CodeElementAnalysis\SimpleMemberAccessExpression.cs" />
-    <Compile Include="CodeElementAnalysis\Expression.cs" />
     <Compile Include="CodeElementAnalysis\Statements\BaseStatement.cs" />
     <Compile Include="CodeElementAnalysis\StringLiteralExpression.cs" />
     <Compile Include="CodeElementAnalysis\SubtractAssignmentExpression.cs" />

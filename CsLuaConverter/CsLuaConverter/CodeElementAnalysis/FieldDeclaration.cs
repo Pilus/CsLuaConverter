@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis
 {
     using System;
+    using Expressions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
@@ -11,7 +12,7 @@
         public bool Const;
         public BaseElement Type;
         public string Name;
-        public BaseElement Value;
+        public ExpressionBase Value;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
@@ -48,7 +49,7 @@
             if (token.Parent.IsKind(SyntaxKind.EqualsValueClause))
             {
                 token = token.GetNextToken();
-                this.Value = new Expression();
+                this.Value = ExpressionBase.CreateExpression(token);
                 token = this.Value.Analyze(token);
             }
 

@@ -1,17 +1,19 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis.Statements
 {
+    using Expressions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
     public class ExpressionStatement : BaseStatement
     {
-        public Expression Expression;
-        public Expression ValueExpression;
+        public ExpressionBase Expression;
+        public ExpressionBase ValueExpression;
 
         public override SyntaxToken Analyze(SyntaxToken token)
         {
-            this.Expression = new Expression();
+            this.Expression = ExpressionBase.CreateExpression(token);
             token = this.Expression.Analyze(token);
+            token = token.GetNextToken();
 
             if (SyntaxKind.EqualsToken != token.GetKind())
             {
@@ -19,9 +21,7 @@
                 return token;
             }
 
-            token = token.GetNextToken();
-
-            this.ValueExpression = new Expression();
+            this.ValueExpression = ExpressionBase.CreateExpression(token);
             token = this.ValueExpression.Analyze(token);
 
             ExpectKind(SyntaxKind.SemicolonToken, token.GetKind());

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using Expressions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -41,7 +42,7 @@
                 ExpectKind(SyntaxKind.EqualsToken, token.GetKind());
 
                 token = token.GetNextToken();
-                pair.Expression = new Expression();
+                pair.Expression = ExpressionBase.CreateExpression(token);
                 token = pair.Expression.Analyze(token);
 
                 this.Pairs.Add(pair);
@@ -70,6 +71,6 @@
     public struct ObjectInitializerPair
     {
         public IdentifierName Name;
-        public Expression Expression;
+        public ExpressionBase Expression;
     }
 }

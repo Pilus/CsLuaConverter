@@ -14,24 +14,24 @@
 
         public void WriteOpen(ThisExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
-            VisitorList.WriteOpen(element.InnerElement);
+            //VisitorList.WriteOpen(element.InnerElement);
 
-            if (element.InnerElement != null)
-            {
+            //if (element.InnerElement != null)
+            //{
                 textWriter.Write("(");
-            }
+            //}
         }
 
         public void WriteClose(ThisExpression element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("element");
 
-            if (element.InnerElement != null)
-            {
+            //if (element.InnerElement != null)
+            //{
                 textWriter.Write(" % _M.DOT).");
-            }
+            //}
 
-            VisitorList.WriteClose(element.InnerElement);
+            //VisitorList.WriteClose(element.InnerElement);
         }
     }
 }

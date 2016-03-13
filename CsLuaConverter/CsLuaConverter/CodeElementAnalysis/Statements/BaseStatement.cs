@@ -6,11 +6,6 @@
 
     public abstract class BaseStatement : BaseElement
     {
-        private readonly static SyntaxKind[] NonStatementKinds = new []
-        {
-            SyntaxKind.ThisExpression, 
-        };
-
         public static BaseStatement CreateStatement(SyntaxToken token)
         {
             var kind = token.Parent.GetKind();
