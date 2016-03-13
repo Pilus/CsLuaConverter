@@ -8,6 +8,7 @@
     using System.Linq;
     using System.Threading.Tasks;
     using CodeTree;
+    using CodeTreeLuaVisitor;
     using LuaVisitor;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
@@ -63,14 +64,19 @@
                 );
 
             //var documentElements = docs.Select(AnalyzeDocument).ToArray();
+            
+            //return this.documentVisitor.Visit(documentElements);
 
             var codeTrees = docs.Select(GetCodeTree).ToArray();
 
-            //this.typeKnowledgeVisitor.Visit(documentElements, this.providers);
-
-            //return this.documentVisitor.Visit(documentElements);
-
-            return null;
+            var visitors = codeTrees.Select(tree => new CompilationUnitVisitor(tree));
+            return visitors.GroupBy(v => v.GetTopNamespace()).ToDictionary(g => g.Key, g => new Action<IndentedTextWriter>((textWriter) =>
+            {
+                foreach (var v in g)
+                {
+                    v.Visit(textWriter, this.providers);
+                }
+            }));
         }
 
 

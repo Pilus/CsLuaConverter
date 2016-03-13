@@ -159,6 +159,10 @@
     <Compile Include="CodeElementAnalysis\Statements\SwitchStatement.cs" />
     <Compile Include="CodeElementAnalysis\ThisExpression.cs" />
     <Compile Include="CodeElementAnalysis\Statements\ThrowStatement.cs" />
+    <Compile Include="CodeTreeLuaVisitor\BaseVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\CompilationUnitVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\IVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\VisitorException.cs" />
     <Compile Include="CodeTree\CodeTreeBranch.cs" />
     <Compile Include="CodeTree\CodeTreeLeaf.cs" />
     <Compile Include="CodeTree\CodeTreeNode.cs" />
