@@ -7,6 +7,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using CodeTree;
     using LuaVisitor;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
@@ -61,11 +62,22 @@
                               && !doc.FilePath.EndsWith("AssemblyAttributes.cs")
                 );
 
-            var documentElements = docs.Select(AnalyzeDocument).ToArray();
+            //var documentElements = docs.Select(AnalyzeDocument).ToArray();
+
+            var codeTrees = docs.Select(GetCodeTree).ToArray();
 
             //this.typeKnowledgeVisitor.Visit(documentElements, this.providers);
 
-            return this.documentVisitor.Visit(documentElements);
+            //return this.documentVisitor.Visit(documentElements);
+
+            return null;
+        }
+
+
+        private static CodeTreeBranch GetCodeTree(Document document)
+        {
+            SyntaxNode syntaxTreeRoot = GetSyntaxTreeRoot(document);
+            return new CodeTreeBranch(syntaxTreeRoot);
         }
 
         private static SyntaxToken firstToken;
