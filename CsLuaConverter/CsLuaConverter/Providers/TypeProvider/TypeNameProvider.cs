@@ -14,6 +14,7 @@
     {
         private readonly LoadedNamespace rootNamespace;
         private List<LoadedNamespace> refenrecedNamespaces;
+        private List<LoadedNamespace> currentNamespaces;
 
         private List<NativeTypeResult> predefinedNativeTypeResults = new List<NativeTypeResult>()
         {
@@ -183,6 +184,42 @@
                 {
                     throw new ProviderException($"Could not find namespace: {ns}.");
                 }
+            }
+        }
+
+        public void ClearNamespaces()
+        {
+            this.currentNamespaces = new List<LoadedNamespace>() {this.rootNamespace};
+            this.refenrecedNamespaces = new List<LoadedNamespace>() {this.rootNamespace};
+        }
+
+        public void AddNamespace(string[] namespaceName)
+        {
+            var found = false;
+            foreach (var refenrecedNamespace in this.currentNamespaces)
+            {
+                var loadedNamespace = refenrecedNamespace.TryGetNamespace(namespaceName);
+                if (loadedNamespace != null)
+                {
+                    this.refenrecedNamespaces.Add(loadedNamespace);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (found == false)
+            {
+                throw new ProviderException($"Could not find namespace: {string.Join(".",namespaceName)}.");
+            }
+        }
+
+        public void SetCurrentNamespace(string[] currentNamespace)
+        {
+            for (var i = currentNamespace.Count(); i >= 1; i--)
+            {
+                var ns = this.rootNamespace.TryGetNamespace(currentNamespace.Take(i).ToList());
+                this.refenrecedNamespaces.Add(ns);
+                this.currentNamespaces.Add(ns);
             }
         }
 

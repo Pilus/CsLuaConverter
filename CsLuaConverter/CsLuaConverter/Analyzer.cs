@@ -1,4 +1,4 @@
-﻿namespace CsLuaConverter.CodeElementAnalysis
+﻿namespace CsLuaConverter
 {
     using System;
     using System.CodeDom.Compiler;
@@ -7,6 +7,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using CodeElementAnalysis;
     using CodeTree;
     using CodeTreeLuaVisitor;
     using LuaVisitor;
@@ -168,7 +169,7 @@
             var list = new List<string[]>();
             while (!token.IsKind(SyntaxKind.None))
             {
-                list.Add(new string[] { token.Text, token.GetKind().ToString(), token.Parent.GetKind().ToString() });
+                list.Add(new string[] { token.Text, SyntaxExtension.GetKind(token).ToString(), SyntaxExtension.GetKind(token.Parent).ToString() });
 
                 if (token == focusToken)
                 {
@@ -214,12 +215,12 @@
 
             while (token != null && token.Parent != null)
             {
-                var line = token.GetKind().ToString();
+                var line = SyntaxExtension.GetKind(token).ToString();
                 var parent = token.Parent;
 
                 while (parent != null)
                 {
-                    line = parent.GetKind() + "\t" + line;
+                    line = SyntaxExtension.GetKind(parent) + "\t" + line;
                     parent = parent.Parent;
                 }
 

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
+    using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
 
@@ -15,7 +16,10 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            //throw new System.NotImplementedException();
+            providers.TypeProvider.ClearNamespaces();
+            
+            this.CreateVisitorsAndVisitBranches(textWriter, providers, new KindFilter(SyntaxKind.UsingDirective));
+            this.CreateVisitorsAndVisitBranches(textWriter, providers, new KindFilter(SyntaxKind.NamespaceDeclaration));
         }
 
         public IEnumerable<string> GetNamespace()

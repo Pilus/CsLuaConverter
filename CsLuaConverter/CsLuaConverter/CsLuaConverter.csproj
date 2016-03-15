@@ -80,7 +80,7 @@
     <Compile Include="CodeElementAnalysis\AccessorList.cs" />
     <Compile Include="CodeElementAnalysis\AddAssignmentExpression.cs" />
     <Compile Include="CodeElementAnalysis\AddExpression.cs" />
-    <Compile Include="CodeElementAnalysis\Analyzer.cs" />
+    <Compile Include="Analyzer.cs" />
     <Compile Include="CodeElementAnalysis\ArgumentList.cs" />
     <Compile Include="CodeElementAnalysis\ArrayCreationExpression.cs" />
     <Compile Include="CodeElementAnalysis\ArrayInitializerExpression.cs" />
@@ -161,7 +161,14 @@
     <Compile Include="CodeElementAnalysis\Statements\ThrowStatement.cs" />
     <Compile Include="CodeTreeLuaVisitor\BaseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\CompilationUnitVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Filters\INodeFilter.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Filters\KindFilter.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Name\IdentifierNameVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Name\INameVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\IVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\NamespaceDeclarationVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Name\QualifiedNameVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\UsingDirectiveVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\VisitorException.cs" />
     <Compile Include="CodeTree\CodeTreeBranch.cs" />
     <Compile Include="CodeTree\CodeTreeLeaf.cs" />
