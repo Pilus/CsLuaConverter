@@ -8,11 +8,18 @@
     public class CodeTreeBranch : CodeTreeNode
     {
         public CodeTreeNode[] Nodes;
+        public string DocumentName;
 
-        public CodeTreeBranch(SyntaxNode node)
+        public CodeTreeBranch(SyntaxNode node, string documentName)
         {
             this.Kind = node.GetKind();
             this.Nodes = this.GetNodes(node);
+            this.DocumentName = documentName;
+        }
+
+        public CodeTreeBranch(SyntaxNode node) : this(node, null)
+        {
+            
         }
 
         private CodeTreeNode[] GetNodes(SyntaxNode node)

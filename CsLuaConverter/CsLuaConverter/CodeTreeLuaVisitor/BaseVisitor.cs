@@ -2,6 +2,7 @@
 {
     using System;
     using System.CodeDom.Compiler;
+    using System.Diagnostics;
     using System.Reflection;
     using CodeTree;
     using Providers;
@@ -48,9 +49,14 @@
 
         protected BaseVisitor[] CreateVisitors(INodeFilter filter = null, Func<CodeTreeBranch, BaseVisitor> customFactory = null)
         {
-            return (filter == null ? this.Branch.Nodes : filter.Filter(this.Branch.Nodes)).OfType<CodeTreeBranch>()
+            return this.GetFilteredNodes(filter).OfType<CodeTreeBranch>()
                 .Select(branch => customFactory?.Invoke(branch) ?? CreateVisitor(branch))
                 .ToArray();
+        }
+
+        protected CodeTreeNode[] GetFilteredNodes(INodeFilter filter = null)
+        {
+            return (filter == null ? this.Branch.Nodes : filter.Filter(this.Branch.Nodes)).ToArray();
         }
 
         protected void CreateVisitorsAndVisitBranches(IndentedTextWriter textWriter, IProviders providers, INodeFilter filter = null, Func<CodeTreeBranch, BaseVisitor> customFactory = null)
@@ -91,7 +97,34 @@
                 throw new VisitorException($"Could not find visitor class for kind: {branch.Kind}");
             }
 
-            return type.GetConstructors().Single().Invoke(new object[] { branch }) as BaseVisitor;
+            try
+            {
+                return type.GetConstructors().Single().Invoke(new object[] { branch }) as BaseVisitor;
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+
+        protected static void TryActionAndWrapException(Action action, string wrapperExceptionText)
+        {
+            if (Debugger.IsAttached)
+            {
+                action.Invoke();
+                return;
+            }
+
+            try
+            {
+                action.Invoke();
+            }
+            catch (Exception ex)
+            {
+
+                throw new WrappingException(wrapperExceptionText, ex);
+            }
         }
     }
 }

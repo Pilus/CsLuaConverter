@@ -3,6 +3,7 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.InteropServices.ComTypes;
     using CodeTree;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
@@ -10,8 +11,16 @@
 
     public class CompilationUnitVisitor : BaseVisitor
     {
+        private NamespaceDeclarationVisitor namespaceVisitor;
         public CompilationUnitVisitor(CodeTreeBranch branch) : base(branch)
         {
+            TryActionAndWrapException(() =>
+            {
+                this.namespaceVisitor =
+                    (NamespaceDeclarationVisitor)
+                        this.CreateVisitors(
+                            new KindFilter(SyntaxKind.NamespaceDeclaration)).Single();
+            }, $"In document {this.Branch.DocumentName}");
         }
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
@@ -19,33 +28,27 @@
             providers.TypeProvider.ClearNamespaces();
             
             this.CreateVisitorsAndVisitBranches(textWriter, providers, new KindFilter(SyntaxKind.UsingDirective));
-            this.CreateVisitorsAndVisitBranches(textWriter, providers, new KindFilter(SyntaxKind.NamespaceDeclaration));
+            this.namespaceVisitor.Visit(textWriter, providers);
         }
 
-        public IEnumerable<string> GetNamespace()
+        public string[] GetNamespaceName()
         {
-            var firstNamespace = this.Branch.Nodes.OfType<CodeTreeBranch>().First(node => IsKind(node, SyntaxKind.NamespaceDeclaration));
-            var firstQualifiedName = firstNamespace.Nodes.OfType<CodeTreeBranch>().FirstOrDefault(node => IsKind(node, SyntaxKind.QualifiedName));
-
-            if (firstQualifiedName == null)
-            {
-                var identifierName = firstNamespace.Nodes.OfType<CodeTreeBranch>().First(node => IsKind(node, SyntaxKind.IdentifierName));
-                return new[]
-                {
-                    identifierName.Nodes.OfType<CodeTreeLeaf>()
-                        .Single(node => IsKind(node, SyntaxKind.IdentifierToken))
-                        .Text
-                };
-            }
-
-            return
-                firstQualifiedName.Nodes.OfType<CodeTreeBranch>().Where(node => IsKind(node, SyntaxKind.IdentifierName))
-                    .Select(node => node.Nodes.Single() as CodeTreeLeaf).Select(l => l.Text).ToArray();
+            return this.namespaceVisitor.GetNamespaceName();
         }
 
         public string GetTopNamespace()
         {
-            return GetNamespace().First();
+            return this.GetNamespaceName().First();
+        }
+
+        public string GetElementName()
+        {
+            return this.namespaceVisitor.GetElementName();
+        }
+
+        public int GetNumGenericsOfElement()
+        {
+            return this.namespaceVisitor.GetNumGenericsOfElement();
         }
     }
 }

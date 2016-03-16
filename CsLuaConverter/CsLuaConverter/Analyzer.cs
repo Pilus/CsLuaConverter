@@ -20,14 +20,12 @@
     public class Analyzer : ISyntaxAnalyser
     {
         private readonly IDocumentVisitor documentVisitor;
-        private readonly TypeKnowledgeDocumentVisitor typeKnowledgeVisitor;
-        private readonly IProviders providers;
+        private readonly CodeTreeVisitor codeTreeVisitor;
 
         public Analyzer(IProviders providers)
         {
-            this.providers = providers;
             this.documentVisitor = new LuaDocumentVisitor(providers);
-            //this.typeKnowledgeVisitor = new TypeKnowledgeDocumentVisitor();
+            this.codeTreeVisitor = new CodeTreeVisitor(providers);
         }
 
         public AnalyzedProjectInfo AnalyzeProject(ProjectInfo projectInfo)
@@ -70,64 +68,16 @@
 
             var codeTrees = docs.Select(GetCodeTree).ToArray();
 
-            var visitors = codeTrees.Select(tree => new CompilationUnitVisitor(tree));
-            return visitors.GroupBy(v => v.GetTopNamespace()).ToDictionary(g => g.Key, g => new Action<IndentedTextWriter>((textWriter) =>
-            {
-                var ordered = g.OrderBy(v => string.Join(".",v.GetNamespace())).ToArray();
-                var last = ordered.Last();
-                var previousNamespace = new string[] {};
-                foreach (var v in ordered)
-                {
-                    var nameSpace = v.GetNamespace().ToArray();
-                    var nonCommonNamespace = RemoveCommonStartSequence(nameSpace, previousNamespace);
-
-                    // Reset back to the common root with the previous namespace.
-                    for (var i = 0; i < (previousNamespace.Length - (nameSpace.Length - nonCommonNamespace.Length)); i++)
-                    {
-                        textWriter.Indent--;
-                        textWriter.WriteLine("},");
-                    }
-
-                    foreach (var subNamespace in nonCommonNamespace)
-                    {
-                        textWriter.WriteLine($"{subNamespace} = {{");
-                        textWriter.Indent++;
-                    }
-
-                    v.Visit(textWriter, this.providers);
-
-                    previousNamespace = nameSpace;
-
-                    if (v != last) continue;
-
-                    for (var i = 0; i < (nameSpace.Length - 1); i++)
-                    {
-                        textWriter.Indent--;
-                        textWriter.WriteLine("},");
-                    }
-
-                    textWriter.Indent--;
-                    textWriter.WriteLine("}");
-                }
-            }));
+            return this.codeTreeVisitor.CreateNamespaceBasedVisitorActions(codeTrees);
         }
 
-        private static string[] RemoveCommonStartSequence(string[] array, string[] comparedArray)
-        {
-            var i = 0;
-            while (array.Length > i && comparedArray.Length > i && array[i] == comparedArray[i])
-            {
-                i++;
-            }
-
-            return array.Skip(i).ToArray();
-        }
+        
 
 
         private static CodeTreeBranch GetCodeTree(Document document)
         {
             SyntaxNode syntaxTreeRoot = GetSyntaxTreeRoot(document);
-            return new CodeTreeBranch(syntaxTreeRoot);
+            return new CodeTreeBranch(syntaxTreeRoot, document.Name);
         }
 
         private static SyntaxToken firstToken;

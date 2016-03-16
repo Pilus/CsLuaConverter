@@ -100,6 +100,8 @@
                     return typeof(Action);
                 }
 
+                parameterTypes = parameterTypes.Select(t => t.FullName == "System.Object&" ? typeof (object) : t).ToList();
+
                 return type.MakeGenericType(parameterTypes.ToArray());
             }
 

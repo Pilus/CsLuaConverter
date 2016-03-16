@@ -160,9 +160,17 @@
     <Compile Include="CodeElementAnalysis\ThisExpression.cs" />
     <Compile Include="CodeElementAnalysis\Statements\ThrowStatement.cs" />
     <Compile Include="CodeTreeLuaVisitor\BaseVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Elements\ClassDeclarationVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\CodeTreeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\CompilationUnitVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Elements\EnumDeclarationVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Elements\IElementVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Elements\InterfaceDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Filters\INodeFilter.cs" />
     <Compile Include="CodeTreeLuaVisitor\Filters\KindFilter.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Filters\KindRangeFilter.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Lists\IListVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Lists\TypeArgumentListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Name\IdentifierNameVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Name\INameVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\IVisitor.cs" />
