@@ -21,15 +21,16 @@
             var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree));
             return visitors.GroupBy(v => v.GetTopNamespace()).ToDictionary(g => g.Key, g => new Action<IndentedTextWriter>((textWriter) =>
             {
-                var ordered = g.OrderBy(v => string.Join(".", v.GetNamespaceName()) + "." + v.GetElementName() + "." + v.GetNumGenericsOfElement()).ToArray();
-                var last = ordered.Last();
+                var fileGroups = g.GroupBy(v => string.Join(".", v.GetNamespaceName()) + "." + v.GetElementName());
+                var ordered = fileGroups.OrderBy(fg => fg.Key).ToArray();
+                
                 var previousNamespace = new string[] { };
 
                 for (var index = 0; index < ordered.Length; index++)
                 {
-                    var visitor = ordered[index];
+                    var groupedVisitors = ordered[index].ToArray();
 
-                    var nameSpace = visitor.GetNamespaceName();
+                    var nameSpace = groupedVisitors.First().GetNamespaceName();
                     var nonCommonNamespace = RemoveCommonStartSequence(nameSpace, previousNamespace);
 
                     // Reset back to the common root with the previous namespace.
@@ -47,11 +48,11 @@
                         textWriter.Indent++;
                     }
 
-                    this.Visit(visitor, index > 0 ? ordered[index - 1] : null, index + 1 < ordered.Length ? ordered[index + 1] : null, textWriter);
+                    this.VisitFilesWithSameElementName(groupedVisitors, textWriter);
 
                     previousNamespace = nameSpace;
 
-                    if (visitor != last) continue;
+                    if (index != ordered.Length - 1) continue;
 
                     for (var i = 0; i < (nameSpace.Length - 1); i++)
                     {
@@ -65,6 +66,43 @@
             }));
         }
 
+        private void VisitFilesWithSameElementName(CompilationUnitVisitor[] visitors, IndentedTextWriter textWriter)
+        {
+            var name = visitors.First().GetElementName();
+            textWriter.WriteLine($"{name} = _M.NE({{");
+
+            foreach (var visitorsWithSameNumGenerics in visitors.GroupBy(v => v.GetNumGenericsOfElement()))
+            {
+                this.VisitFilesWithSameElementNameAndNumGenerics(visitorsWithSameNumGenerics.ToArray(), textWriter);
+            }
+
+            textWriter.WriteLine("}),");
+        }
+
+        private void VisitFilesWithSameElementNameAndNumGenerics(CompilationUnitVisitor[] visitors, IndentedTextWriter textWriter)
+        {
+            var state = this.providers.PartialElementState;
+            state.CurrentState = null;
+            while (true)
+            {
+                for (int index = 0; index < visitors.Length; index++)
+                {
+                    var visitor = visitors[index];
+                    state.IsFirst = index == 0;
+                    state.IsLast = index == visitors.Length - 1;
+                    visitor.Visit(textWriter, this.providers);
+                }
+
+                if (state.NextState == null)
+                {
+                    break;
+                }
+
+                state.CurrentState = state.NextState;
+            }
+        }
+
+        /*
         private void Visit(CompilationUnitVisitor visitor, CompilationUnitVisitor previousVisitor, CompilationUnitVisitor nextVisitor, IndentedTextWriter textWriter)
         {
             var previousName = previousVisitor?.GetElementName();
@@ -82,7 +120,7 @@
             {
                 textWriter.WriteLine("}),");
             }
-        }
+        } */
 
         private static string[] RemoveCommonStartSequence(string[] array, string[] comparedArray)
         {

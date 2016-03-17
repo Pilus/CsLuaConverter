@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Elements
 {
     using System.CodeDom.Compiler;
+    using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
     using Filters;
@@ -8,11 +9,13 @@
     using Microsoft.CodeAnalysis.CSharp;
     using Name;
     using Providers;
+    using Providers.TypeProvider;
 
     public class ClassDeclarationVisitor : BaseVisitor, IElementVisitor
     {
         private string name;
         private IListVisitor genericsVisitor;
+        private List<ScopeElement> originalScope;
 
         public ClassDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -22,16 +25,44 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            var originalScope = providers.NameProvider.CloneScope();
-            providers.NameProvider.AddAllInheritedMembersToScope(this.name);
-
-            //textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", GetNumOfGenerics(element));
-            //textWriter.Indent++;
-
-            //throw new System.NotImplementedException();
-
-            providers.NameProvider.SetScope(originalScope);
+            switch ((ClassState) (providers.PartialElementState.CurrentState ?? 0))
+            {
+                default:
+                    this.WriteOpen(textWriter, providers);
+                    providers.PartialElementState.NextState = (int)ClassState.Close;
+                    break;
+                case ClassState.Close:
+                    this.WriteClose(textWriter, providers);
+                    providers.PartialElementState.NextState = null;
+                    break;
+            }
         }
+
+        private void WriteOpen(IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (providers.PartialElementState.IsFirst)
+            {
+                this.originalScope = providers.NameProvider.CloneScope();
+                providers.NameProvider.AddAllInheritedMembersToScope(this.name);
+
+                textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", this.GetNumOfGenerics());
+                textWriter.Indent++;
+            }
+
+            textWriter.WriteLine("-- X");
+        }
+
+        private void WriteClose(IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (providers.PartialElementState.IsLast)
+            {
+                textWriter.Indent--;
+                textWriter.WriteLine("end,");
+                providers.NameProvider.SetScope(this.originalScope);
+            }
+        }
+
+
 
         public string GetName()
         {

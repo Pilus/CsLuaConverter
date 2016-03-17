@@ -163,6 +163,7 @@
     <Compile Include="CodeTreeLuaVisitor\Elements\ClassDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\CodeTreeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\CompilationUnitVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Elements\ClassState.cs" />
     <Compile Include="CodeTreeLuaVisitor\Elements\EnumDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Elements\IElementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Elements\InterfaceDeclarationVisitor.cs" />
@@ -176,6 +177,8 @@
     <Compile Include="CodeTreeLuaVisitor\IVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\NamespaceDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Name\QualifiedNameVisitor.cs" />
+    <Compile Include="Providers\PartialElement\IPartialElementState.cs" />
+    <Compile Include="Providers\PartialElement\PartialElementState.cs" />
     <Compile Include="CodeTreeLuaVisitor\UsingDirectiveVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\VisitorException.cs" />
     <Compile Include="CodeTree\CodeTreeBranch.cs" />
