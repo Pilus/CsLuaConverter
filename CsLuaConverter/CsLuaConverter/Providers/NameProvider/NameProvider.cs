@@ -24,6 +24,11 @@
 
         public void SetScope(List<ScopeElement> scope)
         {
+            if (scope == null)
+            {
+                throw new Exception("Can not set scope to null in name provider.");
+            }
+
             this.currentScope = scope;
         }
 

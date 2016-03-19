@@ -8,16 +8,17 @@
 
     public class UsingDirectiveVisitor : BaseVisitor
     {
+        private readonly INameVisitor nameVisitor;
         public UsingDirectiveVisitor(CodeTreeBranch branch) : base(branch)
         {
+            this.ExpectKind(0, SyntaxKind.UsingKeyword);
+            this.ExpectKind(1, new[] { SyntaxKind.QualifiedName, SyntaxKind.IdentifierName });
+            this.nameVisitor = (INameVisitor)this.CreateVisitor(1);
         }
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            this.ExpectKind(0, SyntaxKind.UsingKeyword);
-            this.ExpectKind(1, new[] { SyntaxKind.QualifiedName, SyntaxKind.IdentifierName });
-            var nameVisitor = (INameVisitor)this.CreateVisitor(1);
-            providers.TypeProvider.AddNamespace(nameVisitor.GetName());
+            providers.TypeProvider.AddNamespace(this.nameVisitor.GetName());
         }
     }
 }

@@ -18,7 +18,9 @@
 
         public Dictionary<string, Action<IndentedTextWriter>> CreateNamespaceBasedVisitorActions(CodeTreeBranch[] treeRoots)
         {
-            var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree));
+            var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree)).ToArray();
+            BaseVisitor.LockVisitorCreation = true;
+
             return visitors.GroupBy(v => v.GetTopNamespace()).ToDictionary(g => g.Key, g => new Action<IndentedTextWriter>((textWriter) =>
             {
                 var fileGroups = g.GroupBy(v => string.Join(".", v.GetNamespaceName()) + "." + v.GetElementName());

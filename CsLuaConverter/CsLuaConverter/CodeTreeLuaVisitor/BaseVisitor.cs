@@ -42,11 +42,13 @@
             return type.GetConstructors().Single().Invoke(new object[] { subBranch }) as T;
         }
 
+        [DebuggerNonUserCode]
         protected static bool IsKind(CodeTreeNode node, SyntaxKind kind)
         {
             return node.Kind == kind;
         }
 
+        [DebuggerNonUserCode]
         protected BaseVisitor[] CreateVisitors(INodeFilter filter = null, Func<CodeTreeBranch, BaseVisitor> customFactory = null)
         {
             return this.GetFilteredNodes(filter).OfType<CodeTreeBranch>()
@@ -54,6 +56,7 @@
                 .ToArray();
         }
 
+        [DebuggerNonUserCode]
         protected CodeTreeNode[] GetFilteredNodes(INodeFilter filter = null)
         {
             return (filter == null ? this.Branch.Nodes : filter.Filter(this.Branch.Nodes)).ToArray();
@@ -67,6 +70,7 @@
             }
         }
 
+        [DebuggerNonUserCode]
         protected void ExpectKind(int index, SyntaxKind kind)
         {
             if (this.Branch.Nodes[index].Kind != kind)
@@ -75,6 +79,7 @@
             }
         }
 
+        [DebuggerNonUserCode]
         protected void ExpectKind(int index, SyntaxKind[] kinds)
         {
             if (!kinds.Contains(this.Branch.Nodes[index].Kind))
@@ -83,13 +88,23 @@
             }
         }
 
+        [DebuggerNonUserCode]
         protected BaseVisitor CreateVisitor(int index)
         {
             return CreateVisitor(this.Branch.Nodes[index] as CodeTreeBranch);
         }
 
+
+        public static bool LockVisitorCreation { get; set; }
+
+        [DebuggerNonUserCode]
         protected static BaseVisitor CreateVisitor(CodeTreeBranch branch)
         {
+            if (LockVisitorCreation)
+            {
+                throw new VisitorException($"Visitor creation have been locked. All visitors must be created before visiting begins.");
+            }
+
             var type = baseVisitorTypes.SingleOrDefault(t => t.Name.Equals(branch.Kind.ToString() + "Visitor"));
 
             if (type == null)
@@ -108,6 +123,7 @@
         }
 
 
+        [DebuggerNonUserCode]
         protected static void TryActionAndWrapException(Action action, string wrapperExceptionText)
         {
             if (Debugger.IsAttached)

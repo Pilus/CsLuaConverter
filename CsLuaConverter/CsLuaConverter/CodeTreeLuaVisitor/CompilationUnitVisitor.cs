@@ -25,10 +25,13 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            providers.TypeProvider.ClearNamespaces();
+            TryActionAndWrapException(() =>
+            {
+                providers.TypeProvider.ClearNamespaces();
             
-            this.CreateVisitorsAndVisitBranches(textWriter, providers, new KindFilter(SyntaxKind.UsingDirective));
-            this.namespaceVisitor.Visit(textWriter, providers);
+                this.CreateVisitorsAndVisitBranches(textWriter, providers, new KindFilter(SyntaxKind.UsingDirective));
+                this.namespaceVisitor.Visit(textWriter, providers);
+            }, $"In document {this.Branch.DocumentName}");
         }
 
         public string[] GetNamespaceName()

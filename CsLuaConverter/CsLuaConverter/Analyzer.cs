@@ -77,7 +77,7 @@
         private static CodeTreeBranch GetCodeTree(Document document)
         {
             SyntaxNode syntaxTreeRoot = GetSyntaxTreeRoot(document);
-            return new CodeTreeBranch(syntaxTreeRoot, document.Name);
+            return new CodeTreeBranch(syntaxTreeRoot, document.FilePath);
         }
 
         private static SyntaxToken firstToken;

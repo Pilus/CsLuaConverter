@@ -33,9 +33,9 @@
             var r1 = StaticClass.ExpectFunc((int v) => v.ToString());
             Assert("int", r1);
             var r2 = StaticClass.ExpectFunc((object v) => v.ToString());
-            Assert("object", r2);
+            Assert("obj", r2);
             var r3 = StaticClass.ExpectFunc((v) => v.ToString(), true);
-            Assert("float", r2);
+            Assert("float", r3);
         }
     }
 }

@@ -25,17 +25,20 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            switch ((ClassState) (providers.PartialElementState.CurrentState ?? 0))
+            TryActionAndWrapException(() =>
             {
-                default:
-                    this.WriteOpen(textWriter, providers);
-                    providers.PartialElementState.NextState = (int)ClassState.Close;
-                    break;
-                case ClassState.Close:
-                    this.WriteClose(textWriter, providers);
-                    providers.PartialElementState.NextState = null;
-                    break;
-            }
+                switch ((ClassState) (providers.PartialElementState.CurrentState ?? 0))
+                {
+                    default:
+                        this.WriteOpen(textWriter, providers);
+                        providers.PartialElementState.NextState = (int)ClassState.Close;
+                        break;
+                    case ClassState.Close:
+                        this.WriteClose(textWriter, providers);
+                        providers.PartialElementState.NextState = null;
+                        break;
+                }
+            }, $"In visiting of class {this.name}. State: {((ClassState)(providers.PartialElementState.CurrentState ?? 0))}");
         }
 
         private void WriteOpen(IndentedTextWriter textWriter, IProviders providers)
@@ -58,6 +61,10 @@
             {
                 textWriter.Indent--;
                 textWriter.WriteLine("end,");
+            }
+
+            if (providers.PartialElementState.IsFirst)
+            {
                 providers.NameProvider.SetScope(this.originalScope);
             }
         }

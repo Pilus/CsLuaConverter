@@ -15,9 +15,12 @@
     {
         private INameVisitor nameVisitor;
         private IElementVisitor[] elementVisitors;
+        private BaseVisitor[] usingVisitors;
+        
         public NamespaceDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.CreateNameVisitor();
+            this.CreateUsingVisitors();
             this.CreateElementVisitor();
         }
 
@@ -26,9 +29,20 @@
             
             providers.TypeProvider.SetCurrentNamespace(this.nameVisitor.GetName());
 
-            this.CreateVisitorsAndVisitBranches(textWriter, providers, new KindFilter(SyntaxKind.UsingDirective));
+            this.usingVisitors.VisitAll(textWriter, providers);
 
-            this.CreateVisitorsAndVisitBranches(textWriter, providers, new KindFilter(SyntaxKind.ClassDeclaration, SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration));
+            var state = providers.PartialElementState;
+            var isFirstNamespace = state.IsFirst;
+            var isLastNamespace = state.IsLast;
+
+            for (var index = 0; index < this.elementVisitors.Length; index++)
+            {
+                var elementVisitor = this.elementVisitors[index];
+
+                state.IsFirst = isFirstNamespace && index == 0;
+                state.IsLast = isLastNamespace && index == this.elementVisitors.Length - 1;
+                elementVisitor.Visit(textWriter, providers);
+            }
         }
 
         private void CreateNameVisitor()
@@ -36,6 +50,11 @@
             this.ExpectKind(0, SyntaxKind.NamespaceKeyword);
             this.ExpectKind(1, new[] { SyntaxKind.QualifiedName, SyntaxKind.IdentifierName });
             this.nameVisitor = (INameVisitor)this.CreateVisitor(1);
+        }
+
+        private void CreateUsingVisitors()
+        {
+            this.usingVisitors = this.CreateVisitors(new KindFilter(SyntaxKind.UsingDirective));
         }
 
         private void CreateElementVisitor()

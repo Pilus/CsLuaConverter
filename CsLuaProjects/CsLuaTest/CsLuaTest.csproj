@@ -79,6 +79,8 @@
     <Compile Include="General\GeneralTests.cs" />
     <Compile Include="General\Inheriter.cs" />
     <Compile Include="General\NonStaticClass.cs" />
+    <Compile Include="General\PartialA.cs" />
+    <Compile Include="General\PartialB.cs" />
     <Compile Include="Generics\ClassA.cs" />
     <Compile Include="Generics\ClassWithGenericConstructor.cs" />
     <Compile Include="AmbigousMethods\EnumA.cs" />
