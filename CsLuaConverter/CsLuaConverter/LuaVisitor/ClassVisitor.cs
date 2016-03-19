@@ -299,7 +299,6 @@
             throw new LuaVisitorException("Unknown member");
         }
 
-
         private static void WriteConstructors(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.WriteLine("local constructors = {");

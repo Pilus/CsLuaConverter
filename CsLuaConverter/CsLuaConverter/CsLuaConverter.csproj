@@ -160,6 +160,10 @@
     <Compile Include="CodeElementAnalysis\ThisExpression.cs" />
     <Compile Include="CodeElementAnalysis\Statements\ThrowStatement.cs" />
     <Compile Include="CodeTreeLuaVisitor\BaseVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Lists\BaseListVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Lists\TypeParameterListVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Name\GenericNameVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\TypeParameterVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\VisitorExtensions.cs" />
     <Compile Include="CodeTreeLuaVisitor\Elements\ClassDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\CodeTreeVisitor.cs" />

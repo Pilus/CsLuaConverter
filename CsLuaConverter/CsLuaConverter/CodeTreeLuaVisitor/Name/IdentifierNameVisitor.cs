@@ -4,6 +4,7 @@
     using System.Linq;
     using CodeTree;
     using Providers;
+    using Providers.GenericsRegistry;
 
     public class IdentifierNameVisitor : BaseVisitor, INameVisitor
     {
@@ -16,9 +17,36 @@
             throw new System.NotImplementedException();
         }
 
+        public void WriteAsType(IndentedTextWriter textWriter, IProviders providers)
+        {
+            var name = this.GetNameText();
+            if (providers.GenericsRegistry.IsGeneric(name))
+            {
+                var scope = providers.GenericsRegistry.GetGenericScope(name);
+                if (scope.Equals(GenericScope.Class))
+                {
+                    textWriter.Write("generics[genericsMapping['{0}']]", name);
+                }
+                else
+                {
+                    textWriter.Write("methodGenerics[methodGenericsMapping['{0}']]", name);
+                }
+
+                return;
+            }
+
+            var type = providers.TypeProvider.LookupType(name);
+            textWriter.Write(type.FullName);
+        }
+
         public string[] GetName()
         {
-            return new[] {((CodeTreeLeaf)this.Branch.Nodes.Single()).Text};
+            return new[] { this.GetNameText()};
+        }
+
+        private string GetNameText()
+        {
+            return ((CodeTreeLeaf) this.Branch.Nodes.Single()).Text;
         }
     }
 }

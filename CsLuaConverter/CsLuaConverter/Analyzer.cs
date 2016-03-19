@@ -66,12 +66,21 @@
 
             //return this.documentVisitor.Visit(documentElements);
 
+            //var debugInfo = WriteAllKinds(docs);
+
             var codeTrees = docs.Select(GetCodeTree).ToArray();
 
             return this.codeTreeVisitor.CreateNamespaceBasedVisitorActions(codeTrees);
         }
 
-        
+        private static string WriteAllKinds(IEnumerable<Document> docs)
+        {
+            return string.Join("\n", docs.Select(doc =>
+            {
+                SyntaxNode syntaxTreeRoot = GetSyntaxTreeRoot(doc);
+                return ShowAllTokens(syntaxTreeRoot.GetFirstToken());
+            }));
+        }
 
 
         private static CodeTreeBranch GetCodeTree(Document document)

@@ -72,12 +72,14 @@
         {
             var name = visitors.First().GetElementName();
             textWriter.WriteLine($"{name} = _M.NE({{");
+            textWriter.Indent++;
 
             foreach (var visitorsWithSameNumGenerics in visitors.GroupBy(v => v.GetNumGenericsOfElement()))
             {
                 this.VisitFilesWithSameElementNameAndNumGenerics(visitorsWithSameNumGenerics.ToArray(), textWriter);
             }
 
+            textWriter.Indent--;
             textWriter.WriteLine("}),");
         }
 
