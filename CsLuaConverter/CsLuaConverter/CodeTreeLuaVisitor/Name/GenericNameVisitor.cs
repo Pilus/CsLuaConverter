@@ -31,7 +31,7 @@
         public void WriteAsType(IndentedTextWriter textWriter, IProviders providers)
         {
             var type = providers.TypeProvider.LookupType(this.name);
-            textWriter.Write(type.FullName);
+            textWriter.Write(type.FullNameWithoutGenerics);
             this.WriteGenericTypes(textWriter, providers);
         }
 

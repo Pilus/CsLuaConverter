@@ -1,6 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Lists
 {
+    using System;
     using System.CodeDom.Compiler;
+    using System.IO;
     using System.Linq;
     using CodeTree;
     using Filters;
@@ -46,6 +48,22 @@
             first.WriteAsType(textWriter, providers);
 
             return true;
+        }
+
+        public void WriteInterfaceImplements(IndentedTextWriter textWriter, IProviders providers, string format, Type[] excludedTypes)
+        {
+            foreach (var visitor in this.nameVisitors)
+            {
+                var type = providers.TypeProvider.LookupType(visitor.GetName());
+
+                if (!type.IsInterface || excludedTypes.Contains(type.TypeObject)) continue;
+
+                var writer = new StringWriter();
+                var innerWriter = new IndentedTextWriter(writer);
+                innerWriter.Indent = textWriter.Indent;
+                visitor.WriteAsType(innerWriter, providers);
+                textWriter.WriteLine(format, writer);
+            }
         }
     }
 }

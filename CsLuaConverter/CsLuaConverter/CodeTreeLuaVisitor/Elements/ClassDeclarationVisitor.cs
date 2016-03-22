@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
+    using CsLuaFramework;
     using Filters;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
@@ -18,11 +19,35 @@
         private TypeParameterListVisitor genericsVisitor;
         private List<ScopeElement> originalScope;
         private BaseListVisitor baseListVisitor;
+        private FieldDeclarationVisitor[] fieldVisitors;
+        private PropertyDeclarationVisitor[] propertyVisitors;
+
 
         public ClassDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.CreateVisitors();
         }
+
+        private void CreateVisitors()
+        {
+            var accessorNodes = this.GetFilteredNodes(new KindRangeFilter(null, SyntaxKind.ClassKeyword));
+            this.ExpectKind(accessorNodes.Length, SyntaxKind.ClassKeyword);
+            this.ExpectKind(accessorNodes.Length + 1, SyntaxKind.IdentifierToken);
+            this.name = ((CodeTreeLeaf)this.Branch.Nodes[accessorNodes.Length + 1]).Text;
+            this.genericsVisitor =
+                (TypeParameterListVisitor)
+                    this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameterList)).SingleOrDefault();
+            this.baseListVisitor = (BaseListVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.BaseList)).SingleOrDefault();
+            this.fieldVisitors =
+                this.CreateVisitors(new KindFilter(SyntaxKind.FieldDeclaration))
+                    .Select(v => (FieldDeclarationVisitor) v)
+                    .ToArray();
+            this.propertyVisitors =
+                this.CreateVisitors(new KindFilter(SyntaxKind.PropertyDeclaration))
+                    .Select(v => (PropertyDeclarationVisitor)v)
+                    .ToArray();
+        }
+
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
@@ -32,6 +57,10 @@
                 {
                     default:
                         this.WriteOpen(textWriter, providers);
+                        providers.PartialElementState.NextState = (int)ClassState.TypeGeneration;
+                        break;
+                    case ClassState.TypeGeneration:
+                        this.WriteTypeGenerator(textWriter, providers);
                         providers.PartialElementState.NextState = (int)ClassState.Close;
                         break;
                     case ClassState.Close:
@@ -56,6 +85,7 @@
                 this.WriteGenericsMapping(textWriter, providers);
                 this.WriteTypeGeneration(textWriter, providers);
                 this.WriteBaseInheritance(textWriter, providers);
+                this.WriteTypePopulation(textWriter, providers);
             }
         }
 
@@ -95,6 +125,57 @@
             textWriter.WriteLine(".__meta(staticValues);");
         }
 
+        private void WriteTypePopulation(IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (this.baseListVisitor != null)
+            {
+                this.baseListVisitor.WriteInterfaceImplements(textWriter, providers, "table.insert(implements, {0});", new []{typeof(ICsLuaAddOn)});
+            }
+
+            textWriter.WriteLine("typeObject.baseType = baseTypeObject;");
+            textWriter.WriteLine("typeObject.level = baseTypeObject.level + 1;");
+            textWriter.WriteLine("typeObject.implements = implements;");
+        }
+
+
+        private void WriteTypeGenerator(IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (providers.PartialElementState.IsFirst)
+            {
+                textWriter.WriteLine("local elementGenerator = function()");
+                textWriter.Indent++;
+
+                textWriter.WriteLine("local element = baseElementGenerator();");
+                textWriter.WriteLine("element.type = typeObject;");
+                textWriter.WriteLine("element[typeObject.Level] = {");
+
+                textWriter.Indent++;
+            }
+
+            foreach (var visitor in this.propertyVisitors)
+            {
+                visitor.WriteDefaultValue(textWriter, providers);
+            }
+
+            foreach (var visitor in this.fieldVisitors)
+            {
+                visitor.WriteDefaultValue(textWriter, providers);
+            }
+
+            if (providers.PartialElementState.IsLast)
+            {
+                textWriter.Indent--;
+
+                textWriter.WriteLine("};");
+
+                textWriter.WriteLine("return element;");
+                textWriter.Indent--;
+
+                textWriter.WriteLine("end");
+            }
+        }
+
+
         private void WriteClose(IndentedTextWriter textWriter, IProviders providers)
         {
             if (providers.PartialElementState.IsLast)
@@ -114,16 +195,6 @@
         public string GetName()
         {
             return this.name;
-        }
-
-        private void CreateVisitors()
-        {
-            var accessorNodes = this.GetFilteredNodes(new KindRangeFilter(null, SyntaxKind.ClassKeyword));
-            this.ExpectKind(accessorNodes.Length, SyntaxKind.ClassKeyword);
-            this.ExpectKind(accessorNodes.Length + 1, SyntaxKind.IdentifierToken);
-            this.name = ((CodeTreeLeaf) this.Branch.Nodes[accessorNodes.Length + 1]).Text;
-            this.genericsVisitor = (TypeParameterListVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameterList)).SingleOrDefault();
-            this.baseListVisitor = (BaseListVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.BaseList)).SingleOrDefault();
         }
 
         public int GetNumOfGenerics()

@@ -12,6 +12,7 @@ namespace CsLuaConverter.Providers.TypeProvider
 
         private readonly string additionalString;
         private readonly Type type;
+        private readonly string nameWithoutGeneric;
         public ITypeResult BaseType { get; private set; }
 
         public TypeResult(Type type, string additionalString)
@@ -22,6 +23,8 @@ namespace CsLuaConverter.Providers.TypeProvider
             {
                 this.BaseType = new TypeResult(type.BaseType);
             }
+
+            this.nameWithoutGeneric = this.type.Name.Split('`').First();
         }
 
         public TypeResult(Type type)
@@ -31,6 +34,8 @@ namespace CsLuaConverter.Providers.TypeProvider
             {
                 this.BaseType = new TypeResult(type.BaseType);
             }
+
+            this.nameWithoutGeneric = this.type.Name.Split('`').First();
         }
 
         private static string StripGenericsFromType(string name)
@@ -55,13 +60,15 @@ namespace CsLuaConverter.Providers.TypeProvider
 
         public int NumGenerics => this.type.GetGenericArguments().Length;
 
-        public string Name => this.type.Name;
+        public string Name => this.nameWithoutGeneric;
 
         public string Namespace => this.type.Namespace;
 
         public bool IsClass => this.type.IsClass;
 
         public string FullName => this.type.FullName;
+
+        public string FullNameWithoutGenerics => this.type.Namespace + "." + this.nameWithoutGeneric;
 
         public Type TypeObject => this.type;
 

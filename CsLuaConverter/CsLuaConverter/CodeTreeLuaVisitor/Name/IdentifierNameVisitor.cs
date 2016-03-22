@@ -36,7 +36,7 @@
             }
 
             var type = providers.TypeProvider.LookupType(name);
-            textWriter.Write(type.FullName);
+            textWriter.Write(type.FullNameWithoutGenerics);
         }
 
         public string[] GetName()

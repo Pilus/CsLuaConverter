@@ -13,7 +13,7 @@
 
     public abstract class BaseVisitor : IVisitor
     {
-        private readonly static Type[] baseVisitorTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsSubclassOf(typeof(BaseVisitor))).ToArray();
+        private readonly static System.Type[] baseVisitorTypes = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsSubclassOf(typeof(BaseVisitor))).ToArray();
 
         protected readonly CodeTreeBranch Branch;
 

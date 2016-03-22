@@ -31,7 +31,7 @@
         {
             var name = this.GetName();
             var type = providers.TypeProvider.LookupType(name);
-            textWriter.Write(type.FullName);
+            textWriter.Write(type.FullNameWithoutGenerics);
 
             var last = this.visitors.Last() as GenericNameVisitor;
             last?.WriteGenericTypes(textWriter, providers);

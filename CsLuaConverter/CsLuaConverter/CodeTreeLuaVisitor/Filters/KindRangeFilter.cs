@@ -9,11 +9,19 @@
     {
         private readonly SyntaxKind? startKind;
         private readonly SyntaxKind? endKind;
+        private readonly SyntaxKind[] excludedKinds;
 
         public KindRangeFilter(SyntaxKind? startKind, SyntaxKind? endKind)
         {
             this.startKind = startKind;
             this.endKind = endKind;
+        }
+
+        public KindRangeFilter(SyntaxKind? startKind, SyntaxKind? endKind, params SyntaxKind[] excludedKinds)
+        {
+            this.startKind = startKind;
+            this.endKind = endKind;
+            this.excludedKinds = excludedKinds;
         }
 
 
@@ -31,7 +39,7 @@
                     withInLimits = false;
                 }
 
-                return withInLimits;
+                return withInLimits && (this.excludedKinds == null || !this.excludedKinds.Contains(node.Kind));
             });
         }
     }

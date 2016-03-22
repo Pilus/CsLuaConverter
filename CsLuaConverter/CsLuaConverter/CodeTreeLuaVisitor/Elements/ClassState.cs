@@ -3,6 +3,7 @@
     public enum ClassState
     {
         Opening = 0,
+        TypeGeneration,
         Close,
     }
 }
