@@ -37,7 +37,14 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            throw new System.NotImplementedException();
+            textWriter.WriteLine("_M.IM(members, '{0}', {{", this.variableVisitor.GetName());
+            textWriter.Indent++;
+            textWriter.WriteLine("level = typeObject.Level,");
+            textWriter.WriteLine("memberType = 'Field',");
+            textWriter.WriteLine("scope = '{0}',", this.Scope);
+            textWriter.WriteLine("static = {0},", (this.IsStatic || this.IsConst).ToString().ToLower());
+            textWriter.Indent--;
+            textWriter.WriteLine("});");
         }
 
         public void WriteDefaultValue(IndentedTextWriter textWriter, IProviders providers, bool @static = false)

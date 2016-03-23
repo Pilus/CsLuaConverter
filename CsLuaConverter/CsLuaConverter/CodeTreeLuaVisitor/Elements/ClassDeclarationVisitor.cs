@@ -12,6 +12,7 @@
     using Providers;
     using Providers.GenericsRegistry;
     using Providers.TypeProvider;
+    using Providers.TypeKnowledgeRegistry;
 
     public class ClassDeclarationVisitor : BaseVisitor, IElementVisitor
     {
@@ -69,6 +70,10 @@
                         break;
                     case ClassState.WriteInitialize:
                         this.WriteInitialize(textWriter, providers);
+                        providers.PartialElementState.NextState = (int)ClassState.WriteMembers;
+                        break;
+                    case ClassState.WriteMembers:
+                        this.WriteMembers(textWriter, providers);
                         providers.PartialElementState.NextState = (int)ClassState.Close;
                         break;
                     case ClassState.Close:
@@ -230,6 +235,36 @@
 
             if (providers.PartialElementState.IsLast)
             {
+                textWriter.Indent--;
+                textWriter.WriteLine("end");
+            }
+        }
+
+        private void WriteMembers(IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (providers.PartialElementState.IsFirst)
+            {
+                textWriter.WriteLine("local getMembers = function()");
+                textWriter.Indent++;
+                textWriter.WriteLine("local members = _M.RTEF(getBaseMembers);");
+            }
+
+            
+
+            var scope = providers.NameProvider.CloneScope();
+            var classTypeResult = providers.TypeProvider.LookupType(this.name);
+            providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(classTypeResult.TypeObject)));
+            providers.NameProvider.AddToScope(new ScopeElement("base", new TypeKnowledge(classTypeResult.TypeObject.BaseType)));
+
+            // TODO: visit all methods
+            this.fieldVisitors.VisitAll(textWriter, providers);
+            this.propertyVisitors.VisitAll(textWriter, providers);
+
+            providers.NameProvider.SetScope(scope);
+
+            if (providers.PartialElementState.IsLast)
+            {
+                textWriter.WriteLine("return members;");
                 textWriter.Indent--;
                 textWriter.WriteLine("end");
             }

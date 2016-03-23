@@ -6,6 +6,7 @@
         TypeGeneration,
         WriteStaticValues,
         WriteInitialize,
+        WriteMembers,
         Close,
     }
 }

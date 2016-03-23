@@ -17,6 +17,11 @@
             this.declaratorVisitor = (VariableDeclaratorVisitor)this.CreateVisitor(1);
         }
 
+        public string GetName()
+        {
+            return this.declaratorVisitor.GetName();
+        }
+
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
             throw new System.NotImplementedException();

@@ -30,6 +30,11 @@
             throw new System.NotImplementedException();
         }
 
+        public string GetName()
+        {
+            return this.name;
+        }
+
         public void WriteDefaultValue(IndentedTextWriter textWriter, IProviders providers, ITypeVisitor typeVisitor)
         {
             textWriter.Write(this.name);
