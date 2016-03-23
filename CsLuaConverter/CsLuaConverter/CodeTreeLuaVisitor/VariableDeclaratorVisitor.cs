@@ -32,7 +32,7 @@
 
         public void WriteDefaultValue(IndentedTextWriter textWriter, IProviders providers, ITypeVisitor typeVisitor)
         {
-            textWriter.Write("{0} ", this.name);
+            textWriter.Write(this.name);
 
             if (this.valueVisitor != null)
             {
@@ -41,7 +41,7 @@
             }
             else
             {
-                textWriter.Write("= _M.DV(");
+                textWriter.Write(" = _M.DV(");
                 typeVisitor.WriteAsType(textWriter, providers);
                 textWriter.WriteLine("),");
             }

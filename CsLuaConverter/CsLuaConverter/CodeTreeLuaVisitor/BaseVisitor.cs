@@ -71,16 +71,7 @@
         }
 
         [DebuggerNonUserCode]
-        protected void ExpectKind(int index, SyntaxKind kind)
-        {
-            if (this.Branch.Nodes[index].Kind != kind)
-            {
-                throw new VisitorException($"Expected kind {kind} at index {index}. Got {this.Branch.Nodes[index].Kind}.");
-            }
-        }
-
-        [DebuggerNonUserCode]
-        protected void ExpectKind(int index, SyntaxKind[] kinds)
+        protected void ExpectKind(int index, params SyntaxKind[] kinds)
         {
             if (!kinds.Contains(this.Branch.Nodes[index].Kind))
             {

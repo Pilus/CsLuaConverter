@@ -74,6 +74,31 @@
             return new TypeKnowledge((indexParameters.Member as PropertyInfo).PropertyType);
         }
 
+        public TypeKnowledge GetAsArrayType()
+        {
+            return new TypeKnowledge(this.type.MakeArrayType());
+        }
+
+        public string GetFullName()
+        {
+            if (this.type.IsArray)
+            {
+                return typeof(Array).FullName;
+            }
+
+            return this.type.FullName.Split('`').First();
+        }
+
+        public TypeKnowledge[] GetGenerics()
+        {
+            if (this.type.IsArray)
+            {
+                return new [] { new TypeKnowledge( this.type.GetElementType()) };
+            }
+
+            return this.type.GetGenericArguments().Select(t => new TypeKnowledge(t)).ToArray();
+        }
+
         private TypeKnowledge[] GetMembers(string name)
         {
             var members = this.type.GetMember(name);

@@ -62,7 +62,7 @@
             }
             else
             {
-                returnType = providers.TypeKnowledgeRegistry.Get(body.First()).ToString();
+                //returnType = providers.TypeKnowledgeRegistry.Get(body.First()).ToString();
             }
 
             if (string.IsNullOrEmpty(returnType))

@@ -4,8 +4,6 @@
 
     public interface ITypeKnowledgeRegistry
     {
-        void Add(BaseElement index, TypeKnowledge typeKnowledge);
-
-        TypeKnowledge Get(BaseElement index);
+        TypeKnowledge CurrentType { get; set; }
     }
 }
