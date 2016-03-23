@@ -5,8 +5,9 @@
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Type;
 
-    public class GenericNameVisitor : BaseVisitor, INameVisitor
+    public class GenericNameVisitor : BaseTypeVisitor, INameVisitor
     {
         private readonly string name;
         private readonly TypeArgumentListVisitor argumentListVisitor;
@@ -28,7 +29,7 @@
             return new[] {this.name};
         }
 
-        public void WriteAsType(IndentedTextWriter textWriter, IProviders providers)
+        public override void WriteAsReference(IndentedTextWriter textWriter, IProviders providers)
         {
             var type = providers.TypeProvider.LookupType(this.name);
             textWriter.Write(type.FullNameWithoutGenerics);

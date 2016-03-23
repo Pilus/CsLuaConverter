@@ -5,8 +5,9 @@
     using CodeTree;
     using Providers;
     using Providers.GenericsRegistry;
+    using Type;
 
-    public class IdentifierNameVisitor : BaseVisitor, INameVisitor
+    public class IdentifierNameVisitor : BaseTypeVisitor, INameVisitor, ITypeVisitor
     {
         public IdentifierNameVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -15,6 +16,17 @@
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
             throw new System.NotImplementedException();
+        }
+
+        public override void WriteAsReference(IndentedTextWriter textWriter, IProviders providers)
+        {
+            this.WriteAsType(textWriter, providers);
+
+            var name = this.GetNameText();
+            if (!providers.GenericsRegistry.IsGeneric(name))
+            {
+                textWriter.Write(".__typeof");
+            }
         }
 
         public void WriteAsType(IndentedTextWriter textWriter, IProviders providers)

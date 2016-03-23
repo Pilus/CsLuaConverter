@@ -7,16 +7,17 @@
     using Microsoft.CodeAnalysis.CSharp;
     using Name;
     using Providers;
+    using Type;
 
     public class TypeArgumentListVisitor : BaseVisitor, IListVisitor
     {
-        private readonly INameVisitor[] visitors;
+        private readonly ITypeVisitor[] visitors;
 
         public TypeArgumentListVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.visitors =
                 this.CreateVisitors(new KindRangeFilter(SyntaxKind.LessThanToken, SyntaxKind.GreaterThanToken, SyntaxKind.CommaToken))
-                    .Select(v => (INameVisitor) v)
+                    .Select(v => (ITypeVisitor) v)
                     .ToArray();
         }
 

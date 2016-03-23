@@ -5,7 +5,7 @@
     using CodeTree;
     using Providers;
 
-    public class PredefinedTypeVisitor : BaseVisitor, ITypeVisitor
+    public class PredefinedTypeVisitor : BaseTypeVisitor, ITypeVisitor
     {
         private string text;
 
@@ -19,7 +19,7 @@
             throw new System.NotImplementedException();
         }
 
-        public void WriteAsReference(IndentedTextWriter textWriter, IProviders providers)
+        public override void WriteAsReference(IndentedTextWriter textWriter, IProviders providers)
         {
             if (this.text == "void")
             {

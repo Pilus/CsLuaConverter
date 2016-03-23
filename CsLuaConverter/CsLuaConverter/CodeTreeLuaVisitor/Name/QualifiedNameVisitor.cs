@@ -6,8 +6,9 @@
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Type;
 
-    public class QualifiedNameVisitor : BaseVisitor, INameVisitor
+    public class QualifiedNameVisitor : BaseTypeVisitor, INameVisitor
     {
         private readonly INameVisitor[] visitors;
 
@@ -27,7 +28,7 @@
             return this.visitors.SelectMany(v => v.GetName()).ToArray();
         }
 
-        public void WriteAsType(IndentedTextWriter textWriter, IProviders providers)
+        public override void WriteAsReference(IndentedTextWriter textWriter, IProviders providers)
         {
             var name = this.GetName();
             var type = providers.TypeProvider.LookupType(name);

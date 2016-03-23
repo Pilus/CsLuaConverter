@@ -42,7 +42,7 @@
             else
             {
                 textWriter.Write("= _M.DV(");
-                typeVisitor.WriteAsReference(textWriter, providers);
+                typeVisitor.WriteAsType(textWriter, providers);
                 textWriter.WriteLine("),");
             }
         }

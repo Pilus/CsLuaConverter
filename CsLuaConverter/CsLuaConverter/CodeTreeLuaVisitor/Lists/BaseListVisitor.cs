@@ -45,7 +45,7 @@
                 return false;
             }
 
-            first.WriteAsType(textWriter, providers);
+            first.WriteAsReference(textWriter, providers);
 
             return true;
         }

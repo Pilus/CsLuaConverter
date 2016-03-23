@@ -2,10 +2,10 @@
 {
     using System.CodeDom.Compiler;
     using Providers;
+    using Type;
 
-    public interface INameVisitor : IVisitor
+    public interface INameVisitor : ITypeVisitor
     {
         string[] GetName();
-        void WriteAsType(IndentedTextWriter textWriter, IProviders providers);
     }
 }

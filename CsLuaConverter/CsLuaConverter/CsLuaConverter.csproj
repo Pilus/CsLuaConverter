@@ -161,6 +161,11 @@
     <Compile Include="CodeElementAnalysis\Statements\ThrowStatement.cs" />
     <Compile Include="CodeTreeLuaVisitor\BaseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\EqualsValueClauseVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\FalseLiteralExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\ImplicitArrayCreationExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\NumericLiteralExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\ObjectCreationExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\StringLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\FieldDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\BaseListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\TypeParameterListVisitor.cs" />
@@ -168,6 +173,8 @@
     <Compile Include="CodeTreeLuaVisitor\PropertyDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Scope.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeParameterVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Type\ArrayTypeVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Type\BaseTypeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\ITypeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\PredefinedTypeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\VariableDeclarationVisitor.cs" />
