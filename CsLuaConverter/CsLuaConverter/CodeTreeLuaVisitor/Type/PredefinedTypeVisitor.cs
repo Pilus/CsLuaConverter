@@ -4,10 +4,11 @@
     using System.Linq;
     using CodeTree;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
 
     public class PredefinedTypeVisitor : BaseTypeVisitor, ITypeVisitor
     {
-        private string text;
+        private readonly string text;
 
         public PredefinedTypeVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -27,7 +28,18 @@
             }
 
             var type = providers.TypeProvider.LookupType(this.text);
-            textWriter.Write("({0} % _M.DOT).typeof", type.FullNameWithoutGenerics);
+            textWriter.Write(type.FullNameWithoutGenerics);
+        }
+
+        public override TypeKnowledge GetType(IProviders providers)
+        {
+            if (this.text == "void")
+            {
+                return null;
+            }
+
+            var type = providers.TypeProvider.LookupType(this.text);
+            return new TypeKnowledge(type.TypeObject);
         }
     }
 }

@@ -16,7 +16,7 @@
             this.ExpectKind(0, SyntaxKind.OpenBraceToken);
             var visitors = new List<IVisitor>();
 
-            for (var i = 1; i < this.Branch.Nodes.Length; i = i + 2)
+            for (var i = 1; i < this.Branch.Nodes.Length - 1; i = i + 2)
             {
                 visitors.Add(this.CreateVisitor(i));
                 this.ExpectKind(i + 1, SyntaxKind.CommaToken, SyntaxKind.CloseBraceToken);

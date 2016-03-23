@@ -6,6 +6,7 @@
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
     using Type;
 
     public class QualifiedNameVisitor : BaseTypeVisitor, INameVisitor
@@ -36,6 +37,13 @@
 
             var last = this.visitors.Last() as GenericNameVisitor;
             last?.WriteGenericTypes(textWriter, providers);
+        }
+
+        public override TypeKnowledge GetType(IProviders providers)
+        {
+            var name = this.GetName();
+            var type = providers.TypeProvider.LookupType(name);
+            return new TypeKnowledge(type.TypeObject);
         }
     }
 }

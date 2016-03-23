@@ -5,9 +5,10 @@
     using CodeTree;
     using Providers;
     using Providers.GenericsRegistry;
+    using Providers.TypeKnowledgeRegistry;
     using Type;
 
-    public class IdentifierNameVisitor : BaseTypeVisitor, INameVisitor, ITypeVisitor
+    public class IdentifierNameVisitor : BaseTypeVisitor, INameVisitor
     {
         public IdentifierNameVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -27,6 +28,18 @@
             {
                 textWriter.Write(".__typeof");
             }
+        }
+
+        public override TypeKnowledge GetType(IProviders providers)
+        {
+            var name = this.GetNameText();
+            if (providers.GenericsRegistry.IsGeneric(name))
+            {
+                throw new System.NotImplementedException();
+            }
+
+            var type = providers.TypeProvider.LookupType(name);
+            return new TypeKnowledge(type.TypeObject);
         }
 
         public void WriteAsType(IndentedTextWriter textWriter, IProviders providers)

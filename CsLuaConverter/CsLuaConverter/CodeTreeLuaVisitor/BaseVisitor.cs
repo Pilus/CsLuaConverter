@@ -82,7 +82,14 @@
         [DebuggerNonUserCode]
         protected BaseVisitor CreateVisitor(int index)
         {
-            return CreateVisitor(this.Branch.Nodes[index] as CodeTreeBranch);
+            var branch = this.Branch.Nodes[index] as CodeTreeBranch;
+
+            if (branch == null)
+            {
+                throw new VisitorException($"Could not find a branch at index {index}.");
+            }
+
+            return CreateVisitor(branch);
         }
 
 

@@ -169,6 +169,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\StringLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\FieldDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\IndentedTextWriterExtension.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Lists\ArgumentListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\BaseListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\TypeParameterListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Name\GenericNameVisitor.cs" />

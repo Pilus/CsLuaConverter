@@ -10,8 +10,8 @@
 
     public class VariableDeclaratorVisitor : BaseVisitor
     {
-        private string name;
-        private BaseVisitor valueVisitor;
+        private readonly string name;
+        private readonly BaseVisitor valueVisitor;
 
         public VariableDeclaratorVisitor(CodeTreeBranch branch) : base(branch)
         {

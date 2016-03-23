@@ -1,10 +1,12 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Name
 {
+    using System;
     using System.CodeDom.Compiler;
     using CodeTree;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
     using Type;
 
     public class GenericNameVisitor : BaseTypeVisitor, INameVisitor
@@ -34,6 +36,14 @@
             var type = providers.TypeProvider.LookupType(this.name);
             textWriter.Write(type.FullNameWithoutGenerics);
             this.WriteGenericTypes(textWriter, providers);
+        }
+
+        public override TypeKnowledge GetType(IProviders providers)
+        {
+            var type = providers.TypeProvider.LookupType(this.name);
+
+            // Create type with the generics from the argument list visitor.
+            throw new NotImplementedException();
         }
 
         public void WriteGenericTypes(IndentedTextWriter textWriter, IProviders providers)
