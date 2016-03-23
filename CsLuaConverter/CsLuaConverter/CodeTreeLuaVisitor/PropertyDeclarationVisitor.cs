@@ -41,8 +41,13 @@
             throw new System.NotImplementedException();
         }
 
-        public void WriteDefaultValue(IndentedTextWriter textWriter, IProviders providers)
+        public void WriteDefaultValue(IndentedTextWriter textWriter, IProviders providers, bool isStaticFilter = false)
         {
+            if (this.isStatic != isStaticFilter)
+            {
+                return;
+            }
+
             textWriter.Write($"{this.name} = _M.DV(");
             this.type.WriteAsType(textWriter, providers);
             textWriter.WriteLine("),");

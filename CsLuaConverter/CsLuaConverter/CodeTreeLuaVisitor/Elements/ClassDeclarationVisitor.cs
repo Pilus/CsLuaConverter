@@ -61,6 +61,10 @@
                         break;
                     case ClassState.TypeGeneration:
                         this.WriteTypeGenerator(textWriter, providers);
+                        providers.PartialElementState.NextState = (int)ClassState.WriteStaticValues;
+                        break;
+                    case ClassState.WriteStaticValues:
+                        this.WriteStaticValues(textWriter, providers);
                         providers.PartialElementState.NextState = (int)ClassState.Close;
                         break;
                     case ClassState.Close:
@@ -175,6 +179,30 @@
             }
         }
 
+        private void WriteStaticValues(IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (providers.PartialElementState.IsFirst)
+            {
+                textWriter.WriteLine("staticValues[typeObject.Level] = {");
+                textWriter.Indent++;
+            }
+
+            foreach (var visitor in this.propertyVisitors)
+            {
+                visitor.WriteDefaultValue(textWriter, providers, true);
+            }
+
+            foreach (var visitor in this.fieldVisitors)
+            {
+                visitor.WriteDefaultValue(textWriter, providers, true);
+            }
+
+            if (providers.PartialElementState.IsLast)
+            {
+                textWriter.Indent--;
+                textWriter.WriteLine("};");
+            }
+        }
 
         private void WriteClose(IndentedTextWriter textWriter, IProviders providers)
         {

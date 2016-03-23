@@ -4,6 +4,7 @@
     {
         Opening = 0,
         TypeGeneration,
+        WriteStaticValues,
         Close,
     }
 }
