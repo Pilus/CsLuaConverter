@@ -49,5 +49,10 @@
 
             this.variableVisitor.WriteDefaultValue(textWriter, providers);
         }
+
+        public void WriteInitializeValue(IndentedTextWriter textWriter, IProviders providers)
+        {
+            this.variableVisitor.WriteInitializeValue(textWriter, providers);
+        }
     }
 }

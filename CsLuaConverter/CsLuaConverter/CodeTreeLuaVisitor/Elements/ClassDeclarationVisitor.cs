@@ -65,6 +65,10 @@
                         break;
                     case ClassState.WriteStaticValues:
                         this.WriteStaticValues(textWriter, providers);
+                        providers.PartialElementState.NextState = (int)ClassState.WriteInitialize;
+                        break;
+                    case ClassState.WriteInitialize:
+                        this.WriteInitialize(textWriter, providers);
                         providers.PartialElementState.NextState = (int)ClassState.Close;
                         break;
                     case ClassState.Close:
@@ -141,7 +145,6 @@
             textWriter.WriteLine("typeObject.implements = implements;");
         }
 
-
         private void WriteTypeGenerator(IndentedTextWriter textWriter, IProviders providers)
         {
             if (providers.PartialElementState.IsFirst)
@@ -201,6 +204,34 @@
             {
                 textWriter.Indent--;
                 textWriter.WriteLine("};");
+            }
+        }
+
+        private void WriteInitialize(IndentedTextWriter textWriter, IProviders providers)
+        {
+
+            if (providers.PartialElementState.IsFirst)
+            {
+                textWriter.WriteLine("local initialize = function(element, values)");
+                textWriter.Indent++;
+
+                textWriter.WriteLine("if baseInitialize then baseInitialize(element, values); end");
+            }
+
+            foreach (var visitor in this.propertyVisitors)
+            {
+                visitor.WriteInitializeValue(textWriter, providers);
+            }
+
+            foreach (var visitor in this.fieldVisitors)
+            {
+                visitor.WriteInitializeValue(textWriter, providers);
+            }
+
+            if (providers.PartialElementState.IsLast)
+            {
+                textWriter.Indent--;
+                textWriter.WriteLine("end");
             }
         }
 

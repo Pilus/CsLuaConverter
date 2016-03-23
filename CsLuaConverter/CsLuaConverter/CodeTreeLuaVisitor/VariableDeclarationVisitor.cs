@@ -26,5 +26,10 @@
         {
             this.declaratorVisitor.WriteDefaultValue(textWriter, providers, this.typeVisitor);
         }
+
+        public void WriteInitializeValue(IndentedTextWriter textWriter, IProviders providers)
+        {
+            this.declaratorVisitor.WriteInitializeValue(textWriter, providers);
+        }
     }
 }

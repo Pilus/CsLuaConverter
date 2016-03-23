@@ -52,5 +52,10 @@
             this.type.WriteAsType(textWriter, providers);
             textWriter.WriteLine("),");
         }
+
+        public void WriteInitializeValue(IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.WriteLine($"if not(values.{this.name} == nil) then element[typeObject.Level].{this.name} = values.{this.name}; end");
+        }
     }
 }

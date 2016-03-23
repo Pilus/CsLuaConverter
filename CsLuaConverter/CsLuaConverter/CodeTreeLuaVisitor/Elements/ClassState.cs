@@ -5,6 +5,7 @@
         Opening = 0,
         TypeGeneration,
         WriteStaticValues,
+        WriteInitialize,
         Close,
     }
 }
