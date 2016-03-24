@@ -42,8 +42,7 @@
         {
             var type = providers.TypeProvider.LookupType(this.name);
 
-            // Create type with the generics from the argument list visitor.
-            throw new NotImplementedException();
+            return this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
         }
 
         public void WriteGenericTypes(IndentedTextWriter textWriter, IProviders providers)

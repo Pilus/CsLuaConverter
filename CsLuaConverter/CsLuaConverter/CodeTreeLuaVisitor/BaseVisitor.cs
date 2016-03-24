@@ -24,24 +24,6 @@
 
         public abstract void Visit(IndentedTextWriter textWriter, IProviders providers);
 
-        public T Visit<T>(int i) where T: BaseVisitor
-        {
-            var subBranch = this.Branch.Nodes[i] as CodeTreeBranch;
-            if (subBranch == null)
-            {
-                throw new VisitorException($"Non branch found on node {i}.");
-            }
-
-            var type = Assembly.GetExecutingAssembly().GetTypes().SingleOrDefault(t => t.Name.Equals(subBranch.Kind.ToString() + "Visitor") && t.IsSubclassOf(typeof(BaseVisitor)));
-
-            if (type == null)
-            {
-                throw new VisitorException($"No visitor found for {subBranch.Kind}.");
-            }
-
-            return type.GetConstructors().Single().Invoke(new object[] { subBranch }) as T;
-        }
-
         [DebuggerNonUserCode]
         protected static bool IsKind(CodeTreeNode node, SyntaxKind kind)
         {
@@ -77,6 +59,12 @@
             {
                 throw new VisitorException($"Expected kind {string.Join(", ", kinds)} at index {index}. Got {this.Branch.Nodes[index].Kind}.");
             }
+        }
+
+        [DebuggerNonUserCode]
+        protected bool IsKind(int index, SyntaxKind kind)
+        {
+            return this.Branch.Nodes[index].Kind == kind;
         }
 
         [DebuggerNonUserCode]

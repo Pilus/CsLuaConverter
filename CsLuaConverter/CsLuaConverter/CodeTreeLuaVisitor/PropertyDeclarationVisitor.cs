@@ -3,8 +3,10 @@
     using System;
     using System.CodeDom.Compiler;
     using System.Linq;
+    using Accessor;
     using CodeTree;
     using Filters;
+    using Lists;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
     using Type;
@@ -15,6 +17,7 @@
         private readonly Scope scope;
         private readonly bool isStatic;
         private readonly ITypeVisitor type;
+        private readonly AccessorListVisitor accessorList;
 
         public PropertyDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -33,12 +36,22 @@
             this.ExpectKind(totalNodes - 2, SyntaxKind.IdentifierToken);
             this.name = ((CodeTreeLeaf) this.Branch.Nodes[totalNodes - 2]).Text;
 
-            // TODO: Create accessor visitor
+            this.accessorList = (AccessorListVisitor) this.CreateVisitor(totalNodes - 1);
         }
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            throw new System.NotImplementedException();
+            textWriter.WriteLine("_M.IM(members, '{0}',{{", this.name);
+            textWriter.Indent++;
+            textWriter.WriteLine("level = typeObject.Level,");
+            textWriter.WriteLine("memberType = '{0}',", this.accessorList.IsAutoProperty() ? "AutoProperty" : "Property");
+            textWriter.WriteLine("scope = '{0}',", this.scope);
+            textWriter.WriteLine("static = {0},", this.isStatic.ToString().ToLower());
+
+            providers.TypeKnowledgeRegistry.CurrentType = this.type.GetType(providers);
+            this.accessorList.Visit(textWriter, providers);
+            textWriter.Indent--;
+            textWriter.WriteLine("});");
         }
 
         public void WriteDefaultValue(IndentedTextWriter textWriter, IProviders providers, bool isStaticFilter = false)

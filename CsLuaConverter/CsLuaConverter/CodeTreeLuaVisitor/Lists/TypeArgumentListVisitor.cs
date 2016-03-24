@@ -7,6 +7,7 @@
     using Microsoft.CodeAnalysis.CSharp;
     using Name;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
     using Type;
 
     public class TypeArgumentListVisitor : BaseVisitor, IListVisitor
@@ -34,6 +35,11 @@
         public int GetNumElements()
         {
             return this.visitors.Length;
+        }
+
+        public TypeKnowledge ApplyGenericsToType(IProviders providers, TypeKnowledge type)
+        {
+            return type.CreateWithGenerics(this.visitors.Select(v => v.GetType(providers)).ToArray());
         }
     }
 }

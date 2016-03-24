@@ -99,6 +99,16 @@
             return this.type.GetGenericArguments().Select(t => new TypeKnowledge(t)).ToArray();
         }
 
+        public TypeKnowledge CreateWithGenerics(TypeKnowledge[] generics)
+        {
+            return new TypeKnowledge(this.type.MakeGenericType(generics.Select(g => g.GetTypeObject()).ToArray()));
+        }
+
+        public Type GetTypeObject()
+        {
+            return this.type;
+        }
+
         private TypeKnowledge[] GetMembers(string name)
         {
             var members = this.type.GetMember(name);

@@ -35,7 +35,7 @@
             var name = this.GetNameText();
             if (providers.GenericsRegistry.IsGeneric(name))
             {
-                throw new System.NotImplementedException();
+                return new TypeKnowledge(typeof(object)); // TODO: use other type if there are a generic 
             }
 
             var type = providers.TypeProvider.LookupType(name);

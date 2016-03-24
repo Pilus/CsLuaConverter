@@ -159,7 +159,9 @@
     <Compile Include="CodeElementAnalysis\Statements\SwitchStatement.cs" />
     <Compile Include="CodeElementAnalysis\ThisExpression.cs" />
     <Compile Include="CodeElementAnalysis\Statements\ThrowStatement.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Accessor\IAccessor.cs" />
     <Compile Include="CodeTreeLuaVisitor\BaseVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\BlockVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\EqualsValueClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ArrayInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\FalseLiteralExpressionVisitor.cs" />
@@ -168,13 +170,16 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectCreationExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\StringLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\FieldDeclarationVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Accessor\GetAccessorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\IndentedTextWriterExtension.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\ArgumentListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\BaseListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\TypeParameterListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Name\GenericNameVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\PropertyDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Scope.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Accessor\SetAccessorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeKnowledgeExtensions.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeParameterVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\ArrayTypeVisitor.cs" />
