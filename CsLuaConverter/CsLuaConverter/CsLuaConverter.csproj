@@ -160,6 +160,8 @@
     <Compile Include="CodeElementAnalysis\ThisExpression.cs" />
     <Compile Include="CodeElementAnalysis\Statements\ThrowStatement.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\IAccessor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Attribute\AttributeListVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Attribute\AttributeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\BaseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\BlockVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\EqualsValueClauseVisitor.cs" />

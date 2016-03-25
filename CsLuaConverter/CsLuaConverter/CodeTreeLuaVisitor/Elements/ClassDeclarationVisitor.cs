@@ -3,6 +3,7 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using Attribute;
     using CodeTree;
     using CsLuaFramework;
     using Filters;
@@ -22,6 +23,7 @@
         private BaseListVisitor baseListVisitor;
         private FieldDeclarationVisitor[] fieldVisitors;
         private PropertyDeclarationVisitor[] propertyVisitors;
+        private AttributeListVisitor attributeListVisitor;
 
 
         public ClassDeclarationVisitor(CodeTreeBranch branch) : base(branch)
@@ -47,6 +49,10 @@
                 this.CreateVisitors(new KindFilter(SyntaxKind.PropertyDeclaration))
                     .Select(v => (PropertyDeclarationVisitor)v)
                     .ToArray();
+            this.attributeListVisitor =
+                this.CreateVisitors(new KindFilter(SyntaxKind.AttributeList))
+                    .Select(v => (AttributeListVisitor)v)
+                    .SingleOrDefault();
         }
 
 
@@ -78,6 +84,10 @@
                         break;
                     case ClassState.Close:
                         this.WriteClose(textWriter, providers);
+                        providers.PartialElementState.NextState = null;
+                        break;
+                    case ClassState.Footer:
+                        this.WriteFooter(textWriter, providers);
                         providers.PartialElementState.NextState = null;
                         break;
                 }
@@ -284,7 +294,18 @@
             }
         }
 
-
+        private void WriteFooter(IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (!providers.PartialElementState.IsFirst || this.attributeListVisitor?.HasCsLuaAddOnAttribute() != true)
+            {
+                return;
+            }
+            
+            var type = providers.TypeProvider.LookupType(this.name);
+            textWriter.Write("(");
+            textWriter.Write(type.FullNameWithoutGenerics);
+            textWriter.WriteLine("() % _M.DOT).Execute();");
+        }
 
         public string GetName()
         {

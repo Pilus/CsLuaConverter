@@ -12,6 +12,7 @@
     public class CompilationUnitVisitor : BaseVisitor
     {
         private NamespaceDeclarationVisitor namespaceVisitor;
+        private UsingDirectiveVisitor[] usings;
         public CompilationUnitVisitor(CodeTreeBranch branch) : base(branch)
         {
             TryActionAndWrapException(() =>
@@ -20,6 +21,7 @@
                     (NamespaceDeclarationVisitor)
                         this.CreateVisitors(
                             new KindFilter(SyntaxKind.NamespaceDeclaration)).Single();
+                this.usings = this.CreateVisitors(new KindFilter(SyntaxKind.UsingDirective)).Select(v => (UsingDirectiveVisitor)v).ToArray();
             }, $"In document {this.Branch.DocumentName}");
         }
 
@@ -28,10 +30,15 @@
             TryActionAndWrapException(() =>
             {
                 providers.TypeProvider.ClearNamespaces();
-            
-                this.CreateVisitorsAndVisitBranches(textWriter, providers, new KindFilter(SyntaxKind.UsingDirective));
+
+                this.usings.VisitAll(textWriter, providers);
                 this.namespaceVisitor.Visit(textWriter, providers);
             }, $"In document {this.Branch.DocumentName}");
+        }
+
+        public void WriteFooter(IndentedTextWriter textWriter, IProviders providers)
+        {
+            this.namespaceVisitor.WriteFooter(textWriter, providers);
         }
 
         public string[] GetNamespaceName()

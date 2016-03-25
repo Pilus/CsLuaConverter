@@ -45,6 +45,25 @@
             }
         }
 
+        public void WriteFooter(IndentedTextWriter textWriter, IProviders providers)
+        {
+            var state = providers.PartialElementState;
+            state.CurrentState = (int)ClassState.Footer;
+
+            for (var index = 0; index < this.elementVisitors.Length; index++)
+            {
+                var elementVisitor = this.elementVisitors[index] as ClassDeclarationVisitor;
+
+                if (elementVisitor != null)
+                { 
+                    state.IsFirst = index == 0;
+                    state.IsLast = index == this.elementVisitors.Length - 1;
+
+                    elementVisitor.Visit(textWriter, providers);
+                }
+            }
+        }
+
         private void CreateNameVisitor()
         {
             this.ExpectKind(0, SyntaxKind.NamespaceKeyword);
@@ -59,8 +78,7 @@
 
         private void CreateElementVisitor()
         {
-            var elementVisitors = this.CreateVisitors(new KindFilter(SyntaxKind.ClassDeclaration, SyntaxKind.InterfaceDeclaration,
-                SyntaxKind.EnumDeclaration)).OfType<IElementVisitor>().ToArray();
+            var elementVisitors = this.CreateVisitors().OfType<IElementVisitor>().ToArray();
 
             if (elementVisitors.Length == 0)
             {

@@ -8,5 +8,6 @@
         WriteInitialize,
         WriteMembers,
         Close,
+        Footer,
     }
 }

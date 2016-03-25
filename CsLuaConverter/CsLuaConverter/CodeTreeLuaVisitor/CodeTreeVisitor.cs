@@ -65,6 +65,12 @@
                     textWriter.Indent--;
                     textWriter.WriteLine("}");
                 }
+
+                // Write footer
+                foreach (var compilationUnitVisitor in g)
+                {
+                    compilationUnitVisitor.WriteFooter(textWriter, this.providers);
+                }
             }));
         }
 
