@@ -166,9 +166,12 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\ArrayInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\FalseLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ImplicitArrayCreationExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\MultiplyExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\NumericLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectCreationExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\SimpleAssignmentExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\StringLiteralExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\TwoSidedExpressionVisitorBase.cs" />
     <Compile Include="CodeTreeLuaVisitor\FieldDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\GetAccessorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\IndentedTextWriterExtension.cs" />
@@ -180,6 +183,9 @@
     <Compile Include="CodeTreeLuaVisitor\PropertyDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Scope.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\SetAccessorDeclarationVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Statement\ExpressionStatementVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Statement\ReturnStatementVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Statement\SimpleMemberAccessExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeKnowledgeExtensions.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeParameterVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\ArrayTypeVisitor.cs" />

@@ -81,10 +81,10 @@ namespace CsLuaConverter.Providers.TypeProvider
                 list = this.BaseType.GetScopeElements().ToList();
             }
 
-            IEnumerable<MemberInfo> methods = this.GetMethodsOfType(type);
-            IEnumerable<MemberInfo> objectMethods = this.GetMethodsOfType(typeof(object));
+            IEnumerable<MethodInfo> methods = this.GetMethodsOfType(this.type);
+            IEnumerable<MethodInfo> objectMethods = this.GetMethodsOfType(typeof(object));
 
-            foreach (MemberInfo method in methods.Where(m => !objectMethods.Any(om => om.Name.Equals(m.Name))))
+            foreach (var method in methods.Where(m => !objectMethods.Any(om => om.Name.Equals(m.Name))))
             {
                 list.Add(new ScopeElement(method.Name, new TypeKnowledge(method))
                 {
@@ -93,9 +93,15 @@ namespace CsLuaConverter.Providers.TypeProvider
                 });
             }
 
-            foreach (MemberInfo member in type.GetMembers()) // Variables and properties
+            foreach (var member in this.GetMembersOfType(this.type)) // Variables and properties
             {
-                if (!member.MemberType.Equals(MemberTypes.Method) && !member.MemberType.Equals(MemberTypes.Constructor))
+                if (   !member.MemberType.Equals(MemberTypes.Method) 
+                    && !member.MemberType.Equals(MemberTypes.Constructor) 
+                    && !member.MemberType.Equals(MemberTypes.Event)
+                    && !member.MemberType.Equals(MemberTypes.NestedType)
+                    && !member.Name.Contains("<")
+                    && !member.Name.StartsWith("__")
+                    )
                 {
                     list.Add(new ScopeElement(member.Name, new TypeKnowledge(member))
                     {
@@ -130,7 +136,17 @@ namespace CsLuaConverter.Providers.TypeProvider
             return list;
         }
 
-        private IEnumerable<MemberInfo> GetMethodsOfType(Type type)
+        private IEnumerable<MemberInfo> GetMembersOfType(Type type)
+        {
+            var all =    type.GetMembers(BindingFlags.Public | BindingFlags.Instance).ToList();
+            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
+            all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Static));
+            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+
+            return all;
+        }
+
+        private IEnumerable<MethodInfo> GetMethodsOfType(Type type)
         {
             List<MethodInfo> publicMethods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance).ToList();
 

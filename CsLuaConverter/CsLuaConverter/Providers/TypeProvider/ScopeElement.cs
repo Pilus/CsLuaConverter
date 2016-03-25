@@ -1,7 +1,10 @@
 ﻿namespace CsLuaConverter.Providers.TypeProvider
 {
+    using System;
+    using System.Diagnostics;
     using TypeKnowledgeRegistry;
 
+    [DebuggerDisplay("ScopeElement: {ClassPrefix}.{Name}")]
     public class ScopeElement
     {
         public string ClassPrefix;
@@ -22,7 +25,7 @@
 
         public override string ToString()
         {
-            return this.ClassPrefix + this.Name;
+            return (this.ClassPrefix == null ? string.Empty : (this.ClassPrefix + ".")) + this.Name;
         }
     }
 }
