@@ -284,6 +284,7 @@
         {
             if (providers.PartialElementState.IsLast)
             {
+                textWriter.WriteLine("return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;");
                 textWriter.Indent--;
                 textWriter.WriteLine("end,");
             }

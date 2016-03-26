@@ -16,7 +16,7 @@
                 var visitor = visitorArray[index];
                 visitor.Visit(textWriter, providers);
 
-                if (index == visitorArray.Length - 1)
+                if (index != visitorArray.Length - 1)
                 {
                     delimiterAction?.Invoke();
                 }

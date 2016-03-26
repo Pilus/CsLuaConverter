@@ -22,7 +22,7 @@
             providers.TypeKnowledgeRegistry.CurrentType = null;
             this.targetVisitor.Visit(textWriter, providers);
 
-            textWriter.Write(".");
+            // textWriter.Write("."); // todo: Should be elsewhere
 
             var targetType = providers.TypeKnowledgeRegistry.CurrentType;
             providers.TypeKnowledgeRegistry.CurrentType = targetType.GetTypeKnowledgeForSubElement(this.indexVisitor.GetName());
