@@ -25,7 +25,7 @@
         private PropertyDeclarationVisitor[] propertyVisitors;
         private AttributeListVisitor attributeListVisitor;
         private ConstructorDeclarationVisitor[] constructorVisitors;
-
+        private MethodDeclarationVisitor[] methodVisitors;
 
         public ClassDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -54,6 +54,10 @@
                 this.CreateVisitors(new KindFilter(SyntaxKind.AttributeList))
                     .Select(v => (AttributeListVisitor)v)
                     .SingleOrDefault();
+            this.methodVisitors =
+                this.CreateVisitors(new KindFilter(SyntaxKind.MethodDeclaration))
+                    .Select(v => (MethodDeclarationVisitor) v)
+                    .ToArray();
             this.constructorVisitors =
                 this.CreateVisitors(new KindFilter(SyntaxKind.ConstructorDeclaration))
                     .Select(v => (ConstructorDeclarationVisitor) v)
@@ -277,9 +281,9 @@
             providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(classTypeResult.TypeObject)));
             providers.NameProvider.AddToScope(new ScopeElement("base", new TypeKnowledge(classTypeResult.TypeObject.BaseType)));
 
-            // TODO: visit all methods
             this.fieldVisitors.VisitAll(textWriter, providers);
             this.propertyVisitors.VisitAll(textWriter, providers);
+            this.methodVisitors.VisitAll(textWriter, providers);
 
             providers.NameProvider.SetScope(scope);
 

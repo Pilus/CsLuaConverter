@@ -189,6 +189,7 @@
     <Compile Include="CodeTreeLuaVisitor\Lists\BracketedArgumentListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\ParameterListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\TypeParameterListVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\MethodDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Name\GenericNameVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\ParameterVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\PropertyDeclarationVisitor.cs" />
