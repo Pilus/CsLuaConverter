@@ -19,6 +19,14 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
+            var currentType = providers.TypeKnowledgeRegistry.CurrentType;
+            if (currentType != null)
+            {
+                textWriter.Write(this.text);
+                providers.TypeKnowledgeRegistry.CurrentType = currentType.GetTypeKnowledgeForSubElement(this.text);
+                return;
+            }
+
             var element = providers.NameProvider.GetScopeElement(this.text);
 
             if (element == null) // Identifier is most likely a reference to a type

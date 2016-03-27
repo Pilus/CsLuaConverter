@@ -24,6 +24,7 @@
         private FieldDeclarationVisitor[] fieldVisitors;
         private PropertyDeclarationVisitor[] propertyVisitors;
         private AttributeListVisitor attributeListVisitor;
+        private ConstructorDeclarationVisitor[] constructorVisitors;
 
 
         public ClassDeclarationVisitor(CodeTreeBranch branch) : base(branch)
@@ -53,6 +54,10 @@
                 this.CreateVisitors(new KindFilter(SyntaxKind.AttributeList))
                     .Select(v => (AttributeListVisitor)v)
                     .SingleOrDefault();
+            this.constructorVisitors =
+                this.CreateVisitors(new KindFilter(SyntaxKind.ConstructorDeclaration))
+                    .Select(v => (ConstructorDeclarationVisitor) v)
+                    .ToArray();
         }
 
 
@@ -80,6 +85,10 @@
                         break;
                     case ClassState.WriteMembers:
                         this.WriteMembers(textWriter, providers);
+                        providers.PartialElementState.NextState = (int)ClassState.WriteConstructors;
+                        break;
+                    case ClassState.WriteConstructors:
+                        this.WriteConstructors(textWriter, providers);
                         providers.PartialElementState.NextState = (int)ClassState.Close;
                         break;
                     case ClassState.Close:
@@ -100,6 +109,10 @@
             {
                 this.originalScope = providers.NameProvider.CloneScope();
                 providers.NameProvider.AddAllInheritedMembersToScope(this.name);
+
+                var classTypeResult = providers.TypeProvider.LookupType(this.name);
+                providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(classTypeResult.TypeObject)));
+                providers.NameProvider.AddToScope(new ScopeElement("base", new TypeKnowledge(classTypeResult.BaseType.TypeObject)));
 
                 textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", this.GetNumOfGenerics());
                 textWriter.Indent++;
@@ -259,8 +272,6 @@
                 textWriter.WriteLine("local members = _M.RTEF(getBaseMembers);");
             }
 
-            
-
             var scope = providers.NameProvider.CloneScope();
             var classTypeResult = providers.TypeProvider.LookupType(this.name);
             providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(classTypeResult.TypeObject)));
@@ -277,6 +288,40 @@
                 textWriter.WriteLine("return members;");
                 textWriter.Indent--;
                 textWriter.WriteLine("end");
+            }
+        }
+
+        private void WriteConstructors(IndentedTextWriter textWriter, IProviders providers)
+        {
+            if (providers.PartialElementState.IsFirst)
+            {
+                textWriter.WriteLine("local constructors = {");
+                textWriter.Indent++;
+            }
+
+            if (providers.PartialElementState.IsFirst && this.constructorVisitors.Length == 0)
+            {
+                textWriter.WriteLine("{");
+                textWriter.Indent++;
+
+                textWriter.WriteLine("types = {},");
+                textWriter.WriteLine("func = function(element) _M.AM(baseConstructors, {}, 'Base constructor').func(element); end,");
+
+                textWriter.Indent--;
+                textWriter.WriteLine("}");
+            }
+            else
+            {
+                foreach (var constructor in this.constructorVisitors)
+                {
+                    constructor.Visit(textWriter, providers);
+                }
+            }
+
+            if (providers.PartialElementState.IsLast)
+            {
+                textWriter.Indent--;
+                textWriter.WriteLine("};");
             }
         }
 

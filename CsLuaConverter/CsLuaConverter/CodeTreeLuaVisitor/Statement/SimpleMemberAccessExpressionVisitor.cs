@@ -2,6 +2,7 @@
 {
     using System.CodeDom.Compiler;
     using CodeTree;
+    using Expression;
     using Microsoft.CodeAnalysis.CSharp;
     using Name;
     using Providers;
@@ -19,13 +20,20 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            providers.TypeKnowledgeRegistry.CurrentType = null;
-            this.targetVisitor.Visit(textWriter, providers);
+            if (this.targetVisitor is ThisExpressionVisitor)
+            {
+                providers.TypeKnowledgeRegistry.CurrentType = providers.NameProvider.GetScopeElement("this").Type;
+                textWriter.Write("(element % _M.DOT(typeObject.Level)).");
+            }
+            else
+            {
+                providers.TypeKnowledgeRegistry.CurrentType = null;
+                textWriter.Write("(");
+                this.targetVisitor.Visit(textWriter, providers);
+                textWriter.Write("% _M.DOT).");
+            }
 
-            // textWriter.Write("."); // todo: Should be elsewhere
-
-            var targetType = providers.TypeKnowledgeRegistry.CurrentType;
-            providers.TypeKnowledgeRegistry.CurrentType = targetType.GetTypeKnowledgeForSubElement(this.indexVisitor.GetName());
+            this.indexVisitor.Visit(textWriter, providers);
         }
     }
 }

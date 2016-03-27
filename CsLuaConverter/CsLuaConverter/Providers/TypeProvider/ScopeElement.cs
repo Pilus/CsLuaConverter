@@ -25,7 +25,7 @@
 
         public override string ToString()
         {
-            return (this.ClassPrefix == null ? string.Empty : (this.ClassPrefix + ".")) + this.Name;
+            return (this.ClassPrefix == null ? string.Empty : ($"({this.ClassPrefix} % _M.DOT).")) + this.Name;
         }
     }
 }

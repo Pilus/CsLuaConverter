@@ -113,9 +113,30 @@
 
         private TypeKnowledge[] GetMembers(string name)
         {
-            var members = this.type.GetMember(name);
+            var members = GetMembersOfType(this.type).Distinct().Where(e => e.Name == name);
 
             return members.Select(m => new TypeKnowledge(m)).ToArray();
+        }
+
+        private static IEnumerable<MemberInfo> GetMembersOfType(Type type)
+        {
+            var all = new List<MemberInfo>();
+
+            var _base = type.BaseType;
+            while (_base != null)
+            {
+                all.AddRange(_base.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
+                all.AddRange(_base.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+                all.AddRange(_base.GetMembers(BindingFlags.Public | BindingFlags.Static));
+                _base = _base.BaseType;
+            }
+
+            all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Instance));
+            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
+            all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Static));
+            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+
+            return all;
         }
 
         private Type GetTypeFromMember(MemberInfo member)

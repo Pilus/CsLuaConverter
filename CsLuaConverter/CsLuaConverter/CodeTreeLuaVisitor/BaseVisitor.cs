@@ -30,12 +30,20 @@
             return node.Kind == kind;
         }
 
+        private Func<CodeTreeBranch, BaseVisitor> customFactory;
         [DebuggerNonUserCode]
         protected BaseVisitor[] CreateVisitors(INodeFilter filter = null, Func<CodeTreeBranch, BaseVisitor> customFactory = null)
         {
+            this.customFactory = customFactory;
             return this.GetFilteredNodes(filter).OfType<CodeTreeBranch>()
-                .Select(branch => customFactory?.Invoke(branch) ?? CreateVisitor(branch))
+                .Select(this.CreateVisitorWithCustomFactory)
                 .ToArray();
+        }
+
+        [DebuggerNonUserCode]
+        private BaseVisitor CreateVisitorWithCustomFactory(CodeTreeBranch branch)
+        {
+            return this.customFactory?.Invoke(branch) ?? CreateVisitor(branch);
         }
 
         [DebuggerNonUserCode]

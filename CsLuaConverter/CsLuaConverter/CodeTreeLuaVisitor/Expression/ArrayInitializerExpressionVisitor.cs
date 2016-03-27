@@ -28,7 +28,7 @@
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write(".__Initialize({");
-            this.elementVisitors.VisitAll(textWriter, providers, () => textWriter.Write(", "));
+            this.elementVisitors.VisitAll(textWriter, providers, ", ");
             textWriter.Write("})");
             providers.TypeKnowledgeRegistry.CurrentType = providers.TypeKnowledgeRegistry.CurrentType.GetAsArrayType();
         }

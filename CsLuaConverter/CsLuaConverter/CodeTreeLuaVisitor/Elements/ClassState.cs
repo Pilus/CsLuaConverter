@@ -7,6 +7,7 @@
         WriteStaticValues,
         WriteInitialize,
         WriteMembers,
+        WriteConstructors,
         Close,
         Footer,
     }

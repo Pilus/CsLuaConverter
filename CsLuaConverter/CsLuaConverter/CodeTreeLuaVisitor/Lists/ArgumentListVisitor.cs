@@ -26,7 +26,7 @@
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write("(");
-            this.argumentVisitors.VisitAll(textWriter, providers, () => textWriter.Write(", "));
+            this.argumentVisitors.VisitAll(textWriter, providers, ", ");
             textWriter.Write(")");
         }
     }

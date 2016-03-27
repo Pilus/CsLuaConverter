@@ -22,5 +22,11 @@
                 }
             }
         }
+
+        public static void VisitAll(this IEnumerable<IVisitor> visitors, IndentedTextWriter textWriter,
+            IProviders providers, string delimiter)
+        {
+            visitors.VisitAll(textWriter, providers, () => { textWriter.Write(delimiter);});
+        }
     }
 }

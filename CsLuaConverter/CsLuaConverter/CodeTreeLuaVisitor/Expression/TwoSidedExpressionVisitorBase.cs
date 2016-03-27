@@ -21,8 +21,10 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
+            providers.TypeKnowledgeRegistry.CurrentType = null;
             this.lhsVisitor.Visit(textWriter, providers);
             textWriter.Write($" {this.token} ");
+            providers.TypeKnowledgeRegistry.CurrentType = null;
             this.rhsVisitor.Visit(textWriter, providers);
         }
     }
