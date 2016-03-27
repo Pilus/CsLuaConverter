@@ -4,19 +4,22 @@
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
     using Providers.TypeProvider;
     using Type;
 
     public class ParameterVisitor : BaseVisitor
     {
+        private readonly bool isParams;
         private readonly ITypeVisitor type;
         private readonly string name;
+
         public ParameterVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.ExpectKind(1, SyntaxKind.IdentifierToken);
-            this.type = (ITypeVisitor) this.CreateVisitor(0);
-            this.name = ((CodeTreeLeaf) this.Branch.Nodes[1]).Text;
+            this.isParams = this.Branch.Nodes[0].Kind.Equals(SyntaxKind.ParamsKeyword);
+            var paramsOffset = this.isParams ? 1 : 0;
+            this.ExpectKind(1 + paramsOffset, SyntaxKind.IdentifierToken);
+            this.type = (ITypeVisitor) this.CreateVisitor(0 + paramsOffset);
+            this.name = ((CodeTreeLeaf) this.Branch.Nodes[1 + paramsOffset]).Text;
         }
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
