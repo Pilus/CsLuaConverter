@@ -172,6 +172,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\ElementAccessExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\FalseLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ImplicitArrayCreationExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\InvocationExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\MultiplyExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\NumericLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectCreationExpressionVisitor.cs" />
