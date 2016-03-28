@@ -27,7 +27,8 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            throw new System.NotImplementedException();
+            textWriter.Write(this.name);
+            this.valueVisitor?.Visit(textWriter, providers);
         }
 
         public string GetName()

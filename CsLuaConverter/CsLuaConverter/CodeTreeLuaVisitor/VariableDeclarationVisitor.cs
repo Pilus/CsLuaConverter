@@ -4,6 +4,7 @@
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.TypeProvider;
     using Type;
 
     public class VariableDeclarationVisitor : BaseVisitor
@@ -24,7 +25,12 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            throw new System.NotImplementedException();
+            var type = this.typeVisitor.GetType(providers);
+
+            textWriter.Write("local ");
+            this.declaratorVisitor.Visit(textWriter, providers);
+
+            providers.NameProvider.AddToScope(new ScopeElement(this.declaratorVisitor.GetName(), type ?? providers.TypeKnowledgeRegistry.CurrentType));
         }
 
         public void WriteDefaultValue(IndentedTextWriter textWriter, IProviders providers)

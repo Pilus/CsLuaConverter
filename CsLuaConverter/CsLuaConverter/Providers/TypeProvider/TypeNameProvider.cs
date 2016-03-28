@@ -241,6 +241,11 @@
 
         private ITypeResult LookupTypeWithGenerics(string name, int? numGenerics)
         {
+            if (name == "var" || name == "void")
+            {
+                return null;
+            }
+
             var nativeType = this.predefinedNativeTypeResults.FirstOrDefault(t => name.Equals(t.NativeName));
             if (nativeType != null)
             {

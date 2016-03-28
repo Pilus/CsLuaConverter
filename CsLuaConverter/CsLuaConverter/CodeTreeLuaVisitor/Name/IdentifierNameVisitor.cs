@@ -59,7 +59,7 @@
             }
 
             var type = providers.TypeProvider.LookupType(this.text);
-            return new TypeKnowledge(type.TypeObject);
+            return type != null ? new TypeKnowledge(type.TypeObject) : null;
         }
 
         public void WriteAsType(IndentedTextWriter textWriter, IProviders providers)

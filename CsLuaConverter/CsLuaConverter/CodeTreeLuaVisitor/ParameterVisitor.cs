@@ -16,10 +16,16 @@
         public ParameterVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.isParams = this.Branch.Nodes[0].Kind.Equals(SyntaxKind.ParamsKeyword);
-            var paramsOffset = this.isParams ? 1 : 0;
-            this.ExpectKind(1 + paramsOffset, SyntaxKind.IdentifierToken);
-            this.type = (ITypeVisitor) this.CreateVisitor(0 + paramsOffset);
-            this.name = ((CodeTreeLeaf) this.Branch.Nodes[1 + paramsOffset]).Text;
+            var i = this.isParams ? 1 : 0;
+
+            if (!this.Branch.Nodes[i].Kind.Equals(SyntaxKind.IdentifierToken))
+            {
+                this.type = (ITypeVisitor)this.CreateVisitor(i);
+                i++;
+            }
+
+            this.ExpectKind(i, SyntaxKind.IdentifierToken);
+            this.name = ((CodeTreeLeaf) this.Branch.Nodes[i]).Text;
         }
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
