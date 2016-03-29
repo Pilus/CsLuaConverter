@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using System.CodeDom.Compiler;
+    using System.Linq;
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
@@ -19,7 +20,11 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            textWriter.Write("function(");
+            var delegateType = providers.TypeKnowledgeRegistry.CurrentType;
+            delegateType.WriteAsReference(textWriter, providers);
+            textWriter.Write(".(function(");
+
+            providers.TypeKnowledgeRegistry.CurrentType = delegateType.GetInputArgs().Single();
             this.parameter.Visit(textWriter, providers);
             textWriter.Write(")");
 
@@ -37,7 +42,8 @@
                 textWriter.Indent--;
             }
 
-            textWriter.Write("end");
+            textWriter.Write("end)");
+            providers.TypeKnowledgeRegistry.CurrentType = delegateType;
         }
     }
 }

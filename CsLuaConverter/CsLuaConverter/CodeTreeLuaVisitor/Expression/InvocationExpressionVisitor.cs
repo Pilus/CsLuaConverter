@@ -18,7 +18,6 @@
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
             this.target.Visit(textWriter, providers);
-            // TODO: Determine which amb method to invoke
             this.argumentList.Visit(textWriter, providers);
         }
     }

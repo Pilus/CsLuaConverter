@@ -5,10 +5,11 @@
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
 
     public class ArgumentListVisitor : BaseVisitor
     {
-        private IVisitor[] argumentVisitors;
+        private readonly IVisitor[] argumentVisitors;
         public ArgumentListVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.ExpectKind(0, SyntaxKind.OpenParenToken);
@@ -25,9 +26,29 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
+            var invocationType = this.DetermineTypeKnowledgeForArgumentInvocation(providers);
+            var args = invocationType.GetInputArgs();
             textWriter.Write("(");
-            this.argumentVisitors.VisitAll(textWriter, providers, ", ");
+            for (int index = 0; index < this.argumentVisitors.Length; index++)
+            {
+                var argumentVisitor = this.argumentVisitors[index];
+                var arg = args[index];
+                providers.TypeKnowledgeRegistry.CurrentType = arg;
+                argumentVisitor.Visit(textWriter, providers);
+            }
             textWriter.Write(")");
+
+            providers.TypeKnowledgeRegistry.CurrentType = invocationType.GetReturnArg();
+        }
+
+        private TypeKnowledge DetermineTypeKnowledgeForArgumentInvocation(IProviders providers)
+        {
+            var type = providers.TypeKnowledgeRegistry.CurrentType;
+            // TODO: Select amoung possibilities.
+
+            
+
+            return type;
         }
     }
 }

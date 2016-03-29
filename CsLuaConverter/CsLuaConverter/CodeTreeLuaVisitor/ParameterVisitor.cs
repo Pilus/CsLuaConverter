@@ -31,7 +31,7 @@
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
             textWriter.Write(this.name);
-            providers.NameProvider.AddToScope(new ScopeElement(this.name, this.type.GetType(providers)));
+            providers.NameProvider.AddToScope(new ScopeElement(this.name, this.type?.GetType(providers) ?? providers.TypeKnowledgeRegistry.CurrentType));
         }
 
         public void WriteAsTypes(IndentedTextWriter textWriter, IProviders providers)

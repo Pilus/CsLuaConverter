@@ -33,5 +33,30 @@
             }
             textWriter.Write("}]");
         }
+
+
+        public static TypeKnowledge[] GetInputArgs(this TypeKnowledge typeKnowledge)
+        {
+            var typeName = typeKnowledge.GetFullName();
+            if (typeName != "System.Func" && typeName != "System.Action")
+            {
+                throw new VisitorException($"Cannot get invocation input args on current type {typeKnowledge.GetFullName()}.");
+            }
+
+            var generics = typeKnowledge.GetGenerics();
+            return typeName == "System.Action" ? generics : generics.Take(generics.Length - 1).ToArray();
+        }
+
+        public static TypeKnowledge GetReturnArg(this TypeKnowledge typeKnowledge)
+        {
+            var typeName = typeKnowledge.GetFullName();
+            if (typeName != "System.Func" && typeName != "System.Action")
+            {
+                throw new VisitorException($"Cannot get invocation return args on current type {typeKnowledge.GetFullName()}.");
+            }
+
+            var generics = typeKnowledge.GetGenerics();
+            return typeName == "System.Action" ? null : generics.Last();
+        }
     }
 }

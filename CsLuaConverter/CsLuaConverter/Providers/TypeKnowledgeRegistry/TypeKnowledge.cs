@@ -39,6 +39,14 @@
             throw new NotImplementedException();
         }
 
+        public TypeKnowledge GetConstructor()
+        {
+            return this.type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic)
+                .Where(m => m.MemberType.Equals(MemberTypes.Constructor))
+                .Select(m => new TypeKnowledge(m))
+                .FirstOrDefault() ?? new TypeKnowledge(typeof(Action));
+        }
+
         public TypeKnowledge GetTypeKnowledgeForSubElement(string str)
         {
             return this.GetTypeKnowledgeForSubElement(str.Split('.'));

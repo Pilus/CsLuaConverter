@@ -22,8 +22,10 @@
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
             this.objectTypeVisitor.WriteAsReference(textWriter, providers);
+            var type = this.objectTypeVisitor.GetType(providers);
+            providers.TypeKnowledgeRegistry.CurrentType = type.GetConstructor();
             this.constructorArgumentsVisitor.Visit(textWriter, providers);
-            providers.TypeKnowledgeRegistry.CurrentType = this.objectTypeVisitor.GetType(providers);
+            providers.TypeKnowledgeRegistry.CurrentType = type;
         }
     }
 }

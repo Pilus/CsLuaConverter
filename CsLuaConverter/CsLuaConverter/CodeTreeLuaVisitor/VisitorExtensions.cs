@@ -3,11 +3,13 @@
     using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using Providers;
 
     public static class VisitorExtensions
     {
+        [DebuggerNonUserCode]
         public static void VisitAll(this IEnumerable<IVisitor> visitors, IndentedTextWriter textWriter, IProviders providers, Action delimiterAction = null)
         {
             var visitorArray = visitors.ToArray();
@@ -23,6 +25,7 @@
             }
         }
 
+        [DebuggerNonUserCode]
         public static void VisitAll(this IEnumerable<IVisitor> visitors, IndentedTextWriter textWriter,
             IProviders providers, string delimiter)
         {
