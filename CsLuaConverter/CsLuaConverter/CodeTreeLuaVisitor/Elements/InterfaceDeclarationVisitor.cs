@@ -7,11 +7,12 @@
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.GenericsRegistry;
 
     public class InterfaceDeclarationVisitor : BaseVisitor, IElementVisitor
     {
         private string name;
-        private IListVisitor genericsVisitor;
+        private TypeParameterListVisitor genericsVisitor;
 
         public InterfaceDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -21,7 +22,7 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            //throw new System.NotImplementedException();
+            this.WriteOpen(textWriter, providers);
         }
 
         public string GetName()
@@ -44,7 +45,60 @@
 
         private void CreateGenericsVisitor()
         {
-            this.genericsVisitor = (IListVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.TypeArgumentList)).SingleOrDefault();
+            this.genericsVisitor = (TypeParameterListVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.TypeArgumentList)).SingleOrDefault();
+        }
+
+
+        private void WriteOpen(IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", this.GetNumOfGenerics());
+            textWriter.Indent++;
+
+            this.RegisterGenerics(providers);
+            this.WriteGenericsMapping(textWriter, providers);
+
+            var typeObject = providers.TypeProvider.LookupType(this.name);
+
+            textWriter.WriteLine(
+                "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Interface');",
+                typeObject.Name, typeObject.Namespace, this.GetNumOfGenerics());
+
+            // WriteImplements(element, textWriter, providers);
+            // WriteAttributes(attributes, textWriter, providers);
+            // WriteMembers(elements, textWriter, providers);
+
+            textWriter.WriteLine("return 'Interface', typeObject, memberProvider, nil, nil;");
+
+            textWriter.Indent--;
+            textWriter.WriteLine("end,");
+
+            providers.GenericsRegistry.ClearScope(GenericScope.Class);
+        }
+
+        private void RegisterGenerics(IProviders providers)
+        {
+            if (this.genericsVisitor == null)
+            {
+                return;
+            }
+
+            providers.GenericsRegistry.SetGenerics(this.genericsVisitor.GetNames(), GenericScope.Class);
+        }
+
+        private void WriteGenericsMapping(IndentedTextWriter textWriter, IProviders providers)
+        {
+            textWriter.Write("local genericsMapping = ");
+
+            if (this.genericsVisitor != null)
+            {
+                textWriter.Write("{");
+                this.genericsVisitor.Visit(textWriter, providers);
+                textWriter.WriteLine("};");
+            }
+            else
+            {
+                textWriter.WriteLine("{};");
+            }
         }
     }
 }
