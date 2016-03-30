@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Lists
 {
+    using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using CodeTree;
@@ -28,11 +29,17 @@
         {
             var invocationType = this.DetermineTypeKnowledgeForArgumentInvocation(providers);
             var args = invocationType.GetInputArgs();
+
+            if (args.Length != this.argumentVisitors.Length && !invocationType.IsParams)
+            {
+                throw new VisitorException($"Non matching number of arguments. Expected invocation with {args.Length} args. Got {this.argumentVisitors.Length} args.");
+            }
+
             textWriter.Write("(");
             for (int index = 0; index < this.argumentVisitors.Length; index++)
             {
                 var argumentVisitor = this.argumentVisitors[index];
-                var arg = args[index];
+                var arg = args[Math.Min(index, args.Length - 1)];
                 providers.TypeKnowledgeRegistry.CurrentType = arg;
                 argumentVisitor.Visit(textWriter, providers);
             }

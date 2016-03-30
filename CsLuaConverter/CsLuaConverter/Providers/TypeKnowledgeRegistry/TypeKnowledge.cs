@@ -22,6 +22,8 @@
             this.type = this.GetTypeFromMember(member);
         }
 
+        public bool IsParams { get; private set; }
+
         public TypeKnowledge GetTypeKnowledgeForSubElement(string[] strings)
         {
             var members = this.GetMembers(strings.First());
@@ -161,6 +163,8 @@
                     parameterTypes.Add(methodInfo.ReturnType);
                 }
 
+                this.IsParams = MethodHasParams(methodInfo);
+
                 if (parameterTypes.Count == 0)
                 {
                     return typeof(Action);
@@ -184,6 +188,13 @@
             }
 
             return fieldInfo.FieldType;
+        }
+
+        public static bool MethodHasParams(MethodInfo mi)
+        {
+            var lastParameter = mi.GetParameters().LastOrDefault();
+
+            return lastParameter?.GetCustomAttributes(typeof(ParamArrayAttribute), false).Any() ?? false;
         }
 
         private static readonly List<Type> Actions = new List<Type>()
