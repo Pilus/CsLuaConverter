@@ -41,9 +41,9 @@
             providers.TypeKnowledgeRegistry.CurrentType = element.Type;
         }
 
-        public override void WriteAsReference(IndentedTextWriter textWriter, IProviders providers)
+        public  void WriteAsType(IndentedTextWriter textWriter, IProviders providers)
         {
-            this.WriteAsType(textWriter, providers);
+            this.WriteAsReference(textWriter, providers);
 
             if (!providers.GenericsRegistry.IsGeneric(this.text))
             {
@@ -62,7 +62,7 @@
             return type != null ? new TypeKnowledge(type.TypeObject) : null;
         }
 
-        public void WriteAsType(IndentedTextWriter textWriter, IProviders providers)
+        public override void WriteAsReference(IndentedTextWriter textWriter, IProviders providers)
         {
             if (providers.GenericsRegistry.IsGeneric(this.text))
             {

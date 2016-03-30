@@ -20,9 +20,9 @@
 
         public override void Visit(IndentedTextWriter textWriter, IProviders providers)
         {
-            var delegateType = providers.TypeKnowledgeRegistry.CurrentType;
+            var delegateType = providers.TypeKnowledgeRegistry.ExpectedType;
             delegateType.WriteAsReference(textWriter, providers);
-            textWriter.Write(".(function(");
+            textWriter.Write("(function(");
 
             providers.TypeKnowledgeRegistry.CurrentType = delegateType.GetInputArgs().Single();
             this.parameter.Visit(textWriter, providers);
@@ -35,14 +35,11 @@
             }
             else
             {
-                
-                textWriter.Indent++;
-                textWriter.Write("return ");
+                textWriter.Write(" return ");
                 this.body.Visit(textWriter, providers);
-                textWriter.Indent--;
             }
 
-            textWriter.Write("end)");
+            textWriter.Write(" end)");
             providers.TypeKnowledgeRegistry.CurrentType = delegateType;
         }
     }

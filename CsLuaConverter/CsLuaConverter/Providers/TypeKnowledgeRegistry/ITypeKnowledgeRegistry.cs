@@ -5,5 +5,6 @@
     public interface ITypeKnowledgeRegistry
     {
         TypeKnowledge CurrentType { get; set; }
+        TypeKnowledge ExpectedType { get; set; }
     }
 }

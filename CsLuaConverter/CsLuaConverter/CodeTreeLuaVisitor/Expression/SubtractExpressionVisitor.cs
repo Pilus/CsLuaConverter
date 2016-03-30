@@ -2,17 +2,13 @@
 {
     using System.CodeDom.Compiler;
     using CodeTree;
+    using Microsoft.CodeAnalysis.CSharp;
     using Providers;
 
-    public class SubtractExpressionVisitor : BaseVisitor
+    public class SubtractExpressionVisitor : TwoSidedExpressionVisitorBase
     {
-        public SubtractExpressionVisitor(CodeTreeBranch branch) : base(branch)
+        public SubtractExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.MinusToken)
         {
-        }
-
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

@@ -30,7 +30,7 @@
             var invocationType = this.DetermineTypeKnowledgeForArgumentInvocation(providers);
             var args = invocationType.GetInputArgs();
 
-            if (args.Length != this.argumentVisitors.Length && !invocationType.IsParams)
+            if (args.Length != this.argumentVisitors.Length && !(invocationType.IsParams && args.Length <= this.argumentVisitors.Length))
             {
                 throw new VisitorException($"Non matching number of arguments. Expected invocation with {args.Length} args. Got {this.argumentVisitors.Length} args.");
             }
@@ -40,11 +40,17 @@
             {
                 var argumentVisitor = this.argumentVisitors[index];
                 var arg = args[Math.Min(index, args.Length - 1)];
-                providers.TypeKnowledgeRegistry.CurrentType = arg;
+                providers.TypeKnowledgeRegistry.ExpectedType = arg;
                 argumentVisitor.Visit(textWriter, providers);
+
+                if (index < this.argumentVisitors.Length - 1)
+                {
+                    textWriter.Write(", ");
+                }
             }
             textWriter.Write(")");
 
+            providers.TypeKnowledgeRegistry.ExpectedType = null;
             providers.TypeKnowledgeRegistry.CurrentType = invocationType.GetReturnArg();
         }
 
