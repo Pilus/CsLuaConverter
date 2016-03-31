@@ -1,4 +1,4 @@
-﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
+﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.TwoSided
 {
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;

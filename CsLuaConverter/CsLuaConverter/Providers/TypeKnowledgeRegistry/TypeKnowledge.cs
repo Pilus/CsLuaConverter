@@ -41,12 +41,21 @@
             throw new NotImplementedException();
         }
 
-        public TypeKnowledge GetConstructor()
+        public TypeKnowledge[] GetConstructors()
         {
-            return this.type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic)
+            if (typeof(Delegate).IsAssignableFrom(this.type))
+            {
+                var cstorType = typeof (Action<>).MakeGenericType(this.type);
+                return new[] {new TypeKnowledge(cstorType)};
+            }
+
+            var cstors = this.type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(m => m.MemberType.Equals(MemberTypes.Constructor))
                 .Select(m => new TypeKnowledge(m))
-                .FirstOrDefault() ?? new TypeKnowledge(typeof(Action));
+                .ToArray();
+
+            
+            return cstors.Length > 0 ? cstors : new[] {new TypeKnowledge(typeof (Action))};
         }
 
         public TypeKnowledge GetTypeKnowledgeForSubElement(string str)

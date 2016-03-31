@@ -8,6 +8,7 @@
     using CsLuaFramework;
     using Filters;
     using Lists;
+    using Member;
     using Microsoft.CodeAnalysis.CSharp;
     using Name;
     using Providers;

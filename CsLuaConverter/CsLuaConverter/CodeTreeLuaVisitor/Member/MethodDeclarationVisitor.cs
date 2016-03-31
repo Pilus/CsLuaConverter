@@ -1,7 +1,6 @@
-﻿namespace CsLuaConverter.CodeTreeLuaVisitor
+﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Member
 {
     using System;
-    using System.CodeDom.Compiler;
     using System.Linq;
     using CodeTree;
     using Filters;
@@ -50,11 +49,6 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            if (this.name != "Execute") // Temp filter 
-            {
-                return;
-            }
-
             this.RegisterMethodGenerics(providers);
 
             if (this.methodGenerics != null)

@@ -1,12 +1,10 @@
-﻿namespace CsLuaConverter.CodeTreeLuaVisitor
+﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Member
 {
     using System;
-    using System.CodeDom.Compiler;
     using System.Linq;
     using Accessor;
     using CodeTree;
     using Filters;
-    using Lists;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
     using Type;

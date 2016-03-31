@@ -2,6 +2,7 @@
 {
     using System.CodeDom.Compiler;
     using CodeTree;
+    using Member;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
 
@@ -18,6 +19,7 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.variableDeclarationVisitor.Visit(textWriter, providers);
+            providers.TypeKnowledgeRegistry.CurrentType = null;
             textWriter.WriteLine(";");
         }
     }

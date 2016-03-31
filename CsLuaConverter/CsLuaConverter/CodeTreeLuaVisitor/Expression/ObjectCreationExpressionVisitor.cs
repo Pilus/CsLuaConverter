@@ -32,8 +32,9 @@
             this.objectTypeVisitor.WriteAsReference(textWriter, providers);
             var type = this.objectTypeVisitor.GetType(providers);
             textWriter.Write(" % _M.DOT)");
-            providers.TypeKnowledgeRegistry.CurrentType = type.GetConstructor();
+            providers.TypeKnowledgeRegistry.PossibleMethods = type.GetConstructors();
             this.constructorArgumentsVisitor.Visit(textWriter, providers);
+            providers.TypeKnowledgeRegistry.PossibleMethods = null;
 
             if (this.initializer != null)
             {

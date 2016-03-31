@@ -3,6 +3,7 @@
     using System;
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
+    using System.Linq;
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
@@ -56,12 +57,23 @@
 
         private TypeKnowledge DetermineTypeKnowledgeForArgumentInvocation(IProviders providers)
         {
-            var type = providers.TypeKnowledgeRegistry.CurrentType;
+            var types = providers.TypeKnowledgeRegistry.PossibleMethods;
+
+            if (types == null)
+            {
+                types = new [] { providers.TypeKnowledgeRegistry.CurrentType };
+            }
+
+            if (types.Count() == 1)
+            {
+                return types.Single();
+            }
+
             // TODO: Select amoung possibilities.
 
-            
 
-            return type;
+
+            throw new NotImplementedException();
         }
     }
 }

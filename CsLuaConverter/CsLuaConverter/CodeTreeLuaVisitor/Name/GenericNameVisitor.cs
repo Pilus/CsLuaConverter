@@ -40,7 +40,7 @@
 
         public override TypeKnowledge GetType(IProviders providers)
         {
-            var type = providers.TypeProvider.LookupType(this.name);
+            var type = providers.TypeProvider.LookupType(new[] {this.name}, this.argumentListVisitor.GetNumElements());
 
             return this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
         }

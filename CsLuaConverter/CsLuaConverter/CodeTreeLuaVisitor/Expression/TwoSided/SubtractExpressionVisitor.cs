@@ -1,9 +1,7 @@
-﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
+﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.TwoSided
 {
-    using System.CodeDom.Compiler;
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class SubtractExpressionVisitor : TwoSidedExpressionVisitorBase
     {
