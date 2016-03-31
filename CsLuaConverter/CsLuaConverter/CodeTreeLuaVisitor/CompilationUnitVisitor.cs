@@ -25,7 +25,7 @@
             }, $"In document {this.Branch.DocumentName}");
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             TryActionAndWrapException(() =>
             {
@@ -36,7 +36,7 @@
             }, $"In document {this.Branch.DocumentName}");
         }
 
-        public void WriteFooter(IndentedTextWriter textWriter, IProviders providers)
+        public void WriteFooter(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.namespaceVisitor.WriteFooter(textWriter, providers);
         }

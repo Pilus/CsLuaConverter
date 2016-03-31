@@ -65,7 +65,7 @@
         }
 
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             TryActionAndWrapException(() =>
             {
@@ -107,7 +107,7 @@
             }, $"In visiting of class {this.name}. State: {((ClassState)(providers.PartialElementState.CurrentState ?? 0))}");
         }
 
-        private void WriteOpen(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteOpen(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             if (providers.PartialElementState.IsFirst)
             {
@@ -129,7 +129,7 @@
             }
         }
 
-        private void WriteGenericsMapping(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteGenericsMapping(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("local genericsMapping = ");
 
@@ -145,7 +145,7 @@
             }
         }
 
-        private void WriteTypeGeneration(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteTypeGeneration(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var typeObject = providers.TypeProvider.LookupType(this.name);
             textWriter.WriteLine(
@@ -153,7 +153,7 @@
                 typeObject.Name, typeObject.Namespace, this.genericsVisitor?.GetNumElements() ?? 0);
         }
 
-        private void WriteBaseInheritance(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteBaseInheritance(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = ");
 
@@ -165,7 +165,7 @@
             textWriter.WriteLine(".__meta(staticValues);");
         }
 
-        private void WriteTypePopulation(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteTypePopulation(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             if (this.baseListVisitor != null)
             {
@@ -177,7 +177,7 @@
             textWriter.WriteLine("typeObject.implements = implements;");
         }
 
-        private void WriteTypeGenerator(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteTypeGenerator(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             if (providers.PartialElementState.IsFirst)
             {
@@ -214,7 +214,7 @@
             }
         }
 
-        private void WriteStaticValues(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteStaticValues(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             if (providers.PartialElementState.IsFirst)
             {
@@ -239,7 +239,7 @@
             }
         }
 
-        private void WriteInitialize(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteInitialize(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
 
             if (providers.PartialElementState.IsFirst)
@@ -267,7 +267,7 @@
             }
         }
 
-        private void WriteMembers(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteMembers(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             if (providers.PartialElementState.IsFirst)
             {
@@ -295,7 +295,7 @@
             }
         }
 
-        private void WriteConstructors(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteConstructors(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             if (providers.PartialElementState.IsFirst)
             {
@@ -329,7 +329,7 @@
             }
         }
 
-        private void WriteClose(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteClose(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             if (providers.PartialElementState.IsLast)
             {
@@ -344,7 +344,7 @@
             }
         }
 
-        private void WriteFooter(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteFooter(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             if (!providers.PartialElementState.IsFirst || this.attributeListVisitor?.HasCsLuaAddOnAttribute() != true)
             {

@@ -15,7 +15,7 @@
             this.argument = (ArgumentVisitor) this.CreateVisitors(new KindFilter(SyntaxKind.Argument)).Single();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var type = providers.TypeKnowledgeRegistry.CurrentType;
             providers.TypeKnowledgeRegistry.CurrentType = null;

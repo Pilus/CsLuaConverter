@@ -15,7 +15,7 @@
             this.visitors = this.CreateVisitors(new KindRangeFilter(SyntaxKind.OpenBraceToken, SyntaxKind.CloseBraceToken));
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Indent++;
             this.visitors.VisitAll(textWriter, providers);

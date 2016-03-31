@@ -15,7 +15,7 @@
             this.innerVisitor = this.CreateVisitor(1);
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("return ");
             providers.TypeKnowledgeRegistry.CurrentType = null;

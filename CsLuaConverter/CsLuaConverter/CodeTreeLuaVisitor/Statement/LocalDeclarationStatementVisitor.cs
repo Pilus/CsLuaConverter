@@ -15,7 +15,7 @@
             this.variableDeclarationVisitor = (VariableDeclarationVisitor)this.CreateVisitor(0);
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.variableDeclarationVisitor.Visit(textWriter, providers);
             textWriter.WriteLine(";");

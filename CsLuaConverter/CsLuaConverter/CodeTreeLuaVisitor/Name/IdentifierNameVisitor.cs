@@ -17,7 +17,7 @@
             this.text = ((CodeTreeLeaf)this.Branch.Nodes.Single()).Text;
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var currentType = providers.TypeKnowledgeRegistry.CurrentType;
             if (currentType != null)
@@ -41,7 +41,7 @@
             providers.TypeKnowledgeRegistry.CurrentType = element.Type;
         }
 
-        public  void WriteAsType(IndentedTextWriter textWriter, IProviders providers)
+        public  void WriteAsType(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.WriteAsReference(textWriter, providers);
 
@@ -62,7 +62,7 @@
             return type != null ? new TypeKnowledge(type.TypeObject) : null;
         }
 
-        public override void WriteAsReference(IndentedTextWriter textWriter, IProviders providers)
+        public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             if (providers.GenericsRegistry.IsGeneric(this.text))
             {

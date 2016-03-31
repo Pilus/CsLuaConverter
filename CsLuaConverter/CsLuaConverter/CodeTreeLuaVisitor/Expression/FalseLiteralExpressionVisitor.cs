@@ -17,7 +17,7 @@
             this.value = ((CodeTreeLeaf) this.Branch.Nodes.Single()).Text;
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write(this.value);
             providers.TypeKnowledgeRegistry.CurrentType = new TypeKnowledge(typeof(bool));

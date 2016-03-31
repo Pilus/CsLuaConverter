@@ -5,6 +5,7 @@ namespace CsLuaConverter
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using CodeTreeLuaVisitor;
     using ProjectAnalysis;
     using Providers;
 
@@ -17,7 +18,7 @@ namespace CsLuaConverter
         }
 
         public ProjectInfo Info { get; set; }
-        public Dictionary<string, Action<IndentedTextWriter>> Namespaces { get; set; }
+        public Dictionary<string, Action<IIndentedTextWriterWrapper>> Namespaces { get; set; }
         public List<AnalyzedProjectInfo> Referenders { get; private set; }
         public List<AnalyzedProjectInfo> RequiredAddOns { get; private set; }
         public List<AnalyzedProjectInfo> HostOf { get; private set; }

@@ -204,8 +204,9 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\UnaryMinusExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\FieldDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\GetAccessorDeclarationVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\IndentedTextWriterExtension.cs" />
+    <Compile Include="IIndentedTextWriterWrapper.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorListVisitor.cs" />
+    <Compile Include="IndentedTextWriterWrapper.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\ArgumentListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\BaseListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\BracketedArgumentListVisitor.cs" />

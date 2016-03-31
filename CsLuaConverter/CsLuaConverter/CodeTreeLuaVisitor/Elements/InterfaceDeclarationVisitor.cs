@@ -20,7 +20,7 @@
             this.CreateGenericsVisitor();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.WriteOpen(textWriter, providers);
         }
@@ -49,7 +49,7 @@
         }
 
 
-        private void WriteOpen(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteOpen(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", this.GetNumOfGenerics());
             textWriter.Indent++;
@@ -85,7 +85,7 @@
             providers.GenericsRegistry.SetGenerics(this.genericsVisitor.GetNames(), GenericScope.Class);
         }
 
-        private void WriteGenericsMapping(IndentedTextWriter textWriter, IProviders providers)
+        private void WriteGenericsMapping(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("local genericsMapping = ");
 

@@ -11,12 +11,12 @@
         {
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             throw new System.NotImplementedException();
         }
 
-        public override void WriteAsReference(IndentedTextWriter textWriter, IProviders providers)
+        public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             throw new System.NotImplementedException();
         }

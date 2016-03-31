@@ -19,7 +19,7 @@
             this.setVisitor = visitors.OfType<SetAccessorDeclarationVisitor>().SingleOrDefault();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.getVisitor?.Visit(textWriter, providers);
             this.setVisitor?.Visit(textWriter, providers);

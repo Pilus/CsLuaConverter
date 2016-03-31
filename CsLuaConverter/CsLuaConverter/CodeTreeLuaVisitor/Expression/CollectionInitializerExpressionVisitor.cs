@@ -17,7 +17,7 @@
                     SyntaxKind.CommaToken)).ToArray();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.WriteLine(".__Initialize({");
             textWriter.Indent++;

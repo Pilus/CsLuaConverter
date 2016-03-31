@@ -25,7 +25,7 @@
             }
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.objectTypeVisitor.WriteAsReference(textWriter, providers);
             var type = this.objectTypeVisitor.GetType(providers);

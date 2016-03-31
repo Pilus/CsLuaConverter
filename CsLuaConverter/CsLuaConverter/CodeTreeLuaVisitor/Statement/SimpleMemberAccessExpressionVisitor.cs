@@ -18,7 +18,7 @@
             this.indexVisitor = (INameVisitor)this.CreateVisitor(2);
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             if (this.targetVisitor is ThisExpressionVisitor)
             {

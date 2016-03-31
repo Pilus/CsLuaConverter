@@ -21,7 +21,7 @@
             this.argumentListVisitor = (TypeArgumentListVisitor) this.CreateVisitor(1);
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             throw new System.NotImplementedException();
         }
@@ -31,7 +31,7 @@
             return new[] {this.name};
         }
 
-        public override void WriteAsReference(IndentedTextWriter textWriter, IProviders providers)
+        public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var type = providers.TypeProvider.LookupType(this.name);
             textWriter.Write(type.FullNameWithoutGenerics);
@@ -45,7 +45,7 @@
             return this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
         }
 
-        public void WriteGenericTypes(IndentedTextWriter textWriter, IProviders providers)
+        public void WriteGenericTypes(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("[");
             this.argumentListVisitor.Visit(textWriter, providers);

@@ -21,7 +21,7 @@
                     SyntaxKind.GenericName)).Select(v => (INameVisitor) v).ToArray();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             throw new System.NotImplementedException();
         }
@@ -31,7 +31,7 @@
             return this.nameVisitors.Length;
         }
 
-        public bool WriteInteractiveObjectRefOfFirstTypeIfClass(IndentedTextWriter textWriter, IProviders providers)
+        public bool WriteInteractiveObjectRefOfFirstTypeIfClass(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var first = this.nameVisitors.FirstOrDefault();
             if (first == null)
@@ -50,7 +50,7 @@
             return true;
         }
 
-        public void WriteInterfaceImplements(IndentedTextWriter textWriter, IProviders providers, string format, Type[] excludedTypes)
+        public void WriteInterfaceImplements(IIndentedTextWriterWrapper textWriter, IProviders providers, string format, Type[] excludedTypes)
         {
             foreach (var visitor in this.nameVisitors)
             {
@@ -59,7 +59,7 @@
                 if (!type.IsInterface || excludedTypes.Contains(type.TypeObject)) continue;
 
                 var writer = new StringWriter();
-                var innerWriter = new IndentedTextWriter(writer);
+                var innerWriter = new IndentedTextWriterWrapper(writer);
                 innerWriter.Indent = textWriter.Indent;
                 visitor.WriteAsType(innerWriter, providers);
                 textWriter.WriteLine(format, writer);

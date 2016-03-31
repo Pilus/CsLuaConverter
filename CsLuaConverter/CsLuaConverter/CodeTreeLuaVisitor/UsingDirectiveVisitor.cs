@@ -16,7 +16,7 @@
             this.nameVisitor = (INameVisitor)this.CreateVisitor(1);
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             providers.TypeProvider.AddNamespace(this.nameVisitor.GetName());
         }

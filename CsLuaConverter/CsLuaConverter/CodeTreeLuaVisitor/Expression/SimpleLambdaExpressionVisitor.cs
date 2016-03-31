@@ -18,7 +18,7 @@
             this.body = this.CreateVisitor(2);
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var delegateType = providers.TypeKnowledgeRegistry.ExpectedType;
             delegateType.WriteAsReference(textWriter, providers);

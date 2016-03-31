@@ -23,7 +23,7 @@
             return this.declaratorVisitor.GetName();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var type = this.typeVisitor.GetType(providers);
 
@@ -33,12 +33,12 @@
             providers.NameProvider.AddToScope(new ScopeElement(this.declaratorVisitor.GetName(), type ?? providers.TypeKnowledgeRegistry.CurrentType));
         }
 
-        public void WriteDefaultValue(IndentedTextWriter textWriter, IProviders providers)
+        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.declaratorVisitor.WriteDefaultValue(textWriter, providers, this.typeVisitor);
         }
 
-        public void WriteInitializeValue(IndentedTextWriter textWriter, IProviders providers)
+        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.declaratorVisitor.WriteInitializeValue(textWriter, providers);
         }

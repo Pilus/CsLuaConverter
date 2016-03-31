@@ -10,7 +10,7 @@
     public static class VisitorExtensions
     {
         [DebuggerNonUserCode]
-        public static void VisitAll(this IEnumerable<IVisitor> visitors, IndentedTextWriter textWriter, IProviders providers, Action delimiterAction = null)
+        public static void VisitAll(this IEnumerable<IVisitor> visitors, IIndentedTextWriterWrapper textWriter, IProviders providers, Action delimiterAction = null)
         {
             var visitorArray = visitors.ToArray();
             for (var index = 0; index < visitorArray.Length; index++)
@@ -26,7 +26,7 @@
         }
 
         [DebuggerNonUserCode]
-        public static void VisitAll(this IEnumerable<IVisitor> visitors, IndentedTextWriter textWriter,
+        public static void VisitAll(this IEnumerable<IVisitor> visitors, IIndentedTextWriterWrapper textWriter,
             IProviders providers, string delimiter)
         {
             visitors.VisitAll(textWriter, providers, () => { textWriter.Write(delimiter);});

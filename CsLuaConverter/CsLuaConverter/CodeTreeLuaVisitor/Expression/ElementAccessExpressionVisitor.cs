@@ -17,7 +17,7 @@
             this.bracketedArgumentList = (BracketedArgumentListVisitor)this.CreateVisitor(1);
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.target.Visit(textWriter, providers);
             this.bracketedArgumentList.Visit(textWriter, providers);

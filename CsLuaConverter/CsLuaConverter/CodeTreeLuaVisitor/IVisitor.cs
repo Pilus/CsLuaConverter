@@ -6,6 +6,6 @@
 
     public interface IVisitor
     {
-        void Visit(IndentedTextWriter textWriter, IProviders providers);
+        void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers);
     }
 }

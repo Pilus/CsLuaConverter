@@ -25,7 +25,7 @@
             }
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write(this.name);
             this.valueVisitor?.Visit(textWriter, providers);
@@ -36,7 +36,7 @@
             return this.name;
         }
 
-        public void WriteDefaultValue(IndentedTextWriter textWriter, IProviders providers, ITypeVisitor typeVisitor)
+        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IProviders providers, ITypeVisitor typeVisitor)
         {
             textWriter.Write(this.name);
 
@@ -53,7 +53,7 @@
             }
         }
 
-        public void WriteInitializeValue(IndentedTextWriter textWriter, IProviders providers)
+        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.WriteLine($"if not(values.{this.name} == nil) then element[typeObject.Level].{this.name} = values.{this.name}; end");
         }

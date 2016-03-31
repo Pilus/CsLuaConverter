@@ -16,12 +16,12 @@
             this.providers = providers;
         }
 
-        public Dictionary<string, Action<IndentedTextWriter>> CreateNamespaceBasedVisitorActions(CodeTreeBranch[] treeRoots)
+        public Dictionary<string, Action<IIndentedTextWriterWrapper>> CreateNamespaceBasedVisitorActions(CodeTreeBranch[] treeRoots)
         {
             var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree)).ToArray();
             BaseVisitor.LockVisitorCreation = true;
 
-            return visitors.GroupBy(v => v.GetTopNamespace()).ToDictionary(g => g.Key, g => new Action<IndentedTextWriter>((textWriter) =>
+            return visitors.GroupBy(v => v.GetTopNamespace()).ToDictionary(g => g.Key, g => new Action<IIndentedTextWriterWrapper>((textWriter) =>
             {
                 var fileGroups = g.GroupBy(v => string.Join(".", v.GetNamespaceName()) + "." + v.GetElementName());
                 var ordered = fileGroups.OrderBy(fg => fg.Key).ToArray();
@@ -74,7 +74,7 @@
             }));
         }
 
-        private void VisitFilesWithSameElementName(CompilationUnitVisitor[] visitors, IndentedTextWriter textWriter)
+        private void VisitFilesWithSameElementName(CompilationUnitVisitor[] visitors, IIndentedTextWriterWrapper textWriter)
         {
             var name = visitors.First().GetElementName();
             textWriter.WriteLine($"{name} = _M.NE({{");
@@ -89,7 +89,7 @@
             textWriter.WriteLine("}),");
         }
 
-        private void VisitFilesWithSameElementNameAndNumGenerics(CompilationUnitVisitor[] visitors, IndentedTextWriter textWriter)
+        private void VisitFilesWithSameElementNameAndNumGenerics(CompilationUnitVisitor[] visitors, IIndentedTextWriterWrapper textWriter)
         {
             var state = this.providers.PartialElementState;
             state.CurrentState = null;
@@ -113,7 +113,7 @@
         }
 
         /*
-        private void Visit(CompilationUnitVisitor visitor, CompilationUnitVisitor previousVisitor, CompilationUnitVisitor nextVisitor, IndentedTextWriter textWriter)
+        private void Visit(CompilationUnitVisitor visitor, CompilationUnitVisitor previousVisitor, CompilationUnitVisitor nextVisitor, IIndentedTextWriterWrapper textWriter)
         {
             var previousName = previousVisitor?.GetElementName();
 

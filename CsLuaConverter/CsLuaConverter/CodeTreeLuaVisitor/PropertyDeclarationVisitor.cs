@@ -39,7 +39,7 @@
             this.accessorList = (AccessorListVisitor) this.CreateVisitor(totalNodes - 1);
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.WriteLine("_M.IM(members, '{0}',{{", this.name);
             textWriter.Indent++;
@@ -54,7 +54,7 @@
             textWriter.WriteLine("});");
         }
 
-        public void WriteDefaultValue(IndentedTextWriter textWriter, IProviders providers, bool isStaticFilter = false)
+        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IProviders providers, bool isStaticFilter = false)
         {
             if (this.isStatic != isStaticFilter)
             {
@@ -66,7 +66,7 @@
             textWriter.WriteLine("),");
         }
 
-        public void WriteInitializeValue(IndentedTextWriter textWriter, IProviders providers)
+        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.WriteLine($"if not(values.{this.name} == nil) then element[typeObject.Level].{this.name} = values.{this.name}; end");
         }

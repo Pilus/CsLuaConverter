@@ -15,7 +15,7 @@
             this.Name = ((CodeTreeLeaf) this.Branch.Nodes[0]).Text;
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write(this.Name);
         }

@@ -22,7 +22,7 @@
                     .ToArray();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("{");
             foreach (var visitor in this.visitors)

@@ -16,7 +16,7 @@
             this.creationExpression = (ArrayInitializerExpressionVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.ArrayInitializerExpression)).Single();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
 
             var creationWriter = textWriter.CreateTextWriterAtSameIndent();

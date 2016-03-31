@@ -28,13 +28,13 @@
             this.name = ((CodeTreeLeaf) this.Branch.Nodes[i]).Text;
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write(this.name);
             providers.NameProvider.AddToScope(new ScopeElement(this.name, this.type?.GetType(providers) ?? providers.TypeKnowledgeRegistry.CurrentType));
         }
 
-        public void WriteAsTypes(IndentedTextWriter textWriter, IProviders providers)
+        public void WriteAsTypes(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.type.WriteAsType(textWriter, providers);
         }

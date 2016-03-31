@@ -7,14 +7,14 @@
 
     public static class TypeKnowledgeExtensions
     {
-        public static void WriteAsType(this TypeKnowledge typeKnowledge, IndentedTextWriter textWriter,
+        public static void WriteAsType(this TypeKnowledge typeKnowledge, IIndentedTextWriterWrapper textWriter,
             IProviders providers)
         {
             typeKnowledge.WriteAsReference(textWriter, providers);
             textWriter.Write(".__typeof");
         }
 
-        public static void WriteAsReference(this TypeKnowledge typeKnowledge, IndentedTextWriter textWriter,
+        public static void WriteAsReference(this TypeKnowledge typeKnowledge, IIndentedTextWriterWrapper textWriter,
             IProviders providers)
         {
             textWriter.Write(typeKnowledge.GetFullName());

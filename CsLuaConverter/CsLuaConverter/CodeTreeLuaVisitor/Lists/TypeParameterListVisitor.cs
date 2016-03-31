@@ -16,7 +16,7 @@
             this.visitors = this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameter)).Select(v => (TypeParameterVisitor)v).ToArray();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var c = 1;
             foreach (var visitor in this.visitors)

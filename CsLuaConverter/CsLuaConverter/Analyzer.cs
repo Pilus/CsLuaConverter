@@ -37,7 +37,7 @@
             };
         }
 
-        private Dictionary<string, Action<IndentedTextWriter>> GetNamespaces(Project project)
+        private Dictionary<string, Action<IIndentedTextWriterWrapper>> GetNamespaces(Project project)
         {
             if (Debugger.IsAttached)
             {
@@ -55,7 +55,7 @@
             }
         }
 
-        private Dictionary<string, Action<IndentedTextWriter>> GetNamespacesFromProject(Project project)
+        private Dictionary<string, Action<IIndentedTextWriterWrapper>> GetNamespacesFromProject(Project project)
         {
             IEnumerable<Document> docs = project.Documents
                 .Where(doc => doc.Folders.FirstOrDefault() != "Properties"

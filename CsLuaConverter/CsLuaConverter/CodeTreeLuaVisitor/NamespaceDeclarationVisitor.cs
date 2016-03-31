@@ -24,7 +24,7 @@
             this.CreateElementVisitor();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             
             providers.TypeProvider.SetCurrentNamespace(this.nameVisitor.GetName());
@@ -45,7 +45,7 @@
             }
         }
 
-        public void WriteFooter(IndentedTextWriter textWriter, IProviders providers)
+        public void WriteFooter(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var state = providers.PartialElementState;
             state.CurrentState = (int)ClassState.Footer;

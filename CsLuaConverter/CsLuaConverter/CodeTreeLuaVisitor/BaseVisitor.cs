@@ -22,7 +22,7 @@
             this.Branch = branch;
         }
 
-        public abstract void Visit(IndentedTextWriter textWriter, IProviders providers);
+        public abstract void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers);
 
         [DebuggerNonUserCode]
         protected static bool IsKind(CodeTreeNode node, SyntaxKind kind)
@@ -52,7 +52,7 @@
             return (filter == null ? this.Branch.Nodes : filter.Filter(this.Branch.Nodes)).ToArray();
         }
 
-        protected void CreateVisitorsAndVisitBranches(IndentedTextWriter textWriter, IProviders providers, INodeFilter filter = null, Func<CodeTreeBranch, BaseVisitor> customFactory = null)
+        protected void CreateVisitorsAndVisitBranches(IIndentedTextWriterWrapper textWriter, IProviders providers, INodeFilter filter = null, Func<CodeTreeBranch, BaseVisitor> customFactory = null)
         {
             foreach (var visitor in this.CreateVisitors(filter, customFactory))
             {

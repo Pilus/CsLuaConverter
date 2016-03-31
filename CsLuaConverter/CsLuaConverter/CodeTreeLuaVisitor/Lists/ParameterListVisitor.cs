@@ -20,7 +20,7 @@
                 this.CreateVisitors(new KindFilter(SyntaxKind.Parameter)).Select(v => (ParameterVisitor) v).ToArray();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             if (this.parameters.Any())
             {
@@ -29,7 +29,7 @@
             this.parameters.VisitAll(textWriter, providers, ", ");
         }
 
-        public void WriteAsTypes(IndentedTextWriter textWriter, IProviders providers)
+        public void WriteAsTypes(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             for (var index = 0; index < this.parameters.Length; index++)
             {

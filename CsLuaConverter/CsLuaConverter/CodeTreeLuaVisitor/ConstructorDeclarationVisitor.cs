@@ -22,7 +22,7 @@
                 (BlockVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.Block)).Single();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.WriteLine("{");
             textWriter.Indent++;

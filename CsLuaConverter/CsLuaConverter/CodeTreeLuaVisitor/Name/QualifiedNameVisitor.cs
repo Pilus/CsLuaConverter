@@ -19,7 +19,7 @@
                 .OfType<INameVisitor>().ToArray();
         }
 
-        public override void Visit(IndentedTextWriter textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             throw new System.NotImplementedException();
         }
@@ -29,7 +29,7 @@
             return this.visitors.SelectMany(v => v.GetName()).ToArray();
         }
 
-        public override void WriteAsReference(IndentedTextWriter textWriter, IProviders providers)
+        public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var name = this.GetName();
             var type = providers.TypeProvider.LookupType(name);

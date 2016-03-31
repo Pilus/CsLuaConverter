@@ -12,12 +12,12 @@
         }
 
 
-        public virtual void WriteAsType(IndentedTextWriter textWriter, IProviders providers)
+        public virtual void WriteAsType(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.WriteAsReference(textWriter, providers);
             textWriter.Write(".__typeof");
         }
-        public abstract void WriteAsReference(IndentedTextWriter textWriter, IProviders providers);
+        public abstract void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers);
         public abstract TypeKnowledge GetType(IProviders providers);
     }
 }
