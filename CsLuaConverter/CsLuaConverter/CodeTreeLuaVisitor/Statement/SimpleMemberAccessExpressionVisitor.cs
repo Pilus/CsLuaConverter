@@ -23,7 +23,7 @@
             if (this.targetVisitor is ThisExpressionVisitor)
             {
                 providers.TypeKnowledgeRegistry.CurrentType = providers.NameProvider.GetScopeElement("this").Type;
-                textWriter.Write("(element % _M.DOT(typeObject.Level)).");
+                textWriter.Write("(element % _M.DOT_LVL(typeObject.Level)).");
             }
             else
             {

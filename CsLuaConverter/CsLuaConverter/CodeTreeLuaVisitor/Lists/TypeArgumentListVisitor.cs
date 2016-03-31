@@ -25,9 +25,15 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("{");
-            foreach (var visitor in this.visitors)
+            for (int index = 0; index < this.visitors.Length; index++)
             {
+                var visitor = this.visitors[index];
                 visitor.WriteAsType(textWriter, providers);
+
+                if (index < this.visitors.Length - 1)
+                {
+                    textWriter.Write(", ");
+                }
             }
             textWriter.Write("}");
         }

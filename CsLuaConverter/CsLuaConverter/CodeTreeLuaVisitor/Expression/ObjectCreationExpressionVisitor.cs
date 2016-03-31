@@ -27,12 +27,20 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            textWriter.Write(this.initializer != null ? "((" : "(");
+
             this.objectTypeVisitor.WriteAsReference(textWriter, providers);
             var type = this.objectTypeVisitor.GetType(providers);
+            textWriter.Write(" % _M.DOT)");
             providers.TypeKnowledgeRegistry.CurrentType = type.GetConstructor();
             this.constructorArgumentsVisitor.Visit(textWriter, providers);
 
-            this.initializer?.Visit(textWriter, providers);
+            if (this.initializer != null)
+            {
+                textWriter.Write(" % _M.DOT)");
+                this.initializer?.Visit(textWriter, providers);
+            }
+            
 
             providers.TypeKnowledgeRegistry.CurrentType = type;
         }

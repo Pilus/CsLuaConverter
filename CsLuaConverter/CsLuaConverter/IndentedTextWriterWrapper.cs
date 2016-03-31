@@ -1,7 +1,9 @@
 ﻿namespace CsLuaConverter
 {
     using System.CodeDom.Compiler;
+    using System.Diagnostics;
     using System.IO;
+    using System.Linq;
 
     public class IndentedTextWriterWrapper : IIndentedTextWriterWrapper
     {
@@ -31,31 +33,37 @@
         public void Write(bool value)
         {
             this.writer.Write(value);
+            this.DetermineCurrentNumberOfLines();
         }
 
         public void Write(string value)
         {
             this.writer.Write(value);
+            this.DetermineCurrentNumberOfLines();
         }
 
         public void Write(string format, params object[] arg)
         {
             this.writer.Write(format, arg);
+            this.DetermineCurrentNumberOfLines();
         }
 
         public void WriteLine(bool value)
         {
             this.writer.WriteLine(value);
+            this.DetermineCurrentNumberOfLines();
         }
 
         public void WriteLine(string value)
         {
             this.writer.WriteLine(value);
+            this.DetermineCurrentNumberOfLines();
         }
 
         public void WriteLine(string format, params object[] arg)
         {
             this.writer.WriteLine(format, arg);
+            this.DetermineCurrentNumberOfLines();
         }
 
         public IIndentedTextWriterWrapper CreateTextWriterAtSameIndent()
@@ -66,11 +74,27 @@
         public void AppendTextWriter(IIndentedTextWriterWrapper otherWriter)
         {
             this.Write(otherWriter.InnerWriter.ToString());
+            this.DetermineCurrentNumberOfLines();
         }
 
         public void WriteLine()
         {
             this.writer.WriteLine();
+            this.DetermineCurrentNumberOfLines();
+        }
+
+        private void DetermineCurrentNumberOfLines()
+        {
+            if (true || !Debugger.IsAttached)
+            {
+                return;
+            }
+
+            var str = this.writer.InnerWriter.ToString();
+            var count = str.Count(c => c == '\n') + 1;
+
+            // Please breakpoint here:
+            var dummy = false;
         }
     }
 }
