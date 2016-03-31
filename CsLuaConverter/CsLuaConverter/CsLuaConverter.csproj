@@ -165,6 +165,7 @@
     <Compile Include="CodeTreeLuaVisitor\Attribute\AttributeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\BaseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\BlockVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\BaseExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\LiteralVisitorBase.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\ConstructorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\EqualsValueClauseVisitor.cs" />
@@ -186,7 +187,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\LogicalAndExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\TwoSided\MultiplyExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\NullLiteralExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\NumericLiteralExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\Literal\NumericLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectCreationExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ParenthesizedExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ParenthesizedLambdaExpressionVisitor.cs" />
