@@ -72,7 +72,7 @@
         [DebuggerNonUserCode]
         protected bool IsKind(int index, SyntaxKind kind)
         {
-            return this.Branch.Nodes[index].Kind == kind;
+            return index < this.Branch.Nodes.Length && this.Branch.Nodes[index].Kind == kind;
         }
 
         [DebuggerNonUserCode]

@@ -175,6 +175,8 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\BaseExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\CastExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\CharacterLiteralExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\CollectionInitializerExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\ComplexElementInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ElementAccessExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\EqualsExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\FalseLiteralExpressionVisitor.cs" />
