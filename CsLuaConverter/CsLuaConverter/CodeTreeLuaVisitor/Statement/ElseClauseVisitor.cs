@@ -1,12 +1,11 @@
-﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
+﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement
 {
-    using System.CodeDom.Compiler;
     using CodeTree;
     using Providers;
 
-    public class AddExpressionVisitor : BaseVisitor
+    public class ElseClauseVisitor : BaseVisitor
     {
-        public AddExpressionVisitor(CodeTreeBranch branch) : base(branch)
+        public ElseClauseVisitor(CodeTreeBranch branch) : base(branch)
         {
         }
 

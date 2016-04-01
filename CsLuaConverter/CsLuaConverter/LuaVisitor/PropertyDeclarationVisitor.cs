@@ -70,7 +70,7 @@
             if (element.Accessors.SetBlock != null)
             {
                 var scope = providers.NameProvider.CloneScope();
-                providers.NameProvider.AddToScope(new ScopeElement("value"));
+                //providers.NameProvider.AddToScope(new ScopeElement("value"));
                 textWriter.WriteLine("set = function(element, value)");
                 VisitorList.Visit(element.Accessors.SetBlock);
                 textWriter.WriteLine("end,");

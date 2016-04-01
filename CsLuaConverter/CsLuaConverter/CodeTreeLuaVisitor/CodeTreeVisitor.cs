@@ -23,7 +23,7 @@
 
             return visitors.GroupBy(v => v.GetTopNamespace()).ToDictionary(g => g.Key, g => new Action<IIndentedTextWriterWrapper>((textWriter) =>
             {
-                var fileGroups = g.GroupBy(v => string.Join(".", v.GetNamespaceName()) + "." + v.GetElementName());
+                var fileGroups = g.GroupBy(v => string.Join(".", v.GetNamespaceName()) + ".__" + v.GetElementName());
                 var ordered = fileGroups.OrderBy(fg => fg.Key).ToArray();
                 
                 var previousNamespace = new string[] { };

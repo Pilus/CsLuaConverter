@@ -12,13 +12,13 @@
         public string Name;
         public TypeKnowledge Type;
 
-        public ScopeElement(string name)
-        {
-            this.Name = name;
-        }
-
         public ScopeElement(string name, TypeKnowledge type)
         {
+            if (type == null)
+            {
+                throw new Exception($"Cannot create {nameof(ScopeElement)} from a null {nameof(TypeKnowledge)}.");    
+            }
+
             this.Name = name;
             this.Type = type;
         }

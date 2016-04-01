@@ -1,9 +1,9 @@
-﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.TwoSided
+﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Binary
 {
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
 
-    public class MultiplyExpressionVisitor : TwoSidedExpressionVisitorBase
+    public class MultiplyExpressionVisitor : BinaryExpressionVisitorBase
     {
         public MultiplyExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.AsteriskToken)
         {
