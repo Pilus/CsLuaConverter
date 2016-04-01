@@ -4,7 +4,9 @@
     using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using CodeTree;
+    using Expression;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
@@ -28,22 +30,65 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var invocationType = this.DetermineTypeKnowledgeForArgumentInvocation(providers);
-            var args = invocationType.GetInputArgs();
+            var possibleInvocationTypes = this.DetermineTypeKnowledgeForArgumentInvocation(providers);
 
-            if (args.Length != this.argumentVisitors.Length && !(invocationType.IsParams && args.Length <= this.argumentVisitors.Length))
+            var argVisitings = this.argumentVisitors.Select(visitor =>
             {
-                throw new VisitorException($"Non matching number of arguments. Expected invocation with {args.Length} args. Got {this.argumentVisitors.Length} args.");
+                if (IsArgumentVisitorALambda(visitor))
+                {
+                    return null;
+                }
+
+                providers.TypeKnowledgeRegistry.CurrentType = null;
+                var argTextWriter = textWriter.CreateTextWriterAtSameIndent();
+                visitor.Visit(argTextWriter, providers);
+                var type = providers.TypeKnowledgeRegistry.CurrentType;
+                return new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
+            }).ToArray();
+
+            
+
+            TypeKnowledge bestType = null;
+            int? bestScore = null;
+            if (possibleInvocationTypes.Length == 1)
+            {
+                bestType = possibleInvocationTypes.Single();
+            }
+            else
+            {
+                var invocationArgTypes = argVisitings.Select(av => av?.Item2).ToArray();
+
+                foreach (var possibleInvocationType in possibleInvocationTypes)
+                {
+                    var argsOfCandidate = possibleInvocationType.GetInputArgs();
+                    var score = argsOfCandidate.ScoreForHowWellOtherTypeFitsThis(invocationArgTypes);
+
+                    if (bestScore == null || bestScore > score)
+                    {
+                        bestType = possibleInvocationType;
+                        bestScore = score;
+                    }
+                }
+
+                throw new NotImplementedException();
             }
 
-            textWriter.Write("(");
-            for (int index = 0; index < this.argumentVisitors.Length; index++)
-            {
-                var argumentVisitor = this.argumentVisitors[index];
-                var arg = args[Math.Min(index, args.Length - 1)];
-                providers.TypeKnowledgeRegistry.ExpectedType = arg;
-                argumentVisitor.Visit(textWriter, providers);
+            var argTextWriters = argVisitings.Select(av => av?.Item1).ToArray();
+            var args = bestType.GetInputArgs();
 
+            textWriter.Write("(");
+            for (int index = 0; index < argVisitings.Length; index++)
+            {
+                if (argTextWriters[index] != null)
+                {
+                    textWriter.AppendTextWriter(argTextWriters[index]);
+                }
+                else
+                {
+                    providers.TypeKnowledgeRegistry.ExpectedType = args[Math.Min(index, args.Length - 1)];
+                    this.argumentVisitors[index].Visit(textWriter, providers);
+                }
+                
                 if (index < this.argumentVisitors.Length - 1)
                 {
                     textWriter.Write(", ");
@@ -52,10 +97,16 @@
             textWriter.Write(")");
 
             providers.TypeKnowledgeRegistry.ExpectedType = null;
-            providers.TypeKnowledgeRegistry.CurrentType = invocationType.GetReturnArg();
+            providers.TypeKnowledgeRegistry.CurrentType = bestType.GetReturnArg();
         }
 
-        private TypeKnowledge DetermineTypeKnowledgeForArgumentInvocation(IProviders providers)
+        private static bool IsArgumentVisitorALambda(IVisitor visitor)
+        {
+            var argVisitor = visitor as ArgumentVisitor;
+            return argVisitor?.IsArgumentVisitorALambda() ?? false;
+        }
+
+        private TypeKnowledge[] DetermineTypeKnowledgeForArgumentInvocation(IProviders providers)
         {
             var types = providers.TypeKnowledgeRegistry.PossibleMethods;
 
@@ -66,14 +117,22 @@
 
             if (types.Count() == 1)
             {
-                return types.Single();
+                return types;
             }
 
-            // TODO: Select amoung possibilities.
+            var typesWithCorrectNumberOfArgs = types.Where(t =>
+            {
+                var argsCount = t.GetNumberOfInputArgs();
+                return argsCount == this.argumentVisitors.Length ||
+                       (t.IsParams && argsCount <= this.argumentVisitors.Length);
+            }).ToArray();
 
+            if (!typesWithCorrectNumberOfArgs.Any())
+            {
+                throw new VisitorException($"Could not find a method matching the number of args: {this.argumentVisitors.Length}.");
+            }
 
-
-            throw new NotImplementedException();
+            return typesWithCorrectNumberOfArgs;
         }
     }
 }

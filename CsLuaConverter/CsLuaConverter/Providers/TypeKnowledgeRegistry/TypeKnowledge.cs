@@ -24,21 +24,16 @@
 
         public bool IsParams { get; private set; }
 
-        public TypeKnowledge GetTypeKnowledgeForSubElement(string[] strings)
+        public TypeKnowledge[] GetTypeKnowledgeForSubElement(string str)
         {
-            var members = this.GetMembers(strings.First());
-
-            if (members.Count() == 1)
-            {
-                return members.Single();
-            }
-
+            var members = this.GetMembers(str);
+            
             if (!members.Any())
             {
-                throw new Exception($"Member {strings.First()} not found on element {this.type.Name}.");
+                throw new Exception($"Member {str} not found on element {this.type.Name}.");
             }
 
-            throw new NotImplementedException();
+            return members;
         }
 
         public TypeKnowledge[] GetConstructors()
@@ -57,12 +52,6 @@
             
             return cstors.Length > 0 ? cstors : new[] {new TypeKnowledge(typeof (Action))};
         }
-
-        public TypeKnowledge GetTypeKnowledgeForSubElement(string str)
-        {
-            return this.GetTypeKnowledgeForSubElement(str.Split('.'));
-        }
-
 
         public TypeKnowledge GetEnumeratorType()
         {

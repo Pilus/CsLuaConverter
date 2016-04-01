@@ -23,7 +23,19 @@
             if (currentType != null)
             {
                 textWriter.Write(this.text);
-                providers.TypeKnowledgeRegistry.CurrentType = currentType.GetTypeKnowledgeForSubElement(this.text);
+                var newCrurrentTypes = currentType.GetTypeKnowledgeForSubElement(this.text);
+
+                if (newCrurrentTypes.Count() == 1)
+                {
+                    providers.TypeKnowledgeRegistry.CurrentType = newCrurrentTypes.Single();
+                    providers.TypeKnowledgeRegistry.PossibleMethods = null;
+                }
+                else
+                {
+                    providers.TypeKnowledgeRegistry.CurrentType = null;
+                    providers.TypeKnowledgeRegistry.PossibleMethods = newCrurrentTypes;
+                }
+                
                 return;
             }
 

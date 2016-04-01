@@ -1,9 +1,6 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
-    using System;
     using System.CodeDom.Compiler;
-    using CodeElementAnalysis;
-    using CodeElementAnalysis.Helpers;
     using CodeElementAnalysis.Statements;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
@@ -33,7 +30,7 @@
                 {
                     textWriter.Write("type = ");
                     VisitorList.Visit(pair.Declaration.ExceptionType);
-                    exceptionType = TypeKnowledgeHelper.GetTypeKnowledge(pair.Declaration.ExceptionType, providers);
+                    //exceptionType = TypeKnowledgeHelper.GetTypeKnowledge(pair.Declaration.ExceptionType, providers);
                     variableName = pair.Declaration.ExceptionVariableName;
                     textWriter.WriteLine(".__typeof,");
                 }

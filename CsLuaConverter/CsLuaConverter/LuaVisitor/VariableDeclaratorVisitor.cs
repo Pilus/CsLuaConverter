@@ -3,7 +3,6 @@
     using System.CodeDom.Compiler;
     using System.Linq;
     using CodeElementAnalysis;
-    using CodeElementAnalysis.Helpers;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
     using Providers.TypeProvider;
@@ -22,11 +21,11 @@
             TypeKnowledge variableType = null;
             if (!(typeElement is IdentifierName && ((IdentifierName)typeElement).Names.First() == "var"))
             {
-                variableType = TypeKnowledgeHelper.GetTypeKnowledge(typeElement, providers);
+                //variableType = TypeKnowledgeHelper.GetTypeKnowledge(typeElement, providers);
             }
             else
             {
-                variableType = TypeKnowledgeHelper.GetTypeKnowledge(targetElements.Single(), providers);
+                //variableType = TypeKnowledgeHelper.GetTypeKnowledge(targetElements.Single(), providers);
             }
 
             providers.NameProvider.AddToScope(new ScopeElement(element.Name, variableType));

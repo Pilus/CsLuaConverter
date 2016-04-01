@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
-    using System.CodeDom.Compiler;
     using System.Linq;
     using CodeTree;
+    using Expression;
     using Providers;
 
     public class ArgumentVisitor : BaseVisitor
@@ -17,6 +17,11 @@
         {
             providers.TypeKnowledgeRegistry.CurrentType = null;
             this.inner.Visit(textWriter, providers);
+        }
+
+        public bool IsArgumentVisitorALambda()
+        {
+            return this.inner is SimpleLambdaExpressionVisitor || this.inner is ParenthesizedLambdaExpressionVisitor;
         }
     }
 }

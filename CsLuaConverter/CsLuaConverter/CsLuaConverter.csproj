@@ -121,7 +121,6 @@
     <Compile Include="CodeElementAnalysis\GenericName.cs" />
     <Compile Include="CodeElementAnalysis\GreaterThanExpression.cs" />
     <Compile Include="CodeElementAnalysis\GreaterThanOrEqualExpression.cs" />
-    <Compile Include="CodeElementAnalysis\Helpers\TypeKnowledgeHelper.cs" />
     <Compile Include="CodeElementAnalysis\IDocumentVisitor.cs" />
     <Compile Include="CodeElementAnalysis\Statements\IfStatement.cs" />
     <Compile Include="CodeElementAnalysis\ImplicitArrayCreationExpression.cs" />

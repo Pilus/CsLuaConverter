@@ -3,7 +3,6 @@
     using System.CodeDom.Compiler;
     using System.Linq;
     using CodeElementAnalysis;
-    using CodeElementAnalysis.Helpers;
     using CodeElementAnalysis.Statements;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
@@ -18,12 +17,12 @@
             TypeKnowledge iteratorType = null;
             if (!(element.IteratorType is IdentifierName && ((IdentifierName)element.IteratorType).Names.First() == "var"))
             {
-                iteratorType = TypeKnowledgeHelper.GetTypeKnowledge(element.IteratorType, providers);
+                //iteratorType = TypeKnowledgeHelper.GetTypeKnowledge(element.IteratorType, providers);
             }
             else
             {
-                var enumeratorType = TypeKnowledgeHelper.GetTypeKnowledge(element.EnumeratorExpression, providers);
-                iteratorType = enumeratorType.GetEnumeratorType();
+                //var enumeratorType = TypeKnowledgeHelper.GetTypeKnowledge(element.EnumeratorExpression, providers);
+               // iteratorType = enumeratorType.GetEnumeratorType();
             }
 
             providers.NameProvider.AddToScope(new ScopeElement(element.IteratorName, iteratorType));
