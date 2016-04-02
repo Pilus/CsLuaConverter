@@ -4,6 +4,7 @@
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
     using Providers.TypeProvider;
     using Type;
 
@@ -31,12 +32,17 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write(this.name);
-            providers.NameProvider.AddToScope(new ScopeElement(this.name, this.type?.GetType(providers) ?? providers.TypeKnowledgeRegistry.CurrentType));
+            providers.NameProvider.AddToScope(new ScopeElement(this.name, this.type?.GetType(providers) ?? providers.TypeKnowledgeRegistry.CurrentType ?? providers.TypeKnowledgeRegistry.ExpectedType));
         }
 
         public void WriteAsTypes(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.type.WriteAsType(textWriter, providers);
+        }
+
+        public TypeKnowledge GetType(IProviders providers)
+        {
+            return this.type?.GetType(providers);
         }
     }
 }

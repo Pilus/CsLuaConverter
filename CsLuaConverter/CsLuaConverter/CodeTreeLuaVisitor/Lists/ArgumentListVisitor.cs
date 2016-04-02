@@ -46,35 +46,51 @@
                 return new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
             }).ToArray();
 
-            
 
-            TypeKnowledge bestType = null;
-            int? bestScore = null;
-            if (possibleInvocationTypes.Length == 1)
+
+            var bestTypes = this.DetermineTheBestFittingTypes(possibleInvocationTypes, argVisitings);
+
+            TypeKnowledge selectedType = null;
+            if (bestTypes == null)
             {
-                bestType = possibleInvocationTypes.Single();
+                throw new VisitorException("Could not find any fitting match.");
+            }
+            else if (bestTypes.Count == 1)
+            {
+                selectedType = bestTypes[0];
             }
             else
             {
-                var invocationArgTypes = argVisitings.Select(av => av?.Item2).ToArray();
-
-                foreach (var possibleInvocationType in possibleInvocationTypes)
+                for (int index = 0; index < argVisitings.Length; index++)
                 {
-                    var argsOfCandidate = possibleInvocationType.GetInputArgs();
-                    var score = argsOfCandidate.ScoreForHowWellOtherTypeFitsThis(invocationArgTypes);
-
-                    if (bestScore == null || bestScore > score)
+                    var argVisiting = argVisitings[index];
+                    if (argVisiting == null)
                     {
-                        bestType = possibleInvocationType;
-                        bestScore = score;
+                        var visitor = this.argumentVisitors[index];
+                        providers.TypeKnowledgeRegistry.CurrentType = null;
+                        providers.TypeKnowledgeRegistry.ExpectedType = null;
+                        var argTextWriter = textWriter.CreateTextWriterAtSameIndent();
+                        visitor.Visit(argTextWriter, providers);
+                        var type = providers.TypeKnowledgeRegistry.CurrentType;
+                        argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
                     }
                 }
 
-                throw new NotImplementedException();
+                bestTypes = this.DetermineTheBestFittingTypes(possibleInvocationTypes, argVisitings);
+
+                if (bestTypes.Count == 1)
+                {
+                    selectedType = bestTypes.Single();
+                }
+                else
+                {
+                    throw new VisitorException($"Could not determine invocation result. Got {bestTypes.Count} possibilities.");
+                }
             }
 
+
             var argTextWriters = argVisitings.Select(av => av?.Item1).ToArray();
-            var args = bestType.GetInputArgs();
+            var args = selectedType.GetInputArgs();
 
             textWriter.Write("(");
             for (int index = 0; index < argVisitings.Length; index++)
@@ -97,7 +113,40 @@
             textWriter.Write(")");
 
             providers.TypeKnowledgeRegistry.ExpectedType = null;
-            providers.TypeKnowledgeRegistry.CurrentType = bestType.GetReturnArg();
+            providers.TypeKnowledgeRegistry.CurrentType = selectedType.GetReturnArg();
+        }
+
+        private List<TypeKnowledge> DetermineTheBestFittingTypes(TypeKnowledge[] possibleInvocationTypes, Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings)
+        {
+            List<TypeKnowledge> bestTypes = null;
+            int? bestScore = null;
+            if (possibleInvocationTypes.Length == 1)
+            {
+                bestTypes = possibleInvocationTypes.ToList();
+            }
+            else
+            {
+                var invocationArgTypes = argVisitings.Select(av => av?.Item2).ToArray();
+
+                foreach (var possibleInvocationType in possibleInvocationTypes)
+                {
+                    var argsOfCandidate = possibleInvocationType.GetInputArgs();
+                    var score = argsOfCandidate.ScoreForHowWellOtherTypeFitsThis(invocationArgTypes);
+
+                    if (score == null) continue;
+                    if (bestScore == null || bestScore > score)
+                    {
+                        bestTypes = new List<TypeKnowledge>() { possibleInvocationType };
+                        bestScore = score;
+                    }
+                    else if (bestScore == score)
+                    {
+                        bestTypes.Add(possibleInvocationType);
+                    }
+                }
+            }
+
+            return bestTypes;
         }
 
         private static bool IsArgumentVisitorALambda(IVisitor visitor)

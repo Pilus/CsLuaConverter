@@ -7,6 +7,7 @@
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
 
     public class ParameterListVisitor : BaseVisitor
     {
@@ -26,7 +27,24 @@
             {
                 textWriter.Write(this.FirstElementPrefix);
             }
-            this.parameters.VisitAll(textWriter, providers, ", ");
+
+            var expectedTypeGenerics = providers.TypeKnowledgeRegistry.ExpectedType?.GetGenerics();
+            for (var index = 0; index < this.parameters.Length; index++)
+            {
+                var visitor = this.parameters[index];
+
+                if (expectedTypeGenerics != null)
+                {
+                    providers.TypeKnowledgeRegistry.ExpectedType = expectedTypeGenerics[index];
+                }
+
+                visitor.Visit(textWriter, providers);
+
+                if (index != this.parameters.Length - 1)
+                {
+                    textWriter.Write(", ");
+                }
+            }
         }
 
         public void WriteAsTypes(IIndentedTextWriterWrapper textWriter, IProviders providers)
@@ -41,6 +59,11 @@
                     textWriter.Write(", ");
                 }
             }
+        }
+
+        public TypeKnowledge[] GetTypes(IProviders providers)
+        {
+            return this.parameters.Select(p => p.GetType(providers)).ToArray();
         }
     }
 }

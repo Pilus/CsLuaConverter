@@ -168,7 +168,7 @@
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\LiteralVisitorBase.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\LogicalNotExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\NotEqualsExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\Binary\NotEqualsExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\ConstructorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\EqualsValueClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\AddAssignmentExpressionVisitor.cs" />

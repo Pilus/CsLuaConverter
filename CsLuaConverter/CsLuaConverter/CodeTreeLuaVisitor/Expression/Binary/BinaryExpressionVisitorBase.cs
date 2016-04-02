@@ -11,10 +11,10 @@
         private readonly IVisitor rhsVisitor;
         private readonly string token;
 
-        protected BinaryExpressionVisitorBase(CodeTreeBranch branch, SyntaxKind expectedTokenKind) : base(branch)
+        protected BinaryExpressionVisitorBase(CodeTreeBranch branch, SyntaxKind expectedTokenKind, string alternativeText = null) : base(branch)
         {
             this.ExpectKind(1, expectedTokenKind);
-            this.token = ((CodeTreeLeaf) this.Branch.Nodes[1]).Text;
+            this.token = alternativeText ?? ((CodeTreeLeaf) this.Branch.Nodes[1]).Text;
             this.lhsVisitor = this.CreateVisitor(0);
             this.rhsVisitor = this.CreateVisitor(2);
         }

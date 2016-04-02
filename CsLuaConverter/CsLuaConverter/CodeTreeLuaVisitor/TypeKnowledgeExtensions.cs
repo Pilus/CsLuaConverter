@@ -72,27 +72,40 @@
             return typeName == "System.Action" ? null : generics.Last();
         }
 
-        public static int ScoreForHowWellOtherTypeFitsThis(this TypeKnowledge typeKnowledge, TypeKnowledge otherTypeKnowledge)
+        public static int? ScoreForHowWellOtherTypeFitsThis(this TypeKnowledge typeKnowledge, TypeKnowledge otherTypeKnowledge)
         {
             var type = typeKnowledge.GetTypeObject();
             var otherType = otherTypeKnowledge?.GetTypeObject();
 
-            if (otherType == null || type == otherType)
-            {
-                return 0;
-            }
-
-            throw new NotImplementedException();
+            return otherType == null ? 0 : ScoreForHowWellOtherTypeFitsThis(type, otherType);
         }
 
-        public static int ScoreForHowWellOtherTypeFitsThis(this TypeKnowledge[] typeKnowledges, TypeKnowledge[] otherTypeKnowledges)
+        public static int? ScoreForHowWellOtherTypeFitsThis(System.Type type, System.Type otherType)
+        {
+            int? c = null;
+            while (type.IsAssignableFrom(otherType))
+            {
+                otherType = otherType.BaseType;
+                c = (c ?? -1) + 1;
+            }
+
+            return c;
+        }
+
+        public static int? ScoreForHowWellOtherTypeFitsThis(this TypeKnowledge[] typeKnowledges, TypeKnowledge[] otherTypeKnowledges)
         {
             var c = 0;
             for (int index = 0; index < typeKnowledges.Length; index++)
             {
                 var typeKnowledge = typeKnowledges[index];
                 var otherTypeKnowledge = otherTypeKnowledges[index];
-                c += typeKnowledge.ScoreForHowWellOtherTypeFitsThis(otherTypeKnowledge);
+                var score = typeKnowledge.ScoreForHowWellOtherTypeFitsThis(otherTypeKnowledge);
+                if (score == null)
+                {
+                    return null;
+                }
+
+                c += (int)score;
             }
 
             return c;

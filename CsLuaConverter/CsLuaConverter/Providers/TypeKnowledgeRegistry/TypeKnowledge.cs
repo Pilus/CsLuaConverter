@@ -188,6 +188,26 @@
             return fieldInfo.FieldType;
         }
 
+        public static TypeKnowledge ConstructLamdaType(TypeKnowledge[] inputs, TypeKnowledge returnArg)
+        {
+            if (returnArg == null)
+            {
+                if (inputs.Length == 0)
+                {
+                    return new TypeKnowledge(typeof (Action));
+                }
+                else
+                {
+                    var actionType = Actions[inputs.Length];
+                    return new TypeKnowledge(actionType.MakeGenericType(inputs.Select(tk => tk.GetTypeObject()).ToArray()));
+                }
+            }
+
+            var funcType = Funcs[inputs.Length];
+            var generics = inputs.Select(tk => tk.GetTypeObject()).Union(new[] {returnArg.GetTypeObject()}).ToArray();
+            return new TypeKnowledge(funcType.MakeGenericType(generics));
+        }
+
         public static bool MethodHasParams(MethodInfo mi)
         {
             var lastParameter = mi.GetParameters().LastOrDefault();
