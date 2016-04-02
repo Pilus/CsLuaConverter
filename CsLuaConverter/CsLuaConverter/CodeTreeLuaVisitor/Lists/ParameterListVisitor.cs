@@ -65,5 +65,10 @@
         {
             return this.parameters.Select(p => p.GetType(providers)).ToArray();
         }
+
+        public string[] GetNames()
+        {
+            return this.parameters.Select(p => p.GetName()).ToArray();
+        }
     }
 }

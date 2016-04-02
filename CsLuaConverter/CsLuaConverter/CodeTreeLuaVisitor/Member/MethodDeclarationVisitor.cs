@@ -57,6 +57,8 @@
                 this.methodGenerics.Visit(textWriter, providers);
                 textWriter.WriteLine("};");
                 textWriter.WriteLine("local methodGenerics = _M.MG(methodGenericsMapping);");
+
+                providers.GenericsRegistry.SetGenerics(this.methodGenerics.GetNames(), GenericScope.Method);
             }
 
             textWriter.WriteLine("_M.IM(members, '{0}', {{", this.name);
@@ -72,11 +74,10 @@
                 textWriter.WriteLine("override = true,");
             }
 
-            /* TODO: Fix
-            if (ParameterListVisitor.IsParams(element.Parameters))
+            if (this.parameters.GetTypes(providers).LastOrDefault()?.IsParams == true)
             {
                 textWriter.WriteLine("isParams = true,");
-            }*/
+            }
 
             textWriter.Write("types = {");
             this.parameters.WriteAsTypes(textWriter, providers);
@@ -101,13 +102,12 @@
 
             textWriter.WriteLine(")");
 
-            /* TODO: Fix
-            if (ParameterListVisitor.IsParams(element.Parameters))
+            if (this.parameters.GetTypes(providers).LastOrDefault()?.IsParams == true)
             {
                 textWriter.Indent++;
-                ParameterListVisitor.WriteParamVariableInit(element.Parameters, textWriter, providers);
+                this.WriteParamVariableInit(textWriter, providers);
                 textWriter.Indent--;
-            } */
+            }
 
             this.block.Visit(textWriter, providers);
             textWriter.WriteLine("end");
@@ -116,6 +116,17 @@
 
             textWriter.Indent--;
             textWriter.WriteLine("});");
+        }
+
+        public void WriteParamVariableInit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        {
+            var names = this.parameters.GetNames();
+            var types = this.parameters.GetTypes(providers);
+            textWriter.Write("local ");
+            textWriter.Write(names.Last());
+            textWriter.Write(" = ((System.Array %_M.DOT)[{");
+            types.Last().WriteAsType(textWriter, providers);
+            textWriter.WriteLine("}]() % _M.DOT).__Initialize({[0] = firstParam, ...});");
         }
 
         private void RegisterMethodGenerics(IProviders providers)

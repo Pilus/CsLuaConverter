@@ -19,6 +19,7 @@
         {
             this.target.Visit(textWriter, providers);
             this.argumentList.Visit(textWriter, providers);
+            providers.TypeKnowledgeRegistry.PossibleMethods = null;
         }
     }
 }

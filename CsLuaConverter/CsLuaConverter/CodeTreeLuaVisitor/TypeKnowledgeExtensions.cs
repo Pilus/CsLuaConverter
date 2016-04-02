@@ -85,8 +85,13 @@
             int? c = null;
             while (type.IsAssignableFrom(otherType))
             {
+                if (type == otherType)
+                {
+                    return c ?? 0;
+                }
+
                 otherType = otherType.BaseType;
-                c = (c ?? -1) + 1;
+                c = (c ?? 0) + 1;
             }
 
             return c;

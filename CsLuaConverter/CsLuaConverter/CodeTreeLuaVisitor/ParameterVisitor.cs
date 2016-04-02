@@ -44,5 +44,10 @@
         {
             return this.type?.GetType(providers);
         }
+
+        public string GetName()
+        {
+            return this.name;
+        }
     }
 }
