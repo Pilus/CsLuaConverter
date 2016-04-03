@@ -39,37 +39,45 @@
         public static int GetNumberOfInputArgs(this TypeKnowledge typeKnowledge)
         {
             var typeName = typeKnowledge.GetFullName();
-            if (typeName != "System.Func" && typeName != "System.Action")
+            if (typeName != "System.Func" && typeName != "System.Action" && typeName != "System.Predicate")
             {
                 return 0;
             }
 
             var generics = typeKnowledge.GetGenerics();
-            return typeName == "System.Action" ? generics.Length : generics.Length - 1;
+            return typeName != "System.Func" ? generics.Length : generics.Length - 1;
         }
 
         public static TypeKnowledge[] GetInputArgs(this TypeKnowledge typeKnowledge)
         {
             var typeName = typeKnowledge.GetFullName();
-            if (typeName != "System.Func" && typeName != "System.Action")
+            if (typeName != "System.Func" && typeName != "System.Action" && typeName != "System.Predicate")
             {
                 throw new VisitorException($"Cannot get invocation input args on current type {typeKnowledge.GetFullName()}.");
             }
 
             var generics = typeKnowledge.GetGenerics();
-            return typeName == "System.Action" ? generics : generics.Take(generics.Length - 1).ToArray();
+            return typeName != "System.Func" ? generics : generics.Take(generics.Length - 1).ToArray();
         }
 
         public static TypeKnowledge GetReturnArg(this TypeKnowledge typeKnowledge)
         {
             var typeName = typeKnowledge.GetFullName();
-            if (typeName != "System.Func" && typeName != "System.Action")
+            if (typeName != "System.Func" && typeName != "System.Action" && typeName != "System.Predicate")
             {
                 throw new VisitorException($"Cannot get invocation return args on current type {typeKnowledge.GetFullName()}.");
             }
 
-            var generics = typeKnowledge.GetGenerics();
-            return typeName == "System.Action" ? null : generics.Last();
+            if (typeName == "System.Action")
+            {
+                return null;
+            }
+            else if (typeName == "System.Predicate")
+            {
+                return new TypeKnowledge(typeof(bool));
+            }
+
+            return typeKnowledge.GetGenerics().Last();
         }
 
         public static int? ScoreForHowWellOtherTypeFitsThis(this TypeKnowledge typeKnowledge, TypeKnowledge otherTypeKnowledge)

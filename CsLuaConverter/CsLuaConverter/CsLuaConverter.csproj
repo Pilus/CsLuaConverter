@@ -181,7 +181,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\CollectionInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ComplexElementInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ElementAccessExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\EqualsExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\Binary\EqualsExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\FalseLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ImplicitArrayCreationExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\InvocationExpressionVisitor.cs" />
