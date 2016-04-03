@@ -130,6 +130,11 @@
         {
             var all = new List<MemberInfo>();
 
+            if (type.IsInterface)
+            {
+                all.AddRange(type.GetInterfaces().SelectMany(i => GetMembersOfType(i)));
+            }
+
             var _base = type.BaseType;
             while (_base != null)
             {
