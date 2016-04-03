@@ -30,7 +30,7 @@
 
         private Type DetermineType()
         {
-            return this.value.Contains(".") ? typeof (float) : typeof (int);
+            return this.value.Contains(".") ? typeof (double) : typeof (int);
         }
     }
 }

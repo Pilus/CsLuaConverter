@@ -82,19 +82,21 @@
 
         public static int? ScoreForHowWellOtherTypeFitsThis(System.Type type, System.Type otherType)
         {
-            int? c = null;
-            while (type.IsAssignableFrom(otherType))
+            var c = 0;
+
+            while (!type.IsAssignableFrom(otherType))
             {
-                if (type == otherType)
+                otherType = otherType.BaseType;
+
+                if (otherType == null)
                 {
-                    return c ?? 0;
+                    return null;
                 }
 
-                otherType = otherType.BaseType;
-                c = (c ?? 0) + 1;
+                c++;
             }
 
-            return c;
+            return type == otherType ? c : c + 1;
         }
 
         public static int? ScoreForHowWellOtherTypeFitsThis(this TypeKnowledge[] typeKnowledges, TypeKnowledge[] otherTypeKnowledges)

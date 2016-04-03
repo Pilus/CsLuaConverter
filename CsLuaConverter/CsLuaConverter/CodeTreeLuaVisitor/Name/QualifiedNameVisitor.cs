@@ -15,7 +15,7 @@
 
         public QualifiedNameVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.visitors = this.CreateVisitors(new KindFilter(SyntaxKind.IdentifierName, SyntaxKind.QualifiedName))
+            this.visitors = this.CreateVisitors(new KindFilter(SyntaxKind.IdentifierName, SyntaxKind.QualifiedName, SyntaxKind.GenericName))
                 .OfType<INameVisitor>().ToArray();
         }
 
