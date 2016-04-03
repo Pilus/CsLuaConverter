@@ -4,6 +4,8 @@
     using System.Diagnostics;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
+    using System.Reflection;
     using System.Threading.Tasks;
     using CodeElementAnalysis;
     using LuaVisitor;
@@ -65,7 +67,17 @@
                 throw new ConverterException(string.Format("Could not load the solution file: {0}", solutionFile.FullName));
             }
 
-            MSBuildWorkspace workspace = MSBuildWorkspace.Create();
+            MSBuildWorkspace workspace = null;
+            try
+            {
+                workspace = MSBuildWorkspace.Create();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                var loaderExceptions = string.Join(", ", ex.LoaderExceptions.Select(e => e.Message).Distinct());
+                throw new ConverterException($"ReflectionTypeLoadException happened during loading of solution: {loaderExceptions}.");
+            }
+             
             Task<Solution> loadSolution = workspace.OpenSolutionAsync(path);
             loadSolution.Wait();
             return loadSolution.Result;
