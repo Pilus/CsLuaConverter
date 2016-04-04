@@ -1,9 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
-    using System;
-    using System.CodeDom.Compiler;
     using System.Linq;
-    using CodeElementAnalysis;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
 
@@ -36,48 +33,38 @@
             textWriter.Write("}]");
         }
 
-        public static int GetNumberOfInputArgs(this TypeKnowledge typeKnowledge)
-        {
-            var typeName = typeKnowledge.GetFullName();
-            if (typeName != "System.Func" && typeName != "System.Action" && typeName != "System.Predicate")
-            {
-                return 0;
-            }
-
-            var generics = typeKnowledge.GetGenerics();
-            return typeName != "System.Func" ? generics.Length : generics.Length - 1;
-        }
-
         public static TypeKnowledge[] GetInputArgs(this TypeKnowledge typeKnowledge)
         {
-            var typeName = typeKnowledge.GetFullName();
-            if (typeName != "System.Func" && typeName != "System.Action" && typeName != "System.Predicate")
+            var type = typeKnowledge.GetTypeObject();
+            var del = GetDelegate(type);
+            if (del == null)
             {
                 throw new VisitorException($"Cannot get invocation input args on current type {typeKnowledge.GetFullName()}.");
             }
 
-            var generics = typeKnowledge.GetGenerics();
-            return typeName != "System.Func" ? generics : generics.Take(generics.Length - 1).ToArray();
+            return del.GetMethod("Invoke").GetParameters().Select(p => new TypeKnowledge(p.ParameterType)).ToArray();
+        }
+
+        private static System.Type GetDelegate(System.Type type)
+        {
+            if (type.BaseType == typeof (System.MulticastDelegate))
+            {
+                return type;
+            }
+
+            return type.BaseType.BaseType != null ? GetDelegate(type.BaseType) : null;
         }
 
         public static TypeKnowledge GetReturnArg(this TypeKnowledge typeKnowledge)
         {
-            var typeName = typeKnowledge.GetFullName();
-            if (typeName != "System.Func" && typeName != "System.Action" && typeName != "System.Predicate")
+            var type = typeKnowledge.GetTypeObject();
+            var del = GetDelegate(type);
+            if (del == null)
             {
-                throw new VisitorException($"Cannot get invocation return args on current type {typeKnowledge.GetFullName()}.");
+                throw new VisitorException($"Cannot get invocation input args on current type {typeKnowledge.GetFullName()}.");
             }
 
-            if (typeName == "System.Action")
-            {
-                return null;
-            }
-            else if (typeName == "System.Predicate")
-            {
-                return new TypeKnowledge(typeof(bool));
-            }
-
-            return typeKnowledge.GetGenerics().Last();
+            return new TypeKnowledge(del.GetMethod("Invoke").ReturnType);
         }
 
         public static int? ScoreForHowWellOtherTypeFitsThis(this TypeKnowledge typeKnowledge, TypeKnowledge otherTypeKnowledge)

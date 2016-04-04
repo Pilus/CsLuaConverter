@@ -171,7 +171,7 @@
 
             var typesWithCorrectNumberOfArgs = types.Where(t =>
             {
-                var argsCount = t.GetNumberOfInputArgs();
+                var argsCount = t.GetInputArgs().Length;
                 return argsCount == this.argumentVisitors.Length ||
                        (t.IsParams && argsCount <= this.argumentVisitors.Length);
             }).ToArray();
