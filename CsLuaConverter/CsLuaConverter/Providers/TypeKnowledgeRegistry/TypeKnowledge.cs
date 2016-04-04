@@ -17,23 +17,25 @@
             this.type = type;
         }
 
-        public TypeKnowledge(MemberInfo member)
+        public TypeKnowledge(MemberInfo member, bool skipFirstInputArg = false)
         {
-            this.type = this.GetTypeFromMember(member);
+            this.type = this.GetTypeFromMember(member, skipFirstInputArg);
         }
 
         public bool IsParams { get; private set; }
 
-        public TypeKnowledge[] GetTypeKnowledgeForSubElement(string str)
+        public TypeKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)
         {
             var members = this.GetMembers(str);
+            var extensions = providers.TypeProvider.GetExtensionMethods(this.type, str);
+            var membersIncludingExtensions = new []{ members, extensions}.SelectMany(v => v).ToArray();
             
-            if (!members.Any())
+            if (!membersIncludingExtensions.Any())
             {
                 throw new Exception($"Member {str} not found on element {this.type.Name}.");
             }
 
-            return members;
+            return membersIncludingExtensions;
         }
 
         public TypeKnowledge[] GetConstructors()
@@ -152,12 +154,12 @@
             return all;
         }
 
-        private Type GetTypeFromMember(MemberInfo member)
+        private Type GetTypeFromMember(MemberInfo member, bool skipFirstInputArg)
         {
             var methodInfo = member as MethodInfo;
             if (methodInfo != null)
             {
-                var parameterTypes = methodInfo.GetParameters().Select(p => p.ParameterType).ToList();
+                var parameterTypes = methodInfo.GetParameters().Select(p => p.ParameterType).Skip(skipFirstInputArg ? 1 : 0).ToList();
 
                 var type = Actions[parameterTypes.Count];
                 if (methodInfo.ReturnType != typeof(void))

@@ -23,7 +23,7 @@
             if (currentType != null)
             {
                 textWriter.Write(this.text);
-                var newCrurrentTypes = currentType.GetTypeKnowledgeForSubElement(this.text);
+                var newCrurrentTypes = currentType.GetTypeKnowledgeForSubElement(this.text, providers);
 
                 if (newCrurrentTypes.Count() == 1)
                 {

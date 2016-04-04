@@ -9,6 +9,7 @@
     using CsLuaFramework;
     using CsLuaFramework.Wrapping;
     using Microsoft.CodeAnalysis;
+    using TypeKnowledgeRegistry;
 
     public class TypeNameProvider : ITypeProvider
     {
@@ -106,6 +107,7 @@
             this.LoadType(typeof(IMultipleValues<, , , , , , , , , >));
             this.LoadType(typeof(IMultipleValues<, , , , , , , , , , >));
             this.LoadType(typeof(IMultipleValues<, , , , , , , , , , , >));
+            this.LoadType(typeof(Enumerable));
         }
 
         private void LoadSolution(Solution solution)
@@ -326,6 +328,10 @@
             throw new ProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", string.Join(".", names)));
         }
 
+        public TypeKnowledge[] GetExtensionMethods(Type type, string name)
+        {
+            return this.refenrecedNamespaces.SelectMany(ns => ns.GetExtensionMethods(type, name)).ToArray();
+        }
 
         private static string StripGenerics(string name)
         {
