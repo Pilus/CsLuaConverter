@@ -293,6 +293,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
     local meta = {
         __typeof = typeObject,
         __is = function(value) return typeObject.IsInstanceOfType(value); end,
+        __as = function(value) return typeObject.IsInstanceOfType(value) and value or nil; end,
         __meta = function(inheritingStaticValues) 
             for i = 1, typeObject.level do
                 inheritingStaticValues[i] = staticValues[i];
