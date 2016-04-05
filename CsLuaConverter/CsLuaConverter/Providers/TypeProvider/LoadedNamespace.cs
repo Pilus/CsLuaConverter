@@ -53,10 +53,29 @@
         public TypeKnowledge[] GetExtensionMethods(Type type, string name)
         {
             return !this.ExtensionMethods.ContainsKey(name) ? new TypeKnowledge[] {} :
-            this.ExtensionMethods[name].Where(extension =>
+            this.ExtensionMethods[name]
+                .Where(extension => GetMatchingType(extension.Item1, type) != null)
+                .Select(v => v.Item2).ToArray();
+        }
+
+        private static Type GetMatchingType(Type extensionType, Type type)
+        {
+            if (TypeNameAndNamespaceAreIdentical(extensionType, type))
             {
-                throw new NotImplementedException();
-            }).Select(v => v.Item2).ToArray();
+                return type;
+            }
+
+            foreach (var t in type.GetInterfaces().Select(inheritiedInterfaces => GetMatchingType(extensionType, inheritiedInterfaces)).Where(t => t != null))
+            {
+                return t;
+            }
+
+            return type.BaseType != null ? GetMatchingType(extensionType, type.BaseType) : null;
+        }
+
+        private static bool TypeNameAndNamespaceAreIdentical(Type a, Type b)
+        {
+            return a.Name == b.Name && a.Namespace == b.Namespace;
         }
 
         private void AddPossibleExtensionMethods(Type type)
@@ -93,7 +112,10 @@
                 this.ExtensionMethods.Add(name, new List<Tuple<Type, TypeKnowledge>>());
             }
 
-            this.ExtensionMethods[name].Add(new Tuple<Type, TypeKnowledge>(extensionType, typeKnowledgeForMethod));
+            if (this.ExtensionMethods[name].All(t => t.Item2.GetTypeObject() != typeKnowledgeForMethod.GetTypeObject()))
+            { 
+                this.ExtensionMethods[name].Add(new Tuple<Type, TypeKnowledge>(extensionType, typeKnowledgeForMethod));
+            }
         }
     }
 }

@@ -45,6 +45,11 @@
             return del.GetMethod("Invoke").GetParameters().Select(p => new TypeKnowledge(p.ParameterType)).ToArray();
         }
 
+        public static bool IsDelegate(this TypeKnowledge typeKnowledge)
+        {
+            return GetDelegate(typeKnowledge.GetTypeObject()) != null;
+        }
+
         private static System.Type GetDelegate(System.Type type)
         {
             if (type.BaseType == typeof (System.MulticastDelegate))

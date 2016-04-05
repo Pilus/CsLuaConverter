@@ -5,6 +5,7 @@
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
 
     public class SimpleLambdaExpressionVisitor : BaseVisitor
     {
@@ -21,10 +22,31 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var delegateType = providers.TypeKnowledgeRegistry.ExpectedType;
-            delegateType.WriteAsReference(textWriter, providers);
-            textWriter.Write("(function(");
 
-            providers.TypeKnowledgeRegistry.CurrentType = delegateType.GetInputArgs().Single();
+            if (delegateType != null)
+            {
+                delegateType.WriteAsReference(textWriter, providers);
+                this.VisitParametersAndBody(textWriter, providers);
+            }
+            else
+            {
+                var bodyWriter = textWriter.CreateTextWriterAtSameIndent();
+                this.VisitParametersAndBody(bodyWriter, providers);
+
+                var returnType = providers.TypeKnowledgeRegistry.CurrentType;
+                var inputTypes = new[] {this.parameter.GetType(providers)};
+                delegateType = TypeKnowledge.ConstructLamdaType(inputTypes, returnType);
+
+                delegateType.WriteAsReference(textWriter, providers);
+                textWriter.AppendTextWriter(bodyWriter);
+            }
+
+            providers.TypeKnowledgeRegistry.CurrentType = delegateType;
+        }
+
+        private void VisitParametersAndBody(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        {
+            textWriter.Write("(function(");
             this.parameter.Visit(textWriter, providers);
             textWriter.Write(")");
 
@@ -40,7 +62,6 @@
             }
 
             textWriter.Write(" end)");
-            providers.TypeKnowledgeRegistry.CurrentType = delegateType;
         }
     }
 }

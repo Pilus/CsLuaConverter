@@ -164,6 +164,8 @@
                 types = new [] { providers.TypeKnowledgeRegistry.CurrentType };
             }
 
+            types = types.Where(t => t.IsDelegate()).ToArray();
+
             if (types.Count() == 1)
             {
                 return types;
