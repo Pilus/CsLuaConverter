@@ -3,7 +3,6 @@
     using System.Linq;
     using CodeElementAnalysis;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public class ParameterListVisitor : IVisitor<ParameterList>
     {

@@ -2,12 +2,9 @@
 namespace CsLuaConverter
 {
     using System;
-    using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
-    using CodeTreeLuaVisitor;
     using ProjectAnalysis;
-    using Providers;
 
     public class AnalyzedProjectInfo
     {

@@ -4,7 +4,6 @@
     using CodeTree;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Name;
     using Providers;
     using Providers.TypeProvider;
     using Type;

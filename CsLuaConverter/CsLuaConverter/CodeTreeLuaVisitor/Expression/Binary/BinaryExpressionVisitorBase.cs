@@ -1,6 +1,5 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Binary
 {
-    using System;
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;

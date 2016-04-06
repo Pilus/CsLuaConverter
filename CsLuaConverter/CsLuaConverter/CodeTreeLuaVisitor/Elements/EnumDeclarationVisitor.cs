@@ -1,6 +1,5 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Elements
 {
-    using System.CodeDom.Compiler;
     using CodeTree;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;

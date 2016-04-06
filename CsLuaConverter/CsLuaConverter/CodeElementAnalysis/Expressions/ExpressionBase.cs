@@ -1,10 +1,8 @@
 ﻿namespace CsLuaConverter.CodeElementAnalysis.Expressions
 {
     using System;
-    using System.CodeDom;
     using System.Diagnostics;
     using System.Linq;
-    using System.Net;
     using System.Reflection;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;

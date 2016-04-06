@@ -1,14 +1,12 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
     using System;
-    using System.CodeDom.Compiler;
     using System.Diagnostics;
     using System.Reflection;
     using CodeTree;
     using Providers;
     using System.Linq;
     using Filters;
-    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
     public abstract class BaseVisitor : IVisitor

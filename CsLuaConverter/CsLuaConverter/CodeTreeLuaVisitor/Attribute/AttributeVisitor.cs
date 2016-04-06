@@ -1,6 +1,5 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Attribute
 {
-    using System.CodeDom.Compiler;
     using System.Linq;
     using CodeTree;
     using CsLuaFramework.Attributes;

@@ -1,11 +1,8 @@
 ﻿namespace CsLuaConverter.LuaVisitor
 {
-    using System;
     using System.CodeDom.Compiler;
-    using CodeElementAnalysis;
     using CodeElementAnalysis.Statements;
     using Providers;
-    using Providers.TypeProvider;
 
     public class ForStatementVisitor : IVisitor<ForStatement>
     {

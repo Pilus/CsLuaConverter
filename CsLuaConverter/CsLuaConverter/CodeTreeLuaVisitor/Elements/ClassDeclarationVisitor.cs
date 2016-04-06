@@ -1,6 +1,5 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Elements
 {
-    using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
     using Attribute;
@@ -10,7 +9,6 @@
     using Lists;
     using Member;
     using Microsoft.CodeAnalysis.CSharp;
-    using Name;
     using Providers;
     using Providers.GenericsRegistry;
     using Providers.TypeProvider;

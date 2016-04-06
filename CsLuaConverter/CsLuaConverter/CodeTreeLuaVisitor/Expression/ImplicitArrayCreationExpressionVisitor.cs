@@ -1,7 +1,5 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
-    using System.CodeDom.Compiler;
-    using System.IO;
     using System.Linq;
     using CodeTree;
     using Filters;

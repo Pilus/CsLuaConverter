@@ -1,7 +1,5 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Lists
 {
-    using System;
-    using System.CodeDom.Compiler;
     using System.Linq;
     using CodeTree;
     using Filters;
@@ -69,6 +67,11 @@
         public string[] GetNames()
         {
             return this.parameters.Select(p => p.GetName()).ToArray();
+        }
+
+        public int GetNumParameters()
+        {
+            return this.parameters.Length;
         }
     }
 }

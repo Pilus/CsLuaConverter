@@ -2,8 +2,8 @@
 {
     using System.Linq;
     using CodeTree;
-    using Expression;
     using Providers;
+    using CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda;
 
     public class ArgumentVisitor : BaseVisitor
     {
@@ -21,7 +21,13 @@
 
         public bool IsArgumentVisitorALambda()
         {
-            return this.inner is SimpleLambdaExpressionVisitor || this.inner is ParenthesizedLambdaExpressionVisitor;
+            return this.inner is ILambdaVisitor;
+        }
+
+        public int? GetInputArgCountOfLambda()
+        {
+            var lambda = this.inner as ILambdaVisitor;
+            return lambda?.GetNumParameters();
         }
     }
 }

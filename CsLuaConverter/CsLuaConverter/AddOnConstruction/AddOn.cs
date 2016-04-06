@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Xml;
     using CsLuaFramework.Attributes;
-    using Providers;
 
     internal class AddOn : IDeployableAddOn
     {

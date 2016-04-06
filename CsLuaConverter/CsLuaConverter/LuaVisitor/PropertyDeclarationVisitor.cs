@@ -3,7 +3,6 @@
     using System.CodeDom.Compiler;
     using CodeElementAnalysis;
     using Providers;
-    using Providers.TypeProvider;
 
     public class PropertyDeclarationVisitor : IVisitor<PropertyDeclaration>
     {

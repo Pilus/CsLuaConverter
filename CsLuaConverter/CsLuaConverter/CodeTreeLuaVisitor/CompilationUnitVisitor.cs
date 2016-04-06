@@ -1,9 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
-    using System.CodeDom.Compiler;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.InteropServices.ComTypes;
     using CodeTree;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;

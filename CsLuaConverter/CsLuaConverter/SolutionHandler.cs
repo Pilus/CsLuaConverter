@@ -5,7 +5,6 @@
     using AddOnConstruction;
     using Microsoft.CodeAnalysis;
     using ProjectAnalysis;
-    using Providers;
     using ReferenceAnalysis;
 
     internal class SolutionHandler

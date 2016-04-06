@@ -1,12 +1,10 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Lists
 {
     using System;
-    using System.CodeDom.Compiler;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading;
     using CodeTree;
-    using Expression;
+    using Expression.Lambda;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
@@ -118,17 +116,42 @@
 
         private List<TypeKnowledge> DetermineTheBestFittingTypes(TypeKnowledge[] possibleInvocationTypes, Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings)
         {
-            List<TypeKnowledge> bestTypes = null;
-            int? bestScore = null;
             if (possibleInvocationTypes.Length == 1)
             {
-                bestTypes = possibleInvocationTypes.ToList();
+                return possibleInvocationTypes.ToList();
+            }
+
+            // Filter away types that fits a lambda, but where the number of input args does not match.
+            var invocationTypesFittingLambdas = new List<TypeKnowledge>(possibleInvocationTypes);
+            for (var index = 0; index < argVisitings.Length; index++)
+            {
+                var argVisitor = this.argumentVisitors[index] as ArgumentVisitor;
+                if (argVisitor?.IsArgumentVisitorALambda() == false || argVisitings[index] != null) continue;
+
+                var removeableTypes = invocationTypesFittingLambdas.Where(t =>
+                {
+                    var args = t.GetInputArgs()[index];
+                    return args.GetInputArgs().Length != argVisitor.GetInputArgCountOfLambda();
+                }).ToArray();
+
+                foreach (var removeableType in removeableTypes)
+                {
+                    invocationTypesFittingLambdas.Remove(removeableType);
+                }
+            }
+
+
+            List<TypeKnowledge> bestTypes = null;
+            int? bestScore = null;
+            if (invocationTypesFittingLambdas.Count == 1)
+            {
+                bestTypes = invocationTypesFittingLambdas.ToList();
             }
             else
             {
                 var invocationArgTypes = argVisitings.Select(av => av?.Item2).ToArray();
 
-                foreach (var possibleInvocationType in possibleInvocationTypes)
+                foreach (var possibleInvocationType in invocationTypesFittingLambdas)
                 {
                     var argsOfCandidate = possibleInvocationType.GetInputArgs();
                     var score = argsOfCandidate.ScoreForHowWellOtherTypeFitsThis(invocationArgTypes);

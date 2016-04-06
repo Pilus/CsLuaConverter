@@ -1,21 +1,20 @@
-﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
-{
-    using System.CodeDom.Compiler;
-    using CodeTree;
-    using Lists;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
-    using Providers.TypeKnowledgeRegistry;
+﻿using System.Linq;
+using CsLuaConverter.CodeTree;
+using CsLuaConverter.Providers;
+using CsLuaConverter.Providers.TypeKnowledgeRegistry;
+using Microsoft.CodeAnalysis.CSharp;
 
-    public class ParenthesizedLambdaExpressionVisitor : BaseVisitor
+namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
+{
+    public class SimpleLambdaExpressionVisitor : BaseVisitor, ILambdaVisitor
     {
-        private readonly ParameterListVisitor parameters;
+        private readonly ParameterVisitor parameter;
         private readonly BaseVisitor body;
-        public ParenthesizedLambdaExpressionVisitor(CodeTreeBranch branch) : base(branch)
+        public SimpleLambdaExpressionVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.ExpectKind(0, SyntaxKind.ParameterList);
+            this.ExpectKind(0, SyntaxKind.Parameter);
             this.ExpectKind(1, SyntaxKind.EqualsGreaterThanToken);
-            this.parameters = (ParameterListVisitor)this.CreateVisitor(0);
+            this.parameter = (ParameterVisitor) this.CreateVisitor(0);
             this.body = this.CreateVisitor(2);
         }
 
@@ -26,28 +25,29 @@
             if (delegateType != null)
             {
                 delegateType.WriteAsReference(textWriter, providers);
-                this.VisitParametersAndBody(textWriter, providers);
+                this.VisitParametersAndBody(textWriter, providers, delegateType);
             }
             else
             {
                 var bodyWriter = textWriter.CreateTextWriterAtSameIndent();
-                this.VisitParametersAndBody(bodyWriter, providers);
+                this.VisitParametersAndBody(bodyWriter, providers, delegateType);
 
                 var returnType = providers.TypeKnowledgeRegistry.CurrentType;
-                var inputTypes = this.parameters.GetTypes(providers);
+                var inputTypes = new[] {this.parameter.GetType(providers)};
                 delegateType = TypeKnowledge.ConstructLamdaType(inputTypes, returnType);
 
                 delegateType.WriteAsReference(textWriter, providers);
                 textWriter.AppendTextWriter(bodyWriter);
             }
-            
+
             providers.TypeKnowledgeRegistry.CurrentType = delegateType;
         }
 
-        private void VisitParametersAndBody(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void VisitParametersAndBody(IIndentedTextWriterWrapper textWriter, IProviders providers, TypeKnowledge delegateType)
         {
             textWriter.Write("(function(");
-            this.parameters.Visit(textWriter, providers);
+            providers.TypeKnowledgeRegistry.CurrentType = delegateType?.GetInputArgs().Single();
+            this.parameter.Visit(textWriter, providers);
             textWriter.Write(")");
 
             if (this.body is BlockVisitor)
@@ -64,6 +64,9 @@
             textWriter.Write(" end)");
         }
 
-        
+        public int GetNumParameters()
+        {
+            return this.parameter == null ? 0 : 1;
+        }
     }
 }
