@@ -26,12 +26,12 @@
             if (delegateType != null)
             {
                 delegateType.WriteAsReference(textWriter, providers);
-                this.VisitParametersAndBody(textWriter, providers);
+                this.VisitParametersAndBody(textWriter, providers, delegateType);
             }
             else
             {
                 var bodyWriter = textWriter.CreateTextWriterAtSameIndent();
-                this.VisitParametersAndBody(bodyWriter, providers);
+                this.VisitParametersAndBody(bodyWriter, providers, delegateType);
 
                 var returnType = providers.TypeKnowledgeRegistry.CurrentType;
                 var inputTypes = new[] {this.parameter.GetType(providers)};
@@ -44,9 +44,10 @@
             providers.TypeKnowledgeRegistry.CurrentType = delegateType;
         }
 
-        private void VisitParametersAndBody(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void VisitParametersAndBody(IIndentedTextWriterWrapper textWriter, IProviders providers, TypeKnowledge delegateType)
         {
             textWriter.Write("(function(");
+            providers.TypeKnowledgeRegistry.CurrentType = delegateType?.GetInputArgs().Single();
             this.parameter.Visit(textWriter, providers);
             textWriter.Write(")");
 
