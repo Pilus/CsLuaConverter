@@ -165,6 +165,8 @@
     <Compile Include="CodeTreeLuaVisitor\BaseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\BlockVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\BaseExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\Binary\GreaterThanExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\Binary\LessThanExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\ILambdaVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\LiteralVisitorBase.cs" />
@@ -187,7 +189,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\ImplicitArrayCreationExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\InvocationExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\IsExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\LogicalAndExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\Binary\LogicalAndExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\MultiplyExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\NullLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\NumericLiteralExpressionVisitor.cs" />

@@ -98,7 +98,7 @@
                 return typeof(Array).FullName;
             }
 
-            return this.type.FullName.Split('`').First();
+            return this.type.Namespace + "." + this.type.Name.Split('`').First();
         }
 
         public TypeKnowledge[] GetGenerics()
