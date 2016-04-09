@@ -54,7 +54,7 @@
             return !this.ExtensionMethods.ContainsKey(name) ? new TypeKnowledge[] {} :
             this.ExtensionMethods[name]
                 .Where(extension => GetMatchingType(extension.Item1, type) != null)
-                .Select(v => v.Item2).ToArray();
+                .Select(v => v.Item2.GetTypeKnowledgeOnExtensionOfType(type)).ToArray();
         }
 
         private static Type GetMatchingType(Type extensionType, Type type)
@@ -88,8 +88,9 @@
 
             foreach (var method in extensionMethods)
             {
+                var name = method.Name;
                 var extensionType = method.GetParameters().First().ParameterType;
-                this.AddExtensionMethod(method.Name, extensionType, new TypeKnowledge(method, true));
+                this.AddExtensionMethod(name, extensionType, new ExtensionMethod(method));
             }
         }
 
@@ -102,18 +103,18 @@
         public Dictionary<string, LoadedNamespace> SubNamespaces = new Dictionary<string, LoadedNamespace>();
         public Dictionary<string, IList<LoadedType>> Types = new Dictionary<string, IList<LoadedType>>();
 
-        private Dictionary<string, IList<Tuple<Type, TypeKnowledge>>> ExtensionMethods = new Dictionary<string, IList<Tuple<Type, TypeKnowledge>>>();
+        private Dictionary<string, IList<Tuple<Type, ExtensionMethod>>> ExtensionMethods = new Dictionary<string, IList<Tuple<Type, ExtensionMethod>>>();
 
-        private void AddExtensionMethod(string name, Type extensionType, TypeKnowledge typeKnowledgeForMethod)
+        private void AddExtensionMethod(string name, Type extensionType, ExtensionMethod typeKnowledgeForMethod)
         {
             if (!this.ExtensionMethods.ContainsKey(name))
             {
-                this.ExtensionMethods.Add(name, new List<Tuple<Type, TypeKnowledge>>());
+                this.ExtensionMethods.Add(name, new List<Tuple<Type, ExtensionMethod>>());
             }
 
-            if (this.ExtensionMethods[name].All(t => t.Item2.GetTypeObject() != typeKnowledgeForMethod.GetTypeObject()))
+            if (this.ExtensionMethods[name].All(t => !t.Item2.Equals(typeKnowledgeForMethod)))
             { 
-                this.ExtensionMethods[name].Add(new Tuple<Type, TypeKnowledge>(extensionType, typeKnowledgeForMethod));
+                this.ExtensionMethods[name].Add(new Tuple<Type, ExtensionMethod>(extensionType, typeKnowledgeForMethod));
             }
         }
     }

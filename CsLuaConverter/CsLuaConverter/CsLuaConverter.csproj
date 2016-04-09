@@ -356,6 +356,8 @@
     <Compile Include="Providers\TypeKnowledgeRegistry\ITypeKnowledgeRegistry.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\TypeKnowledge.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\TypeKnowledgeRegistry.cs" />
+    <Compile Include="Providers\TypeProvider\ActionFuncTypes.cs" />
+    <Compile Include="Providers\TypeProvider\ExtensionMethod.cs" />
     <Compile Include="Providers\TypeProvider\ITypeProvider.cs" />
     <Compile Include="Providers\TypeProvider\ITypeResult.cs" />
     <Compile Include="Providers\TypeProvider\LoadedNamespace.cs" />

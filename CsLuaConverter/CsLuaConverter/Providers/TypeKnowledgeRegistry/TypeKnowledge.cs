@@ -6,20 +6,37 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
+    using TypeProvider;
 
     [DebuggerDisplay("TypeKnowledge: {type}")]
     public class TypeKnowledge
     {
+        public static IProviders Providers;
         private readonly Type type;
 
         public TypeKnowledge(Type type)
         {
             this.type = type;
+
+            if (!this.type.IsGenericParameter) return;
+
+            var genericType = Providers.GenericsRegistry.GetGenericType(this.type.Name);
+            if (genericType == null)
+            {
+                throw new Exception($"Could not find generic type for {this.type.Name}.");
+            }
+
+            this.type = genericType;
         }
 
         public TypeKnowledge(MemberInfo member, bool skipFirstInputArg = false)
         {
             this.type = this.GetTypeFromMember(member, skipFirstInputArg);
+
+            if (this.type.IsGenericParameter)
+            {
+                this.type = Providers.GenericsRegistry.GetGenericType(this.type.Name);
+            }
         }
 
         public bool IsParams { get; private set; }
@@ -161,10 +178,10 @@
             {
                 var parameterTypes = methodInfo.GetParameters().Select(p => p.ParameterType).Skip(skipFirstInputArg ? 1 : 0).ToList();
 
-                var type = Actions[parameterTypes.Count];
+                var type = ActionFuncTypes.GetAction(parameterTypes.Count);
                 if (methodInfo.ReturnType != typeof(void))
                 {
-                    type = Funcs[parameterTypes.Count];
+                    type = ActionFuncTypes.GetFunc(parameterTypes.Count + 1);
                     parameterTypes.Add(methodInfo.ReturnType);
                 }
 
@@ -189,7 +206,7 @@
             var fieldInfo = member as FieldInfo;
             if (fieldInfo == null)
             {
-                throw new Exception("Unknown member type: " + fieldInfo.GetType().Name);
+                throw new Exception("Unknown member type: " + member.GetType().Name);
             }
 
             return fieldInfo.FieldType;
@@ -205,12 +222,12 @@
                 }
                 else
                 {
-                    var actionType = Actions[inputs.Length];
+                    var actionType = ActionFuncTypes.GetAction(inputs.Length);
                     return new TypeKnowledge(actionType.MakeGenericType(inputs.Select(tk => tk.GetTypeObject()).ToArray()));
                 }
             }
 
-            var funcType = Funcs[inputs.Length];
+            var funcType = ActionFuncTypes.GetFunc(inputs.Length + 1);
             var generics = inputs.Select(tk => tk.GetTypeObject()).Union(new[] {returnArg.GetTypeObject()}).ToArray();
             return new TypeKnowledge(funcType.MakeGenericType(generics));
         }
@@ -221,27 +238,5 @@
 
             return lastParameter?.GetCustomAttributes(typeof(ParamArrayAttribute), false).Any() ?? false;
         }
-
-        private static readonly List<Type> Actions = new List<Type>()
-        {
-            typeof (Action),
-            typeof (Action<>),
-            typeof (Action<,>),
-            typeof (Action<,,>),
-            typeof (Action<,,,>),
-            typeof (Action<,,,,>),
-            typeof (Action<,,,,,>),
-        };
-
-        private static readonly List<Type> Funcs = new List<Type>()
-        {
-            typeof (Func<>),
-            typeof (Func<,>),
-            typeof (Func<,,>),
-            typeof (Func<,,,>),
-            typeof (Func<,,,,>),
-            typeof (Func<,,,,,>),
-        };
-
     }
 }

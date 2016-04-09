@@ -18,7 +18,7 @@
                 textWriter.WriteLine("local methodGenerics = _M.MG(methodGenericsMapping);");
 
                 var generics = element.Generics.ContainedElements.OfType<TypeParameter>().Select(e => e.Name);
-                providers.GenericsRegistry.SetGenerics(generics, GenericScope.Method);
+               // providers.GenericsRegistry.SetGenerics(generics, GenericScope.Method);
             }
 
 

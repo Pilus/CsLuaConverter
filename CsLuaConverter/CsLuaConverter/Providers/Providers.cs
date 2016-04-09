@@ -23,6 +23,7 @@ namespace CsLuaConverter.Providers
             this.nameProvider = new NameProvider.NameProvider(this.typeProvider);
             this.typeKnowledgeRegistry = new TypeKnowledgeRegistry.TypeKnowledgeRegistry();
             this.partialElementState = new PartialElementState();
+            TypeKnowledge.Providers = this;
         }
 
         public IGenericsRegistry GenericsRegistry

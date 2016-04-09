@@ -84,11 +84,11 @@
         {
             if (element.MethodGenerics == null)
             {
-                providers.GenericsRegistry.SetGenerics(new string[] {}, GenericScope.Method);
+                //providers.GenericsRegistry.SetGenerics(new string[] {}, GenericScope.Method);
                 return;
             }
 
-            providers.GenericsRegistry.SetGenerics(element.MethodGenerics.ContainedElements.OfType<TypeParameter>().Select(e => e.Name), GenericScope.Method);
+            //providers.GenericsRegistry.SetGenerics(element.MethodGenerics.ContainedElements.OfType<TypeParameter>().Select(e => e.Name), GenericScope.Method);
         }
     }
 }

@@ -81,7 +81,10 @@
                 return;
             }
 
-            providers.GenericsRegistry.SetGenerics(this.genericsVisitor.GetNames(), GenericScope.Class);
+            foreach (var genericName in this.genericsVisitor.GetNames())
+            {
+                providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Class, typeof(object));
+            }
         }
 
         private void WriteGenericsMapping(IIndentedTextWriterWrapper textWriter, IProviders providers)

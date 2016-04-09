@@ -237,7 +237,7 @@
                 return;
             }
 
-            providers.GenericsRegistry.SetGenerics(element.Generics.ContainedElements.OfType<TypeParameter>().Select(e => e.Name), GenericScope.Class);
+            //providers.GenericsRegistry.SetGenerics(element.Generics.ContainedElements.OfType<TypeParameter>().Select(e => e.Name), GenericScope.Class);
         }
 
         private static void WriteGenericsMapping(ClassDeclaration element, IndentedTextWriter textWriter, IProviders providers)

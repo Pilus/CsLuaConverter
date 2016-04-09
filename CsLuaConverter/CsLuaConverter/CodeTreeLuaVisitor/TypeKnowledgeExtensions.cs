@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
+    using System;
     using System.Linq;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
@@ -9,6 +10,11 @@
         public static void WriteAsType(this TypeKnowledge typeKnowledge, IIndentedTextWriterWrapper textWriter,
             IProviders providers)
         {
+            if (typeKnowledge.GetTypeObject().IsGenericParameter)
+            {
+                throw new Exception("Cannot perform action on a generic type.");
+            }
+
             typeKnowledge.WriteAsReference(textWriter, providers);
             textWriter.Write(".__typeof");
         }
@@ -16,6 +22,11 @@
         public static void WriteAsReference(this TypeKnowledge typeKnowledge, IIndentedTextWriterWrapper textWriter,
             IProviders providers)
         {
+            if (typeKnowledge.GetTypeObject().IsGenericParameter)
+            {
+                throw new Exception("Cannot perform action on a generic type.");
+            }
+
             textWriter.Write(typeKnowledge.GetFullName());
 
             var generics = typeKnowledge.GetGenerics();
@@ -35,6 +46,11 @@
 
         public static TypeKnowledge[] GetInputArgs(this TypeKnowledge typeKnowledge)
         {
+            if (typeKnowledge.GetTypeObject().IsGenericParameter)
+            {
+                throw new Exception("Cannot perform action on a generic type.");
+            }
+
             var type = typeKnowledge.GetTypeObject();
             var del = GetDelegate(type);
             if (del == null)
@@ -62,6 +78,11 @@
 
         public static TypeKnowledge GetReturnArg(this TypeKnowledge typeKnowledge)
         {
+            if (typeKnowledge.GetTypeObject().IsGenericParameter)
+            {
+                throw new Exception("Cannot perform action on a generic type.");
+            }
+
             var type = typeKnowledge.GetTypeObject();
             var del = GetDelegate(type);
             if (del == null)
@@ -75,6 +96,12 @@
         public static int? ScoreForHowWellOtherTypeFitsThis(this TypeKnowledge typeKnowledge, TypeKnowledge otherTypeKnowledge)
         {
             var type = typeKnowledge.GetTypeObject();
+
+            if (typeKnowledge.GetTypeObject().IsGenericParameter)
+            {
+                throw new Exception("Cannot perform action on a generic type.");
+            }
+
             var otherType = otherTypeKnowledge?.GetTypeObject();
 
             return otherType == null ? 0 : ScoreForHowWellOtherTypeFitsThis(type, otherType);
@@ -82,6 +109,11 @@
 
         public static int? ScoreForHowWellOtherTypeFitsThis(System.Type type, System.Type otherType)
         {
+            if (type.IsGenericParameter)
+            {
+                throw new Exception("Cannot perform action on a generic type.");
+            }
+
             var c = 0;
 
             while (!type.IsAssignableFrom(otherType))

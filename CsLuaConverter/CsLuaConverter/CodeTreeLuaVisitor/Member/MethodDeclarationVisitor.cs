@@ -49,8 +49,6 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            this.RegisterMethodGenerics(providers);
-
             if (this.methodGenerics != null)
             {
                 textWriter.Write("local methodGenericsMapping = {");
@@ -58,7 +56,11 @@
                 textWriter.WriteLine("};");
                 textWriter.WriteLine("local methodGenerics = _M.MG(methodGenericsMapping);");
 
-                providers.GenericsRegistry.SetGenerics(this.methodGenerics.GetNames(), GenericScope.Method);
+                foreach (var genericName in this.methodGenerics.GetNames())
+                {
+                    // TODO: Determine the correct object type for the generic.
+                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Method, typeof(object));
+                }
             }
 
             textWriter.WriteLine("_M.IM(members, '{0}', {{", this.name);
@@ -127,18 +129,6 @@
             textWriter.Write(" = ((System.Array %_M.DOT)[{");
             types.Last().WriteAsType(textWriter, providers);
             textWriter.WriteLine("}]() % _M.DOT).__Initialize({[0] = firstParam, ...});");
-        }
-
-        private void RegisterMethodGenerics(IProviders providers)
-        {
-            if (this.methodGenerics == null)
-            {
-                providers.GenericsRegistry.SetGenerics(new string[] { }, GenericScope.Method);
-                return;
-            }
-            
-            // TODO: Register method generics
-            //providers.GenericsRegistry.SetGenerics(element.MethodGenerics.ContainedElements.OfType<TypeParameter>().Select(e => e.Name), GenericScope.Method);
         }
     }
 }

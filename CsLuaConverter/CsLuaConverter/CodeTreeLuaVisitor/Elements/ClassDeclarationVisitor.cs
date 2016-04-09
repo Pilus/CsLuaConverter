@@ -373,7 +373,11 @@
                 return;
             }
 
-            providers.GenericsRegistry.SetGenerics(this.genericsVisitor.GetNames(), GenericScope.Class);
+            foreach (var genericName in this.genericsVisitor.GetNames())
+            {
+                // TODO: Determine the correct object type for the generic.
+                providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Class, typeof(object));
+            }
         }
     }
 }
