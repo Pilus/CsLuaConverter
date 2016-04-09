@@ -1,8 +1,10 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using Providers;
+    using Providers.GenericsRegistry;
     using Providers.TypeKnowledgeRegistry;
 
     public static class TypeKnowledgeExtensions
@@ -17,6 +19,126 @@
 
             typeKnowledge.WriteAsReference(textWriter, providers);
             textWriter.Write(".__typeof");
+        }
+
+
+        public static TypeKnowledge ApplyMissingGenerics(this TypeKnowledge typeKnowledge, TypeKnowledge[] generics)
+        {
+            var type = typeKnowledge.GetTypeObject();
+
+            if (type.IsGenericParameter)
+            {
+                throw new NotImplementedException();
+            }
+
+            if (!type.IsGenericType) return typeKnowledge;
+
+            var list = new List<System.Type>();
+            var genericArgs = type.GetGenericArguments();
+            for (var index = 0; index < genericArgs.Length; index++)
+            {
+                var genericArgument = genericArgs[index];
+                list.Add( ApplyMissingGenerics(genericArgument, generics[index]?.GetTypeObject()));
+            }
+
+            if (list.All(v => v == null))
+            {
+                return typeKnowledge;
+            }
+
+            for (var index = 0; index < list.Count; index++)
+            {
+                if (list[index] == null)
+                {
+                    list[index] = genericArgs[index];
+                }
+            }
+
+            var genericType = type.GetGenericTypeDefinition();
+            return new TypeKnowledge(genericType.MakeGenericType(list.ToArray()));
+        }
+
+        private static System.Type ApplyMissingGenerics(System.Type type, System.Type genericType)
+        {
+            if (type.IsGenericParameter)
+            {
+                TypeKnowledge.Providers.GenericsRegistry.SetGenerics(type.Name, GenericScope.Invocation, genericType);
+                return genericType;
+            }
+
+            if (!type.IsGenericType || genericType == null)
+            {
+                return null;
+            }
+            
+            var list = new List<System.Type>();
+            var genericArgs = type.GetGenericArguments();
+            var subGenericTypes = genericType.GetGenericArguments();
+
+            for (var index = 0; index < genericArgs.Length; index++)
+            {
+                var genericArgument = genericArgs[index];
+                list.Add(ApplyMissingGenerics(genericArgument, subGenericTypes[index]));
+            }
+
+            if (list.All(v => v == null))
+            {
+                return type;
+            }
+
+            for (int index = 0; index < list.Count; index++)
+            {
+                if (list[index] == null)
+                {
+                    list[index] = genericArgs[index];
+                }
+            }
+
+            var genericTypeDef = type.GetGenericTypeDefinition();
+            return genericTypeDef.MakeGenericType(list.ToArray());
+        }
+
+        public static TypeKnowledge ResolveGenerics(this TypeKnowledge typeKnowledge, IProviders providers)
+        {
+            var type = typeKnowledge.GetTypeObject();
+            var newType = ResolveGenerics(type, providers);
+            return newType == null ? typeKnowledge : new TypeKnowledge(newType);
+        }
+
+        private static System.Type ResolveGenerics(System.Type type, IProviders providers)
+        {
+            if (type.IsGenericParameter)
+            {
+                var resolvedType = providers.GenericsRegistry.GetGenericType(type.Name);
+                if (resolvedType == null)
+                {
+                    throw new Exception($"Could not resolve generic {type.Name}.");
+                }
+
+                return resolvedType;
+            }
+
+            if (!type.IsGenericType) return null;
+
+            var genericArgs = type.GetGenericArguments();
+
+            var list = genericArgs.Select(genericArgument => ResolveGenerics(genericArgument, providers)).ToList();
+
+            if (list.All(v => v == null))
+            {
+                return null;
+            }
+
+            for (var index = 0; index < list.Count; index++)
+            {
+                if (list[index] == null)
+                {
+                    list[index] = genericArgs[index];
+                }
+            }
+
+            var genericTypeDef = type.GetGenericTypeDefinition();
+            return genericTypeDef.MakeGenericType(list.ToArray());
         }
 
         public static void WriteAsReference(this TypeKnowledge typeKnowledge, IIndentedTextWriterWrapper textWriter,

@@ -22,23 +22,18 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
         {
             var delegateType = providers.TypeKnowledgeRegistry.ExpectedType;
 
-            if (delegateType != null)
-            {
-                delegateType.WriteAsReference(textWriter, providers);
-                this.VisitParametersAndBody(textWriter, providers, delegateType);
-            }
-            else
-            {
-                var bodyWriter = textWriter.CreateTextWriterAtSameIndent();
-                this.VisitParametersAndBody(bodyWriter, providers, delegateType);
+            var bodyWriter = textWriter.CreateTextWriterAtSameIndent();
+            this.VisitParametersAndBody(bodyWriter, providers, delegateType);
 
-                var returnType = providers.TypeKnowledgeRegistry.CurrentType;
-                var inputTypes = new[] {this.parameter.GetType(providers)};
-                delegateType = TypeKnowledge.ConstructLamdaType(inputTypes, returnType);
+            var returnType = providers.TypeKnowledgeRegistry.CurrentType;
+            var inputTypes = new[] {this.parameter.GetType(providers)};
 
-                delegateType.WriteAsReference(textWriter, providers);
-                textWriter.AppendTextWriter(bodyWriter);
-            }
+            var generics = new[] { this.parameter.GetType(providers), returnType};
+
+            delegateType = delegateType?.ApplyMissingGenerics(generics) ?? TypeKnowledge.ConstructLamdaType(inputTypes, returnType);
+
+            delegateType.WriteAsReference(textWriter, providers);
+            textWriter.AppendTextWriter(bodyWriter);
 
             providers.TypeKnowledgeRegistry.CurrentType = delegateType;
         }

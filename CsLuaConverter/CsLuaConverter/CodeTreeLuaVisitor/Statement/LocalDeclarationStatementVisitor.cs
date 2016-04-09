@@ -4,6 +4,7 @@
     using Member;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.GenericsRegistry;
 
     public class LocalDeclarationStatementVisitor : BaseVisitor
     {
@@ -19,6 +20,7 @@
         {
             this.variableDeclarationVisitor.Visit(textWriter, providers);
             providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.GenericsRegistry.ClearScope(GenericScope.Invocation);
             textWriter.WriteLine(";");
         }
     }

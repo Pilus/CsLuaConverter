@@ -45,7 +45,7 @@
         {
             var members = this.GetMembers(str);
             var extensions = providers.TypeProvider.GetExtensionMethods(this.type, str);
-            var membersIncludingExtensions = new []{ members, extensions}.SelectMany(v => v).ToArray();
+            var membersIncludingExtensions = new []{ members, extensions}.SelectMany(v => v).GroupBy(v => v.type.ToString()).Select(g => g.First()).ToArray();
             
             if (!membersIncludingExtensions.Any())
             {
@@ -125,7 +125,7 @@
                 return new [] { new TypeKnowledge( this.type.GetElementType()) };
             }
 
-            return this.type.GetGenericArguments().Select(t => new TypeKnowledge(t)).ToArray();
+            return this.type.GetGenericArguments().Select(t => !t.IsGenericParameter || Providers.GenericsRegistry.IsGeneric(t.Name) ?  new TypeKnowledge(t) : null).ToArray();
         }
 
         public TypeKnowledge CreateWithGenerics(TypeKnowledge[] generics)
