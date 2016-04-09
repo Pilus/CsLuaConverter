@@ -171,6 +171,11 @@
             return all;
         }
 
+        private static Dictionary<string, Type> Translations = new Dictionary<string, Type>()
+        {
+            { "System.Object&", typeof(object) },
+        };
+
         private Type GetTypeFromMember(MemberInfo member, bool skipFirstInputArg)
         {
             var methodInfo = member as MethodInfo;
@@ -192,7 +197,7 @@
                     return typeof(Action);
                 }
 
-                parameterTypes = parameterTypes.Select(t => t.FullName == "System.Object&" ? typeof (object) : t).ToList();
+                parameterTypes = parameterTypes.Select(t => Translations.ContainsKey(t?.FullName ?? string.Empty) ? Translations[t.FullName] : t).ToList();
 
                 return type.MakeGenericType(parameterTypes.ToArray());
             }
