@@ -110,6 +110,7 @@
         {
             if (providers.PartialElementState.IsFirst)
             {
+                providers.GenericsRegistry.ClearScope(GenericScope.Class);
                 this.originalScope = providers.NameProvider.CloneScope();
                 providers.NameProvider.AddAllInheritedMembersToScope(this.name);
 

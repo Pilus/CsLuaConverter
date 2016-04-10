@@ -16,6 +16,11 @@ namespace CsLuaConverter.Providers.GenericsRegistry
 
         public void SetGenerics(string name, GenericScope scope, Type type = null)
         {
+            if (this.IsGeneric(name))
+            {
+                throw new Exception($"Generic with name {name} already added.");
+            }
+
             this.generics[scope].Add(new Tuple<string, Type>(name, type));
         }
 

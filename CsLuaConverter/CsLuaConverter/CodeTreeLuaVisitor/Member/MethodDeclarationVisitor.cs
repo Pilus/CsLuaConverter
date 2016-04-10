@@ -115,6 +115,7 @@
             textWriter.WriteLine("end");
 
             providers.NameProvider.SetScope(scope);
+            providers.GenericsRegistry.ClearScope(GenericScope.Method);
 
             textWriter.Indent--;
             textWriter.WriteLine("});");

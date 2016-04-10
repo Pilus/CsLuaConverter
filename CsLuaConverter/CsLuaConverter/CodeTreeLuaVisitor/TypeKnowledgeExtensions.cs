@@ -253,6 +253,72 @@
             return type == otherType ? c : c + 1;
         }
 
+        public static TypeKnowledge[] ApplyImplicitAndGenericTypes(this TypeKnowledge[] typeKnowledges, TypeKnowledge[] actualTypeKnowledges)
+        {
+            var list = new List<TypeKnowledge>();
+            for (int index = 0; index < typeKnowledges.Length; index++)
+            {
+                var type = typeKnowledges[index].GetTypeObject();
+                var actualType = actualTypeKnowledges[index]?.GetTypeObject();
+                var modifiedType = ApplyImplicitAndGenericTypes(type, actualType);
+
+                if (modifiedType != null)
+                {
+                    list.Add(new TypeKnowledge(modifiedType));
+                }
+                else
+                {
+                    list.Add(typeKnowledges[index]);
+                }
+            }
+
+            return list.ToArray();
+        }
+
+        private static System.Type ApplyImplicitAndGenericTypes(System.Type type, System.Type actualType)
+        {
+            if (type.IsGenericParameter)
+            {
+                var reg = TypeKnowledge.Providers.GenericsRegistry;
+                if (reg.IsGeneric(type.Name))
+                {
+                    return reg.GetGenericType(type.Name);
+                }
+
+                reg.SetGenerics(type.Name, GenericScope.Invocation, actualType);
+                return actualType;
+            }
+
+            if (type.Name != actualType?.Name || type.Namespace != actualType?.Namespace)
+            {
+                // Stop looking at implicit values.
+                actualType = null;
+            }
+
+            if (!type.IsGenericType || (actualType != null && !actualType.IsGenericType)) return null;
+
+            var list = new List<System.Type>();
+            var genericArgs = type.GetGenericArguments();
+            var subGenericTypes = actualType?.GetGenericArguments();
+
+            for (var index = 0; index < genericArgs.Length; index++)
+            {
+                var genericArgument = genericArgs[index];
+                list.Add(ApplyImplicitAndGenericTypes(genericArgument, subGenericTypes?[index]));
+            }
+
+            for (var index = 0; index < list.Count; index++)
+            {
+                if (list[index] == null)
+                {
+                    list[index] = genericArgs[index];
+                }
+            }
+
+            var genericTypeDef = type.GetGenericTypeDefinition();
+            return genericTypeDef.MakeGenericType(list.ToArray());
+        }
+
         public static int? ScoreForHowWellOtherTypeFitsThis(this TypeKnowledge[] typeKnowledges, TypeKnowledge[] otherTypeKnowledges)
         {
             var c = 0;

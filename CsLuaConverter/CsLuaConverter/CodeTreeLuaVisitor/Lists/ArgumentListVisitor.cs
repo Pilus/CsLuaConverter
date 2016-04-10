@@ -154,7 +154,8 @@
                 foreach (var possibleInvocationType in invocationTypesFittingLambdas)
                 {
                     var argsOfCandidate = possibleInvocationType.GetInputArgs();
-                    var score = argsOfCandidate.ScoreForHowWellOtherTypeFitsThis(invocationArgTypes);
+                    var explicitArgs = argsOfCandidate.ApplyImplicitAndGenericTypes(invocationArgTypes);
+                    var score = explicitArgs.ScoreForHowWellOtherTypeFitsThis(invocationArgTypes);
 
                     if (score == null) continue;
                     if (bestScore == null || bestScore > score)
