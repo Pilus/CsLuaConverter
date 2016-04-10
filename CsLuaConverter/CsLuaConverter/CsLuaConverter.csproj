@@ -167,6 +167,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\BaseExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\GreaterThanExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\LessThanExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\ConditionalExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\ILambdaVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\LiteralVisitorBase.cs" />

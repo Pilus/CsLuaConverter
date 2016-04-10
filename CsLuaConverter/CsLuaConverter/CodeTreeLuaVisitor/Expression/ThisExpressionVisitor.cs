@@ -11,7 +11,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            throw new System.NotImplementedException();
+            textWriter.Write("element");
+            providers.TypeKnowledgeRegistry.CurrentType = providers.NameProvider.GetScopeElement("this").Type;
         }
     }
 }

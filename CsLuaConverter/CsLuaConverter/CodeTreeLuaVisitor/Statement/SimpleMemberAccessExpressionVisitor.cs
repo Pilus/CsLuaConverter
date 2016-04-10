@@ -19,18 +19,22 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+
+            providers.TypeKnowledgeRegistry.CurrentType = null;
+            textWriter.Write("(");
+            this.targetVisitor.Visit(textWriter, providers);
+            textWriter.Write("% _M.DOT");
+
             if (this.targetVisitor is ThisExpressionVisitor)
             {
-                providers.TypeKnowledgeRegistry.CurrentType = providers.NameProvider.GetScopeElement("this").Type;
-                textWriter.Write("(element % _M.DOT_LVL(typeObject.Level)).");
+                textWriter.Write("_LVL(typeObject.Level)");
             }
-            else
+            else if (this.targetVisitor is BaseExpressionVisitor)
             {
-                providers.TypeKnowledgeRegistry.CurrentType = null;
-                textWriter.Write("(");
-                this.targetVisitor.Visit(textWriter, providers);
-                textWriter.Write("% _M.DOT).");
+                textWriter.Write("_LVL(typeObject.Level - 1)");
             }
+
+            textWriter.Write(").");
 
             this.indexVisitor.Visit(textWriter, providers);
         }
