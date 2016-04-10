@@ -18,8 +18,10 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            providers.TypeKnowledgeRegistry.CurrentType = null;
             this.lhs.Visit(textWriter, providers);
             textWriter.Write(" = ");
+            providers.TypeKnowledgeRegistry.CurrentType = null;
             this.lhs.Visit(textWriter, providers);
             textWriter.Write(" + ");
             this.rhs.Visit(textWriter, providers);
