@@ -16,7 +16,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            throw new System.NotImplementedException();
+            var type = providers.TypeProvider.LookupType(this.text);
+            textWriter.Write(type.FullNameWithoutGenerics);
+            providers.TypeKnowledgeRegistry.CurrentType = new TypeKnowledge(type.TypeObject, true);
         }
 
         public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)

@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Name
 {
+    using System.Linq;
     using CodeTree;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
@@ -21,7 +22,46 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            throw new System.NotImplementedException();
+            var current = providers.TypeKnowledgeRegistry.CurrentType;
+
+            if (current == null)
+            {
+                var type = providers.TypeProvider.LookupType(this.name);
+                textWriter.Write(type.FullNameWithoutGenerics);
+                // TODO: replace generics
+                providers.TypeKnowledgeRegistry.CurrentType = this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
+
+                throw new System.NotImplementedException();
+            }
+            else
+            {
+                var possibleMembers = current.GetTypeKnowledgeForSubElement(this.name, providers);
+                var numAppliedGenerics = this.argumentListVisitor.GetNumElements();
+                var fittingMembers = possibleMembers.Where(m => m.MethodGenerics?.Length == numAppliedGenerics).ToArray();
+
+                if (!fittingMembers.Any())
+                {
+                    throw new VisitorException("Could not find fitting member.");
+                }
+
+                // TODO: replace generics. Use genericVisitor.GetTypes() and member.NethodGenerics to create a method generic mapping. Apply this to the member. 
+                // Maybe create an extension method ApplyMethodGenerics(TypeKnowledge[] types) for TypeKnowledge.
+                
+
+                if (fittingMembers.Length == 1)
+                {
+                    providers.TypeKnowledgeRegistry.CurrentType = fittingMembers.Single();
+                }
+                else
+                {
+                    providers.TypeKnowledgeRegistry.PossibleMethods = fittingMembers;
+                    providers.TypeKnowledgeRegistry.CurrentType = null;
+                }
+
+                throw new System.NotImplementedException();
+            }
+
+            this.WriteGenericTypes(textWriter, providers);
         }
 
         public string[] GetName()

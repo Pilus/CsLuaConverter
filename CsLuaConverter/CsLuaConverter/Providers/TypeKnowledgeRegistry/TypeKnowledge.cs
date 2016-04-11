@@ -13,8 +13,9 @@
     {
         public static IProviders Providers;
         private readonly Type type;
+        private readonly bool restrictToStatic;
 
-        public TypeKnowledge(Type type)
+        public TypeKnowledge(Type type, bool restrictToStatic = false)
         {
             this.type = type;
 
@@ -27,6 +28,7 @@
             }
 
             this.type = genericType;
+            this.restrictToStatic = restrictToStatic;
         }
 
         public TypeKnowledge(MemberInfo member, bool skipFirstInputArg = false)
@@ -40,6 +42,7 @@
         }
 
         public bool IsParams { get; private set; }
+        public Type[] MethodGenerics { get; private set; }
 
         public TypeKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)
         {
@@ -140,9 +143,17 @@
 
         private TypeKnowledge[] GetMembers(string name)
         {
-            var members = GetMembersOfType(this.type).Distinct().Where(e => e.Name == name);
+            var members = GetMembersOfType(this.type).Distinct().Where(e => e.Name == name && (this.restrictToStatic == false || IsMemberStatic(e)));
 
             return members.Select(m => new TypeKnowledge(m)).ToArray();
+        }
+
+        private static bool IsMemberStatic(MemberInfo member)
+        {
+            var method = member as MethodInfo;
+            var field = member as FieldInfo;
+
+            return method?.IsStatic ?? field?.IsStatic ?? false;
         }
 
         private static IEnumerable<MemberInfo> GetMembersOfType(Type type)
@@ -191,6 +202,11 @@
                 }
 
                 this.IsParams = MethodHasParams(methodInfo);
+
+                if (methodInfo.IsGenericMethod)
+                {
+                    this.MethodGenerics = methodInfo.GetGenericArguments();
+                }
 
                 if (parameterTypes.Count == 0)
                 {

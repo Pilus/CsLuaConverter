@@ -45,5 +45,10 @@
         {
             return type.CreateWithGenerics(this.visitors.Select(v => v.GetType(providers)).ToArray());
         }
+
+        public TypeKnowledge[] GetTypes(IProviders providers)
+        {
+            return this.visitors.Select(v => v.GetType(providers)).ToArray();
+        }
     }
 }
