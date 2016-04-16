@@ -216,7 +216,7 @@
                 throw new VisitorException($"Cannot get invocation input args on current type {typeKnowledge.GetFullName()}.");
             }
 
-            return del.GetMethod("Invoke").GetParameters().Select(p => new TypeKnowledge(p.ParameterType)).ToArray();
+            return del.GetMethod("Invoke").GetParameters().Select(p => p.ParameterType.IsGenericParameter ? null : new TypeKnowledge(p.ParameterType)).ToArray();
         }
 
         public static bool IsDelegate(this TypeKnowledge typeKnowledge)
@@ -287,6 +287,71 @@
             }
 
             return type == otherType ? c : c + 1;
+        }
+
+        public static void RegisterMethodGenericsWithAppliedTypes(this TypeKnowledge delegateTypeKnowledge, TypeKnowledge[] appliedTypeKnowledges)
+        {
+            var delegateType = delegateTypeKnowledge.GetTypeObject();
+            var genericArgs = delegateType.GetGenericArguments();
+            for (int index = 0; index < genericArgs.Length; index++)
+            {
+                var genericArgument = genericArgs[index];
+                var appliedType = appliedTypeKnowledges.Length > index
+                    ? appliedTypeKnowledges[index]?.GetTypeObject()
+                    : null;
+                RegisterMethodGenericsWithAppliedTypes(genericArgument, appliedType);
+            }
+        }
+
+        private static void RegisterMethodGenericsWithAppliedTypes(System.Type type, System.Type appliedType)
+        {
+            if (appliedType == null || (type.IsGenericParameter == false && type.IsGenericType == false))
+            {
+                return;
+            }
+
+            if (type.IsGenericParameter)
+            {
+                if (!TypeKnowledge.Providers.GenericsRegistry.IsGeneric(type.Name))
+                {
+                    TypeKnowledge.Providers.GenericsRegistry.SetGenerics(type.Name, GenericScope.Invocation, appliedType);
+                }
+                return;
+            }
+
+            var genericArgs = type.GetGenericArguments();
+            var appliedGenericArgs = GetImplementationOfType(appliedType, type).GetGenericArguments();
+
+            for (var index = 0; index < genericArgs.Length; index++)
+            {
+                var genericArg = genericArgs[index];
+                var appliedGenericArg = appliedGenericArgs[index];
+                RegisterMethodGenericsWithAppliedTypes(genericArg, appliedGenericArg);
+            }
+        }
+
+        private static System.Type GetImplementationOfType(System.Type rawType, System.Type desiredType)
+        {
+            while (rawType != null)
+            {
+                if (rawType.Name == desiredType.Name && rawType.Namespace == desiredType.Namespace)
+                {
+                    return rawType;
+                }
+
+                foreach (var implementedInterface in rawType.GetInterfaces())
+                {
+                    var t = GetImplementationOfType(implementedInterface, desiredType);
+                    if (t != null)
+                    {
+                        return t;
+                    }
+                }
+
+                rawType = rawType.BaseType;
+            }
+
+            return null;
         }
 
         public static TypeKnowledge[] ApplyImplicitAndGenericTypes(this TypeKnowledge[] typeKnowledges, TypeKnowledge[] actualTypeKnowledges)

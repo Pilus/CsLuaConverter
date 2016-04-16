@@ -28,7 +28,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var possibleInvocationTypes = this.DetermineTypeKnowledgeForArgumentInvocation(providers);
+            var possibleInvocationTypesWithCorrectNumberOfArgs = this.DetermineTypeKnowledgeForArgumentInvocation(providers);
 
             var argVisitings = this.argumentVisitors.Select(visitor =>
             {
@@ -46,7 +46,7 @@
 
 
 
-            var bestTypes = this.DetermineTheBestFittingTypes(possibleInvocationTypes, argVisitings);
+            var bestTypes = this.DetermineTheBestFittingTypes(possibleInvocationTypesWithCorrectNumberOfArgs, argVisitings);
 
             TypeKnowledge selectedType = null;
             if (bestTypes == null)
@@ -74,7 +74,7 @@
                     }
                 }
 
-                bestTypes = this.DetermineTheBestFittingTypes(possibleInvocationTypes, argVisitings);
+                bestTypes = this.DetermineTheBestFittingTypes(possibleInvocationTypesWithCorrectNumberOfArgs, argVisitings);
 
                 if (bestTypes.Count == 1)
                 {
@@ -86,22 +86,29 @@
                 }
             }
 
-
-            var argTextWriters = argVisitings.Select(av => av?.Item1).ToArray();
+            // Visit remaining args
             var args = selectedType.GetInputArgs();
+            for (var index = 0; index < argVisitings.Length; index++)
+            {
+                if (argVisitings[index] != null) continue;
+
+                providers.TypeKnowledgeRegistry.ExpectedType = args[Math.Min(index, args.Length - 1)];
+                var argTextWriter = textWriter.CreateTextWriterAtSameIndent();
+                this.argumentVisitors[index].Visit(argTextWriter, providers);
+                var type = providers.TypeKnowledgeRegistry.CurrentType;
+                argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
+            }
+
+
+            var argResultingTypes = argVisitings.Select(av => av.Item2).ToArray();
+            var argTextWriters = argVisitings.Select(av => av.Item1).ToArray();
+
+            selectedType.RegisterMethodGenericsWithAppliedTypes(argResultingTypes);
 
             textWriter.Write("(");
-            for (int index = 0; index < argVisitings.Length; index++)
+            for (var index = 0; index < argVisitings.Length; index++)
             {
-                if (argTextWriters[index] != null)
-                {
-                    textWriter.AppendTextWriter(argTextWriters[index]);
-                }
-                else
-                {
-                    providers.TypeKnowledgeRegistry.ExpectedType = args[Math.Min(index, args.Length - 1)];
-                    this.argumentVisitors[index].Visit(textWriter, providers);
-                }
+                textWriter.AppendTextWriter(argTextWriters[index]);
                 
                 if (index < this.argumentVisitors.Length - 1)
                 {
