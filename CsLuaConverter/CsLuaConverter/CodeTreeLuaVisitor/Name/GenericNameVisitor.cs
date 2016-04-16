@@ -28,8 +28,11 @@
             {
                 var type = providers.TypeProvider.LookupType(this.name);
                 textWriter.Write(type.FullNameWithoutGenerics);
-                // TODO: replace generics
-                providers.TypeKnowledgeRegistry.CurrentType = this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
+
+                var memberWithClassGenerics = this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
+                var memberWithMethodGenerics = memberWithClassGenerics.ApplyMethodGenerics(this.argumentListVisitor.GetTypes(providers));
+
+                providers.TypeKnowledgeRegistry.CurrentType = memberWithMethodGenerics;
 
                 throw new System.NotImplementedException();
             }
@@ -44,21 +47,17 @@
                     throw new VisitorException("Could not find fitting member.");
                 }
 
-                // TODO: replace generics. Use genericVisitor.GetTypes() and member.NethodGenerics to create a method generic mapping. Apply this to the member. 
-                // Maybe create an extension method ApplyMethodGenerics(TypeKnowledge[] types) for TypeKnowledge.
-                
+                var fittingMembersWithMethodGenericsApplied = fittingMembers.Select(m => m.ApplyMethodGenerics(this.argumentListVisitor.GetTypes(providers))).ToArray();
 
-                if (fittingMembers.Length == 1)
+                if (fittingMembersWithMethodGenericsApplied.Length == 1)
                 {
-                    providers.TypeKnowledgeRegistry.CurrentType = fittingMembers.Single();
+                    providers.TypeKnowledgeRegistry.CurrentType = fittingMembersWithMethodGenericsApplied.Single();
                 }
                 else
                 {
-                    providers.TypeKnowledgeRegistry.PossibleMethods = fittingMembers;
+                    providers.TypeKnowledgeRegistry.PossibleMethods = fittingMembersWithMethodGenericsApplied;
                     providers.TypeKnowledgeRegistry.CurrentType = null;
                 }
-
-                throw new System.NotImplementedException();
             }
 
             this.WriteGenericTypes(textWriter, providers);

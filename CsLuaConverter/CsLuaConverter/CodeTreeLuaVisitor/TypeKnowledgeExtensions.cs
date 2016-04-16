@@ -70,7 +70,7 @@
             {
                 return null;
             }
-            
+
             var list = new List<System.Type>();
             var genericArgs = type.GetGenericArguments();
             var subGenericTypes = genericType.GetGenericArguments();
@@ -98,6 +98,42 @@
             return genericTypeDef.MakeGenericType(list.ToArray());
         }
 
+
+        public static TypeKnowledge ApplyMethodGenerics(this TypeKnowledge typeKnowledge, TypeKnowledge[] types)
+        {
+            if (typeKnowledge.MethodGenerics == null)
+            {
+                return typeKnowledge;
+            }
+
+            var mapping = new Dictionary<string, System.Type>();
+
+            for (int index = 0; index < typeKnowledge.MethodGenerics.Length; index++)
+            {
+                var methodGeneric = typeKnowledge.MethodGenerics[index];
+                var type = types[index];
+                mapping[methodGeneric.Name] = type.GetTypeObject();
+            }
+
+            return new TypeKnowledge(ApplyMethodGenericsType(typeKnowledge.GetTypeObject(), mapping));
+        }
+
+        private static System.Type ApplyMethodGenericsType(System.Type type, Dictionary<string, System.Type> genericsMapping)
+        {
+            if (type.IsGenericParameter)
+            {
+                return genericsMapping[type.Name];
+            }
+
+            if (!type.IsGenericType) return type;
+
+            var appliedGenerics = type.GetGenericArguments().Select(t => ApplyMethodGenericsType(t, genericsMapping)).ToArray();
+
+            var genericTypeDef = type.GetGenericTypeDefinition();
+            return genericTypeDef.MakeGenericType(appliedGenerics);
+        }
+
+        
         public static TypeKnowledge ResolveGenerics(this TypeKnowledge typeKnowledge, IProviders providers)
         {
             var type = typeKnowledge.GetTypeObject();
