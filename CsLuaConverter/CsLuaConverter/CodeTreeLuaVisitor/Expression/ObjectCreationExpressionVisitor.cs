@@ -10,7 +10,7 @@
     {
         private readonly ITypeVisitor objectTypeVisitor;
         private readonly ArgumentListVisitor constructorArgumentsVisitor;
-        private readonly CollectionInitializerExpressionVisitor initializer;
+        private readonly IVisitor initializer;
 
         public ObjectCreationExpressionVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -18,9 +18,13 @@
             this.objectTypeVisitor = (ITypeVisitor) this.CreateVisitor(1);
             this.constructorArgumentsVisitor = (ArgumentListVisitor)this.CreateVisitor(2);
 
-            if (this.IsKind(3, SyntaxKind.CollectionInitializerExpression))
+            if (this.IsKind(3, SyntaxKind.CollectionInitializerExpression) || this.IsKind(3, SyntaxKind.ObjectInitializerExpression))
             {
-                this.initializer = (CollectionInitializerExpressionVisitor)this.CreateVisitor(3);
+                this.initializer = this.CreateVisitor(3);
+            }
+            else if (this.Branch.Nodes.Length > 3)
+            {
+                throw new VisitorException($"Unknown following argument to object creation: {branch.Nodes[3].Kind}.");
             }
         }
 
@@ -39,7 +43,7 @@
             if (this.initializer != null)
             {
                 textWriter.Write(" % _M.DOT)");
-                this.initializer?.Visit(textWriter, providers);
+                this.initializer.Visit(textWriter, providers);
             }
             
 

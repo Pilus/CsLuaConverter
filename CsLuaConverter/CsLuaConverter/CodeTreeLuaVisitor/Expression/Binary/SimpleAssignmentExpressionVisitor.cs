@@ -1,12 +1,40 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Binary
 {
+    using System.Linq;
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
+    using Name;
+    using Providers;
 
-    public class SimpleAssignmentExpressionVisitor : BinaryExpressionVisitorBase
+    public class SimpleAssignmentExpressionVisitor : BaseVisitor
     {
-        public SimpleAssignmentExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.EqualsToken)
+        private readonly IVisitor targetVisitor;
+        private readonly IVisitor innerVisitor;
+
+        public SimpleAssignmentExpressionVisitor(CodeTreeBranch branch) : base(branch)
         {
+            this.ExpectKind(1, SyntaxKind.EqualsToken);
+            this.targetVisitor = this.CreateVisitor(0);
+            this.innerVisitor = this.CreateVisitor(2);
+        }
+
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        {
+            var identiferName = this.targetVisitor as IdentifierNameVisitor;
+            if (identiferName != null)
+            {
+                textWriter.Write(identiferName.GetName().Single());
+            }
+            else
+            {
+                this.targetVisitor.Visit(textWriter, providers);
+            }
+
+            textWriter.Write(" = ");
+
+            providers.TypeKnowledgeRegistry.CurrentType = null;
+            this.innerVisitor.Visit(textWriter, providers);
+            providers.TypeKnowledgeRegistry.CurrentType = null;
         }
     }
 }
