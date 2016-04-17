@@ -101,8 +101,12 @@
 
         public TypeKnowledge GetIndexerValueType()
         {
-            var indexParameters = this.type.GetProperties().Single(p => p.GetIndexParameters().Length > 0).GetIndexParameters().Single();
+            if (this.type.IsArray)
+            {
+                return new TypeKnowledge(typeof(int));
+            }
 
+            var indexParameters = this.type.GetProperties().Single(p => p.GetIndexParameters().Length > 0).GetIndexParameters().Single();
             return new TypeKnowledge((indexParameters.Member as PropertyInfo).PropertyType);
         }
 
