@@ -82,6 +82,11 @@ _M.DOT_LVL = function(level)
                 return obj;
             end
 
+            if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.ClassObject)) then
+                local typeObject = GetType(obj, "Invoke");
+                return typeObject.interactionElement.__index(obj, "Invoke", level)(...); 
+            end 
+
             assert(type(obj) == "function" or type(obj) == "table", "Attempted to invoke a "..type(obj).." value.");
             return obj(...);
         end

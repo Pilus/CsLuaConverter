@@ -5,7 +5,7 @@
 
     public class AddExpressionVisitor : BinaryExpressionVisitorBase
     {
-        public AddExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.PlusToken)
+        public AddExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.PlusToken, " +_M.Add+ ")
         {
         }
     }

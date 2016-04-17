@@ -23,7 +23,7 @@
             textWriter.Write(" = ");
             providers.TypeKnowledgeRegistry.CurrentType = null;
             this.lhs.Visit(textWriter, providers);
-            textWriter.Write(" + ");
+            textWriter.Write(" +_M.Add+ ");
             this.rhs.Visit(textWriter, providers);
         }
     }
