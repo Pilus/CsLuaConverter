@@ -34,7 +34,12 @@
                 textWriter.Write("_LVL(typeObject.Level - 1)");
             }
 
-            textWriter.Write(").");
+            textWriter.Write(")");
+
+            if (!(this.indexVisitor is GenericNameVisitor))
+            {
+                textWriter.Write(".");
+            }
 
             this.indexVisitor.Visit(textWriter, providers);
         }
