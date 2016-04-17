@@ -34,6 +34,7 @@
             providers.TypeKnowledgeRegistry.PossibleMethods = type.GetConstructors();
             this.constructorArgumentsVisitor.Visit(textWriter, providers);
             providers.TypeKnowledgeRegistry.PossibleMethods = null;
+            providers.TypeKnowledgeRegistry.CurrentType = null;
 
             if (this.initializer != null)
             {
