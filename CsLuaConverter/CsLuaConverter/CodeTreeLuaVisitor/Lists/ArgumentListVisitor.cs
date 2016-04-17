@@ -162,7 +162,7 @@
                 {
                     var argsOfCandidate = possibleInvocationType.GetInputArgs();
                     var explicitArgs = argsOfCandidate.ApplyImplicitAndGenericTypes(invocationArgTypes);
-                    var score = explicitArgs.ScoreForHowWellOtherTypeFitsThis(invocationArgTypes);
+                    var score = explicitArgs.ScoreForHowWellOtherTypeFitsThis(invocationArgTypes, possibleInvocationType.IsParams);
 
                     if (score == null) continue;
                     if (bestScore == null || bestScore > score)

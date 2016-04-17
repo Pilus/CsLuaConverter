@@ -427,13 +427,23 @@
             return genericTypeDef.MakeGenericType(list.ToArray());
         }
 
-        public static int? ScoreForHowWellOtherTypeFitsThis(this TypeKnowledge[] typeKnowledges, TypeKnowledge[] otherTypeKnowledges)
+        public static int? ScoreForHowWellOtherTypeFitsThis(this TypeKnowledge[] typeKnowledges, TypeKnowledge[] otherTypeKnowledges, bool isParams = false)
         {
             var c = 0;
-            for (int index = 0; index < typeKnowledges.Length; index++)
+            for (int index = 0; index < otherTypeKnowledges.Length; index++)
             {
-                var typeKnowledge = typeKnowledges[index];
                 var otherTypeKnowledge = otherTypeKnowledges[index];
+
+                TypeKnowledge typeKnowledge;
+                if (isParams && index >= typeKnowledges.Length - 1)
+                {
+                    typeKnowledge = typeKnowledges[typeKnowledges.Length - 1].GetArrayGeneric();
+                }
+                else
+                {
+                    typeKnowledge = typeKnowledges[index];
+                }
+                
                 var score = typeKnowledge.ScoreForHowWellOtherTypeFitsThis(otherTypeKnowledge);
                 if (score == null)
                 {

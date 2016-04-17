@@ -111,6 +111,16 @@
             return new TypeKnowledge(this.type.MakeArrayType());
         }
 
+        public TypeKnowledge GetArrayGeneric()
+        {
+            if (!this.type.IsArray)
+            {
+                return null;
+            }
+
+            return new TypeKnowledge(this.type.GetInterface(typeof(IEnumerable<object>).Name).GetGenericArguments().Single());
+        }
+
         public string GetFullName()
         {
             if (this.type.IsArray)
