@@ -33,8 +33,6 @@
                 var memberWithMethodGenerics = memberWithClassGenerics.ApplyMethodGenerics(this.argumentListVisitor.GetTypes(providers));
 
                 providers.TypeKnowledgeRegistry.CurrentType = memberWithMethodGenerics;
-
-                throw new System.NotImplementedException();
             }
             else
             {

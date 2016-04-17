@@ -359,8 +359,15 @@
             var list = new List<TypeKnowledge>();
             for (int index = 0; index < typeKnowledges.Length; index++)
             {
-                var type = typeKnowledges[index].GetTypeObject();
+                var type = typeKnowledges[index]?.GetTypeObject();
                 var actualType = actualTypeKnowledges[index]?.GetTypeObject();
+
+                if (type == null)
+                {
+                    list.Add(new TypeKnowledge(typeof(object)));
+                    continue;
+                }
+                
                 var modifiedType = ApplyImplicitAndGenericTypes(type, actualType);
 
                 if (modifiedType != null)
