@@ -18,7 +18,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            textWriter.Write("(");
             this.target.Visit(textWriter, providers);
+            textWriter.Write(" % _M.DOT)");
             this.bracketedArgumentList.Visit(textWriter, providers);
         }
     }
