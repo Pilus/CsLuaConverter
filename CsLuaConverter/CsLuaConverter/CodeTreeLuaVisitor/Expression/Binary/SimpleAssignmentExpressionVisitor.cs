@@ -20,15 +20,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var identiferName = this.targetVisitor as IdentifierNameVisitor;
-            if (identiferName != null)
-            {
-                textWriter.Write(identiferName.GetName().Single());
-            }
-            else
-            {
-                this.targetVisitor.Visit(textWriter, providers);
-            }
+            this.targetVisitor.Visit(textWriter, providers);
 
             textWriter.Write(" = ");
 

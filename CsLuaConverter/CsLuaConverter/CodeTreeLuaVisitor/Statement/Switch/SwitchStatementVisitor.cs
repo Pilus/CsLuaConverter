@@ -28,6 +28,7 @@
             textWriter.Write("local switchValue = ");
             this.switchTarget.Visit(textWriter, providers);
             textWriter.WriteLine(";");
+            providers.TypeKnowledgeRegistry.CurrentType = null;
             this.switchSections.VisitAll(textWriter, providers, "else");
             textWriter.WriteLine("end");
         }

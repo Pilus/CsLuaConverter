@@ -20,6 +20,7 @@
         {
             textWriter.Write("if (");
             this.labels.VisitAll(textWriter, providers, " or ");
+            providers.TypeKnowledgeRegistry.CurrentType = null;
             textWriter.WriteLine(") then");
             textWriter.Indent++;
             this.bodyElements.VisitAll(textWriter, providers);

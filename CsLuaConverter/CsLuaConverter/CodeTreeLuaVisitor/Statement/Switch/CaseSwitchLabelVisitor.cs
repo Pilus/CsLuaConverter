@@ -3,6 +3,7 @@
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
 
     public class CaseSwitchLabelVisitor : BaseVisitor, ISwitchLabelVisitor
     {
@@ -19,6 +20,7 @@
         {
             textWriter.Write("switchValue == ");
             this.innerVisitor.Visit(textWriter, providers);
+            providers.TypeKnowledgeRegistry.CurrentType = new TypeKnowledge(typeof (bool));
         }
     }
 }

@@ -43,6 +43,7 @@
             if (this.initializer != null)
             {
                 textWriter.Write(" % _M.DOT)");
+                providers.TypeKnowledgeRegistry.CurrentType = type;
                 this.initializer.Visit(textWriter, providers);
             }
             

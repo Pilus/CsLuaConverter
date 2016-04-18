@@ -20,7 +20,13 @@
         {
             textWriter.WriteLine(".__Initialize({");
             textWriter.Indent++;
-            this.innerVisitors.VisitAll(textWriter, providers, () => textWriter.WriteLine(","));
+
+            providers.TypeKnowledgeRegistry.CurrentType = null;
+            this.innerVisitors.VisitAll(textWriter, providers, () =>
+            {
+                textWriter.WriteLine(",");
+                providers.TypeKnowledgeRegistry.CurrentType = null;
+            });
             textWriter.Indent--;
             textWriter.WriteLine();
             textWriter.Write("})");
