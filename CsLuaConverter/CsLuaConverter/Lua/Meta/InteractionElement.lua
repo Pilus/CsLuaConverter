@@ -51,6 +51,10 @@ local join = function(t1, t2)
 end
 
 local InteractionElement = function(metaProvider, generics, selfObj)
+    if (type(metaProvider)=="table" and type(metaProvider.__typeof) == "table" and metaProvider.__typeof.IsEnum) then
+        return metaProvider;
+    end
+
     local element = selfObj or { __metaType = _M.MetaTypes.InteractionElement };
     local staticValues = {__metaType = _M.MetaTypes.StaticValues};
     local extensions = {};
