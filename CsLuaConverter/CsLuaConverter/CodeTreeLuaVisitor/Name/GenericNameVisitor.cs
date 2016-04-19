@@ -45,6 +45,8 @@
                     throw new VisitorException("Could not find fitting member.");
                 }
 
+                textWriter.Write(this.name);
+
                 var fittingMembersWithMethodGenericsApplied = fittingMembers.Select(m => m.ApplyMethodGenerics(this.argumentListVisitor.GetTypes(providers))).ToArray();
 
                 if (fittingMembersWithMethodGenericsApplied.Length == 1)
