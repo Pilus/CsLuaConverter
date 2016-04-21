@@ -53,7 +53,7 @@
             return this.namespaceVisitor.GetElementName();
         }
 
-        public int GetNumGenericsOfElement()
+        public int[] GetNumGenericsOfElement()
         {
             return this.namespaceVisitor.GetNumGenericsOfElement();
         }

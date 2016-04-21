@@ -79,19 +79,36 @@
             textWriter.WriteLine($"{name} = _M.NE({{");
             textWriter.Indent++;
 
-            foreach (var visitorsWithSameNumGenerics in visitors.GroupBy(v => v.GetNumGenericsOfElement()))
+            var visitorsByNumGenerics = new Dictionary<int, List<CompilationUnitVisitor>>();
+
+            foreach (var visitor in visitors)
             {
-                this.VisitFilesWithSameElementNameAndNumGenerics(visitorsWithSameNumGenerics.ToArray(), textWriter);
+                var numberOfGenericsSet = visitor.GetNumGenericsOfElement();
+                foreach (var i in numberOfGenericsSet)
+                {
+                    if (!visitorsByNumGenerics.ContainsKey(i))
+                    {
+                        visitorsByNumGenerics[i] = new List<CompilationUnitVisitor>();
+                    }
+
+                    visitorsByNumGenerics[i].Add(visitor);
+                }
+            }
+
+            foreach (var visitorsWithSameNumGenerics in visitorsByNumGenerics.OrderBy(v => v.Key))
+            {
+                this.VisitFilesWithSameElementNameAndNumGenerics(visitorsWithSameNumGenerics.Value.ToArray(), textWriter, visitorsWithSameNumGenerics.Key);
             }
 
             textWriter.Indent--;
             textWriter.WriteLine("}),");
         }
 
-        private void VisitFilesWithSameElementNameAndNumGenerics(CompilationUnitVisitor[] visitors, IIndentedTextWriterWrapper textWriter)
+        private void VisitFilesWithSameElementNameAndNumGenerics(CompilationUnitVisitor[] visitors, IIndentedTextWriterWrapper textWriter, int numOfGenerics)
         {
             var state = this.providers.PartialElementState;
             state.CurrentState = null;
+            state.NumberOfGenerics = numOfGenerics;
             while (true)
             {
                 for (int index = 0; index < visitors.Length; index++)

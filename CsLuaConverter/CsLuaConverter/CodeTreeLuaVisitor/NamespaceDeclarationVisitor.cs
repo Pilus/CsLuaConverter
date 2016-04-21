@@ -33,12 +33,14 @@
             var isFirstNamespace = state.IsFirst;
             var isLastNamespace = state.IsLast;
 
-            for (var index = 0; index < this.elementVisitors.Length; index++)
+            var elements = this.elementVisitors.Where(v => v.GetNumOfGenerics() == state.NumberOfGenerics).ToArray();
+
+            for (var index = 0; index < elements.Length; index++)
             {
-                var elementVisitor = this.elementVisitors[index];
+                var elementVisitor = elements[index];
 
                 state.IsFirst = isFirstNamespace && index == 0;
-                state.IsLast = isLastNamespace && index == this.elementVisitors.Length - 1;
+                state.IsLast = isLastNamespace && index == elements.Length - 1;
                 elementVisitor.Visit(textWriter, providers);
             }
         }
@@ -104,9 +106,9 @@
             return this.elementVisitors.First().GetName();
         }
 
-        public int GetNumGenericsOfElement()
+        public int[] GetNumGenericsOfElement()
         {
-            return this.elementVisitors.First().GetNumOfGenerics();
+            return this.elementVisitors.Select(v => v.GetNumOfGenerics()).ToArray();
         }
 
         private static bool AreAllElementsIdentical(IEnumerable<object> e)

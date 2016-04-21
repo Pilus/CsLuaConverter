@@ -6,5 +6,6 @@
         bool IsFirst { get; set; }
         bool IsLast { get; set; }
         int? NextState { get; set; }
+        int NumberOfGenerics { get; set; }
     }
 }
