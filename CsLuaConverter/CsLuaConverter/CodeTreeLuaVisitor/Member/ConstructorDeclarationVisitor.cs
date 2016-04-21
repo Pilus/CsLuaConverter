@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Member
 {
+    using System;
     using System.Linq;
     using CodeTree;
     using Filters;
@@ -9,9 +10,10 @@
 
     public class ConstructorDeclarationVisitor : BaseVisitor
     {
-        private ParameterListVisitor parameterList;
-        private BaseListVisitor baseListVisitor;
-        private BlockVisitor block;
+        private readonly ParameterListVisitor parameterList;
+        private readonly BaseListVisitor baseListVisitor;
+        private readonly BlockVisitor block;
+        private readonly BaseConstructorInitializerVisitor baseConstructorInitializer;
 
         public ConstructorDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -19,6 +21,8 @@
                 (ParameterListVisitor) this.CreateVisitors(new KindFilter(SyntaxKind.ParameterList)).Single();
             this.block =
                 (BlockVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.Block)).Single();
+            this.baseConstructorInitializer =
+                (BaseConstructorInitializerVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.BaseConstructorInitializer)).SingleOrDefault();
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
@@ -38,11 +42,9 @@
             textWriter.WriteLine(")");
 
             textWriter.Indent++;
-            if (this.baseListVisitor != null)
+            if (this.baseConstructorInitializer != null)
             {
-                textWriter.Write("_M.BC(element, baseConstructors, ");
-                //ArgumentListVisitor.WriteInner(constructor.BaseConstructorInitializer.ArgumentList, textWriter, providers);
-                textWriter.WriteLine(");");
+                this.baseConstructorInitializer.Visit(textWriter, providers);
             }
             else
             {

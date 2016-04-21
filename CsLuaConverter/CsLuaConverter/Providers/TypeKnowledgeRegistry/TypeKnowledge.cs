@@ -66,12 +66,13 @@
                 return new[] {new TypeKnowledge(cstorType)};
             }
 
-            var cstors = this.type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic)
+            var cstors = GetMembersOfType(this.type, true) //this.type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(m => m.MemberType.Equals(MemberTypes.Constructor))
                 .Select(m => new TypeKnowledge(m))
+                .GroupBy(tk => tk.type)
+                .Select(group => group.First())
                 .ToArray();
 
-            
             return cstors.Length > 0 ? cstors : new[] {new TypeKnowledge(typeof (Action))};
         }
 
@@ -170,7 +171,7 @@
             return method?.IsStatic ?? field?.IsStatic ?? false;
         }
 
-        private static IEnumerable<MemberInfo> GetMembersOfType(Type type)
+        private static IEnumerable<MemberInfo> GetMembersOfType(Type type, bool excludeBase = false)
         {
             var all = new List<MemberInfo>();
 
@@ -180,7 +181,7 @@
             }
 
             var _base = type.BaseType;
-            while (_base != null)
+            while (_base != null && excludeBase == false)
             {
                 all.AddRange(_base.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
                 all.AddRange(_base.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
@@ -203,16 +204,17 @@
 
         private Type GetTypeFromMember(MemberInfo member, bool skipFirstInputArg)
         {
-            var methodInfo = member as MethodInfo;
+            var methodInfo = member as MethodBase;
             if (methodInfo != null)
             {
+                var returnType = (methodInfo as MethodInfo)?.ReturnType ?? member.DeclaringType;
                 var parameterTypes = methodInfo.GetParameters().Select(p => p.ParameterType).Skip(skipFirstInputArg ? 1 : 0).ToList();
 
                 var type = ActionFuncTypes.GetAction(parameterTypes.Count);
-                if (methodInfo.ReturnType != typeof(void))
+                if (returnType != typeof(void))
                 {
                     type = ActionFuncTypes.GetFunc(parameterTypes.Count + 1);
-                    parameterTypes.Add(methodInfo.ReturnType);
+                    parameterTypes.Add(returnType);
                 }
 
                 this.IsParams = MethodHasParams(methodInfo);
@@ -267,7 +269,7 @@
             return new TypeKnowledge(funcType.MakeGenericType(generics));
         }
 
-        public static bool MethodHasParams(MethodInfo mi)
+        public static bool MethodHasParams(MethodBase mi)
         {
             var lastParameter = mi.GetParameters().LastOrDefault();
 

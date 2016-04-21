@@ -25,11 +25,7 @@
             this.targetVisitor.Visit(textWriter, providers);
             textWriter.Write("% _M.DOT");
 
-            if (this.targetVisitor is ThisExpressionVisitor)
-            {
-                textWriter.Write("_LVL(typeObject.Level)");
-            }
-            else if (this.targetVisitor is BaseExpressionVisitor)
+            if (this.targetVisitor is BaseExpressionVisitor)
             {
                 textWriter.Write("_LVL(typeObject.Level - 1)");
             }
