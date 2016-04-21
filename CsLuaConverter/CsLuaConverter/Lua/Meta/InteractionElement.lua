@@ -52,6 +52,10 @@ end
 
 local InteractionElement = function(metaProvider, generics, selfObj)
     if (type(metaProvider)=="table" and type(metaProvider.__typeof) == "table" and metaProvider.__typeof.IsEnum) then
+        for i,v in pairs(metaProvider) do
+            selfObj[i] = v;
+        end
+
         return metaProvider;
     end
 
