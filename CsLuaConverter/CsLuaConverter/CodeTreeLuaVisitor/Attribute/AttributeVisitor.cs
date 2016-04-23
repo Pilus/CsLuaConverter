@@ -18,7 +18,16 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            throw new System.NotImplementedException();
+            var name = this.name.GetName().Single();
+
+            if (!name.EndsWith("Attribute"))
+            {
+                name += "Attribute";
+            }
+
+            var type = providers.TypeProvider.LookupType(name);
+            textWriter.Write(type.FullNameWithoutGenerics);
+            textWriter.Write(".__typeof");
         }
 
         public bool IsCsLuaAddOnAttribute()

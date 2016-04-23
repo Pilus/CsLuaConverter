@@ -49,13 +49,13 @@
             return true;
         }
 
-        public void WriteInterfaceImplements(IIndentedTextWriterWrapper textWriter, IProviders providers, string format, Type[] excludedTypes)
+        public void WriteInterfaceImplements(IIndentedTextWriterWrapper textWriter, IProviders providers, string format, Type[] excludedTypes = null)
         {
             foreach (var visitor in this.nameVisitors)
             {
                 var type = providers.TypeProvider.LookupType(visitor.GetName());
 
-                if (!type.IsInterface || excludedTypes.Contains(type.TypeObject)) continue;
+                if (!type.IsInterface || (excludedTypes != null && excludedTypes.Contains(type.TypeObject))) continue;
 
                 var writer = new StringWriter();
                 var innerWriter = new IndentedTextWriterWrapper(writer);

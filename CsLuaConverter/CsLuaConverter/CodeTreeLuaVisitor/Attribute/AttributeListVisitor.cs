@@ -19,7 +19,13 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            throw new System.NotImplementedException();
+            textWriter.WriteLine("local attributes = {");
+            textWriter.Indent++;
+
+            this.attributes.VisitAll(textWriter, providers);
+
+            textWriter.Indent--;
+            textWriter.WriteLine("};");
         }
 
         public bool HasCsLuaAddOnAttribute()

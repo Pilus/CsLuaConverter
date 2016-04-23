@@ -44,7 +44,7 @@
             this.isOverride = this.Branch.Nodes.OfType<CodeTreeLeaf>().Any(n => n.Kind.Equals(SyntaxKind.OverrideKeyword));
 
             this.parameters = (ParameterListVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.ParameterList)).Single();
-            this.block = (BlockVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.Block)).Single();
+            this.block = (BlockVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.Block)).SingleOrDefault();
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
@@ -90,31 +90,36 @@
                 textWriter.WriteLine("generics = methodGenericsMapping,");
             }
 
-            textWriter.Write("func = function(element");
 
-            if (this.methodGenerics != null)
-            {
-                textWriter.Write(", methodGenericsMapping, methodGenerics");
+            if (this.block != null)
+            { 
+                textWriter.Write("func = function(element");
+
+                if (this.methodGenerics != null)
+                {
+                    textWriter.Write(", methodGenericsMapping, methodGenerics");
+                }
+
+                var scope = providers.NameProvider.CloneScope();
+
+                this.parameters.FirstElementPrefix = ", ";
+                this.parameters.Visit(textWriter, providers);
+
+                textWriter.WriteLine(")");
+
+                if (this.parameters.GetTypes(providers).LastOrDefault()?.IsParams == true)
+                {
+                    textWriter.Indent++;
+                    this.WriteParamVariableInit(textWriter, providers);
+                    textWriter.Indent--;
+                }
+
+                this.block.Visit(textWriter, providers);
+                textWriter.WriteLine("end");
+
+                providers.NameProvider.SetScope(scope);
             }
 
-            var scope = providers.NameProvider.CloneScope();
-
-            this.parameters.FirstElementPrefix = ", ";
-            this.parameters.Visit(textWriter, providers);
-
-            textWriter.WriteLine(")");
-
-            if (this.parameters.GetTypes(providers).LastOrDefault()?.IsParams == true)
-            {
-                textWriter.Indent++;
-                this.WriteParamVariableInit(textWriter, providers);
-                textWriter.Indent--;
-            }
-
-            this.block.Visit(textWriter, providers);
-            textWriter.WriteLine("end");
-
-            providers.NameProvider.SetScope(scope);
             providers.GenericsRegistry.ClearScope(GenericScope.Method);
 
             textWriter.Indent--;

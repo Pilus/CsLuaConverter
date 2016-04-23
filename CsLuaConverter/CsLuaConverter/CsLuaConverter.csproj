@@ -164,6 +164,7 @@
     <Compile Include="CodeTreeLuaVisitor\Attribute\AttributeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\BaseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\BlockVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Elements\InterfaceState.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\BaseExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\DivideExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\GreaterThanExpressionVisitor.cs" />
