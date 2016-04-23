@@ -41,7 +41,7 @@
             }
         }
 
-        public bool IsParams { get; private set; }
+        public bool IsParams { get; set; }
         public Type[] MethodGenerics { get; private set; }
 
         public TypeKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)

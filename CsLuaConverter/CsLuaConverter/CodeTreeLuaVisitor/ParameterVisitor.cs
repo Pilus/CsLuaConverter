@@ -30,18 +30,40 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            textWriter.Write(this.name);
+            if (this.isParams)
+            {
+                textWriter.Write("...");
+            }
+            else
+            {
+                textWriter.Write(this.name);
+            }
+
             providers.NameProvider.AddToScope(new ScopeElement(this.name, this.type?.GetType(providers) ?? providers.TypeKnowledgeRegistry.CurrentType ?? providers.TypeKnowledgeRegistry.ExpectedType));
         }
 
         public void WriteAsTypes(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            this.type.WriteAsType(textWriter, providers);
+            if (this.isParams)
+            {
+                this.type.GetType(providers).GetArrayGeneric().WriteAsType(textWriter, providers);
+            }
+            else
+            {
+                this.type.WriteAsType(textWriter, providers);
+            }
         }
 
         public TypeKnowledge GetType(IProviders providers)
         {
-            return this.type?.GetType(providers);
+            var tk = this.type?.GetType(providers);
+
+            if (tk != null)
+            {
+                tk.IsParams = this.isParams;
+            }
+            
+            return tk;
         }
 
         public string GetName()
