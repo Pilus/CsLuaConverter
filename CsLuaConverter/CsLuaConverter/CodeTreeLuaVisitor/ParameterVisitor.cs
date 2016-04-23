@@ -32,7 +32,7 @@
         {
             if (this.isParams)
             {
-                textWriter.Write("...");
+                textWriter.Write("firstParam, ...");
             }
             else
             {
