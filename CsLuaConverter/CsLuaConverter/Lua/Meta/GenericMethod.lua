@@ -21,7 +21,7 @@ local meta = {};
 setmetatable(meta,{
     __index = function(_, index)
         if index == "__metaType" then
-            return _M.MetaTypes.ClassObject;
+            return _M.MetaTypes.GenericMethod;
         end
     end
 });

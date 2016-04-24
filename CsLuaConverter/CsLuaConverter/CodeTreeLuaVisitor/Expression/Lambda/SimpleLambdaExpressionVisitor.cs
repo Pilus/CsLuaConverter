@@ -54,9 +54,10 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
             {
                 textWriter.Write(" return ");
                 this.body.Visit(textWriter, providers);
+                textWriter.Write(" ");
             }
 
-            textWriter.Write(" end)");
+            textWriter.Write("end)");
         }
 
         public int GetNumParameters()
