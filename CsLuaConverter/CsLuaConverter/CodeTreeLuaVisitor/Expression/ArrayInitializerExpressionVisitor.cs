@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using System.Collections.Generic;
+    using System.Linq;
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
@@ -26,6 +27,12 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write(".__Initialize({");
+
+            if (this.elementVisitors.Any())
+            {
+                textWriter.Write("[0] = ");
+            }
+
             this.elementVisitors.VisitAll(textWriter, providers, ", ");
             textWriter.Write("})");
             providers.TypeKnowledgeRegistry.CurrentType = providers.TypeKnowledgeRegistry.CurrentType.GetAsArrayType();

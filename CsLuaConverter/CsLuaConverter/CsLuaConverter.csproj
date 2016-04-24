@@ -435,6 +435,7 @@
     <None Include="Lua\System\Collections\ICollection.lua" />
     <None Include="Lua\System\Collections\IList.lua" />
     <None Include="Lua\System\ArgumentOutOfRangeException.lua" />
+    <None Include="Lua\System\Collections\Single.lua" />
     <None Include="Lua\System\Func.lua" />
     <None Include="Lua\System\Enum.lua" />
     <None Include="Lua\System\Bool.lua" />

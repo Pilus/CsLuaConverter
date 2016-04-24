@@ -20,9 +20,7 @@ end
 local meta = {};
 setmetatable(meta,{
     __index = function(_, index)
-        if index == "type" then
-            return System.Action.__typeof;
-        elseif index == "__metaType" then
+        if index == "__metaType" then
             return _M.MetaTypes.ClassObject;
         end
     end
@@ -36,6 +34,30 @@ local GenericMethod = function(members, elementOrStaticValues, name)
         __index = function(_, generics)
             if meta[generics] then
                 return meta[generics];
+            end
+
+            if generics == "type" then
+                if #(members) > 1 then
+                    error("Can not reference ambigious method.")
+                end
+
+                local member = members[1];
+                local actionGenerics = {};
+                for _,v in pairs(member.types) do
+                    table.insert(actionGenerics, v)
+                end
+
+                if (member.isParams == true) then
+                    local i = #(actionGenerics)
+                    actionGenerics[i] = System.Array[{actionGenerics[i]}].__typeof;
+                end
+
+                if not(member.returnType == nil) then
+                    table.insert(actionGenerics, 1, member.returnType)
+                    return System.Func[actionGenerics].__typeof;
+                end
+
+                return System.Action[actionGenerics].__typeof;
             end
 
             return function(...)

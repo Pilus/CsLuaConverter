@@ -23,7 +23,7 @@
 
         public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            if (this.text == "void")
+            if (this.IsVoid())
             {
                 throw new VisitorException("Can not write void type as refrence.");
             }
@@ -34,13 +34,18 @@
 
         public override TypeKnowledge GetType(IProviders providers)
         {
-            if (this.text == "void")
+            if (this.IsVoid())
             {
                 return null;
             }
 
             var type = providers.TypeProvider.LookupType(this.text);
             return new TypeKnowledge(type.TypeObject);
+        }
+
+        public bool IsVoid()
+        {
+            return this.text == "void";
         }
     }
 }
