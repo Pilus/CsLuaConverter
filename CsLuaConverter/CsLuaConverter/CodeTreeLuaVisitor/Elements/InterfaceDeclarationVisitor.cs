@@ -89,7 +89,7 @@
         {
             if (!providers.PartialElementState.IsLast) return;
 
-            textWriter.WriteLine("return 'Interface', typeObject, memberProvider, nil, nil;");
+            textWriter.WriteLine("return 'Interface', typeObject, getMembers, nil, nil;");
 
             textWriter.Indent--;
             textWriter.WriteLine("end,");
@@ -149,7 +149,8 @@
             {
                 textWriter.WriteLine("local getMembers = function()");
                 textWriter.Indent++;
-                textWriter.WriteLine("local members = _M.RTEF(getBaseMembers);");
+                textWriter.WriteLine("local members = {};");
+                textWriter.WriteLine("_M.GAM(members, implements);");
             }
 
             var scope = providers.NameProvider.CloneScope();
