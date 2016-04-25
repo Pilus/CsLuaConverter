@@ -1,18 +1,35 @@
-﻿local actionTypeObject;
-System.Func = _M.NE({["#"] = function(interactionElement, generics, staticValues)
-    -- Note: System.Func is throwing away all generics, as it is not possible for lua to distingush between them.
-    local typeObject = actionTypeObject or System.Type('Func','System',System.Object.__typeof,0,nil,nil,interactionElement);
-    actionTypeObject = typeObject;
+﻿System.Func = _M.NE({["#"] = function(interactionElement, generics, staticValues)
+    local typeObject = System.Type('Func','System',System.Object.__typeof,#(generics),generics,nil,interactionElement);
     local level = 2;
     local members = {
         
     };
+
+    _M.IM(members,'Invoke',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = generics,
+        func = function(element,...)
+            return (element[typeObject.level].innerAction % _M.DOT)(...);
+        end,
+    });
+
     local constructors = {
         {
-            types = {},
-            func = function() end,
+            types = {typeObject},
+            func = function(element, innerAction) 
+                element[typeObject.level].innerAction = innerAction;
+            end,
+        },
+        {
+            types = {Lua.Function.__typeof},
+            func = function(element, innerAction) 
+                element[typeObject.level].innerAction = innerAction;
+            end,
         }
     };
+
     local objectGenerator = function() 
         return {
             [1] = {},
