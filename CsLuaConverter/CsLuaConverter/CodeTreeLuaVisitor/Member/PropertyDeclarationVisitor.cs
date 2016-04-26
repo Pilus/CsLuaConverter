@@ -45,6 +45,9 @@
             textWriter.WriteLine("memberType = '{0}',", this.accessorList.IsAutoProperty() ? "AutoProperty" : "Property");
             textWriter.WriteLine("scope = '{0}',", this.scope);
             textWriter.WriteLine("static = {0},", this.isStatic.ToString().ToLower());
+            textWriter.Write("returnType = ");
+            this.type.WriteAsType(textWriter, providers);
+            textWriter.WriteLine(";");
 
             providers.TypeKnowledgeRegistry.CurrentType = this.type.GetType(providers);
             this.accessorList.Visit(textWriter, providers);

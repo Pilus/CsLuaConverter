@@ -89,7 +89,7 @@
         {
             if (!providers.PartialElementState.IsLast) return;
 
-            textWriter.WriteLine("return 'Interface', typeObject, getMembers, nil, nil;");
+            textWriter.WriteLine("return 'Interface', typeObject, getMembers, nil, nil, nil, nil, attributes;");
 
             textWriter.Indent--;
             textWriter.WriteLine("end,");

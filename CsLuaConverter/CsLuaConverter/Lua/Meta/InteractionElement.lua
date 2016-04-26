@@ -65,7 +65,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
 
     _M.RPL(tostring(metaProvider));
 
-    local catagory, typeObject, memberProvider, constructors, elementGenerator, implements, initialize = metaProvider(element, generics, staticValues);
+    local catagory, typeObject, memberProvider, constructors, elementGenerator, implements, initialize, attributes = metaProvider(element, generics, staticValues);
     staticValues.type = typeObject;
 
     local cachedMembers = nil;
@@ -311,7 +311,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
                 cachedMembers = _M.RTEF(memberProvider);
             end
 
-            return typeObject, clone(cachedMembers, 2), clone(constructors or {},2), elementGenerator, clone(implements or {},1), initialize; 
+            return typeObject, clone(cachedMembers, 2), clone(constructors or {},2), elementGenerator, clone(implements or {},1), initialize, attributes; 
         end,
         __index = index,
         __newindex = newIndex,

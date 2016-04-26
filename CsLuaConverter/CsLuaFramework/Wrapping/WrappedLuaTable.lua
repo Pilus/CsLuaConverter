@@ -17,7 +17,7 @@ local wrap = function(typeObj, typeTranslator, value, ...)
     end
     
     if (typeTranslator) then
-        typeObj = typeTranslator(value) or typeObj;
+        typeObj = (typeTranslator %_M.DOT)(value) or typeObj;
     end
     
     return CsLuaFramework.Wrapping.WrappedLuaTable[{typeObj}](value, typeTranslator);
@@ -53,6 +53,18 @@ local insert = function(t, i, v)
     return t2;
 end
 
+local hasProvideSelfAttribute = function(attributes)
+    local selfAttribute = CsLuaFramework.Attributes.ProvideSelfAttribute.__typeof;
+
+    for _,v in pairs(attributes or {}) do
+        if v == selfAttribute then
+            return true;
+        end
+    end
+
+    return false;
+end
+
 CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionElement, generics, staticValues)
     local interfaceType = generics[1];
 
@@ -63,7 +75,7 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
     local baseTypeObject, members = System.Object.__meta(staticValues);
     local typeObject = System.Type('WrappedLuaTable_'..interfaceType.name,'CsLuaFramework.Wrapping',baseTypeObject,#(generics),generics,implements,interactionElement);
 
-    local _, interfaceMembers = interfaceType.interactionElement.__meta({});
+    local _, interfaceMembers, _, _, _, _, attributes = interfaceType.interactionElement.__meta({});
 
     local constructors = {
         {
@@ -90,7 +102,8 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
                 static = false,
             };
 
-            if member.memberType == "Property" then
+            if member.memberType == "Property" or member.memberType == "AutoProperty" then
+                m.memberType = "Property";
                 m.get = function(element)
                     return wrap(member.returnType, element[typeObject.level].typeTranslator, element[typeObject.level].luaTable[name]);
                 end;
@@ -101,7 +114,7 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
                 m.types = member.types;
                 m.func = function(element,...)
                     local args = select({...}, unwrap);
-                    if member.provideSelf then
+                    if hasProvideSelfAttribute(attributes) then
                         args = insert(args, 1, element[typeObject.level].luaTable);
                     end
                     return wrap(member.returnType, element[typeObject.level].typeTranslator, element[typeObject.level].luaTable[name](unpack(args)));
