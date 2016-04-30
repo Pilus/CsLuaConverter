@@ -70,7 +70,7 @@
 
         public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var type = providers.TypeProvider.LookupType(this.name);
+            var type = providers.TypeProvider.LookupType(new[] {this.name}, this.argumentListVisitor.GetNumElements());
             textWriter.Write(type.FullNameWithoutGenerics);
             this.WriteGenericTypes(textWriter, providers);
         }

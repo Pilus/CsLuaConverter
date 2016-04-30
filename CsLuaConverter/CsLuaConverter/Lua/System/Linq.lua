@@ -100,7 +100,7 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
         },
         {
             name = "Select",
-            types = {System.Action.__typeof},
+            types = {System.Func[{generics[1], System.Object.__typeof}].__typeof},
             func = function(element, predicate)
                 local enumerator = (element % _M.DOT).GetEnumerator();
                 return System.Linq.Iterator[generics](function(_, prevKey)
