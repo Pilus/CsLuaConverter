@@ -8,9 +8,7 @@ namespace CsLuaConverter.Providers.TypeProvider
         ITypeResult BaseType { get; }
         string Name { get; }
         string Namespace { get; }
-        string FullName { get; }
         string FullNameWithoutGenerics { get; }
-        string AdditionalString { get; }
         bool IsClass { get; }
         string ToString();
         bool IsInterface { get; }

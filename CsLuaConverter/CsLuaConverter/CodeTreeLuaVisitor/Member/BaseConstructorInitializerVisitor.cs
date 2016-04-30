@@ -4,7 +4,6 @@
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public class BaseConstructorInitializerVisitor : BaseVisitor
     {

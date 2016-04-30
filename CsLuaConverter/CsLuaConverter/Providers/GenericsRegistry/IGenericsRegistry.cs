@@ -2,7 +2,6 @@
 namespace CsLuaConverter.Providers.GenericsRegistry
 {
     using System;
-    using System.Collections.Generic;
 
     public interface IGenericsRegistry
     {

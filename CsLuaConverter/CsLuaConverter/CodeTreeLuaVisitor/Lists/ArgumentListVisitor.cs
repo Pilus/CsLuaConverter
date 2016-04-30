@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
-    using Expression.Lambda;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
     using Providers.TypeKnowledgeRegistry;

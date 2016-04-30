@@ -1,9 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Binary
 {
-    using System.Linq;
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
-    using Name;
     using Providers;
 
     public class SimpleAssignmentExpressionVisitor : BaseVisitor

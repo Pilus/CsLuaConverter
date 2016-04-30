@@ -2,7 +2,6 @@
 {
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
-    using Name;
     using Providers;
 
     public class ComplexElementInitializerExpressionVisitor : BaseVisitor

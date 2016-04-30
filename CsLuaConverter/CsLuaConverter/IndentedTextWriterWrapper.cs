@@ -1,9 +1,7 @@
 ﻿namespace CsLuaConverter
 {
     using System.CodeDom.Compiler;
-    using System.Diagnostics;
     using System.IO;
-    using System.Linq;
 
     public class IndentedTextWriterWrapper : IIndentedTextWriterWrapper
     {

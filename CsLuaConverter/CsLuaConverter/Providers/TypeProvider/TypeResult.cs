@@ -54,7 +54,6 @@ namespace CsLuaConverter.Providers.TypeProvider
             return genericStrippedFullName + "." + this.additionalString;
         }
 
-        public string AdditionalString => this.additionalString;
 
         public bool IsInterface => this.type.IsInterface;
 
@@ -65,8 +64,6 @@ namespace CsLuaConverter.Providers.TypeProvider
         public string Namespace => this.type.Namespace;
 
         public bool IsClass => this.type.IsClass;
-
-        public string FullName => this.type.FullName;
 
         public string FullNameWithoutGenerics => this.type.Namespace + "." + this.nameWithoutGeneric;
 

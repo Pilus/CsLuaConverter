@@ -14,15 +14,11 @@
 
         public string Name => this.type.Name;
 
-        public string FullName => this.type.FullName;
-
         public string FullNameWithoutGenerics => this.type.Namespace + "." + this.type.Name;
 
         public string Namespace => this.type.Namespace;
 
         public Type TypeObject => this.type;
-
-        public string AdditionalString => null;
 
         public NativeTypeResult(string nativeName, Type type)
         {

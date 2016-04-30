@@ -154,41 +154,6 @@
             currentNamespace.Upsert(type);
         }
 
-        public void SetNamespaces(string currentNamespace, IEnumerable<string> namespaces)
-        {
-            var baseRefencedNamespaces = new List<LoadedNamespace>()
-            {
-                this.rootNamespace,
-            };
-
-            var currentNamespaceNames = currentNamespace.Split('.');
-            for (var i = currentNamespaceNames.Count(); i >= 1; i--)
-            {
-                baseRefencedNamespaces.Add(this.rootNamespace.TryGetNamespace(currentNamespaceNames.Take(i).ToList()));
-            }
-
-            this.refenrecedNamespaces = baseRefencedNamespaces.Where(x => true).ToList();
-
-            foreach (var ns in namespaces)
-            {
-                var found = false;
-                foreach (var refenrecedNamespace in baseRefencedNamespaces)
-                {
-                    var loadedNamespace = refenrecedNamespace.TryGetNamespace(ns.Split('.').ToList());
-                    if (loadedNamespace != null)
-                    {
-                        this.refenrecedNamespaces.Add(loadedNamespace);
-                        found = true;
-                        break;
-                    }
-                }
-                if (found == false)
-                {
-                    throw new ProviderException($"Could not find namespace: {ns}.");
-                }
-            }
-        }
-
         public void ClearNamespaces()
         {
             this.currentNamespaces = new List<LoadedNamespace>() {this.rootNamespace};
