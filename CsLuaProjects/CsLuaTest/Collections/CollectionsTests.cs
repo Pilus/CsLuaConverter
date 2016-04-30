@@ -10,11 +10,11 @@
         public CollectionsTests()
         {
             this.Name = "Collections";
-            this.Tests["1_TestListInterfaces"] = TestListInterfaces;
-            this.Tests["2_TestListImplementation"] = TestListImplementation;
-            this.Tests["3_TestDictionaryInterfaces"] = TestDictionaryInterfaces;
-            this.Tests["4_TestLinq"] = TestLinq;
-            this.Tests["5_TestSelect"] = TestSelect; 
+            this.Tests["TestListInterfaces"] = TestListInterfaces;
+            this.Tests["TestListImplementation"] = TestListImplementation;
+            this.Tests["TestDictionaryInterfaces"] = TestDictionaryInterfaces;
+            this.Tests["TestLinq"] = TestLinq;
+            this.Tests["TestSelect"] = TestSelect; 
         }
 
         private static void TestListInterfaces()

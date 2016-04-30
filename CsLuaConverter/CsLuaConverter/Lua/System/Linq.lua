@@ -31,7 +31,7 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
 
     local constructors = {
         {
-            types = {System.Action.__typeof},
+            types = {Lua.Function.__typeof},
             func = function(element, enumerator) element[typeObject.level]["Enumerator"] = enumerator; end,
         }
     };
@@ -61,7 +61,7 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
         },
         {
             name = "Any",
-            types = {System.Action.__typeof},
+            types = {System.Func[{System.Boolean.__typeof}].__typeof},
             func = function(element, predicate)
                 for _,v in (element % _M.DOT).GetEnumerator() do
                     if (predicate(v)) then
@@ -84,13 +84,13 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
         },
         {
             name = "Where",
-            types = {System.Action.__typeof},
+            types = {System.Func[{generics[1], System.Boolean.__typeof}].__typeof},
             func = function(element, predicate)
                 local enumerator = (element % _M.DOT).GetEnumerator();
                 return System.Linq.Iterator[generics](function(_, prevKey)
                     while (true) do
                         local key, value = enumerator(_, prevKey);
-                        if (key == nil) or predicate(value) == true then
+                        if (key == nil) or (predicate % _M.DOT)(value) == true then
                             return key, value;
                         end
                         prevKey = key;
