@@ -48,6 +48,9 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
 end});
 
 _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
+    local methodGenericsMapping = {['T'] = 1};
+    local methodGenerics = _M.MG(methodGenericsMapping);
+
     return {
         {
             name = "Any",
@@ -100,6 +103,9 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
         },
         {
             name = "Select",
+            returnType = methodGenerics[methodGenericsMapping['T']],
+            generics = methodGenericsMapping,
+            --types = {System.Func[{generics[1], methodGenerics[methodGenericsMapping['T']]}].__typeof},
             types = {System.Func[{generics[1], System.Object.__typeof}].__typeof},
             func = function(element, predicate)
                 local enumerator = (element % _M.DOT).GetEnumerator();
