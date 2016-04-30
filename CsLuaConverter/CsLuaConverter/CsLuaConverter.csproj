@@ -225,6 +225,7 @@
     <Compile Include="CodeTreeLuaVisitor\Statement\Switch\ISwitchLabelVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\Switch\SwitchSectionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ThrowStatementVisitor.cs" />
+    <Compile Include="Converter.cs" />
     <Compile Include="IIndentedTextWriterWrapper.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorListVisitor.cs" />
     <Compile Include="IndentedTextWriterWrapper.cs" />

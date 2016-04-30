@@ -12,7 +12,7 @@
         {
             if (content == null)
             {
-                var path = new FileInfo(Assembly.GetEntryAssembly().Location).Directory;
+                var path = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
                 using (var sr = new StreamReader(path + @"\CsLua.lua"))
                 {
                     content = sr.ReadToEnd();
