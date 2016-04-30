@@ -22,16 +22,6 @@
         {
             get { return this.writer.InnerWriter; }
         }
-        public string NewLine
-        {
-            get { return this.writer.NewLine; }
-            set { this.writer.NewLine = value; }
-        }
-
-        public void Write(bool value)
-        {
-            this.writer.Write(value);
-        }
 
         public void Write(string value)
         {
@@ -41,11 +31,6 @@
         public void Write(string format, params object[] arg)
         {
             this.writer.Write(format, arg);
-        }
-
-        public void WriteLine(bool value)
-        {
-            this.writer.WriteLine(value);
         }
 
         public void WriteLine(string value)

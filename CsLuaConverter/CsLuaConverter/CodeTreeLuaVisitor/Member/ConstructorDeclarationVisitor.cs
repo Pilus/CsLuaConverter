@@ -10,7 +10,6 @@
     public class ConstructorDeclarationVisitor : BaseVisitor
     {
         private readonly ParameterListVisitor parameterList;
-        private readonly BaseListVisitor baseListVisitor;
         private readonly BlockVisitor block;
         private readonly BaseConstructorInitializerVisitor baseConstructorInitializer;
 

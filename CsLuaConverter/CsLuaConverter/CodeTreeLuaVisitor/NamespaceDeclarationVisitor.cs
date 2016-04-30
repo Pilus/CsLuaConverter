@@ -67,7 +67,7 @@
         private void CreateNameVisitor()
         {
             this.ExpectKind(0, SyntaxKind.NamespaceKeyword);
-            this.ExpectKind(1, new[] { SyntaxKind.QualifiedName, SyntaxKind.IdentifierName });
+            this.ExpectKind(1, SyntaxKind.QualifiedName, SyntaxKind.IdentifierName);
             this.nameVisitor = (INameVisitor)this.CreateVisitor(1);
         }
 

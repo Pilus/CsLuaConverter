@@ -17,16 +17,16 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write($"[\"{this.index}\"] = ");
-            this.WriteValue(textWriter, providers);
+            this.WriteValue(textWriter);
         }
 
         public void WriteAsDefault(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("__default = ");
-            this.WriteValue(textWriter, providers);
+            this.WriteValue(textWriter);
         }
 
-        private void WriteValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteValue(IIndentedTextWriterWrapper textWriter)
         {
             textWriter.Write($"\"{this.index}\"");
         }

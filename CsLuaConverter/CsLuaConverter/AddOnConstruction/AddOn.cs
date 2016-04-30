@@ -47,16 +47,6 @@
             this.tocFile = new CodeFile { FileName = this.name + ".toc", Content = tocBuilder.Build() };
         }
 
-        public AddOn(List<CodeFile> codeFiles, IEnumerable<ResourceFile> resourceFiles, CsLuaAddOnAttribute attribute)
-        {
-            this.name = attribute.Name;
-            this.codeFiles = codeFiles;
-            this.resourceFiles = resourceFiles;
-
-            var tocBuilder = new TocBuilder(codeFiles, attribute);
-            this.tocFile = new CodeFile { FileName = this.name + ".toc", Content = tocBuilder.Build() };
-        }
-
         public string Name
         {
             get

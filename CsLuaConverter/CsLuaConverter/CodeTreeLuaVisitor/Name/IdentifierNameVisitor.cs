@@ -52,7 +52,7 @@
             providers.TypeKnowledgeRegistry.CurrentType = element.Type;
         }
 
-        public  void WriteAsType(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public new void WriteAsType(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.WriteAsReference(textWriter, providers);
 

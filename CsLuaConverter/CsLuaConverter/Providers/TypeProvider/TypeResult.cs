@@ -13,7 +13,7 @@ namespace CsLuaConverter.Providers.TypeProvider
         private readonly string additionalString;
         private readonly Type type;
         private readonly string nameWithoutGeneric;
-        public ITypeResult BaseType { get; private set; }
+        public ITypeResult BaseType { get; }
 
         public TypeResult(Type type, string additionalString)
         {

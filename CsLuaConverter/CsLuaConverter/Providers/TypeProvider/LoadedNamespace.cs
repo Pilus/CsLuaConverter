@@ -103,7 +103,7 @@
         public Dictionary<string, LoadedNamespace> SubNamespaces = new Dictionary<string, LoadedNamespace>();
         public Dictionary<string, IList<LoadedType>> Types = new Dictionary<string, IList<LoadedType>>();
 
-        private Dictionary<string, IList<Tuple<Type, ExtensionMethod>>> ExtensionMethods = new Dictionary<string, IList<Tuple<Type, ExtensionMethod>>>();
+        private readonly Dictionary<string, IList<Tuple<Type, ExtensionMethod>>> ExtensionMethods = new Dictionary<string, IList<Tuple<Type, ExtensionMethod>>>();
 
         private void AddExtensionMethod(string name, Type extensionType, ExtensionMethod typeKnowledgeForMethod)
         {

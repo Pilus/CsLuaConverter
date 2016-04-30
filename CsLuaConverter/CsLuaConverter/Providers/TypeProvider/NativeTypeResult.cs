@@ -8,7 +8,7 @@
         private readonly Type type;
         private readonly string nativeName;
 
-        public ITypeResult BaseType { get; private set; }
+        public ITypeResult BaseType { get; }
 
         public string NativeName => this.nativeName;
 

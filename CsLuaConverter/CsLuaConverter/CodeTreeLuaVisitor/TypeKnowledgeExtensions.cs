@@ -226,12 +226,12 @@
 
         private static System.Type GetDelegate(System.Type type)
         {
-            if (type.BaseType == typeof (System.MulticastDelegate))
+            if (type.BaseType == typeof (MulticastDelegate))
             {
                 return type;
             }
 
-            return type.BaseType.BaseType != null ? GetDelegate(type.BaseType) : null;
+            return type.BaseType?.BaseType != null ? GetDelegate(type.BaseType) : null;
         }
 
         public static TypeKnowledge GetReturnArg(this TypeKnowledge typeKnowledge)
@@ -397,7 +397,7 @@
                 return actualType;
             }
 
-            if (type.Name != actualType?.Name || type.Namespace != actualType?.Namespace)
+            if (type.Name != actualType?.Name || type.Namespace != actualType.Namespace)
             {
                 // Stop looking at implicit values.
                 actualType = null;

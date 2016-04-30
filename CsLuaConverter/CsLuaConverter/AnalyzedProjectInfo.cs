@@ -18,7 +18,7 @@ namespace CsLuaConverter
         public Dictionary<string, Action<IIndentedTextWriterWrapper>> Namespaces { get; set; }
         public List<AnalyzedProjectInfo> Referenders { get; private set; }
         public List<AnalyzedProjectInfo> RequiredAddOns { get; private set; }
-        public List<AnalyzedProjectInfo> HostOf { get; private set; }
+        public List<AnalyzedProjectInfo> HostOf { get; }
         public List<AnalyzedProjectInfo> RefersTo { get; private set; }
 
         public void PopulateReferences(List<AnalyzedProjectInfo> projects)

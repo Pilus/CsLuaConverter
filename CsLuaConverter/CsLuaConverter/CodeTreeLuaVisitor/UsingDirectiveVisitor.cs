@@ -11,7 +11,7 @@
         public UsingDirectiveVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.ExpectKind(0, SyntaxKind.UsingKeyword);
-            this.ExpectKind(1, new[] { SyntaxKind.QualifiedName, SyntaxKind.IdentifierName });
+            this.ExpectKind(1, SyntaxKind.QualifiedName, SyntaxKind.IdentifierName);
             this.nameVisitor = (INameVisitor)this.CreateVisitor(1);
         }
 

@@ -12,11 +12,11 @@
 
         private readonly VariableDeclarationVisitor variableVisitor;
 
-        public bool IsStatic { get; private set; }
+        public bool IsStatic { get; }
 
-        public bool IsConst { get; private set; }
+        public bool IsConst { get; }
 
-        public Scope Scope { get; private set; }
+        public Scope Scope { get; }
 
         public FieldDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {

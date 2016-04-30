@@ -1,9 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
 {
-    using CsLuaConverter.CodeTree;
-    using CsLuaConverter.CodeTreeLuaVisitor.Lists;
-    using CsLuaConverter.Providers;
-    using CsLuaConverter.Providers.TypeKnowledgeRegistry;
+    using CodeTree;
+    using Lists;
+    using Providers;
+    using Providers.TypeKnowledgeRegistry;
     using Microsoft.CodeAnalysis.CSharp;
 
     public class ParenthesizedLambdaExpressionVisitor : BaseVisitor, ILambdaVisitor

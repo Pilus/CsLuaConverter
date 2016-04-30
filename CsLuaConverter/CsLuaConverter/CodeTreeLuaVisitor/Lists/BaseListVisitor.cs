@@ -22,7 +22,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public int GetNumElements()

@@ -5,7 +5,7 @@
     using Providers;
     using Providers.TypeKnowledgeRegistry;
 
-    public class PredefinedTypeVisitor : BaseTypeVisitor, ITypeVisitor
+    public class PredefinedTypeVisitor : BaseTypeVisitor
     {
         private readonly string text;
 

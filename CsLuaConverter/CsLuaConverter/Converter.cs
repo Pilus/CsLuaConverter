@@ -40,10 +40,10 @@
             var solutionFile = new FileInfo(path);
             if (!solutionFile.Exists)
             {
-                throw new ConverterException(string.Format("Could not load the solution file: {0}", solutionFile.FullName));
+                throw new ConverterException($"Could not load the solution file: {solutionFile.FullName}");
             }
 
-            MSBuildWorkspace workspace = null;
+            MSBuildWorkspace workspace;
             try
             {
                 workspace = MSBuildWorkspace.Create();

@@ -49,12 +49,13 @@
 
             var bestTypes = this.DetermineTheBestFittingTypes(possibleInvocationTypesWithCorrectNumberOfArgs, argVisitings);
 
-            TypeKnowledge selectedType = null;
+            TypeKnowledge selectedType;
             if (bestTypes == null)
             {
                 throw new VisitorException("Could not find any fitting match.");
             }
-            else if (bestTypes.Count == 1)
+
+            if (bestTypes.Count == 1)
             {
                 selectedType = bestTypes[0];
             }
