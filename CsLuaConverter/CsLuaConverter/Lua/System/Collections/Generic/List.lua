@@ -197,11 +197,11 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
-        types = {System.Func[generics].__typeof},
+        types = {System.Predicate[generics].__typeof},
         func = function(element,f)
             for i = 0,getCount(element)-1 do
                 local v = element[typeObject.level][i];
-                if f(v) then
+                if (f % _M.DOT)(v) then
                     return v;
                 end
             end
@@ -212,11 +212,11 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
-        types = {System.Func[generics].__typeof},
+        types = {System.Predicate[generics].__typeof},
         func = function(element,f)
             for i = 0,getCount(element)-1 do
                 local v = element[typeObject.level][i];
-                if f(v) then
+                if (f % _M.DOT)(v) then
                     return i;
                 end
             end
@@ -227,11 +227,11 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
-        types = {System.Func[generics].__typeof},
+        types = {System.Predicate[generics].__typeof},
         func = function(element,f)
             for i = getCount(element)-1,0,-1 do
                 local v = element[typeObject.level][i];
-                if f(v) then
+                if (f % _M.DOT)(v) then
                     return v;
                 end
             end
@@ -242,11 +242,11 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
-        types = {System.Func[generics].__typeof},
+        types = {System.Predicate[generics].__typeof},
         func = function(element,f)
             for i = getCount(element)-1,0,-1 do
                 local v = element[typeObject.level][i];
-                if f(v) then
+                if (f % _M.DOT)(v) then
                     return i;
                 end
             end
@@ -257,12 +257,12 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
-        types = {System.Func[generics].__typeof},
+        types = {System.Predicate[generics].__typeof},
         func = function(element,f)
             local list = System.Collections.Generic.List[generics]();
             for i = 0,getCount(element)-1 do
                 local v = element[typeObject.level][i];
-                if f(v) then
+                if (f % _M.DOT)(v) then
                     (list % _M.DOT).Add(v);
                 end
             end

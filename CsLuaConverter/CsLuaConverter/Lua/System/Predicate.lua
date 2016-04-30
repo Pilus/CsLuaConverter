@@ -1,20 +1,16 @@
-﻿System.Func = _M.NE({["#"] = function(interactionElement, generics, staticValues)
-    local typeObject = System.Type('Func','System',System.Object.__typeof,#(generics),generics,nil,interactionElement);
+﻿System.Predicate = _M.NE({["#"] = function(interactionElement, generics, staticValues)
+    local typeObject = System.Type('Predicate','System',System.Object.__typeof,#(generics),generics,nil,interactionElement);
     local level = 2;
     local members = {
         
     };
 
-    local inputGenerics = {};
-    for i = 1, #(generics)-1 do
-        table.insert(inputGenerics, generics[i]);
-    end
-
     _M.IM(members,'Invoke',{
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
-        types = inputGenerics,
+        types = generics,
+        returnType = System.Boolean.__typeof,
         func = function(element,...)
             return (element[typeObject.level].innerAction % _M.DOT)(...);
         end,

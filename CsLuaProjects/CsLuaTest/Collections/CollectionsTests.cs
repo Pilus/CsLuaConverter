@@ -13,7 +13,7 @@
             this.Tests["TestListInterfaces"] = TestListInterfaces;
             this.Tests["TestListImplementation"] = TestListImplementation;
             this.Tests["TestDictionaryInterfaces"] = TestDictionaryInterfaces;
-            this.Tests["TestLinq"] = TestLinq;
+            this.Tests["TestCountAndAny"] = TestCountAndAny;
             this.Tests["TestSelect"] = TestSelect; 
         }
 
@@ -158,7 +158,7 @@
             Assert(true, list is IReadOnlyCollection<KeyValuePair<int, string>>);
         }
 
-        private static void TestLinq()
+        private static void TestCountAndAny()
         {
             var a = new int[] {2, 4, 8, 16, 32, 64};
             Assert(true, a.Any());
