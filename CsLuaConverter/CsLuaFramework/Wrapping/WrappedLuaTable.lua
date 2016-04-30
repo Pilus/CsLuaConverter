@@ -31,7 +31,7 @@ local unwrap = function(value)
     return value;
 end
 
-local select = function(t, e)
+local selectOn = function(t, e)
     local t2 = {};
     for i,v in pairs(t) do
         t2[i] = e(v);
@@ -113,7 +113,7 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
             elseif member.memberType == "Method" then
                 m.types = member.types;
                 m.func = function(element,...)
-                    local args = select({...}, unwrap);
+                    local args = selectOn({...}, unwrap);
                     if hasProvideSelfAttribute(attributes) then
                         args = insert(args, 1, element[typeObject.level].luaTable);
                     end

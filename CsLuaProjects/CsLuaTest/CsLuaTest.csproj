@@ -134,6 +134,7 @@
     <Compile Include="Serialization\SerializationTests.cs" />
     <Compile Include="Static\StaticTests.cs" />
     <Compile Include="StringExtensions\StringExtensionTests.cs" />
+    <Compile Include="TestIgnoredException.cs" />
     <Compile Include="TryCatchFinally\CustomException.cs" />
     <Compile Include="TryCatchFinally\TryCatchFinallyTests.cs" />
     <Compile Include="TypeMethods\Class1.cs" />

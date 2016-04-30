@@ -136,7 +136,7 @@
 
         private static void TestMethodGenericAsGenericInInputObject()
         {
-            throw new Exception("Test ignored.");
+            throw new TestIgnoredException();
             /*
             var theClass = new MethodsWithGeneric<int, int>();
 
