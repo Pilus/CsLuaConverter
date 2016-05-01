@@ -1,5 +1,7 @@
 ﻿namespace CsLuaTest.Generics
 {
+    using System;
+
     public class GenericsTests : BaseTest
     {
         public GenericsTests()
@@ -15,6 +17,7 @@
             this.Tests["TestGenericsInAmbMethods"] = TestGenericsInAmbMethods;
             this.Tests["TestGenericsInStaticMethods"] = TestGenericsInStaticMethods;
             this.Tests["TestSelfRefInInterface"] = TestSelfRefInInterface;
+            this.Tests["TestMethodGenericAsGenericInInputObject"] = TestMethodGenericAsGenericInInputObject;
         }
 
         private static void TestGenericMethod()
@@ -129,6 +132,19 @@
 
             Assert(true, c1.Method(c1));
             Assert(false, c1.Method(c2));
+        }
+
+        private static void TestMethodGenericAsGenericInInputObject()
+        {
+            throw new TestIgnoredException();
+            /*
+            var theClass = new MethodsWithGeneric<int, int>();
+
+            var a = theClass.MethodWithGenericAsObjectGenericInArg((() => 3));
+            var b = theClass.MethodWithGenericAsObjectGenericInArg((() => "x"));
+
+            Assert(3, a);
+            Assert("x", b); */
         }
     }
 }

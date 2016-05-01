@@ -18,6 +18,7 @@
             this.Tests["TestSwitch"] = TestSwitch;
             this.Tests["NonStaticClassWithStaticMethod"] = NonStaticClassWithStaticMethod;
             this.Tests["TestClassReferencingSelfInMethod"] = TestClassReferencingSelfInMethod;
+            this.Tests["TestPartialClasses"] = TestPartialClasses;
         }
 
         private static void NonStaticClassWithStaticMethod()
@@ -134,6 +135,19 @@
             var a = new NonStaticClass() {Value = 3};
             var b = new NonStaticClass() {Value = 7};
             Assert(10, a.CallWithSameClass(b));
+        }
+
+        public static void TestPartialClasses()
+        {
+            var pClass = new Partial();
+            Assert("CstorA", pClass.InnerValue);
+
+            pClass = new Partial(1);
+            Assert("CstorB", pClass.InnerValue);
+
+            Assert(1, pClass.MethodA());
+            Assert(2, pClass.MethodB());
+            Assert(3, pClass.MethodC());
         }
     }
 }

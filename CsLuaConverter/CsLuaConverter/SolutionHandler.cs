@@ -5,7 +5,6 @@
     using AddOnConstruction;
     using Microsoft.CodeAnalysis;
     using ProjectAnalysis;
-    using Providers;
     using ReferenceAnalysis;
 
     internal class SolutionHandler
@@ -17,7 +16,7 @@
             this.syntaxAnalyzer = syntaxAnalyzer;
         }
 
-        public IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution, IProviders providers)
+        public IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution)
         {
             var projects = solution.Projects.Select(ProjectAnalyser.AnalyzeProject)
                 .Where(project => !project.ProjectType.Equals(ProjectType.Ignored))
@@ -27,7 +26,7 @@
 
             ReferenceAnalyzer.PopulateAndAnalyseReferences(analyzedProjects);
 
-            var structurer = new AddOnConstructor(providers);
+            var structurer = new AddOnConstructor();
             return structurer.StructureAddOns(analyzedProjects);
         }
 

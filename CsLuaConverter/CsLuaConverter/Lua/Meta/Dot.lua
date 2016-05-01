@@ -27,7 +27,7 @@ local GetType = function(obj, index)
     elseif type(obj) == "string" then
         return System.String.__typeof;
     elseif type(obj) == "function" then
-        return System.Action.__typeof;
+        return Lua.Function.__typeof;
     elseif type(obj) == "boolean" then
         return System.Boolean.__typeof;
     elseif type(obj) == "number" then
@@ -81,6 +81,11 @@ _M.DOT_LVL = function(level)
             if type(obj) == "number" then -- special case for amb between list.Count and list.Count()
                 return obj;
             end
+
+            if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.ClassObject)) then
+                local typeObject = GetType(obj, "Invoke");
+                return typeObject.interactionElement.__index(obj, "Invoke", level)(...); 
+            end 
 
             assert(type(obj) == "function" or type(obj) == "table", "Attempted to invoke a "..type(obj).." value.");
             return obj(...);

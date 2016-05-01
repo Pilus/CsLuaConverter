@@ -14,8 +14,8 @@ local isGenericsTable = function(t)
         return false;
     end
     
-    for _,v in ipairs(t) do
-        if not(type(v) == "table") or not(System.Type.__is(v)) then
+    for i,v in ipairs(t) do
+        if (not(type(v) == "table") or not(System.Type.__is(v))) then
             return false;
         end
     end

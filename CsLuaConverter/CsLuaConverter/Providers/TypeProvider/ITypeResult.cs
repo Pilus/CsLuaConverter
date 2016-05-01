@@ -8,12 +8,14 @@ namespace CsLuaConverter.Providers.TypeProvider
         ITypeResult BaseType { get; }
         string Name { get; }
         string Namespace { get; }
-        string FullName { get; }
+        string FullNameWithoutGenerics { get; }
         bool IsClass { get; }
         string ToString();
         bool IsInterface { get; }
 
         int NumGenerics { get; }
+
+        Type TypeObject { get; }
 
         IEnumerable<ScopeElement> GetScopeElements();
 

@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using TypeProvider;
 
     internal class NameProvider : INameProvider
@@ -24,6 +23,11 @@
 
         public void SetScope(List<ScopeElement> scope)
         {
+            if (scope == null)
+            {
+                throw new Exception("Can not set scope to null in name provider.");
+            }
+
             this.currentScope = scope;
         }
 
@@ -45,29 +49,6 @@
         public ScopeElement GetScopeElement(string name)
         {
             return this.currentScope.LastOrDefault(element => element.Name.Equals(name));
-        }
-
-        public IEnumerable<string> LookupVariableNameSplitted(IEnumerable<string> names, int numGenerics)
-        {
-            var firstName = names.First();
-            var variable = this.currentScope.LastOrDefault(element => element.Name.Equals(firstName));
-
-            if (variable != null)
-            {
-                var variableNames = new List<string>(names.Skip(1));
-                variableNames.Insert(0, variable.Name);
-
-                if (variable.ClassPrefix != null)
-                {
-                    variableNames.Insert(0, variable.ClassPrefix);
-                }
-
-                return variableNames;
-            }
-
-            var type = this.typeProvider.LookupType(names, numGenerics);
-
-            return type.FullName.Split('`').First().Split('.');
         }
     }
 }

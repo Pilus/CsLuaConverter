@@ -11,6 +11,7 @@
         public const bool ContinueOnError = false;
         public static int TestCount;
         public static int FailCount;
+        public static int IgnoreCount;
 
         public Dictionary<string, Action> Tests
         {
@@ -31,13 +32,18 @@
                 var test = this.Tests[testName];
 
                 if (ContinueOnError)
-                { 
+                {
                     try
                     {
                         TestCount++;
                         ResetOutput();
                         test();
                         lineWriter.WriteLine(testName + " Success");
+                    }
+                    catch (TestIgnoredException ex)
+                    {
+                        IgnoreCount++;
+                        lineWriter.WriteLine(testName + " Ignored");
                     }
                     catch (Exception ex)
                     {

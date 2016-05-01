@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionsFunctions\ActionsFunctionsTests.cs" />
+    <Compile Include="ActionsFunctions\StaticClass.cs" />
     <Compile Include="AmbigousMethods\AmbigousMethodsTests.cs" />
     <Compile Include="AmbigousMethods\ClassC1.cs" />
     <Compile Include="AmbigousMethods\ClassA.cs" />
@@ -77,6 +79,8 @@
     <Compile Include="General\GeneralTests.cs" />
     <Compile Include="General\Inheriter.cs" />
     <Compile Include="General\NonStaticClass.cs" />
+    <Compile Include="General\PartialA.cs" />
+    <Compile Include="General\PartialB.cs" />
     <Compile Include="Generics\ClassA.cs" />
     <Compile Include="Generics\ClassWithGenericConstructor.cs" />
     <Compile Include="AmbigousMethods\EnumA.cs" />
@@ -130,6 +134,7 @@
     <Compile Include="Serialization\SerializationTests.cs" />
     <Compile Include="Static\StaticTests.cs" />
     <Compile Include="StringExtensions\StringExtensionTests.cs" />
+    <Compile Include="TestIgnoredException.cs" />
     <Compile Include="TryCatchFinally\CustomException.cs" />
     <Compile Include="TryCatchFinally\TryCatchFinallyTests.cs" />
     <Compile Include="TypeMethods\Class1.cs" />

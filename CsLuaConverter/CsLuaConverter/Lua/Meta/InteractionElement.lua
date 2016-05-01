@@ -51,13 +51,21 @@ local join = function(t1, t2)
 end
 
 local InteractionElement = function(metaProvider, generics, selfObj)
+    if (type(metaProvider)=="table" and type(metaProvider.__typeof) == "table" and metaProvider.__typeof.IsEnum) then
+        for i,v in pairs(metaProvider) do
+            selfObj[i] = v;
+        end
+
+        return metaProvider;
+    end
+
     local element = selfObj or { __metaType = _M.MetaTypes.InteractionElement };
     local staticValues = {__metaType = _M.MetaTypes.StaticValues};
     local extensions = {};
 
     _M.RPL(tostring(metaProvider));
 
-    local catagory, typeObject, memberProvider, constructors, elementGenerator, implements, initialize = metaProvider(element, generics, staticValues);
+    local catagory, typeObject, memberProvider, constructors, elementGenerator, implements, initialize, attributes = metaProvider(element, generics, staticValues);
     staticValues.type = typeObject;
 
     local cachedMembers = nil;
@@ -293,6 +301,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
     local meta = {
         __typeof = typeObject,
         __is = function(value) return typeObject.IsInstanceOfType(value); end,
+        __as = function(value) return typeObject.IsInstanceOfType(value) and value or nil; end,
         __meta = function(inheritingStaticValues) 
             for i = 1, typeObject.level do
                 inheritingStaticValues[i] = staticValues[i];
@@ -302,7 +311,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
                 cachedMembers = _M.RTEF(memberProvider);
             end
 
-            return typeObject, clone(cachedMembers, 2), clone(constructors or {},2), elementGenerator, clone(implements or {},1), initialize; 
+            return typeObject, clone(cachedMembers, 2), clone(constructors or {},2), elementGenerator, clone(implements or {},1), initialize, attributes; 
         end,
         __index = index,
         __newindex = newIndex,

@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Xml;
     using CsLuaFramework.Attributes;
-    using Providers;
 
     internal class AddOn : IDeployableAddOn
     {
@@ -17,7 +16,7 @@
         private readonly IEnumerable<ResourceFile> resourceFiles;
 
 
-        public AddOn(AnalyzedProjectInfo projectInfo, IProviders providers)
+        public AddOn(AnalyzedProjectInfo projectInfo)
         {
             this.name = projectInfo.Info.Name;
 
@@ -31,7 +30,7 @@
 
             foreach (var hostedProject in projectInfo.HostOf)
             {
-                this.codeFiles.AddRange(LuaFileWriter.GetLuaFiles(hostedProject.Namespaces, providers, hostedProject.Info.Name, false, hostedProject.Info.ProjectPath));
+                this.codeFiles.AddRange(LuaFileWriter.GetLuaFiles(hostedProject.Namespaces, hostedProject.Info.Name, false, hostedProject.Info.ProjectPath));
             }
 
             var xmlFile = GetXmlCodeFile(projectPath, this.name);
@@ -40,21 +39,11 @@
                 this.codeFiles.Add(xmlFile);
             }
 
-            this.codeFiles.AddRange(LuaFileWriter.GetLuaFiles(projectInfo.Namespaces, providers, this.Name, false, projectPath));
+            this.codeFiles.AddRange(LuaFileWriter.GetLuaFiles(projectInfo.Namespaces, this.Name, false, projectPath));
             
             this.resourceFiles = GetResourceFiles(projectPath);
 
             var tocBuilder = new TocBuilder(this.codeFiles, projectInfo.Info.CsLuaAddOnAttribute);
-            this.tocFile = new CodeFile { FileName = this.name + ".toc", Content = tocBuilder.Build() };
-        }
-
-        public AddOn(List<CodeFile> codeFiles, IEnumerable<ResourceFile> resourceFiles, CsLuaAddOnAttribute attribute)
-        {
-            this.name = attribute.Name;
-            this.codeFiles = codeFiles;
-            this.resourceFiles = resourceFiles;
-
-            var tocBuilder = new TocBuilder(codeFiles, attribute);
             this.tocFile = new CodeFile { FileName = this.name + ".toc", Content = tocBuilder.Build() };
         }
 

@@ -2,6 +2,7 @@
 namespace CsLuaTest
 {
     using System.Collections.Generic;
+    using ActionsFunctions;
     using AmbigousMethods;
     using Arrays;
     using Collections;
@@ -43,13 +44,14 @@ namespace CsLuaTest
                 new InterfacesTests(),
                 new ParamsTests(),
                 new StringExtensionTests(),
-                new CollectionsTests(),
+                new ActionsFunctionsTests(),
                 new WrapTests(),
+                new CollectionsTests(),
             };
 
             tests.ForEach(test => test.PerformTests(new IndentedLineWriter()));
             Core.print("CsLua test completed.");
-            Core.print(BaseTest.TestCount, "tests run.", BaseTest.FailCount, "failed.", BaseTest.TestCount - BaseTest.FailCount, "succeded.");
+            Core.print(BaseTest.TestCount, "tests run.", BaseTest.FailCount, "failed.", BaseTest.TestCount - BaseTest.FailCount, "succeded. ", BaseTest.IgnoreCount, "ignored.");
         }
     }
 }

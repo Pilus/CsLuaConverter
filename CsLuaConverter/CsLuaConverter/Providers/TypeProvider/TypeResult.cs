@@ -4,6 +4,7 @@ namespace CsLuaConverter.Providers.TypeProvider
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using TypeKnowledgeRegistry;
 
     public class TypeResult : ITypeResult
     {
@@ -11,7 +12,8 @@ namespace CsLuaConverter.Providers.TypeProvider
 
         private readonly string additionalString;
         private readonly Type type;
-        public ITypeResult BaseType { get; private set; }
+        private readonly string nameWithoutGeneric;
+        public ITypeResult BaseType { get; }
 
         public TypeResult(Type type, string additionalString)
         {
@@ -21,6 +23,8 @@ namespace CsLuaConverter.Providers.TypeProvider
             {
                 this.BaseType = new TypeResult(type.BaseType);
             }
+
+            this.nameWithoutGeneric = this.type.Name.Split('`').First();
         }
 
         public TypeResult(Type type)
@@ -30,6 +34,8 @@ namespace CsLuaConverter.Providers.TypeProvider
             {
                 this.BaseType = new TypeResult(type.BaseType);
             }
+
+            this.nameWithoutGeneric = this.type.Name.Split('`').First();
         }
 
         private static string StripGenericsFromType(string name)
@@ -53,13 +59,15 @@ namespace CsLuaConverter.Providers.TypeProvider
 
         public int NumGenerics => this.type.GetGenericArguments().Length;
 
-        public string Name => this.type.Name;
+        public string Name => this.nameWithoutGeneric;
 
         public string Namespace => this.type.Namespace;
 
         public bool IsClass => this.type.IsClass;
 
-        public string FullName => this.type.FullName;
+        public string FullNameWithoutGenerics => this.type.Namespace + "." + this.nameWithoutGeneric;
+
+        public Type TypeObject => this.type;
 
         public IEnumerable<ScopeElement> GetScopeElements()
         {
@@ -70,21 +78,29 @@ namespace CsLuaConverter.Providers.TypeProvider
                 list = this.BaseType.GetScopeElements().ToList();
             }
 
-            IEnumerable<MemberInfo> methods = this.GetMethodsOfType(type);
-            IEnumerable<MemberInfo> objectMethods = this.GetMethodsOfType(typeof(object));
-            foreach (MemberInfo method in methods.Where(m => !objectMethods.Any(om => om.Name.Equals(m.Name))))
+            IEnumerable<MethodInfo> methods = this.GetMethodsOfType(this.type);
+            IEnumerable<MethodInfo> objectMethods = this.GetMethodsOfType(typeof(object));
+
+            foreach (var method in methods.Where(m => !objectMethods.Any(om => om.Name.Equals(m.Name))))
             {
-                list.Add(new ScopeElement(method.Name)
+                list.Add(new ScopeElement(method.Name, new TypeKnowledge(method))
                 {
                     ClassPrefix = ClassPrefix,
                     IsFromClass = true,
                 });
             }
-            foreach (MemberInfo member in type.GetMembers()) // Variables and properties
+
+            foreach (var member in this.GetMembersOfType(this.type)) // Variables and properties
             {
-                if (!member.MemberType.Equals(MemberTypes.Method) && !member.MemberType.Equals(MemberTypes.Constructor))
+                if (   !member.MemberType.Equals(MemberTypes.Method) 
+                    && !member.MemberType.Equals(MemberTypes.Constructor) 
+                    && !member.MemberType.Equals(MemberTypes.Event)
+                    && !member.MemberType.Equals(MemberTypes.NestedType)
+                    && !member.Name.Contains("<")
+                    && !member.Name.StartsWith("__")
+                    )
                 {
-                    list.Add(new ScopeElement(member.Name)
+                    list.Add(new ScopeElement(member.Name, new TypeKnowledge(member))
                     {
                         ClassPrefix = ClassPrefix,
                         IsFromClass = true
@@ -92,6 +108,7 @@ namespace CsLuaConverter.Providers.TypeProvider
                 }
             }
 
+            /*
             foreach (var property in type.GetRuntimeProperties())
             {
                 list.Add(new ScopeElement(property.Name)
@@ -111,12 +128,22 @@ namespace CsLuaConverter.Providers.TypeProvider
                         IsFromClass = true
                     });
                 }
-            }
+            } */
 
             return list;
         }
 
-        private IEnumerable<MemberInfo> GetMethodsOfType(Type type)
+        private IEnumerable<MemberInfo> GetMembersOfType(Type type)
+        {
+            var all =    type.GetMembers(BindingFlags.Public | BindingFlags.Instance).ToList();
+            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
+            all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Static));
+            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+
+            return all;
+        }
+
+        private IEnumerable<MethodInfo> GetMethodsOfType(Type type)
         {
             List<MethodInfo> publicMethods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance).ToList();
 

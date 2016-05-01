@@ -9,13 +9,15 @@
     using CsLuaFramework;
     using CsLuaFramework.Wrapping;
     using Microsoft.CodeAnalysis;
+    using TypeKnowledgeRegistry;
 
     public class TypeNameProvider : ITypeProvider
     {
         private readonly LoadedNamespace rootNamespace;
         private List<LoadedNamespace> refenrecedNamespaces;
+        private List<LoadedNamespace> currentNamespaces;
 
-        private List<NativeTypeResult> predefinedNativeTypeResults = new List<NativeTypeResult>()
+        private readonly List<NativeTypeResult> predefinedNativeTypeResults = new List<NativeTypeResult>()
         {
             new NativeTypeResult("int", typeof(int)),
             new NativeTypeResult("object", typeof(object)),
@@ -40,71 +42,72 @@
         {
             this.LoadType(typeof(Type));
             this.LoadType(typeof(Action));
-            this.LoadType(typeof(Action<object>));
-            this.LoadType(typeof(Action<object, object>));
-            this.LoadType(typeof(Action<object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Action<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Func<object>));
-            this.LoadType(typeof(Func<object, object>));
-            this.LoadType(typeof(Func<object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(Func<object, object, object, object, object, object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(Action<>));
+            this.LoadType(typeof(Action<, >));
+            this.LoadType(typeof(Action<, , >));
+            this.LoadType(typeof(Action<, , , >));
+            this.LoadType(typeof(Action<, , , , >));
+            this.LoadType(typeof(Action<, , , , , >));
+            this.LoadType(typeof(Action<, , , , , , >));
+            this.LoadType(typeof(Action<, , , , , , , >));
+            this.LoadType(typeof(Action<, , , , , , , , >));
+            this.LoadType(typeof(Action<, , , , , , , , , >));
+            this.LoadType(typeof(Action<, , , , , , , , , , >));
+            this.LoadType(typeof(Action<, , , , , , , , , , , >));
+            this.LoadType(typeof(Action<, , , , , , , , , , , , >));
+            this.LoadType(typeof(Action<, , , , , , , , , , , , , >));
+            this.LoadType(typeof(Action<, , , , , , , , , , , , , , >));
+            this.LoadType(typeof(Action<, , , , , , , , , , , , , , , >));
+            this.LoadType(typeof(Func<>));
+            this.LoadType(typeof(Func<, >));
+            this.LoadType(typeof(Func<, , >));
+            this.LoadType(typeof(Func<, , , >));
+            this.LoadType(typeof(Func<, , , , >));
+            this.LoadType(typeof(Func<, , , , , >));
+            this.LoadType(typeof(Func<, , , , , , >));
+            this.LoadType(typeof(Func<, , , , , , , >));
+            this.LoadType(typeof(Func<, , , , , , , , >));
+            this.LoadType(typeof(Func<, , , , , , , , , >));
+            this.LoadType(typeof(Func<, , , , , , , , , , >));
+            this.LoadType(typeof(Func<, , , , , , , , , , , >));
+            this.LoadType(typeof(Func<, , , , , , , , , , , , >));
+            this.LoadType(typeof(Func<, , , , , , , , , , , , , >));
+            this.LoadType(typeof(Func<, , , , , , , , , , , , , , >));
+            this.LoadType(typeof(Func<, , , , , , , , , , , , , , , >));
             this.LoadType(typeof(Exception));
             this.LoadType(typeof(NotImplementedException)); 
             this.LoadType(typeof(ArgumentOutOfRangeException));
             this.LoadType(typeof(Enum));
             this.LoadType(typeof(ICsLuaAddOn));
             this.LoadType(typeof(IDictionary));
-            this.LoadType(typeof(IDictionary<object, object>));
-            this.LoadType(typeof(Dictionary<object, object>)); 
-            this.LoadType(typeof(KeyValuePair<object, object>));
-            this.LoadType(typeof(IReadOnlyDictionary<object, object>));
+            this.LoadType(typeof(IDictionary<, >));
+            this.LoadType(typeof(Dictionary<,>)); 
+            this.LoadType(typeof(KeyValuePair<, >));
+            this.LoadType(typeof(IReadOnlyDictionary<, >));
             this.LoadType(typeof(IList));
-            this.LoadType(typeof(IList<object>));
+            this.LoadType(typeof(IList<>));
             this.LoadType(typeof(ICollection));
-            this.LoadType(typeof(ICollection<object>));
+            this.LoadType(typeof(ICollection<>));
             this.LoadType(typeof(IEnumerable));
-            this.LoadType(typeof(IEnumerable<object>));
-            this.LoadType(typeof(IReadOnlyList<object>));
-            this.LoadType(typeof(IReadOnlyCollection<object>));
-            this.LoadType(typeof(List<object>));
+            this.LoadType(typeof(IEnumerable<>));
+            this.LoadType(typeof(IReadOnlyList<>));
+            this.LoadType(typeof(IReadOnlyCollection<>));
+            this.LoadType(typeof(List<>));
             this.LoadType(typeof(Enumerable));
             this.LoadType(typeof(Array));
-            this.LoadType(typeof(IMultipleValues<object>));
-            this.LoadType(typeof(IMultipleValues<object, object>));
-            this.LoadType(typeof(IMultipleValues<object, object, object>));
-            this.LoadType(typeof(IMultipleValues<object, object, object, object>));
-            this.LoadType(typeof(IMultipleValues<object, object, object, object, object>));
-            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object>));
-            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object, object>));
-            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object, object, object, object, object, object>));
-            this.LoadType(typeof(IMultipleValues<object, object, object, object, object, object, object, object, object, object, object, object>));
+            this.LoadType(typeof(IMultipleValues<>));
+            this.LoadType(typeof(IMultipleValues<, >));
+            this.LoadType(typeof(IMultipleValues<, , >));
+            this.LoadType(typeof(IMultipleValues<, , , >));
+            this.LoadType(typeof(IMultipleValues<, , , , >));
+            this.LoadType(typeof(IMultipleValues<, , , , , >));
+            this.LoadType(typeof(IMultipleValues<, , , , , , >));
+            this.LoadType(typeof(IMultipleValues<, , , , , , , >));
+            this.LoadType(typeof(IMultipleValues<, , , , , , , , >));
+            this.LoadType(typeof(IMultipleValues<, , , , , , , , , >));
+            this.LoadType(typeof(IMultipleValues<, , , , , , , , , , >));
+            this.LoadType(typeof(IMultipleValues<, , , , , , , , , , , >));
+            this.LoadType(typeof(Enumerable));
         }
 
         private void LoadSolution(Solution solution)
@@ -151,38 +154,39 @@
             currentNamespace.Upsert(type);
         }
 
-        public void SetNamespaces(string currentNamespace, IEnumerable<string> namespaces)
+        public void ClearNamespaces()
         {
-            var baseRefencedNamespaces = new List<LoadedNamespace>()
-            {
-                this.rootNamespace,
-            };
+            this.currentNamespaces = new List<LoadedNamespace>() {this.rootNamespace};
+            this.refenrecedNamespaces = new List<LoadedNamespace>() {this.rootNamespace};
+        }
 
-            var currentNamespaceNames = currentNamespace.Split('.');
-            for (var i = currentNamespaceNames.Count(); i >= 1; i--)
+        public void AddNamespace(string[] namespaceName)
+        {
+            var found = false;
+            foreach (var refenrecedNamespace in this.currentNamespaces)
             {
-                baseRefencedNamespaces.Add(this.rootNamespace.TryGetNamespace(currentNamespaceNames.Take(i).ToList()));
+                var loadedNamespace = refenrecedNamespace.TryGetNamespace(namespaceName);
+                if (loadedNamespace != null)
+                {
+                    this.refenrecedNamespaces.Add(loadedNamespace);
+                    found = true;
+                    break;
+                }
             }
 
-            this.refenrecedNamespaces = baseRefencedNamespaces.Where(x => true).ToList();
-
-            foreach (var ns in namespaces)
+            if (found == false)
             {
-                var found = false;
-                foreach (var refenrecedNamespace in baseRefencedNamespaces)
-                {
-                    var loadedNamespace = refenrecedNamespace.TryGetNamespace(ns.Split('.').ToList());
-                    if (loadedNamespace != null)
-                    {
-                        this.refenrecedNamespaces.Add(loadedNamespace);
-                        found = true;
-                        break;
-                    }
-                }
-                if (found == false)
-                {
-                    throw new ProviderException($"Could not find namespace: {ns}.");
-                }
+                throw new ProviderException($"Could not find namespace: {string.Join(".",namespaceName)}.");
+            }
+        }
+
+        public void SetCurrentNamespace(string[] currentNamespace)
+        {
+            for (var i = currentNamespace.Count(); i >= 1; i--)
+            {
+                var ns = this.rootNamespace.TryGetNamespace(currentNamespace.Take(i).ToList());
+                this.refenrecedNamespaces.Add(ns);
+                this.currentNamespaces.Add(ns);
             }
         }
 
@@ -204,6 +208,11 @@
 
         private ITypeResult LookupTypeWithGenerics(string name, int? numGenerics)
         {
+            if (name == "var" || name == "void")
+            {
+                return null;
+            }
+
             var nativeType = this.predefinedNativeTypeResults.FirstOrDefault(t => name.Equals(t.NativeName));
             if (nativeType != null)
             {
@@ -284,6 +293,10 @@
             throw new ProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", string.Join(".", names)));
         }
 
+        public TypeKnowledge[] GetExtensionMethods(Type type, string name)
+        {
+            return this.refenrecedNamespaces.SelectMany(ns => ns.GetExtensionMethods(type, name)).ToArray();
+        }
 
         private static string StripGenerics(string name)
         {

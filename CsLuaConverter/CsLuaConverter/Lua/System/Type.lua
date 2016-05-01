@@ -63,7 +63,7 @@ local meta = {
                     for i,v in pairs(self.generics) do
                         genericsNames[i] = v.ToString();
                     end
-                    return fullName.."<"..string.join(",", unpack(genericsNames))..">";
+                    return fullName..(#(genericsNames) > 0 and "<"..string.join(",", unpack(genericsNames))..">" or "");
                 end
                 return fullName;
             end;

@@ -1,5 +1,7 @@
 ﻿namespace CsLuaTest.Generics
 {
+    using System;
+
     public class MethodsWithGeneric<T1,T2>
     {
         public void GenericMethod(T1 x)
@@ -36,5 +38,11 @@
         {
             return value.GetType().Name;
         }
+
+        /*
+        public T3 MethodWithGenericAsObjectGenericInArg<T3>(Func<T3> f)
+        {
+            return f();
+        } */
     }
 }

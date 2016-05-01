@@ -11,6 +11,5 @@ namespace CsLuaConverter.Providers.NameProvider
         void AddToScope(ScopeElement element);
         ScopeElement GetScopeElement(string name);
         void AddAllInheritedMembersToScope(string typeName);
-        IEnumerable<string> LookupVariableNameSplitted(IEnumerable<string> names, int numGenerics);
     }
 }

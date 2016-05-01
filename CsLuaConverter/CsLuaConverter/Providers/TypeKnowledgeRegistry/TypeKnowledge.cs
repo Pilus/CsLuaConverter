@@ -1,0 +1,279 @@
+﻿namespace CsLuaConverter.Providers.TypeKnowledgeRegistry
+{
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Reflection;
+    using TypeProvider;
+
+    [DebuggerDisplay("TypeKnowledge: {type}")]
+    public class TypeKnowledge
+    {
+        public static IProviders Providers;
+        private readonly Type type;
+        private readonly bool restrictToStatic;
+
+        public TypeKnowledge(Type type, bool restrictToStatic = false)
+        {
+            this.type = type;
+
+            if (!this.type.IsGenericParameter) return;
+
+            var genericType = Providers.GenericsRegistry.GetGenericType(this.type.Name);
+            if (genericType == null)
+            {
+                throw new Exception($"Could not find generic type for {this.type.Name}.");
+            }
+
+            this.type = genericType;
+            this.restrictToStatic = restrictToStatic;
+        }
+
+        public TypeKnowledge(MemberInfo member, bool skipFirstInputArg = false)
+        {
+            this.type = this.GetTypeFromMember(member, skipFirstInputArg);
+
+            if (this.type.IsGenericParameter)
+            {
+                this.type = Providers.GenericsRegistry.GetGenericType(this.type.Name);
+            }
+        }
+
+        public bool IsParams { get; set; }
+        public Type[] MethodGenerics { get; private set; }
+
+        public TypeKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)
+        {
+            var members = this.GetMembers(str);
+            var extensions = providers.TypeProvider.GetExtensionMethods(this.type, str);
+            var membersIncludingExtensions = new []{ members, extensions}.SelectMany(v => v).GroupBy(v => v.type.ToString()).Select(g => g.First()).ToArray();
+            
+            if (!membersIncludingExtensions.Any())
+            {
+                throw new Exception($"Member {str} not found on element {this.type.Name}.");
+            }
+
+            return membersIncludingExtensions;
+        }
+
+        public TypeKnowledge[] GetConstructors()
+        {
+            if (typeof(Delegate).IsAssignableFrom(this.type))
+            {
+                var cstorType = typeof (Action<>).MakeGenericType(this.type);
+                return new[] {new TypeKnowledge(cstorType)};
+            }
+
+            var cstors = GetMembersOfType(this.type, true) //this.type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic)
+                .Where(m => m.MemberType.Equals(MemberTypes.Constructor))
+                .Select(m => new TypeKnowledge(m))
+                .GroupBy(tk => tk.type)
+                .Select(group => group.First())
+                .ToArray();
+
+            return cstors.Length > 0 ? cstors : new[] {new TypeKnowledge(typeof (Action))};
+        }
+
+        public TypeKnowledge GetEnumeratorType()
+        {
+            if (!typeof(IEnumerable).IsAssignableFrom(this.type))
+            {
+                throw new Exception("Attempting to get enumerator on a non IEnumerable type.");
+            }
+
+            var enumerableType = this.type.GetInterfaces()
+                .Where(t => t.IsGenericType)
+                .Where(t => t.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                .Select(t => t.GetGenericArguments()[0])
+                .FirstOrDefault();
+
+            return new TypeKnowledge(enumerableType);
+        }
+
+        public TypeKnowledge GetIndexerIndexType()
+        {
+            var indexParameters = this.type.GetProperties().Single(p => p.GetIndexParameters().Length > 0).GetIndexParameters().Single();
+
+            return new TypeKnowledge(indexParameters.ParameterType);
+        }
+
+
+        public TypeKnowledge GetIndexerValueType()
+        {
+            if (this.type.IsArray)
+            {
+                return new TypeKnowledge(typeof(int));
+            }
+
+            var indexParameters = this.type.GetProperties().Single(p => p.GetIndexParameters().Length > 0).GetIndexParameters().Single();
+            return new TypeKnowledge((indexParameters.Member as PropertyInfo).PropertyType);
+        }
+
+        public TypeKnowledge GetAsArrayType()
+        {
+            return new TypeKnowledge(this.type.MakeArrayType());
+        }
+
+        public TypeKnowledge GetArrayGeneric()
+        {
+            if (!this.type.IsArray)
+            {
+                return null;
+            }
+
+            return new TypeKnowledge(this.type.GetInterface(typeof(IEnumerable<object>).Name).GetGenericArguments().Single());
+        }
+
+        public string GetFullName()
+        {
+            if (this.type.IsArray)
+            {
+                return typeof(Array).FullName;
+            }
+
+            return this.type.Namespace + "." + this.type.Name.Split('`').First();
+        }
+
+        public TypeKnowledge[] GetGenerics()
+        {
+            if (this.type.IsArray)
+            {
+                return new [] { new TypeKnowledge( this.type.GetElementType()) };
+            }
+
+            return this.type.GetGenericArguments().Select(t => !t.IsGenericParameter || Providers.GenericsRegistry.IsGeneric(t.Name) ?  new TypeKnowledge(t) : null).ToArray();
+        }
+
+        public TypeKnowledge CreateWithGenerics(TypeKnowledge[] generics)
+        {
+            return new TypeKnowledge(this.type.MakeGenericType(generics.Select(g => g.GetTypeObject()).ToArray()));
+        }
+
+        public Type GetTypeObject()
+        {
+            return this.type;
+        }
+
+        private TypeKnowledge[] GetMembers(string name)
+        {
+            var members = GetMembersOfType(this.type).Distinct().Where(e => e.Name == name && (this.restrictToStatic == false || IsMemberStatic(e)));
+
+            return members.Select(m => new TypeKnowledge(m)).ToArray();
+        }
+
+        private static bool IsMemberStatic(MemberInfo member)
+        {
+            var method = member as MethodInfo;
+            var field = member as FieldInfo;
+
+            return method?.IsStatic ?? field?.IsStatic ?? false;
+        }
+
+        private static IEnumerable<MemberInfo> GetMembersOfType(Type type, bool excludeBase = false)
+        {
+            var all = new List<MemberInfo>();
+
+            if (type.IsInterface)
+            {
+                all.AddRange(type.GetInterfaces().SelectMany(i => GetMembersOfType(i)));
+            }
+
+            var _base = type.BaseType;
+            while (_base != null && excludeBase == false)
+            {
+                all.AddRange(_base.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
+                all.AddRange(_base.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+                all.AddRange(_base.GetMembers(BindingFlags.Public | BindingFlags.Static));
+                _base = _base.BaseType;
+            }
+
+            all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Instance));
+            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
+            all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Static));
+            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+
+            return all;
+        }
+
+        private static Dictionary<string, Type> Translations = new Dictionary<string, Type>()
+        {
+            { "System.Object&", typeof(object) },
+        };
+
+        private Type GetTypeFromMember(MemberInfo member, bool skipFirstInputArg)
+        {
+            var methodInfo = member as MethodBase;
+            if (methodInfo != null)
+            {
+                var returnType = (methodInfo as MethodInfo)?.ReturnType ?? member.DeclaringType;
+                var parameterTypes = methodInfo.GetParameters().Select(p => p.ParameterType).Skip(skipFirstInputArg ? 1 : 0).ToList();
+
+                var type = ActionFuncTypes.GetAction(parameterTypes.Count);
+                if (returnType != typeof(void))
+                {
+                    type = ActionFuncTypes.GetFunc(parameterTypes.Count + 1);
+                    parameterTypes.Add(returnType);
+                }
+
+                this.IsParams = MethodHasParams(methodInfo);
+
+                if (methodInfo.IsGenericMethod)
+                {
+                    this.MethodGenerics = methodInfo.GetGenericArguments();
+                }
+
+                if (parameterTypes.Count == 0)
+                {
+                    return typeof(Action);
+                }
+
+                parameterTypes = parameterTypes.Select(t => Translations.ContainsKey(t?.FullName ?? string.Empty) ? Translations[t.FullName] : t).ToList();
+
+                return type.MakeGenericType(parameterTypes.ToArray());
+            }
+
+            var propertyInfo = member as PropertyInfo;
+            if (propertyInfo != null)
+            {
+                return propertyInfo.PropertyType;
+            }
+
+            var fieldInfo = member as FieldInfo;
+            if (fieldInfo == null)
+            {
+                throw new Exception("Unknown member type: " + member.GetType().Name);
+            }
+
+            return fieldInfo.FieldType;
+        }
+
+        public static TypeKnowledge ConstructLamdaType(TypeKnowledge[] inputs, TypeKnowledge returnArg)
+        {
+            if (returnArg == null)
+            {
+                if (inputs.Length == 0)
+                {
+                    return new TypeKnowledge(typeof (Action));
+                }
+                else
+                {
+                    var actionType = ActionFuncTypes.GetAction(inputs.Length);
+                    return new TypeKnowledge(actionType.MakeGenericType(inputs.Select(tk => tk.GetTypeObject()).ToArray()));
+                }
+            }
+
+            var funcType = ActionFuncTypes.GetFunc(inputs.Length + 1);
+            var generics = inputs.Select(tk => tk.GetTypeObject()).Union(new[] {returnArg.GetTypeObject()}).ToArray();
+            return new TypeKnowledge(funcType.MakeGenericType(generics));
+        }
+
+        public static bool MethodHasParams(MethodBase mi)
+        {
+            var lastParameter = mi.GetParameters().LastOrDefault();
+
+            return lastParameter?.GetCustomAttributes(typeof(ParamArrayAttribute), false).Any() ?? false;
+        }
+    }
+}

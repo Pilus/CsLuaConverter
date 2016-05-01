@@ -10,10 +10,11 @@
         public CollectionsTests()
         {
             this.Name = "Collections";
-            this.Tests["1_TestListInterfaces"] = TestListInterfaces;
-            this.Tests["2_TestListImplementation"] = TestListImplementation;
-            this.Tests["3_TestDictionaryInterfaces"] = TestDictionaryInterfaces;
-            this.Tests["4_TestLinq"] = TestLinq;
+            this.Tests["TestListInterfaces"] = TestListInterfaces;
+            this.Tests["TestListImplementation"] = TestListImplementation;
+            this.Tests["TestDictionaryInterfaces"] = TestDictionaryInterfaces;
+            this.Tests["TestCountAndAny"] = TestCountAndAny;
+            this.Tests["TestSelect"] = TestSelect; 
         }
 
         private static void TestListInterfaces()
@@ -157,7 +158,7 @@
             Assert(true, list is IReadOnlyCollection<KeyValuePair<int, string>>);
         }
 
-        private static void TestLinq()
+        private static void TestCountAndAny()
         {
             var a = new int[] {2, 4, 8, 16, 32, 64};
             Assert(true, a.Any());
@@ -178,6 +179,24 @@
             Assert(2, enumerable2.Count());
             list.Add("c");
             Assert(3, enumerable2.Count());
+        }
+
+        private static void TestSelect()
+        {
+            throw new TestIgnoredException();
+
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+
+            var l1 = a.Select(v => v.ToString()).ToList();
+            Assert(true, l1 is List<string>);
+
+            var l2 = a.Select(ToFloat).ToList();
+            Assert(true, l2 is List<float>);
+        }
+
+        private static float ToFloat(int value)
+        {
+            return value;
         }
     }
 }

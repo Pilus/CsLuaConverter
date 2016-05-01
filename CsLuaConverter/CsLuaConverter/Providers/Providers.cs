@@ -4,22 +4,26 @@ namespace CsLuaConverter.Providers
     using GenericsRegistry;
     using Microsoft.CodeAnalysis;
     using NameProvider;
-    using PartialElementRegistry;
+    using PartialElement;
+    using TypeKnowledgeRegistry;
     using TypeProvider;
 
     internal class Providers : IProviders
     {
-        private IGenericsRegistry genericsRegistry;
-        private ITypeProvider typeProvider;
-        private INameProvider nameProvider;
-        private IPartialElementRegistry partialElementRegistry;
+        private readonly IGenericsRegistry genericsRegistry;
+        private readonly ITypeProvider typeProvider;
+        private readonly INameProvider nameProvider;
+        private readonly ITypeKnowledgeRegistry typeKnowledgeRegistry;
+        private readonly IPartialElementState partialElementState;
 
         public Providers(Solution solution)
         {
             this.typeProvider = new TypeNameProvider(solution);
             this.genericsRegistry = new GenericsRegistry.GenericsRegistry();
             this.nameProvider = new NameProvider.NameProvider(this.typeProvider);
-            this.partialElementRegistry = new PartialElementRegistry.PartialElementRegistry();
+            this.typeKnowledgeRegistry = new TypeKnowledgeRegistry.TypeKnowledgeRegistry();
+            this.partialElementState = new PartialElementState();
+            TypeKnowledge.Providers = this;
         }
 
         public IGenericsRegistry GenericsRegistry
@@ -46,11 +50,19 @@ namespace CsLuaConverter.Providers
             }
         }
 
-        public IPartialElementRegistry PartialElementRegistry
+        public ITypeKnowledgeRegistry TypeKnowledgeRegistry
         {
             get
             {
-                return this.partialElementRegistry;
+                return this.typeKnowledgeRegistry;
+            }
+        }
+
+        public IPartialElementState PartialElementState
+        {
+            get
+            {
+                return this.partialElementState;
             }
         }
     }

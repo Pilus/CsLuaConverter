@@ -8,15 +8,17 @@
         private readonly Type type;
         private readonly string nativeName;
 
-        public ITypeResult BaseType { get; private set; }
+        public ITypeResult BaseType { get; }
 
         public string NativeName => this.nativeName;
 
         public string Name => this.type.Name;
 
-        public string FullName => this.type.FullName;
+        public string FullNameWithoutGenerics => this.type.Namespace + "." + this.type.Name;
 
         public string Namespace => this.type.Namespace;
+
+        public Type TypeObject => this.type;
 
         public NativeTypeResult(string nativeName, Type type)
         {
