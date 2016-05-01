@@ -51,7 +51,7 @@ namespace CsLuaTest
 
             tests.ForEach(test => test.PerformTests(new IndentedLineWriter()));
             Core.print("CsLua test completed.");
-            Core.print(BaseTest.TestCount, "tests run.", BaseTest.FailCount, "failed.", BaseTest.TestCount - BaseTest.FailCount, "succeded. ", BaseTest.IgnoreCount, "ignored.");
+            Core.print(BaseTest.TestCount, "tests run.", BaseTest.FailCount, "failed.", BaseTest.TestCount - BaseTest.FailCount - BaseTest.IgnoreCount, "succeded. ", BaseTest.IgnoreCount, "ignored.");
         }
     }
 }
