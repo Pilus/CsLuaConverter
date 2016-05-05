@@ -26,50 +26,20 @@
 
             if (current == null)
             {
+                // TODO: Handle case where this.name refers to a method on the current element.
+
                 var type = providers.TypeProvider.LookupType(this.name);
                 textWriter.Write(type.FullNameWithoutGenerics);
 
-                var memberWithClassGenerics = this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
-                var memberWithMethodGenerics = memberWithClassGenerics.ApplyMethodGenerics(this.argumentListVisitor.GetTypes(providers));
-
-                //providers.TypeKnowledgeRegistry.PossibleMethods = new[] {memberWithMethodGenerics};
-                var genericTypeWriter = textWriter.CreateTextWriterAtSameIndent();
-                this.WriteGenericTypes(genericTypeWriter, providers);
-
-                providers.TypeKnowledgeRegistry.PossibleInvocations = new PossibleInvocations()
-                {
-                    InvocationTypes = new []{ memberWithClassGenerics},
-                    InvocationTypesWithAppliedGenerics = new []{ memberWithMethodGenerics},
-                    MethodGenericName = genericTypeWriter
-                };
+                this.WriteGenericTypes(textWriter, providers);
+                providers.TypeKnowledgeRegistry.CurrentType = this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
             }
             else
             {
-                var possibleMembers = current.GetTypeKnowledgeForSubElement(this.name, providers);
-                var numAppliedGenerics = this.argumentListVisitor.GetNumElements();
-                var fittingMembers = possibleMembers.Where(m => m.MethodGenerics?.Length == numAppliedGenerics).ToArray();
-
-                if (!fittingMembers.Any())
-                {
-                    throw new VisitorException("Could not find fitting member.");
-                }
-
+                providers.TypeKnowledgeRegistry.PossibleMethods = new PossibleMethods(current.GetTypeKnowledgeForSubElement(this.name, providers).OfType<MethodKnowledge>().ToArray());
+                providers.TypeKnowledgeRegistry.PossibleMethods.FilterOnNumberOfGenerics(this.argumentListVisitor.GetNumElements());
                 textWriter.Write(this.name);
-
-                var fittingMembersWithMethodGenericsApplied = fittingMembers.Select(m => m.ApplyMethodGenerics(this.argumentListVisitor.GetTypes(providers))).ToArray();
-
-
-                providers.TypeKnowledgeRegistry.CurrentType = null;
-
-                var genericTypeWriter = textWriter.CreateTextWriterAtSameIndent();
-                this.WriteGenericTypes(genericTypeWriter, providers);
-
-                providers.TypeKnowledgeRegistry.PossibleInvocations = new PossibleInvocations()
-                {
-                    InvocationTypes = fittingMembers,
-                    InvocationTypesWithAppliedGenerics = fittingMembersWithMethodGenericsApplied,
-                    MethodGenericName = genericTypeWriter
-                };
+                providers.TypeKnowledgeRegistry.PossibleMethods.SetWriteMethodGenericsMethod(() => this.WriteGenericTypes(textWriter, providers));
             }
         }
 

@@ -29,8 +29,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var possibleInvocationTypesWithCorrectNumberOfArgs = this.DetermineTypeKnowledgeForArgumentInvocation(providers);
-
+            providers.TypeKnowledgeRegistry.PossibleMethods.FilterOnNumberOfArgs(this.argumentVisitors.Length);
+            
             var argVisitings = this.argumentVisitors.Select(visitor =>
             {
                 if (IsArgumentVisitorALambda(visitor))
@@ -45,8 +45,7 @@
                 return new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
             }).ToArray();
 
-
-
+            var possibleInvocationTypesWithCorrectNumberOfArgs = new TypeKnowledge[] { }; // TODO: Refactor.
             var bestTypes = this.DetermineTheBestFittingTypes(possibleInvocationTypesWithCorrectNumberOfArgs, argVisitings);
 
             TypeKnowledge selectedType;
@@ -124,7 +123,7 @@
             textWriter.Write(")");
 
             providers.TypeKnowledgeRegistry.ExpectedType = null;
-            providers.TypeKnowledgeRegistry.PossibleInvocations.SelectedType = selectedType; // TODO: This might be the version that has the generics already applied.
+            //providers.TypeKnowledgeRegistry.PossibleMethods.SelectedType = selectedType; // TODO: This might be the version that has the generics already applied.
             providers.TypeKnowledgeRegistry.CurrentType = selectedType.ResolveGenerics(providers).GetReturnArg();
         }
 
@@ -193,9 +192,10 @@
             return argVisitor?.IsArgumentVisitorALambda() ?? false;
         }
 
+        /*
         private TypeKnowledge[] DetermineTypeKnowledgeForArgumentInvocation(IProviders providers)
         {
-            var types = providers.TypeKnowledgeRegistry.PossibleInvocations?.InvocationTypesWithAppliedGenerics ?? providers.TypeKnowledgeRegistry.PossibleInvocations?.InvocationTypes;
+            var types = providers.TypeKnowledgeRegistry.PossibleMethods?.InvocationTypesWithAppliedGenerics ?? providers.TypeKnowledgeRegistry.PossibleMethods?.InvocationTypes;
 
             if (types == null)
             {
@@ -222,6 +222,6 @@
             }
 
             return typesWithCorrectNumberOfArgs;
-        }
+        } */
     }
 }

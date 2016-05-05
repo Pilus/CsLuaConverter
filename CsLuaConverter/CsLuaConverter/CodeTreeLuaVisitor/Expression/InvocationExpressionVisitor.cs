@@ -21,8 +21,7 @@
             textWriter.Write("(");
             this.target.Visit(textWriter, providers);
 
-            // Write numOfMethodGenerics, if method
-            if (providers.TypeKnowledgeRegistry.PossibleInvocations != null)
+            if (providers.TypeKnowledgeRegistry.PossibleMethods != null)
             {
                 textWriter.Write("_M");
 
@@ -30,8 +29,8 @@
                 this.argumentList.Visit(argumentListWriter, providers);
                 var returnType = providers.TypeKnowledgeRegistry.CurrentType;
 
-                var method = providers.TypeKnowledgeRegistry.PossibleInvocations.SelectedType;
-                textWriter.Write($"_{(method.MethodGenerics?.Length ?? 0)}");
+                var method = providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow();
+                textWriter.Write($"_{method.GetNumberOfMethodGenerics()}");
 
                 textWriter.Write(" % _M.DOT)");
 
@@ -44,7 +43,7 @@
                 this.argumentList.Visit(textWriter, providers);
             }
 
-            providers.TypeKnowledgeRegistry.PossibleInvocations = null;
+            providers.TypeKnowledgeRegistry.PossibleMethods = null;
         }
     }
 }

@@ -9,7 +9,7 @@
     using TypeProvider;
 
     [DebuggerDisplay("TypeKnowledge: {type}")]
-    public class TypeKnowledge
+    public class TypeKnowledge : IKnowledge
     {
         public static IProviders Providers;
         private readonly Type type;
@@ -44,11 +44,11 @@
         public bool IsParams { get; set; }
         public Type[] MethodGenerics { get; private set; }
 
-        public TypeKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)
+        public IKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)
         {
             var members = this.GetMembers(str);
             var extensions = providers.TypeProvider.GetExtensionMethods(this.type, str);
-            var membersIncludingExtensions = new []{ members, extensions}.SelectMany(v => v).GroupBy(v => v.type.ToString()).Select(g => g.First()).ToArray();
+            var membersIncludingExtensions = new []{ members, extensions}.SelectMany(v => v).ToArray();
             
             if (!membersIncludingExtensions.Any())
             {
@@ -58,22 +58,20 @@
             return membersIncludingExtensions;
         }
 
-        public TypeKnowledge[] GetConstructors()
+        public MethodKnowledge[] GetConstructors()
         {
             if (typeof(Delegate).IsAssignableFrom(this.type))
             {
-                var cstorType = typeof (Action<>).MakeGenericType(this.type);
-                return new[] {new TypeKnowledge(cstorType)};
+                return new[] {new MethodKnowledge(this.type), new MethodKnowledge() };
             }
 
             var cstors = GetMembersOfType(this.type, true) //this.type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(m => m.MemberType.Equals(MemberTypes.Constructor))
-                .Select(m => new TypeKnowledge(m))
-                .GroupBy(tk => tk.type)
-                .Select(group => group.First())
+                .OfType<MethodBase>()
+                .Select(m => new MethodKnowledge(m))
                 .ToArray();
 
-            return cstors.Length > 0 ? cstors : new[] {new TypeKnowledge(typeof (Action))};
+            return cstors.Length > 0 ? cstors : new[] {new MethodKnowledge()};
         }
 
         public TypeKnowledge GetEnumeratorType()
@@ -156,11 +154,20 @@
             return this.type;
         }
 
-        private TypeKnowledge[] GetMembers(string name)
+        private IKnowledge[] GetMembers(string name)
         {
             var members = GetMembersOfType(this.type).Distinct().Where(e => e.Name == name && (this.restrictToStatic == false || IsMemberStatic(e)));
 
-            return members.Select(m => new TypeKnowledge(m)).ToArray();
+            return members.Select<MemberInfo, IKnowledge>(m =>
+            {
+                var method = m as MethodBase;
+                if (method != null)
+                {
+                    return new MethodKnowledge(method);
+                }
+
+                return new TypeKnowledge(m);
+            }).ToArray();
         }
 
         private static bool IsMemberStatic(MemberInfo member)

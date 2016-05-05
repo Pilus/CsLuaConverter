@@ -293,7 +293,7 @@
             throw new ProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", string.Join(".", names)));
         }
 
-        public TypeKnowledge[] GetExtensionMethods(Type type, string name)
+        public MethodKnowledge[] GetExtensionMethods(Type type, string name)
         {
             return this.refenrecedNamespaces.SelectMany(ns => ns.GetExtensionMethods(type, name)).ToArray();
         }

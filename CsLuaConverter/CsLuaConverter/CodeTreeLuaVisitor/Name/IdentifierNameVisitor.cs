@@ -24,20 +24,11 @@
                 textWriter.Write(this.text);
                 var newCrurrentTypes = currentType.GetTypeKnowledgeForSubElement(this.text, providers);
 
-                if (newCrurrentTypes.Count() == 1 && !newCrurrentTypes.Single().IsDelegate())
-                {
-                    providers.TypeKnowledgeRegistry.CurrentType = newCrurrentTypes.Single();
-                    providers.TypeKnowledgeRegistry.PossibleInvocations = null;
-                }
-                else
-                {
-                    providers.TypeKnowledgeRegistry.CurrentType = null;
-                    providers.TypeKnowledgeRegistry.PossibleInvocations = new PossibleInvocations()
-                    {
-                        InvocationTypes = newCrurrentTypes
-                    };
-                }
-                
+                providers.TypeKnowledgeRegistry.CurrentType = newCrurrentTypes.OfType<TypeKnowledge>().SingleOrDefault();
+
+                var possibleMethods = newCrurrentTypes.OfType<MethodKnowledge>().ToArray();
+                providers.TypeKnowledgeRegistry.PossibleMethods = possibleMethods.Any() ? new PossibleMethods(possibleMethods) : null;
+
                 return;
             }
 
