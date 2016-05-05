@@ -9,10 +9,10 @@
         private static int Main(string[] args)
         {
             var converter = new Converter();
-            
+
             if (Debugger.IsAttached)
             {
-                converter.ConvertAsync(args[0], args[1]).Wait();
+                converter.Convert(args[0], args[1]);
                 
                 return 0;
             }

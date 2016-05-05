@@ -32,7 +32,16 @@
                 var memberWithClassGenerics = this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
                 var memberWithMethodGenerics = memberWithClassGenerics.ApplyMethodGenerics(this.argumentListVisitor.GetTypes(providers));
 
-                providers.TypeKnowledgeRegistry.CurrentType = memberWithMethodGenerics;
+                //providers.TypeKnowledgeRegistry.PossibleMethods = new[] {memberWithMethodGenerics};
+                var genericTypeWriter = textWriter.CreateTextWriterAtSameIndent();
+                this.WriteGenericTypes(genericTypeWriter, providers);
+
+                providers.TypeKnowledgeRegistry.PossibleInvocations = new PossibleInvocations()
+                {
+                    InvocationTypes = new []{ memberWithClassGenerics},
+                    InvocationTypesWithAppliedGenerics = new []{ memberWithMethodGenerics},
+                    MethodGenericName = genericTypeWriter
+                };
             }
             else
             {
@@ -49,18 +58,19 @@
 
                 var fittingMembersWithMethodGenericsApplied = fittingMembers.Select(m => m.ApplyMethodGenerics(this.argumentListVisitor.GetTypes(providers))).ToArray();
 
-                if (fittingMembersWithMethodGenericsApplied.Length == 1)
-                {
-                    providers.TypeKnowledgeRegistry.CurrentType = fittingMembersWithMethodGenericsApplied.Single();
-                }
-                else
-                {
-                    providers.TypeKnowledgeRegistry.PossibleMethods = fittingMembersWithMethodGenericsApplied;
-                    providers.TypeKnowledgeRegistry.CurrentType = null;
-                }
-            }
 
-            this.WriteGenericTypes(textWriter, providers);
+                providers.TypeKnowledgeRegistry.CurrentType = null;
+
+                var genericTypeWriter = textWriter.CreateTextWriterAtSameIndent();
+                this.WriteGenericTypes(genericTypeWriter, providers);
+
+                providers.TypeKnowledgeRegistry.PossibleInvocations = new PossibleInvocations()
+                {
+                    InvocationTypes = fittingMembers,
+                    InvocationTypesWithAppliedGenerics = fittingMembersWithMethodGenericsApplied,
+                    MethodGenericName = genericTypeWriter
+                };
+            }
         }
 
         public string[] GetName()

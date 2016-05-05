@@ -1,5 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
+    using System;
+    using System.Linq;
     using CodeTree;
     using Lists;
     using Providers;
@@ -18,9 +20,31 @@
         {
             textWriter.Write("(");
             this.target.Visit(textWriter, providers);
-            textWriter.Write(" % _M.DOT)");
-            this.argumentList.Visit(textWriter, providers);
-            providers.TypeKnowledgeRegistry.PossibleMethods = null;
+
+            // Write numOfMethodGenerics, if method
+            if (providers.TypeKnowledgeRegistry.PossibleInvocations != null)
+            {
+                textWriter.Write("_M");
+
+                var argumentListWriter = textWriter.CreateTextWriterAtSameIndent();
+                this.argumentList.Visit(argumentListWriter, providers);
+                var returnType = providers.TypeKnowledgeRegistry.CurrentType;
+
+                var method = providers.TypeKnowledgeRegistry.PossibleInvocations.SelectedType;
+                textWriter.Write($"_{(method.MethodGenerics?.Length ?? 0)}");
+
+                textWriter.Write(" % _M.DOT)");
+
+                textWriter.AppendTextWriter(argumentListWriter);
+                providers.TypeKnowledgeRegistry.CurrentType = returnType;
+            }
+            else
+            {
+                textWriter.Write(" % _M.DOT)");
+                this.argumentList.Visit(textWriter, providers);
+            }
+
+            providers.TypeKnowledgeRegistry.PossibleInvocations = null;
         }
     }
 }

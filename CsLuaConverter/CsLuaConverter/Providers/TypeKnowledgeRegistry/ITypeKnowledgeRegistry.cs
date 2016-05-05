@@ -4,6 +4,6 @@
     {
         TypeKnowledge CurrentType { get; set; }
         TypeKnowledge ExpectedType { get; set; }
-        TypeKnowledge[] PossibleMethods { get; set; }
+        PossibleInvocations PossibleInvocations { get; set; }
     }
 }

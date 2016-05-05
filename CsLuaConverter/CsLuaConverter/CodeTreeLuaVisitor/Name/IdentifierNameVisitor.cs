@@ -24,15 +24,18 @@
                 textWriter.Write(this.text);
                 var newCrurrentTypes = currentType.GetTypeKnowledgeForSubElement(this.text, providers);
 
-                if (newCrurrentTypes.Count() == 1)
+                if (newCrurrentTypes.Count() == 1 && !newCrurrentTypes.Single().IsDelegate())
                 {
                     providers.TypeKnowledgeRegistry.CurrentType = newCrurrentTypes.Single();
-                    providers.TypeKnowledgeRegistry.PossibleMethods = null;
+                    providers.TypeKnowledgeRegistry.PossibleInvocations = null;
                 }
                 else
                 {
                     providers.TypeKnowledgeRegistry.CurrentType = null;
-                    providers.TypeKnowledgeRegistry.PossibleMethods = newCrurrentTypes;
+                    providers.TypeKnowledgeRegistry.PossibleInvocations = new PossibleInvocations()
+                    {
+                        InvocationTypes = newCrurrentTypes
+                    };
                 }
                 
                 return;

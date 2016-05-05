@@ -124,6 +124,7 @@
             textWriter.Write(")");
 
             providers.TypeKnowledgeRegistry.ExpectedType = null;
+            providers.TypeKnowledgeRegistry.PossibleInvocations.SelectedType = selectedType; // TODO: This might be the version that has the generics already applied.
             providers.TypeKnowledgeRegistry.CurrentType = selectedType.ResolveGenerics(providers).GetReturnArg();
         }
 
@@ -194,13 +195,13 @@
 
         private TypeKnowledge[] DetermineTypeKnowledgeForArgumentInvocation(IProviders providers)
         {
-            var types = providers.TypeKnowledgeRegistry.PossibleMethods;
+            var types = providers.TypeKnowledgeRegistry.PossibleInvocations?.InvocationTypesWithAppliedGenerics ?? providers.TypeKnowledgeRegistry.PossibleInvocations?.InvocationTypes;
 
             if (types == null)
             {
                 types = new [] { providers.TypeKnowledgeRegistry.CurrentType };
             }
-
+            
             types = types.Where(t => t.IsDelegate()).ToArray();
 
             if (types.Count() == 1)

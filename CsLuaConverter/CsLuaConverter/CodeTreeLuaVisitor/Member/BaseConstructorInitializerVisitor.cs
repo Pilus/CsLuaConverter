@@ -4,6 +4,7 @@
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
 
     public class BaseConstructorInitializerVisitor : BaseVisitor
     {
@@ -19,7 +20,10 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var baseType = providers.NameProvider.GetScopeElement("base");
-            providers.TypeKnowledgeRegistry.PossibleMethods = baseType.Type.GetConstructors();
+            providers.TypeKnowledgeRegistry.PossibleInvocations = new PossibleInvocations()
+            {
+                InvocationTypes = baseType.Type.GetConstructors()
+            };
 
             textWriter.Write("_M.BC(element, baseConstructors, ");
 

@@ -217,6 +217,7 @@
     <Compile Include="Providers\ProviderException.cs" />
     <Compile Include="Providers\Providers.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\ITypeKnowledgeRegistry.cs" />
+    <Compile Include="Providers\TypeKnowledgeRegistry\PossibleInvocations.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\TypeKnowledge.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\TypeKnowledgeRegistry.cs" />
     <Compile Include="Providers\TypeProvider\ActionFuncTypes.cs" />

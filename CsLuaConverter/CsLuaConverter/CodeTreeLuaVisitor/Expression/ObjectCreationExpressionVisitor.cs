@@ -4,6 +4,7 @@
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
     using Type;
 
     public class ObjectCreationExpressionVisitor : BaseVisitor
@@ -35,9 +36,13 @@
             this.objectTypeVisitor.WriteAsReference(textWriter, providers);
             var type = this.objectTypeVisitor.GetType(providers);
             textWriter.Write(" % _M.DOT)");
-            providers.TypeKnowledgeRegistry.PossibleMethods = type.GetConstructors();
+            providers.TypeKnowledgeRegistry.PossibleInvocations = new PossibleInvocations()
+            {
+                InvocationTypes = type.GetConstructors()
+            };
+
             this.constructorArgumentsVisitor.Visit(textWriter, providers);
-            providers.TypeKnowledgeRegistry.PossibleMethods = null;
+            providers.TypeKnowledgeRegistry.PossibleInvocations = null;
             providers.TypeKnowledgeRegistry.CurrentType = null;
 
             if (this.initializer != null)
