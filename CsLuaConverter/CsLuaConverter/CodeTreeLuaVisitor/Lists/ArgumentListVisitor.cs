@@ -80,7 +80,8 @@
                         }
                     }
 
-                    possibleMethods.FilterOnArgTypes(argVisitings.Select(av => av.Item2).ToArray());
+                    var argTypes = argVisitings.Select(av => av.Item2).ToArray();
+                    possibleMethods.FilterOnArgTypes(argTypes);
 
                     if (possibleMethods.IsOnlyOneMethodRemaining())
                     {
@@ -88,7 +89,7 @@
                     }
                     else
                     {
-                        possibleMethods.FilterByBestScore();
+                        possibleMethods.FilterByBestScore(argTypes);
                         if (possibleMethods.IsOnlyOneMethodRemaining())
                         {
                             selectedMethod = possibleMethods.GetOnlyRemainingMethodOrThrow();

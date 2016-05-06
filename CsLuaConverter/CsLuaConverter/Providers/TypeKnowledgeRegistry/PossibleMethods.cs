@@ -34,9 +34,12 @@
             this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
         }
 
-        public void FilterByBestScore()
+        public void FilterByBestScore(TypeKnowledge[] typeKnowledges)
         {
-            throw new NotImplementedException();
+            var methodsBefore = this.methods;
+            var types = typeKnowledges.Select(tk => tk?.GetTypeObject()).ToArray();
+            this.methods = this.methods.GroupBy(m => m.GetScore(types) ?? 0).OrderBy(g => g.Key).First().ToArray();
+            this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
         }
 
         public void SetWriteMethodGenericsMethod(Action action)

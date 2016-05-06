@@ -4,9 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
 
     public class MethodKnowledge : IKnowledge
     {
+        private readonly bool isExtension;
         private readonly MethodBase method;
         private readonly Type[] inputTypes;
         private readonly Type returnType;
@@ -14,6 +16,7 @@
         public MethodKnowledge(MethodBase method)
         {
             this.method = method;
+            this.isExtension = this.method.GetCustomAttribute<ExtensionAttribute>() != null;
         }
 
         public MethodKnowledge(Type returnType, params Type[] inputTypes)
@@ -40,7 +43,7 @@
 
         public int GetNumberOfArgs()
         {
-            return this.method?.GetParameters().Length ?? this.inputTypes.Length;
+            return this.GetInputParameterTypes().Length;
         }
 
         public bool IsParams()
@@ -50,52 +53,35 @@
 
         public bool FitsArguments(Type[] types)
         {
-            
-            if (this.method != null)
+            var isParams = this.IsParams();
+            var parameterTypes = this.GetInputParameterTypes();
+
+            for (var index = 0; index < types.Length; index++)
             {
-                var isParams = this.IsParams();
-                var parameters = this.method.GetParameters();
+                var type = types[index];
 
-                for (var index = 0; index < types.Length; index++)
+                if (type == null)
                 {
-                    var type = types[index];
+                    continue;
+                }
 
-                    if (type == null)
-                    {
-                        continue;
-                    }
+                var parameter = parameterTypes[Math.Min(index, parameterTypes.Length - 1)];
 
-                    var parameter = parameters[Math.Min(index, parameters.Length - 1)].ParameterType;
-
-                    if (isParams && index >= parameters.Length)
+                if (isParams && index >= parameterTypes.Length)
+                {
+                    var paramType =
+                        parameter.GetInterface(typeof (IEnumerable<object>).Name).GetGenericArguments().Single();
+                    if (!paramType.IsAssignableFrom(type))
                     {
-                        var paramType =
-                            parameter.GetInterface(typeof (IEnumerable<object>).Name).GetGenericArguments().Single();
-                        if (!paramType.IsAssignableFrom(type))
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (!parameter.IsAssignableFrom(type))
-                        {
-                            return false;
-                        }
+                        return false;
                     }
                 }
-            }
-            else
-            {
-                for (int index = 0; index < types.Length; index++)
+                else
                 {
-                    var type = types[index];
-                    var parameter = this.inputTypes[index];
                     if (!parameter.IsAssignableFrom(type))
                     {
                         return false;
                     }
-                    
                 }
             }
 
@@ -104,12 +90,7 @@
 
         public TypeKnowledge[] GetInputArgs()
         {
-            if (this.method != null)
-            {
-                return this.method.GetParameters().Select(p => new TypeKnowledge(p.ParameterType)).ToArray();
-            }
-
-            return this.inputTypes.Select(t => new TypeKnowledge(t)).ToArray();
+            return this.GetInputParameterTypes().Select(p => new TypeKnowledge(p)).ToArray();
         }
 
         public TypeKnowledge GetReturnType()
@@ -125,5 +106,82 @@
 
             return new TypeKnowledge(this.returnType);
         }
+
+
+        private Type[] GetInputParameterTypes()
+        {
+            if (this.method != null)
+            {
+                return this.method.GetParameters().Skip(this.isExtension ? 1 : 0).Select(p => p.ParameterType).ToArray();
+            }
+
+            return this.inputTypes;
+        }
+
+        public int? GetScore(Type[] types)
+        {
+            var isParams = this.IsParams();
+            var parameters = this.GetInputParameterTypes();
+
+            var score = 0;
+            for (var index = 0; index < parameters.Length; index++)
+            {
+                var type = types[index];
+
+                if (type == null)
+                {
+                    continue;
+                }
+
+                var parameter = parameters[Math.Min(index, parameters.Length - 1)];
+
+                int? parScore = 0;
+                if (isParams && index >= parameters.Length)
+                {
+                    var paramType = parameter.GetInterface(typeof(IEnumerable<object>).Name).GetGenericArguments().Single();
+                    parScore = ScoreForHowWellOtherTypeFits(paramType, type);
+                }
+                else
+                {
+                    parScore = ScoreForHowWellOtherTypeFits(parameter, type);
+                }
+
+                if (parScore == null)
+                {
+                    return null;
+                }
+
+                score += (int) parScore;
+            }
+
+            return score;
+            
+        }
+
+        private static int? ScoreForHowWellOtherTypeFits(Type type, Type otherType)
+        {
+            if (type.IsGenericParameter)
+            {
+                throw new Exception("Cannot perform action on a generic type.");
+            }
+
+            var c = 0;
+
+            while (!type.IsAssignableFrom(otherType))
+            {
+                otherType = otherType.BaseType;
+
+                if (otherType == null)
+                {
+                    return null;
+                }
+
+                c++;
+            }
+
+            return type == otherType ? c : c + 1;
+        }
+
+        
     }
 }
