@@ -29,8 +29,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            providers.TypeKnowledgeRegistry.PossibleMethods.FilterOnNumberOfArgs(this.argumentVisitors.Length);
-            
+            var possibleMethods = providers.TypeKnowledgeRegistry.PossibleMethods;
+
             var argVisitings = this.argumentVisitors.Select(visitor =>
             {
                 if (IsArgumentVisitorALambda(visitor))
@@ -45,6 +45,105 @@
                 return new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
             }).ToArray();
 
+            possibleMethods.FilterOnNumberOfArgs(this.argumentVisitors.Length);
+            
+
+            MethodKnowledge selectedMethod;
+
+            if (possibleMethods.IsOnlyOneMethodRemaining())
+            {
+                selectedMethod = possibleMethods.GetOnlyRemainingMethodOrThrow();
+            }
+            else
+            {
+                possibleMethods.FilterOnArgTypes(argVisitings.Select(av => av?.Item2).ToArray());
+
+                if (possibleMethods.IsOnlyOneMethodRemaining())
+                {
+                    selectedMethod = possibleMethods.GetOnlyRemainingMethodOrThrow();
+                }
+                else
+                {
+                    for (int index = 0; index < argVisitings.Length; index++)
+                    {
+                        var argVisiting = argVisitings[index];
+                        if (argVisiting == null)
+                        {
+                            var visitor = this.argumentVisitors[index];
+                            providers.TypeKnowledgeRegistry.CurrentType = null;
+                            providers.TypeKnowledgeRegistry.ExpectedType = null;
+                            var argTextWriter = textWriter.CreateTextWriterAtSameIndent();
+                            visitor.Visit(argTextWriter, providers);
+                            var type = providers.TypeKnowledgeRegistry.CurrentType;
+                            argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter,
+                                type);
+                        }
+                    }
+
+                    possibleMethods.FilterOnArgTypes(argVisitings.Select(av => av.Item2).ToArray());
+
+                    if (possibleMethods.IsOnlyOneMethodRemaining())
+                    {
+                        selectedMethod = possibleMethods.GetOnlyRemainingMethodOrThrow();
+                    }
+                    else
+                    {
+                        possibleMethods.FilterByBestScore();
+                        if (possibleMethods.IsOnlyOneMethodRemaining())
+                        {
+                            selectedMethod = possibleMethods.GetOnlyRemainingMethodOrThrow();
+                        }
+                        else
+                        {
+                            throw new VisitorException("Could not find any fitting match.");
+                        }
+                    }
+                }
+            }
+
+            // Visit remaining args
+            var args = selectedMethod.GetInputArgs();
+            for (var index = 0; index < argVisitings.Length; index++)
+            {
+                if (argVisitings[index] != null) continue;
+
+                providers.TypeKnowledgeRegistry.ExpectedType = args[Math.Min(index, args.Length - 1)];
+                var argTextWriter = textWriter.CreateTextWriterAtSameIndent();
+                this.argumentVisitors[index].Visit(argTextWriter, providers);
+                var type = providers.TypeKnowledgeRegistry.CurrentType;
+                argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
+            }
+
+
+            var argResultingTypes = argVisitings.Select(av => av.Item2).ToArray();
+            var argTextWriters = argVisitings.Select(av => av.Item1).ToArray();
+
+            //selectedMethod.RegisterMethodGenericsWithAppliedTypes(argResultingTypes);
+
+            if (!this.SkipOpeningParen)
+            {
+                textWriter.Write("(");
+            }
+
+            for (var index = 0; index < argVisitings.Length; index++)
+            {
+                textWriter.AppendTextWriter(argTextWriters[index]);
+
+                if (index < this.argumentVisitors.Length - 1)
+                {
+                    textWriter.Write(", ");
+                }
+            }
+            textWriter.Write(")");
+
+            providers.TypeKnowledgeRegistry.ExpectedType = null;
+            providers.TypeKnowledgeRegistry.PossibleMethods = possibleMethods;
+
+            //providers.TypeKnowledgeRegistry.CurrentType = selectedMethod.ResolveGenerics(providers).GetReturnArg();
+
+
+            //// Old code
+            /*
             var possibleInvocationTypesWithCorrectNumberOfArgs = new TypeKnowledge[] { }; // TODO: Refactor.
             var bestTypes = this.DetermineTheBestFittingTypes(possibleInvocationTypesWithCorrectNumberOfArgs, argVisitings);
 
@@ -124,7 +223,7 @@
 
             providers.TypeKnowledgeRegistry.ExpectedType = null;
             //providers.TypeKnowledgeRegistry.PossibleMethods.SelectedType = selectedType; // TODO: This might be the version that has the generics already applied.
-            providers.TypeKnowledgeRegistry.CurrentType = selectedType.ResolveGenerics(providers).GetReturnArg();
+            providers.TypeKnowledgeRegistry.CurrentType = selectedType.ResolveGenerics(providers).GetReturnArg(); */
         }
 
         private List<TypeKnowledge> DetermineTheBestFittingTypes(TypeKnowledge[] possibleInvocationTypes, Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings)

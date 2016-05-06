@@ -2,9 +2,11 @@
 {
     using System;
     using System.Linq;
+    using System.Reflection;
     using CodeTree;
     using Lists;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
 
     public class InvocationExpressionVisitor : BaseVisitor
     {
@@ -27,7 +29,6 @@
 
                 var argumentListWriter = textWriter.CreateTextWriterAtSameIndent();
                 this.argumentList.Visit(argumentListWriter, providers);
-                var returnType = providers.TypeKnowledgeRegistry.CurrentType;
 
                 var method = providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow();
                 textWriter.Write($"_{method.GetNumberOfMethodGenerics()}");
@@ -35,12 +36,27 @@
                 textWriter.Write(" % _M.DOT)");
 
                 textWriter.AppendTextWriter(argumentListWriter);
-                providers.TypeKnowledgeRegistry.CurrentType = returnType;
+
+                providers.TypeKnowledgeRegistry.CurrentType = method.GetReturnType();
             }
             else
             {
+                var currentType = providers.TypeKnowledgeRegistry.CurrentType;
+
+                if (!currentType.IsDelegate())
+                {
+                    throw new VisitorException("Cannot invoke non delegate.");
+                }
+
+                var invoke = currentType.GetTypeObject().GetMember("Invoke").OfType<MethodBase>().First();
+                var method = new MethodKnowledge(invoke);
+                providers.TypeKnowledgeRegistry.PossibleMethods = new PossibleMethods(new []{ method });
+                providers.TypeKnowledgeRegistry.CurrentType = null;
+
                 textWriter.Write(" % _M.DOT)");
                 this.argumentList.Visit(textWriter, providers);
+
+                providers.TypeKnowledgeRegistry.CurrentType = method.GetReturnType();
             }
 
             providers.TypeKnowledgeRegistry.PossibleMethods = null;

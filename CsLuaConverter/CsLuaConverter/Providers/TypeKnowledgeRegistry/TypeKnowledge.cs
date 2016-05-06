@@ -62,10 +62,10 @@
         {
             if (typeof(Delegate).IsAssignableFrom(this.type))
             {
-                return new[] {new MethodKnowledge(this.type), new MethodKnowledge() };
+                return new[] {new MethodKnowledge(null, this.type), new MethodKnowledge() };
             }
 
-            var cstors = GetMembersOfType(this.type, true) //this.type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic)
+            var cstors = GetMembersOfType(this.type, true, true) //this.type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(m => m.MemberType.Equals(MemberTypes.Constructor))
                 .OfType<MethodBase>()
                 .Select(m => new MethodKnowledge(m))
@@ -178,7 +178,7 @@
             return method?.IsStatic ?? field?.IsStatic ?? false;
         }
 
-        private static IEnumerable<MemberInfo> GetMembersOfType(Type type, bool excludeBase = false)
+        private static IEnumerable<MemberInfo> GetMembersOfType(Type type, bool excludeBase = false, bool excludeStatic = false)
         {
             var all = new List<MemberInfo>();
 
@@ -191,15 +191,23 @@
             while (_base != null && excludeBase == false)
             {
                 all.AddRange(_base.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
-                all.AddRange(_base.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
-                all.AddRange(_base.GetMembers(BindingFlags.Public | BindingFlags.Static));
+                if (!excludeStatic)
+                { 
+                    all.AddRange(_base.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+                    all.AddRange(_base.GetMembers(BindingFlags.Public | BindingFlags.Static));
+                }
+
                 _base = _base.BaseType;
             }
 
             all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Instance));
             all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
-            all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Static));
-            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+
+            if (!excludeStatic)
+            {
+                all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Static));
+                all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+            }
 
             return all;
         }
