@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
+    [DebuggerDisplay("MethodKnowledge: {method}")]
     public class MethodKnowledge : IKnowledge
     {
         private readonly bool isExtension;

@@ -1,7 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Lists
 {
     using System;
+    using System.CodeDom.Compiler;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
@@ -29,6 +31,128 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            var possibleMethods = providers.TypeKnowledgeRegistry.PossibleMethods;
+            var argVisitings = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[this.argumentVisitors.Length];
+
+            var steps = new Action<Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[], PossibleMethods, IProviders>[]
+            {
+                this.FilterOnNumberOfArgs,
+                this.VisitNonLambdaArgs,
+                this.FilterOnArgTypes,
+                this.VisitParenLambdaVisitors,
+                this.FilterOnArgTypes,
+                this.FilterOnBestScore,
+            };
+
+            foreach (var step in steps)
+            {
+                if (possibleMethods.IsOnlyOneMethodRemaining())
+                {
+                    break;
+                }
+
+                step(argVisitings, possibleMethods, providers);
+            }
+
+            var selectedMethod = possibleMethods.GetOnlyRemainingMethodOrThrow();
+
+            // Visit remaining args
+            var args = selectedMethod.GetInputArgs();
+            for (var index = 0; index < argVisitings.Length; index++)
+            {
+                if (argVisitings[index] != null) continue;
+
+                providers.TypeKnowledgeRegistry.ExpectedType = args[Math.Min(index, args.Length - 1)];
+                var argTextWriter = textWriter.CreateTextWriterAtSameIndent();
+                this.argumentVisitors[index].Visit(argTextWriter, providers);
+                var type = providers.TypeKnowledgeRegistry.CurrentType;
+                argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
+            }
+
+
+            var argResultingTypes = argVisitings.Select(av => av.Item2).ToArray();
+            var argTextWriters = argVisitings.Select(av => av.Item1).ToArray();
+
+            //selectedMethod.RegisterMethodGenericsWithAppliedTypes(argResultingTypes);
+
+            if (!this.SkipOpeningParen)
+            {
+                textWriter.Write("(");
+            }
+
+            for (var index = 0; index < argVisitings.Length; index++)
+            {
+                textWriter.AppendTextWriter(argTextWriters[index]);
+
+                if (index < this.argumentVisitors.Length - 1)
+                {
+                    textWriter.Write(", ");
+                }
+            }
+            textWriter.Write(")");
+
+            providers.TypeKnowledgeRegistry.ExpectedType = null;
+            providers.TypeKnowledgeRegistry.PossibleMethods = possibleMethods;
+        }
+
+        private void FilterOnNumberOfArgs(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        {
+            possibleMethods.FilterOnNumberOfArgs(this.argumentVisitors.Length);
+        }
+
+        private void VisitNonLambdaArgs(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        {
+            for (int index = 0; index < this.argumentVisitors.Length; index++)
+            {
+                var argumentVisitor = this.argumentVisitors[index];
+                if (argVisitings[index] != null || IsArgumentVisitorALambda(argumentVisitor))
+                {
+                    continue;
+                }
+
+                providers.TypeKnowledgeRegistry.CurrentType = null;
+                var argTextWriter = new IndentedTextWriterWrapper(new IndentedTextWriter(new StringWriter()));
+                argumentVisitor.Visit(argTextWriter, providers);
+                var type = providers.TypeKnowledgeRegistry.CurrentType;
+                argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
+            }
+        }
+
+        private void FilterOnArgTypes(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        {
+            possibleMethods.FilterOnArgTypes(argVisitings.Select(av => av?.Item2).ToArray());
+        }
+
+        private void VisitParenLambdaVisitors(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        {
+            for (int index = 0; index < this.argumentVisitors.Length; index++)
+            {
+                var argumentVisitor = this.argumentVisitors[index];
+                if (argVisitings[index] != null || !IsArgumentVisitorParenLambda(argumentVisitor))
+                {
+                    continue;
+                }
+
+                providers.TypeKnowledgeRegistry.CurrentType = null;
+                providers.TypeKnowledgeRegistry.ExpectedType = null;
+                var argTextWriter = new IndentedTextWriterWrapper(new IndentedTextWriter(new StringWriter()));
+                argumentVisitor.Visit(argTextWriter, providers);
+                var type = providers.TypeKnowledgeRegistry.CurrentType;
+                argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter,
+                    type);
+            }
+        }
+
+        private void FilterOnBestScore(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        {
+            possibleMethods.FilterByBestScore(argVisitings.Select(av => av?.Item2).ToArray());
+        }
+
+
+        public void VisitOld(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        {
+            // TODO: Change into a stage approach, where being a list of actions<possibleMethods, argVisitings> to execute on, as long as there is still more than one remaining.
+
             var possibleMethods = providers.TypeKnowledgeRegistry.PossibleMethods;
 
             var argVisitings = this.argumentVisitors.Select(visitor =>
@@ -290,6 +414,12 @@
         {
             var argVisitor = visitor as ArgumentVisitor;
             return argVisitor?.IsArgumentVisitorALambda() ?? false;
+        }
+
+        private static bool IsArgumentVisitorParenLambda(IVisitor visitor)
+        {
+            var argVisitor = visitor as ArgumentVisitor;
+            return argVisitor?.IsArgumentVisitorParenLambda() ?? false;
         }
 
         /*
