@@ -184,6 +184,46 @@
             return type == otherType ? c : c + 1;
         }
 
-        
+
+        public bool FilterByNumberOfLambdaArgs(int?[] numOfArgs)
+        {
+            var inputParameters = this.GetInputParameterTypes();
+            for (var index = 0; index < this.GetInputParameterTypes().Length; index++)
+            {
+                var numArgs = numOfArgs[index];
+
+                if (numArgs == null)
+                {
+                    continue;
+                }
+
+                var inputParameterType = inputParameters[index];
+
+                var del = GetDelegate(inputParameterType);
+
+                if (del == null)
+                {
+                    return false;
+                }
+
+                var lambdaInputCount = del.GetMethod("Invoke").GetParameters().Length;
+                if (lambdaInputCount != numArgs)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static System.Type GetDelegate(System.Type type)
+        {
+            if (type.BaseType == typeof(MulticastDelegate))
+            {
+                return type;
+            }
+
+            return type.BaseType?.BaseType != null ? GetDelegate(type.BaseType) : null;
+        }
     }
 }

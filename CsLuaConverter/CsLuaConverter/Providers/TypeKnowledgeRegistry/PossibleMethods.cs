@@ -77,5 +77,12 @@
 
             throw new Exception("All methods were filtered away.");
         }
+
+        internal void FilterByNumberOfLambdaArgs(int?[] numOfArgs)
+        {
+            var methodsBefore = this.methods;
+            this.methods = this.methods.Where(m => m.FilterByNumberOfLambdaArgs(numOfArgs)).ToArray();
+            this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
+        }
     }
 }

@@ -42,6 +42,7 @@
                 this.VisitParenLambdaVisitors,
                 this.FilterOnArgTypes,
                 this.FilterOnBestScore,
+                this.FilterOnNumberOfArgsInSimpleLambda
             };
 
             foreach (var step in steps)
@@ -146,6 +147,15 @@
         private void FilterOnBestScore(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
         {
             possibleMethods.FilterByBestScore(argVisitings.Select(av => av?.Item2).ToArray());
+        }
+
+        private void FilterOnNumberOfArgsInSimpleLambda(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        {
+            var numOfArgs =
+                this.argumentVisitors.Select(
+                    v => (v is ArgumentVisitor && IsArgumentVisitorALambda(v) && !IsArgumentVisitorParenLambda(v)) ? ((ArgumentVisitor) v).GetInputArgCountOfLambda() : null).ToArray();
+
+            possibleMethods.FilterByNumberOfLambdaArgs(numOfArgs);
         }
 
 
