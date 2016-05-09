@@ -42,7 +42,8 @@
                 this.VisitParenLambdaVisitors,
                 this.FilterOnArgTypes,
                 this.FilterOnBestScore,
-                this.FilterOnNumberOfArgsInSimpleLambda
+                this.FilterOnNumberOfArgsInSimpleLambda,
+                this.FilterPrioitizeNonExtensions,
             };
 
             foreach (var step in steps)
@@ -156,6 +157,12 @@
                     v => (v is ArgumentVisitor && IsArgumentVisitorALambda(v) && !IsArgumentVisitorParenLambda(v)) ? ((ArgumentVisitor) v).GetInputArgCountOfLambda() : null).ToArray();
 
             possibleMethods.FilterByNumberOfLambdaArgs(numOfArgs);
+        }
+
+
+        private void FilterPrioitizeNonExtensions(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        {
+            possibleMethods.FilterPrioitizeNonExtensions();
         }
 
 

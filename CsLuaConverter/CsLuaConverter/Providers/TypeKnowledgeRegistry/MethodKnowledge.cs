@@ -18,11 +18,11 @@
         public MethodKnowledge(MethodBase method)
         {
             this.method = method;
-            this.isExtension = this.method.GetCustomAttribute<ExtensionAttribute>() != null;
         }
 
-        public MethodKnowledge(Type returnType, params Type[] inputTypes)
+        public MethodKnowledge(bool isExtension, Type returnType, params Type[] inputTypes)
         {
+            this.isExtension = isExtension;
             this.returnType = returnType;
             this.inputTypes = inputTypes;
         }
@@ -46,6 +46,11 @@
         public int GetNumberOfArgs()
         {
             return this.GetInputParameterTypes().Length;
+        }
+
+        public bool IsExtension()
+        {
+            return this.isExtension;
         }
 
         public bool IsParams()
@@ -114,7 +119,7 @@
         {
             if (this.method != null)
             {
-                return this.method.GetParameters().Skip(this.isExtension ? 1 : 0).Select(p => p.ParameterType).ToArray();
+                return this.method.GetParameters().Select(p => p.ParameterType).ToArray();
             }
 
             return this.inputTypes;

@@ -18,10 +18,12 @@
 
         public MethodKnowledge GetKnowledgeOnExtensionOfType(Type type)
         {
-            //var parameters = this.methodInfo.GetParameters();
-            //var generics = SubtractGenerics(parameters.First().ParameterType, type).ToDictionary(v => v.Item1, v => v.Item2);
+            var parameters = this.methodInfo.GetParameters();
+            var generics = SubtractGenerics(parameters.First().ParameterType, type).ToDictionary(v => v.Item1, v => v.Item2);
 
-            return new MethodKnowledge(this.methodInfo);
+            var appliedParameters = parameters.Skip(1).Select(p => ApplyGenerics(p.ParameterType, generics)).ToArray();
+
+            return new MethodKnowledge(true, ApplyGenerics(this.methodInfo.ReturnType, generics), appliedParameters);
         }
 
         private Type GetType(Dictionary<string, Type> generics)

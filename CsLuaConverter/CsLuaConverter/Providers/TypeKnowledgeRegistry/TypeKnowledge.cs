@@ -62,7 +62,7 @@
         {
             if (typeof(Delegate).IsAssignableFrom(this.type))
             {
-                return new[] {new MethodKnowledge(null, this.type), new MethodKnowledge() };
+                return new[] {new MethodKnowledge(false, null, this.type), new MethodKnowledge() };
             }
 
             var cstors = GetMembersOfType(this.type, true, true) //this.type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic)
