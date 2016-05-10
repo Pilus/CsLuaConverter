@@ -6,6 +6,7 @@
     public class PossibleMethods
     {
         private MethodKnowledge[] methods;
+        private Action writeMethodGenerics;
 
         public PossibleMethods(MethodKnowledge[] methods)
         {
@@ -44,7 +45,12 @@
 
         public void SetWriteMethodGenericsMethod(Action action)
         {
-            throw new NotImplementedException();
+            this.writeMethodGenerics = action;
+        }
+
+        public void WriteMethodGenerics()
+        {
+            this.writeMethodGenerics?.Invoke();
         }
 
         public void ApplyMethodGenerics(TypeKnowledge[] generics)

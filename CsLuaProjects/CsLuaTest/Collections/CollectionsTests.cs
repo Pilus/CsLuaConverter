@@ -185,13 +185,13 @@
         {
             throw new TestIgnoredException();
 
-            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            //var a = new int[] { 2, 4, 8, 16, 32, 64 };
 
-            var l1 = a.Select(v => v.ToString()).ToList();
-            Assert(true, l1 is List<string>);
+            //var l1 = a.Select(v => v.ToString()).ToList();
+            //Assert(true, l1 is List<string>);
 
-            var l2 = a.Select(ToFloat).ToList();
-            Assert(true, l2 is List<float>);
+            //var l2 = a.Select(ToFloat).ToList();
+            //Assert(true, l2 is List<float>);
         }
 
         private static float ToFloat(int value)
