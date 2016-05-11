@@ -40,6 +40,7 @@
                 providers.TypeKnowledgeRegistry.PossibleMethods.FilterOnNumberOfGenerics(this.argumentListVisitor.GetNumElements());
                 textWriter.Write(this.name);
                 providers.TypeKnowledgeRegistry.PossibleMethods.SetWriteMethodGenericsMethod(() => this.WriteGenericTypes(textWriter, providers));
+                providers.TypeKnowledgeRegistry.PossibleMethods.SpecifyMethodGenerics(this.argumentListVisitor.GetTypes(providers));
             }
         }
 

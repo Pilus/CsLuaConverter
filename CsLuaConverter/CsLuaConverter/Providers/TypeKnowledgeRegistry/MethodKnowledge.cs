@@ -14,9 +14,11 @@
         private readonly MethodBase method;
         private readonly Type[] inputTypes;
         private readonly Type returnType;
+        private Dictionary<Type, TypeKnowledge> methodGenericMapping;
 
         public MethodKnowledge(MethodBase method)
         {
+            var x = (method as MethodInfo)?.ReturnType.Name == "T3";
             this.method = method;
         }
 
@@ -58,6 +60,23 @@
             return this.method?.GetParameters().LastOrDefault()?.GetCustomAttributes(typeof(ParamArrayAttribute), false).Any() ?? false;
         }
 
+        public void ApplyMethodGenerics(TypeKnowledge[] generics)
+        {
+            if (this.method == null)
+            {
+                throw new Exception("Could not apply generics to non methodInfo based MethodKnowledge.");
+            }
+
+            var genericArgs = this.method.GetGenericArguments();
+
+            this.methodGenericMapping = new Dictionary<Type, TypeKnowledge>();
+
+            for (var index = 0; index < genericArgs.Length; index++)
+            {
+                this.methodGenericMapping[genericArgs[index]] = generics[index];
+            }
+        }
+
         public bool FitsArguments(Type[] types)
         {
             var isParams = this.IsParams();
@@ -97,7 +116,7 @@
 
         public TypeKnowledge[] GetInputArgs()
         {
-            return this.GetInputParameterTypes().Select(p => new TypeKnowledge(p)).ToArray();
+            return this.GetInputParameterTypes().Select(p => new TypeKnowledge(this.ApplyMethodGenerics(p))).ToArray();
         }
 
         public TypeKnowledge GetReturnType()
@@ -107,13 +126,47 @@
             {
                 var methodInfo = this.method as MethodInfo;
                 return methodInfo != null
-                    ? new TypeKnowledge(methodInfo.ReturnType)
+                    ? new TypeKnowledge(this.ApplyMethodGenerics(methodInfo.ReturnType))
                     : null;
             }
 
-            return new TypeKnowledge(this.returnType);
+            return new TypeKnowledge(this.ApplyMethodGenerics(this.returnType));
         }
 
+
+        private Type ApplyMethodGenerics(Type type)
+        {
+            if (!type.IsGenericParameter && !type.IsGenericType)
+            {
+                return type;
+            }
+
+            if (type.IsGenericParameter)
+            {
+                return this.methodGenericMapping[type].GetTypeObject();
+            }
+
+            var genericArgs = type.GetGenericArguments();
+            var changed = false;
+
+            for(var index = 0; index < genericArgs.Length; index++)
+            {
+                var genericArg = this.ApplyMethodGenerics(genericArgs[index]);
+                if (genericArgs[index] != genericArg)
+                {
+                    genericArgs[index] = genericArg;
+                    changed = true;
+                }
+            }
+
+            if (changed == false)
+            {
+                return type;
+            }
+
+            var genericTypeDef = type.GetGenericTypeDefinition();
+            return genericTypeDef.MakeGenericType(genericArgs);
+        }
 
         private Type[] GetInputParameterTypes()
         {

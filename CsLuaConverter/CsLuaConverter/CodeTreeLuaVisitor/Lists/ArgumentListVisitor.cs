@@ -48,6 +48,8 @@
 
             foreach (var step in steps)
             {
+                this.ApplyMethodGenerics(argVisitings, possibleMethods, providers);
+
                 if (possibleMethods.IsOnlyOneMethodRemaining())
                 {
                     break;
@@ -95,6 +97,12 @@
 
             providers.TypeKnowledgeRegistry.ExpectedType = null;
             providers.TypeKnowledgeRegistry.PossibleMethods = possibleMethods;
+        }
+
+        private void ApplyMethodGenerics(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings,
+            PossibleMethods possibleMethods, IProviders providers)
+        {
+            possibleMethods.ApplyMethodGenerics();
         }
 
         private void FilterOnNumberOfArgs(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
