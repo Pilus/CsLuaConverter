@@ -19,6 +19,7 @@
         public MethodKnowledge(MethodBase method)
         {
             var x = (method as MethodInfo)?.ReturnType.Name == "T3";
+            this.methodGenericMapping = new Dictionary<Type, TypeKnowledge>();
             this.method = method;
         }
 
@@ -42,7 +43,7 @@
 
         public int GetNumberOfMethodGenerics()
         {
-            return this.method?.GetGenericArguments().Length ?? 0;
+            return (this.method as MethodInfo)?.GetGenericArguments().Length ?? 0;
         }
 
         public int GetNumberOfArgs()
@@ -60,7 +61,7 @@
             return this.method?.GetParameters().LastOrDefault()?.GetCustomAttributes(typeof(ParamArrayAttribute), false).Any() ?? false;
         }
 
-        public void ApplyMethodGenerics(TypeKnowledge[] generics)
+        public void RegisterExplicitMethodGenericsMapping(TypeKnowledge[] generics)
         {
             if (this.method == null)
             {
@@ -69,12 +70,52 @@
 
             var genericArgs = this.method.GetGenericArguments();
 
-            this.methodGenericMapping = new Dictionary<Type, TypeKnowledge>();
-
             for (var index = 0; index < genericArgs.Length; index++)
             {
                 this.methodGenericMapping[genericArgs[index]] = generics[index];
             }
+        }
+
+        public bool ResolveImplicitMethodGenerics(TypeKnowledge[] inputTypes)
+        {
+            if (this.method == null)
+            {
+                throw new Exception("Could not apply generics to non methodInfo based MethodKnowledge.");
+            }
+
+            var genericArgs = this.method.GetGenericArguments();
+
+            var methodInputTypes = this.method.GetParameters().Select(p => p.ParameterType).ToArray();
+
+            for (int index = 0; index < methodInputTypes.Length; index++)
+            {
+                var methodParameterType = methodInputTypes[index];
+                var inputType = inputTypes[index];
+                this.ResolveImplicitMethodGenerics(methodParameterType, inputType);
+            }
+
+            return genericArgs.All(g => this.methodGenericMapping.ContainsKey(g));
+        }
+
+        private void ResolveImplicitMethodGenerics(Type methodParameterType, TypeKnowledge inputType)
+        {
+            if (inputType == null)
+            {
+                return;
+            }
+
+            if (!methodParameterType.IsGenericParameter && !methodParameterType.IsGenericType)
+            {
+                return;
+            }
+
+            if (methodParameterType.IsGenericParameter)
+            {
+                this.methodGenericMapping[methodParameterType] = inputType;
+                return;
+            }
+
+            throw new NotImplementedException();
         }
 
         public bool FitsArguments(Type[] types)
@@ -167,6 +208,8 @@
             var genericTypeDef = type.GetGenericTypeDefinition();
             return genericTypeDef.MakeGenericType(genericArgs);
         }
+
+        
 
         private Type[] GetInputParameterTypes()
         {

@@ -7,7 +7,7 @@
     {
         private MethodKnowledge[] methods;
         private Action writeMethodGenerics;
-        private TypeKnowledge[] generics;
+        public TypeKnowledge[] MethodGenerics { get; set; }
 
         public PossibleMethods(MethodKnowledge[] methods)
         {
@@ -52,22 +52,6 @@
         public void WriteMethodGenerics()
         {
             this.writeMethodGenerics?.Invoke();
-        }
-
-        public void SpecifyMethodGenerics(TypeKnowledge[] generics)
-        {
-            this.generics = generics;
-        }
-
-        public void ApplyMethodGenerics()
-        {
-            if (this.generics != null)
-            {
-                foreach (var methodKnowledge in this.methods)
-                {
-                    methodKnowledge.ApplyMethodGenerics(this.generics);
-                }
-            }
         }
 
         public MethodKnowledge GetOnlyRemainingMethodOrThrow()

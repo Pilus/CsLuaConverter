@@ -48,8 +48,6 @@
 
             foreach (var step in steps)
             {
-                this.ApplyMethodGenerics(argVisitings, possibleMethods, providers);
-
                 if (possibleMethods.IsOnlyOneMethodRemaining())
                 {
                     break;
@@ -59,6 +57,39 @@
             }
 
             var selectedMethod = possibleMethods.GetOnlyRemainingMethodOrThrow();
+
+            // Apply method generics
+            if (selectedMethod.GetNumberOfMethodGenerics() > 0)
+            { 
+                if (possibleMethods.MethodGenerics != null)
+                {
+                    selectedMethod.RegisterExplicitMethodGenericsMapping(possibleMethods.MethodGenerics);
+                }
+                else
+                {
+                    var implicitGenericsSteps = new Action<Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[], PossibleMethods, IProviders>[]
+                    {
+                        this.VisitNonLambdaArgs,
+                        this.VisitParenLambdaVisitors,
+                    };
+
+                    var i = 0;
+
+                    while (!selectedMethod.ResolveImplicitMethodGenerics(argVisitings.Select(av => av?.Item2).ToArray()))
+                    {
+                        if (i >= implicitGenericsSteps.Length)
+                        {
+                            throw new Exception("Could not resolve all implicit method generics.");
+                        }
+
+                        implicitGenericsSteps[i](argVisitings, possibleMethods, providers);
+
+                        i++;
+                    }
+                }
+            }
+
+
 
             // Visit remaining args
             var args = selectedMethod.GetInputArgs();
@@ -97,12 +128,6 @@
 
             providers.TypeKnowledgeRegistry.ExpectedType = null;
             providers.TypeKnowledgeRegistry.PossibleMethods = possibleMethods;
-        }
-
-        private void ApplyMethodGenerics(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings,
-            PossibleMethods possibleMethods, IProviders providers)
-        {
-            possibleMethods.ApplyMethodGenerics();
         }
 
         private void FilterOnNumberOfArgs(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
