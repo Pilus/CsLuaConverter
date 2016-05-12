@@ -142,7 +142,7 @@
 
                 var parameterType = parameterTypes[Math.Min(index, parameterTypes.Length - 1)];
 
-                if (isParams && index >= parameterTypes.Length)
+                if (isParams && index >= parameterTypes.Length - 1)
                 {
                     var paramType =
                         parameterType.GetInterface(typeof (IEnumerable<object>).Name).GetGenericArguments().Single();
@@ -286,7 +286,7 @@
                 var parameter = parameters[Math.Min(index, parameters.Length - 1)];
 
                 int? parScore = 0;
-                if (isParams && index >= parameters.Length)
+                if (isParams && index >= parameters.Length - 1)
                 {
                     var paramType = parameter.GetInterface(typeof(IEnumerable<object>).Name).GetGenericArguments().Single();
                     parScore = ScoreForHowWellOtherTypeFits(paramType, type);
