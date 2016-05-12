@@ -115,7 +115,15 @@
                 return;
             }
 
-            throw new NotImplementedException();
+            var methodParameterGenericTypes = methodParameterType.GetGenericArguments();
+            var inputGenericTypes = inputType.GetGenerics();
+
+            for (int index = 0; index < methodParameterGenericTypes.Length; index++)
+            {
+                var methodParameterGenericType = methodParameterGenericTypes[index];
+                var inputGenericType = inputGenericTypes[index];
+                this.ResolveImplicitMethodGenerics(methodParameterGenericType, inputGenericType);
+            }
         }
 
         public bool FitsArguments(Type[] types)
@@ -132,23 +140,62 @@
                     continue;
                 }
 
-                var parameter = parameterTypes[Math.Min(index, parameterTypes.Length - 1)];
+                var parameterType = parameterTypes[Math.Min(index, parameterTypes.Length - 1)];
 
                 if (isParams && index >= parameterTypes.Length)
                 {
                     var paramType =
-                        parameter.GetInterface(typeof (IEnumerable<object>).Name).GetGenericArguments().Single();
-                    if (!paramType.IsAssignableFrom(type))
+                        parameterType.GetInterface(typeof (IEnumerable<object>).Name).GetGenericArguments().Single();
+                    if (!InputTypeFitsParameterType(type, paramType))
                     {
                         return false;
                     }
                 }
                 else
                 {
-                    if (!parameter.IsAssignableFrom(type))
+                    if (!InputTypeFitsParameterType(type, parameterType))
                     {
                         return false;
                     }
+                }
+            }
+
+            return true;
+        }
+
+        private static bool InputTypeFitsParameterType(Type inputType, Type parameterType)
+        {
+            if (parameterType.IsAssignableFrom(inputType))
+            {
+                return true;
+            }
+
+            if (!parameterType.IsGenericParameter && !parameterType.IsGenericType && !inputType.IsGenericParameter)
+            {
+                return false;
+            }
+
+            if (parameterType.IsGenericParameter || inputType.IsGenericParameter)
+            {
+                return true;
+            }
+
+            if (!inputType.IsGenericType)
+            {
+                return false;
+            }
+
+            var parameterTypeGenerics = parameterType.GetGenericArguments();
+            var inputTypeGenerics = inputType.GetGenericArguments();
+
+            for (int index = 0; index < parameterTypeGenerics.Length; index++)
+            {
+                var parameterTypeGeneric = parameterTypeGenerics[index];
+                var inputTypeGeneric = inputTypeGenerics[index];
+
+                if (!InputTypeFitsParameterType(inputTypeGeneric, parameterTypeGeneric))
+                {
+                    return false;
                 }
             }
 
@@ -265,7 +312,7 @@
         {
             if (type.IsGenericParameter)
             {
-                throw new Exception("Cannot perform action on a generic type.");
+                return 1;
             }
 
             var c = 0;

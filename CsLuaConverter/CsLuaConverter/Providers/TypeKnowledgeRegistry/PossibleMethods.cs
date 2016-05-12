@@ -40,7 +40,7 @@
         {
             var methodsBefore = this.methods;
             var types = typeKnowledges.Select(tk => tk?.GetTypeObject()).ToArray();
-            this.methods = this.methods.GroupBy(m => m.GetScore(types) ?? 0).OrderBy(g => g.Key).First().ToArray();
+            this.methods = this.methods.GroupBy(m => m.GetScore(types) ?? int.MaxValue).OrderBy(g => g.Key).First().ToArray();
             this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
         }
 
