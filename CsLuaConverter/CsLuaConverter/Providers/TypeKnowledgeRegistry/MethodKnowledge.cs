@@ -5,7 +5,7 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     [DebuggerDisplay("MethodKnowledge: {method}")]
     public class MethodKnowledge : IKnowledge
@@ -258,7 +258,7 @@
 
         
 
-        private Type[] GetInputParameterTypes()
+        public Type[] GetInputParameterTypes()
         {
             if (this.method != null)
             {
@@ -332,6 +332,15 @@
             return type == otherType ? c : c + 1;
         }
 
+        public bool IsSignatureGenericDependent()
+        {
+            return this.GetInputParameterTypes().Any(HasGenericValue);
+        }
+
+        private static bool HasGenericValue(Type type)
+        {
+            return !type.IsGenericType ? type.IsGenericParameter : type.GetGenericArguments().Any(HasGenericValue);
+        }
 
         public bool FilterByNumberOfLambdaArgs(int?[] numOfArgs)
         {

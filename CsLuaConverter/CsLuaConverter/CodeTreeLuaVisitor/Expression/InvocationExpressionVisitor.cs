@@ -33,6 +33,18 @@
                 var method = providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow();
                 textWriter.Write($"_{method.GetNumberOfMethodGenerics()}");
 
+                if (!method.IsSignatureGenericDependent())
+                {
+                    textWriter.Write("_");
+                    method.WriteSignature(textWriter, providers);
+                }
+                else
+                {
+                    textWriter.Write("[");
+                    method.WriteSignature(textWriter, providers);
+                    textWriter.Write("]");
+                }
+
                 textWriter.Write(" % _M.DOT)");
 
                 textWriter.AppendTextWriter(argumentListWriter);

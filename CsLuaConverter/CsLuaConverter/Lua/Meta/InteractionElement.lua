@@ -75,6 +75,12 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             cachedMembers = _M.RTEF(memberProvider);
         end
 
+        local index, indexType, numGenerics, hash = string.split(key, "_");
+
+        if (indexType == "M") then
+            key = index;
+        end
+
         return where(cachedMembers[key] or {}, function(member)
             assert(member.memberType, "Member without member type in "..typeObject.FullName..". Key: "..key.." Level: "..tostring(member.level));
             local static = member.static;
