@@ -75,7 +75,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             cachedMembers = _M.RTEF(memberProvider);
         end
 
-        local index, indexType, numGenerics, hash = string.split(key, "_");
+        local index, indexType, numGenerics, hash = string.split("_", key);
 
         if (indexType == "M") then
             key = index;
