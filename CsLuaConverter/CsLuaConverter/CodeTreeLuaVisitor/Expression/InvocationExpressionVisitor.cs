@@ -25,27 +25,29 @@
 
             if (providers.TypeKnowledgeRegistry.PossibleMethods != null)
             {
-                textWriter.Write("_M");
-
                 var argumentListWriter = textWriter.CreateTextWriterAtSameIndent();
                 this.argumentList.Visit(argumentListWriter, providers);
 
                 var method = providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow();
-                textWriter.Write($"_{method.GetNumberOfMethodGenerics()}");
 
-                if (!method.IsSignatureGenericDependent())
+                if (!method.IsGetType())
                 {
-                    textWriter.Write("_");
-                    method.WriteSignature(textWriter, providers);
-                }
-                else
-                {
-                    textWriter.Write("[");
-                    method.WriteSignature(textWriter, providers);
-                    textWriter.Write("]");
-                }
+                    textWriter.Write($"_M_{method.GetNumberOfMethodGenerics()}");
 
-                providers.TypeKnowledgeRegistry.PossibleMethods.WriteMethodGenerics();
+                    if (!method.IsSignatureGenericDependent())
+                    {
+                        textWriter.Write("_");
+                        method.WriteSignature(textWriter, providers);
+                    }
+                    else
+                    {
+                        textWriter.Write("[");
+                        method.WriteSignature(textWriter, providers);
+                        textWriter.Write("]");
+                    }
+
+                    providers.TypeKnowledgeRegistry.PossibleMethods.WriteMethodGenerics();
+                }
 
                 textWriter.Write(" % _M.DOT)");
 

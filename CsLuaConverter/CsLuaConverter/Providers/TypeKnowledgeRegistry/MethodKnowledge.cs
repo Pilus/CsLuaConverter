@@ -382,5 +382,10 @@
 
             return type.BaseType?.BaseType != null ? GetDelegate(type.BaseType) : null;
         }
+
+        public bool IsGetType()
+        {
+            return this.method?.Name == "GetType" && this.method.DeclaringType == typeof (object);
+        }
     }
 }
