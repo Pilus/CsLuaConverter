@@ -75,10 +75,13 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             cachedMembers = _M.RTEF(memberProvider);
         end
 
-        local index, indexType, numGenerics, hash = string.split("_", key);
+        local indexType, numGenerics, hash;
 
-        if (indexType == "M") then
-            key = index;
+        local methodMetaIndex = type(key) == "string" and string.find(key, "_M_") or nil;
+        if (methodMetaIndex) then
+            local newKey = string.sub(key, 0, methodMetaIndex-1);
+            indexType, numGenerics, hash = string.split("_", string.sub(key, methodMetaIndex+1));
+            key = newKey;
         end
 
         return where(cachedMembers[key] or {}, function(member)
