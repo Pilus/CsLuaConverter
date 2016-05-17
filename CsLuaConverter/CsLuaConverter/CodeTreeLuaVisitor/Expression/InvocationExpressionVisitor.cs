@@ -45,6 +45,8 @@
                     textWriter.Write("]");
                 }
 
+                providers.TypeKnowledgeRegistry.PossibleMethods.WriteMethodGenerics();
+
                 textWriter.Write(" % _M.DOT)");
 
                 textWriter.AppendTextWriter(argumentListWriter);
