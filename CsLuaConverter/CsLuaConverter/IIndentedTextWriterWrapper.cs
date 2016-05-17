@@ -1,11 +1,9 @@
 ﻿namespace CsLuaConverter
 {
-    using System.IO;
-
     public interface IIndentedTextWriterWrapper
     {
         int Indent { get; set; }
-        TextWriter InnerWriter { get; }
+        string ToString();
         void Write(string value);
         void Write(string format, params object[] arg);
         void WriteLine(string value);

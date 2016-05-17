@@ -18,9 +18,9 @@
             set { this.writer.Indent = value; }
         }
 
-        public TextWriter InnerWriter
+        public override string ToString()
         {
-            get { return this.writer.InnerWriter; }
+            return this.writer.InnerWriter.ToString();
         }
 
         public void Write(string value)
@@ -50,7 +50,7 @@
 
         public void AppendTextWriter(IIndentedTextWriterWrapper otherWriter)
         {
-            this.Write(otherWriter.InnerWriter.ToString());
+            this.Write(otherWriter.ToString());
         }
 
         public void WriteLine()
