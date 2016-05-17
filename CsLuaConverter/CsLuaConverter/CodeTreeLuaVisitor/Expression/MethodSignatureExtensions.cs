@@ -14,7 +14,7 @@
         public static void WriteSignature(this MethodKnowledge method, IIndentedTextWriterWrapper textWriter,
             IProviders providers)
         {
-            var components = GetSignatureComponents(method);
+            var components = GetSignatureComponents(method, providers);
             var nonGenericHash = components.Where(c => c.GenericReference == null).Sum(c => c.Coefficient*c.SignatureHash);
             var genericComponents = components.Where(c => c.GenericReference != null).ToArray();
 
@@ -63,24 +63,31 @@
             return value;
         }
 
-        private static SignatureComponent[] GetSignatureComponents(MethodKnowledge method)
+        private static SignatureComponent[] GetSignatureComponents(MethodKnowledge method, IProviders providers)
         {
             var list = new List<SignatureComponent>();
             var inputTypes = method.GetInputParameterTypes();
             for (var i = 0; i < inputTypes.Length; i++)
             {
                 var inputType = inputTypes[i];
-                AddSignatureComponents(primes[i], inputType, list);
+                AddSignatureComponents(primes[i], inputType, list, providers);
             }
 
             return list.ToArray();
         }
 
-        private static void AddSignatureComponents(int coefficient, Type type, List<SignatureComponent> components)
+        private static void AddSignatureComponents(int coefficient, Type type, List<SignatureComponent> components, IProviders providers)
         {
             if (type.IsGenericParameter)
             {
-                components.Add(new SignatureComponent(coefficient, type.Name));
+                if (providers.GenericsRegistry.IsGeneric(type.Name))
+                { 
+                    components.Add(new SignatureComponent(coefficient, type.Name));
+                }
+                else
+                {
+                    components.Add(new SignatureComponent(coefficient, 1));
+                }
             }
             else if (type.IsGenericType)
             {
@@ -90,7 +97,7 @@
 
                 for (var i = 0; i < generics.Length; i++)
                 {
-                    AddSignatureComponents(subCoefficient*primes[i], generics[i], components);
+                    AddSignatureComponents(subCoefficient*primes[i], generics[i], components, providers);
                 }
             }
             else

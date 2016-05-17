@@ -170,7 +170,7 @@
 
                 providers.TypeKnowledgeRegistry.CurrentType = null;
                 providers.TypeKnowledgeRegistry.ExpectedType = null;
-                var argTextWriter = new IndentedTextWriterWrapper(new IndentedTextWriter(new StringWriter()));
+                var argTextWriter = new IndentedTextWriterWrapper(new StringWriter());
                 argumentVisitor.Visit(argTextWriter, providers);
                 var type = providers.TypeKnowledgeRegistry.CurrentType;
                 argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter,

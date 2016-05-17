@@ -34,7 +34,7 @@
                 {
                     textWriter.Write($"_M_{method.GetNumberOfMethodGenerics()}");
 
-                    if (!method.IsSignatureGenericDependent())
+                    if (!method.IsSignatureGenericDependent(providers))
                     {
                         textWriter.Write("_");
                         method.WriteSignature(textWriter, providers);

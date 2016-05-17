@@ -332,14 +332,14 @@
             return type == otherType ? c : c + 1;
         }
 
-        public bool IsSignatureGenericDependent()
+        public bool IsSignatureGenericDependent(IProviders providers)
         {
-            return this.GetInputParameterTypes().Any(HasGenericValue);
+            return this.GetInputParameterTypes().Any(t => HasGenericValue(t, providers));
         }
 
-        private static bool HasGenericValue(Type type)
+        private static bool HasGenericValue(Type type, IProviders providers)
         {
-            return !type.IsGenericType ? type.IsGenericParameter : type.GetGenericArguments().Any(HasGenericValue);
+            return !type.IsGenericType ? (type.IsGenericParameter && providers.GenericsRegistry.IsGeneric(type.Name)) : type.GetGenericArguments().Any(t => HasGenericValue(t, providers));
         }
 
         public bool FilterByNumberOfLambdaArgs(int?[] numOfArgs)

@@ -7,7 +7,7 @@
     {
         private readonly IndentedTextWriter writer;
 
-        public IndentedTextWriterWrapper(TextWriter innerWriter)
+        public IndentedTextWriterWrapper(StringWriter innerWriter)
         {
             this.writer = new IndentedTextWriter(innerWriter);
         }
