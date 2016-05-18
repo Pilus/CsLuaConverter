@@ -19,6 +19,7 @@
         scope = 'Public',
         static = true,
         types = {System.String.__typeof},
+        numMethodGenerics = 0,
         func = function(_, lua)
             local func, err = loadstring(lua);
             return func();

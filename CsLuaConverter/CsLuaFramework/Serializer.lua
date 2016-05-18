@@ -49,6 +49,7 @@
         memberType = 'Method',
         scope = 'Public',
         static = false,
+        numMethodGenerics = 1,
         types = {System.Object.__typeof},
         func = function(_, obj)
             return replaceTypeRefs(obj);
@@ -60,6 +61,7 @@
         memberType = 'Method',
         scope = 'Public',
         static = false,
+        numMethodGenerics = 1,
         types = {System.Object.__typeof},
         func = function(_, obj)
             return replaceHashsWithTypes(obj);

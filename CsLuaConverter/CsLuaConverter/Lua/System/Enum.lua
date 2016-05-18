@@ -7,6 +7,7 @@
         memberType = 'Method',
         scope = 'Public',
         static = true,
+        numMethodGenerics = 0,
         types = {System.Type.__typeof, System.String.__typeof},
         func = function(staticValues, typeObj, str)
             for _,v in pairs(typeObj.interactionElement) do

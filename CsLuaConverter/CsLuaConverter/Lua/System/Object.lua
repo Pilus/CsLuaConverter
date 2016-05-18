@@ -11,6 +11,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = {typeObject},
+        numMethodGenerics = 0,
         func = function(element, obj)
             return element == obj;
         end,
@@ -21,6 +22,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = {},
+        numMethodGenerics = 0,
         func = function(element)
             if type(element) == "table" then
                 return ((element %_M.DOT).GetType() %_M).FullName;

@@ -15,6 +15,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = inputGenerics,
+        numMethodGenerics = 0,
         func = function(element,...)
             return (element[typeObject.level].innerAction % _M.DOT)(...);
         end,

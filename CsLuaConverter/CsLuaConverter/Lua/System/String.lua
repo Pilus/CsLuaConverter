@@ -7,6 +7,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = {typeObject},
+        numMethodGenerics = 0,
         func = function(element, delimiter)
             local t = {string.split(delimiter, element)};
             t[0] = t[1];
@@ -20,6 +21,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = {typeObject},
+        numMethodGenerics = 0,
         func = function(element, str)
             return not(string.find(element, str) == nil)
         end,
@@ -30,6 +32,7 @@
         memberType = 'Property',
         scope = 'Public',
         types = {},
+        numMethodGenerics = 0,
         get = function(element)
             return string.len(element);
         end,
@@ -41,6 +44,7 @@
         scope = 'Public',
         static = true,
         types = {typeObject},
+        numMethodGenerics = 0,
         func = function(_, str)
             return str == nil or str == "";
         end,

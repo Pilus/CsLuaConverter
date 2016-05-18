@@ -10,6 +10,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = generics,
+        numMethodGenerics = 0,
         returnType = System.Boolean.__typeof,
         func = function(element,...)
             return (element[typeObject.level].innerAction % _M.DOT)(...);

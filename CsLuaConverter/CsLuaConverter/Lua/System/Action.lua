@@ -12,6 +12,7 @@ System.Action = _M.NE({["#"] = function(interactionElement, generics, staticValu
         memberType = 'Method',
         scope = 'Public',
         types = generics,
+        numMethodGenerics = 0,
         func = function(element,...)
             (element[typeObject.level].innerAction % _M.DOT)(...);
         end,

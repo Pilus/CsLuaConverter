@@ -14,6 +14,7 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
         static = false,
         types = {System.String.__typeof},
         generics = methodGenericsMapping,
+        numMethodGenerics = 1,
         func = function(element,methodGenericsMapping,methodGenerics,globalVarName)
             return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics](_G[globalVarName]);
         end,
@@ -24,6 +25,7 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
         memberType = 'Method',
         scope = 'Public',
         static = false,
+        numMethodGenerics = 1,
         types = {System.String.__typeof, System.Func[{Lua.NativeLuaTable.__typeof, System.Type.__typeof}].__typeof},
         generics = methodGenericsMapping,
         func = function(element,methodGenericsMapping,methodGenerics, globalVarName, typeTranslator)
@@ -38,6 +40,7 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
         static = false,
         types = {Lua.NativeLuaTable.__typeof},
         generics = methodGenericsMapping,
+        numMethodGenerics = 1,
         func = function(element,methodGenericsMapping,methodGenerics,value)
             return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics](value);
         end,
@@ -48,6 +51,7 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
         memberType = 'Method',
         scope = 'Public',
         static = false,
+        numMethodGenerics = 1,
         types = {Lua.NativeLuaTable.__typeof, System.Func[{Lua.NativeLuaTable.__typeof, System.Type.__typeof}].__typeof},
         generics = methodGenericsMapping,
         func = function(element,methodGenericsMapping,methodGenerics,value, typeTranslator)

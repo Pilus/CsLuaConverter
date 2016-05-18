@@ -35,6 +35,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = {},
+        numMethodGenerics = 0,
         func = function(element)
             local ith, t, s = pairs(element[2]);
             return function(_, prevKey)
@@ -53,6 +54,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = {generics[1], generics[2]},
+        numMethodGenerics = 0,
         func = function(element, key, value)
             element[2][key] = value;
         end,
@@ -104,6 +106,7 @@ System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElem
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {},
         func = function(element)
             return pairs(element[2]);
@@ -147,6 +150,7 @@ System.Collections.Generic.ValueCollection = _M.NE({[2] = function(interactionEl
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {},
         func = function(element)
             return pairs(element[2]);

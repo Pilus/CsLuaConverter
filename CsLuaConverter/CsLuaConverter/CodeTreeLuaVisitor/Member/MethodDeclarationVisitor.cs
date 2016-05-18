@@ -70,6 +70,7 @@
             textWriter.WriteLine("memberType = 'Method',");
             textWriter.WriteLine("scope = '{0}',", this.scope);
             textWriter.WriteLine("static = {0},", this.isStatic.ToString().ToLower());
+            textWriter.WriteLine("numMethodGenerics = {0},", this.methodGenerics?.GetNumElements() ?? 0);
 
             if (this.isOverride)
             {

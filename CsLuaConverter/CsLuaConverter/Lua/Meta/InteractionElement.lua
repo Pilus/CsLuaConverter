@@ -75,7 +75,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         if (methodMetaIndex) then
             local newKey = string.sub(key, 0, methodMetaIndex-1);
             local indexType, numGenerics, hash = string.split("_", string.sub(key, methodMetaIndex+1));
-            return newKey, indexType, numGenerics, hash;
+            return newKey, indexType, tonumber(numGenerics), hash;
         end
 
         return key;
@@ -99,11 +99,12 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             local typeLevel = typeObject.level;
 
             return (not(staticOnly) or static) and
-            (
-                (levelProvided and memberLevel <= level) or
-                (not(levelProvided) and (public or protected) and memberLevel <= typeLevel) or
-                (not(levelProvided) and not(public or protected) and memberLevel == typeLevel)
-            );
+                (numGenerics == nil or numGenerics == member.numMethodGenerics) and
+                (
+                    (levelProvided and memberLevel <= level) or
+                    (not(levelProvided) and (public or protected) and memberLevel <= typeLevel) or
+                    (not(levelProvided) and not(public or protected) and memberLevel == typeLevel)
+                );
         end);
     end
 

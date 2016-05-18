@@ -48,6 +48,7 @@ end,
         memberType = 'Method',
         scope = 'Public',
         types = {},
+        numMethodGenerics = 0,
         func = function(element)
             return function(_, prevKey) 
                 local key;

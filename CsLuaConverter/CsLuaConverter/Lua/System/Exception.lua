@@ -15,6 +15,7 @@ System.Exception = _M.NE({[0] = function(interactionElement, generics, staticVal
         memberType = 'Method',
         scope = 'Public',
         types = {typeObject},
+        numMethodGenerics = 0,
         func = function(element)
             return (element % _M.DOT).Message;
         end,

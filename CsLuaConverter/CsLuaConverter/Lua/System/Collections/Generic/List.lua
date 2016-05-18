@@ -20,6 +20,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {System.Action[{generics[1]}].__typeof},
         func = function(element,action)
             for i = 0,getCount(element)-1 do
@@ -33,6 +34,7 @@
         memberType = 'Property',
         scope = 'Public',
         types = {},
+        numMethodGenerics = 0,
         get = function(element)
             return getCount(element);
         end,
@@ -43,6 +45,7 @@
         memberType = 'Property',
         scope = 'Public',
         types = {},
+        numMethodGenerics = 0,
         get = function(element)
             local c = getCount(element);
             return c == 0 and c or math.max(4, c);
@@ -84,6 +87,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = {generics[1]},
+        numMethodGenerics = 0,
         func = function(element,value)
             local c = getCount(element);
             element[typeObject.level][c] = value;
@@ -96,6 +100,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = {System.Collections.Generic.IEnumerable[generics].__typeof},
+        numMethodGenerics = 0,
         func = function(element,value)
             local c = getCount(element);
             for _,v in (value  % _M.DOT).GetEnumerator() do
@@ -110,6 +115,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = {},
+        numMethodGenerics = 0,
         func = function(element)
             return function(_, prevKey) 
                 local key;
@@ -172,6 +178,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {},
         func = function(element)
             element[typeObject.level] = {};
@@ -182,6 +189,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {generics[1]},
         func = function(element,value)
             for i = 0,getCount(element)-1 do
@@ -197,6 +205,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {System.Predicate[generics].__typeof},
         func = function(element,f)
             for i = 0,getCount(element)-1 do
@@ -212,6 +221,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {System.Predicate[generics].__typeof},
         func = function(element,f)
             for i = 0,getCount(element)-1 do
@@ -227,6 +237,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {System.Predicate[generics].__typeof},
         func = function(element,f)
             for i = getCount(element)-1,0,-1 do
@@ -242,6 +253,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {System.Predicate[generics].__typeof},
         func = function(element,f)
             for i = getCount(element)-1,0,-1 do
@@ -257,6 +269,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {System.Predicate[generics].__typeof},
         func = function(element,f)
             local list = System.Collections.Generic.List[generics]();
@@ -274,6 +287,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {generics[1]},
         func = function(element,value)
             for i = 0,getCount(element)-1 do
@@ -290,6 +304,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {generics[1]},
         func = function(element,value)
             for i = getCount(element)-1,0,-1 do
@@ -305,6 +320,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {System.Int.__typeof, generics[1]},
         func = function(element,index,value)
             for i = getCount(element)-1,index,-1 do
@@ -318,6 +334,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {System.Int.__typeof, System.Int.__typeof},
         func = function(element, start, num)
             local list = System.Collections.Generic.List[generics]();
@@ -332,6 +349,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {System.Int.__typeof, System.Collections.Generic.IEnumerable[generics].__typeof},
         func = function(element,start, value)
             local count = 0;
@@ -355,6 +373,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {generics[1]},
         func = function(element, obj)
             local index = (element % _M.DOT).IndexOf(obj);
@@ -373,6 +392,7 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {System.Int.__typeof, System.Int.__typeof},
         func = function(element, start, num)
             local count = getCount(element);
