@@ -70,19 +70,24 @@ local InteractionElement = function(metaProvider, generics, selfObj)
 
     local cachedMembers = nil;
 
+    local filterMethodSignature = function(key)
+        local methodMetaIndex = type(key) == "string" and string.find(key, "_M_") or nil;
+        if (methodMetaIndex) then
+            local newKey = string.sub(key, 0, methodMetaIndex-1);
+            local indexType, numGenerics, hash = string.split("_", string.sub(key, methodMetaIndex+1));
+            return newKey, indexType, numGenerics, hash;
+        end
+
+        return key;
+    end
+
     local getMembers = function(key, level, staticOnly)
         if not(cachedMembers) then
             cachedMembers = _M.RTEF(memberProvider);
         end
 
         local indexType, numGenerics, hash;
-
-        local methodMetaIndex = type(key) == "string" and string.find(key, "_M_") or nil;
-        if (methodMetaIndex) then
-            local newKey = string.sub(key, 0, methodMetaIndex-1);
-            indexType, numGenerics, hash = string.split("_", string.sub(key, methodMetaIndex+1));
-            key = newKey;
-        end
+        key, indexType, numGenerics, hash = filterMethodSignature(key);
 
         return where(cachedMembers[key] or {}, function(member)
             assert(member.memberType, "Member without member type in "..typeObject.FullName..". Key: "..key.." Level: "..tostring(member.level));
@@ -120,6 +125,9 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         if (extensions == nil) then
             extensions = getExtensions();
         end
+
+        local indexType, numGenerics, hash;
+        key, indexType, numGenerics, hash = filterMethodSignature(key);
 
         return where(extensions, function(ext) return ext.name == key; end);
     end
