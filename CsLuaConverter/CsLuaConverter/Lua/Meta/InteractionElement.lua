@@ -100,6 +100,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
 
             return (not(staticOnly) or static) and
                 (numGenerics == nil or numGenerics == member.numMethodGenerics) and
+                --(hash == nil or hash == member.signatureHash) and
                 (
                     (levelProvided and memberLevel <= level) or
                     (not(levelProvided) and (public or protected) and memberLevel <= typeLevel) or

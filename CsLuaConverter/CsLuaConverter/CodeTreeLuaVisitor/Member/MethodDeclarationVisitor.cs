@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using CodeTree;
+    using Expression;
     using Filters;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
@@ -71,6 +72,10 @@
             textWriter.WriteLine("scope = '{0}',", this.scope);
             textWriter.WriteLine("static = {0},", this.isStatic.ToString().ToLower());
             textWriter.WriteLine("numMethodGenerics = {0},", this.methodGenerics?.GetNumElements() ?? 0);
+            //textWriter.Write("signatureHash = ");
+            //this.parameters.GetTypes(providers).WriteSignature(textWriter, providers);
+            //textWriter.WriteLine(",");
+
 
             if (this.isOverride)
             {

@@ -258,7 +258,7 @@
 
         
 
-        public Type[] GetInputParameterTypes()
+        private Type[] GetInputParameterTypes()
         {
             if (this.method != null)
             {
@@ -266,6 +266,16 @@
             }
 
             return this.inputTypes;
+        }
+
+        public TypeKnowledge[] GetInputParameterTypeKnowledge()
+        {
+            if (this.method != null)
+            {
+                return this.method.GetParameters().Select(p => p.ParameterType).Select(t => new TypeKnowledge(t)).ToArray();
+            }
+
+            return this.inputTypes.Select(t => new TypeKnowledge(t)).ToArray();
         }
 
         public int? GetScore(Type[] types)

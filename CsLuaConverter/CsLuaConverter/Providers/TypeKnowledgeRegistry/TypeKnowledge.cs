@@ -14,6 +14,7 @@
         public static IProviders Providers;
         private readonly Type type;
         private readonly bool restrictToStatic;
+        private readonly string genericName;
 
         public TypeKnowledge(Type type, bool restrictToStatic = false)
         {
@@ -24,7 +25,7 @@
             var genericType = Providers.GenericsRegistry.GetGenericType(this.type.Name);
             if (genericType == null)
             {
-                throw new Exception($"Could not find generic type for {this.type.Name}.");
+                return;
             }
 
             this.type = genericType;
@@ -41,13 +42,26 @@
             }
         }
 
+        public TypeKnowledge(string genericName)
+        {
+            this.genericName = genericName;
+        }
+
         public bool IsParams { get; set; }
         public Type[] MethodGenerics { get; private set; }
 
+        public string Name => this.type?.Name ?? this.genericName;
+
+        public bool IsGenericParameter => this.type?.IsGenericParameter ?? !string.IsNullOrEmpty(this.genericName);
+
+        public bool IsGenericType => this.type?.IsGenericType ?? false;
+
         public IKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)
         {
-            var members = this.GetMembers(str);
-            var extensions = providers.TypeProvider.GetExtensionMethods(this.type, str);
+            var type = this.type ?? providers.GenericsRegistry.GetGenericType(this.genericName);
+
+            var members = GetMembers(type, this.restrictToStatic, str);
+            var extensions = providers.TypeProvider.GetExtensionMethods(type, str);
             var membersIncludingExtensions = new []{ members, extensions}.SelectMany(v => v).ToArray();
             
             if (!membersIncludingExtensions.Any())
@@ -154,9 +168,9 @@
             return this.type;
         }
 
-        private IKnowledge[] GetMembers(string name)
+        private static IKnowledge[] GetMembers(Type type, bool restrictToStatic, string name)
         {
-            var members = GetMembersOfType(this.type).Distinct().Where(e => e.Name == name && (this.restrictToStatic == false || IsMemberStatic(e)));
+            var members = GetMembersOfType(type).Distinct().Where(e => e.Name == name && (restrictToStatic == false || IsMemberStatic(e)));
 
             return members.Select<MemberInfo, IKnowledge>(m =>
             {
