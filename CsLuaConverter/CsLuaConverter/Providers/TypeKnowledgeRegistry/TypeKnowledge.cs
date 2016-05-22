@@ -50,7 +50,7 @@
         public bool IsParams { get; set; }
         public Type[] MethodGenerics { get; private set; }
 
-        public string Name => this.type?.Name ?? this.genericName;
+        public string Name => this.type?.Name.Split('`').First() ?? this.genericName;
 
         public bool IsGenericParameter => this.type?.IsGenericParameter ?? !string.IsNullOrEmpty(this.genericName);
 

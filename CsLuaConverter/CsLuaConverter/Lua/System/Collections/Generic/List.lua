@@ -21,6 +21,7 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
+        signatureHash = 2*1430*2*generics[1].signatureHash,
         types = {System.Action[{generics[1]}].__typeof},
         func = function(element,action)
             for i = 0,getCount(element)-1 do
@@ -35,6 +36,7 @@
         scope = 'Public',
         types = {},
         numMethodGenerics = 0,
+        signatureHash = 0,
         get = function(element)
             return getCount(element);
         end,

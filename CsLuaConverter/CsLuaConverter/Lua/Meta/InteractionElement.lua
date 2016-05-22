@@ -75,7 +75,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         if (methodMetaIndex) then
             local newKey = string.sub(key, 0, methodMetaIndex-1);
             local indexType, numGenerics, hash = string.split("_", string.sub(key, methodMetaIndex+1));
-            return newKey, indexType, tonumber(numGenerics), hash;
+            return newKey, indexType, tonumber(numGenerics), tonumber(hash);
         end
 
         return key;
@@ -100,7 +100,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
 
             return (not(staticOnly) or static) and
                 (numGenerics == nil or numGenerics == member.numMethodGenerics) and
-                --(hash == nil or hash == member.signatureHash) and
+                (hash == nil or hash == member.signatureHash) and
                 (
                     (levelProvided and memberLevel <= level) or
                     (not(levelProvided) and (public or protected) and memberLevel <= typeLevel) or
@@ -241,6 +241,8 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         for i=1,#(fittingMembers) do
             assert(type(fittingMembers[i].memberType) == "string", "Missing member type on member. Object: "..typeObject.FullName..". Key: "..tostring(key).." Level: "..tostring(level).." Member #: "..tostring(i))
         end
+
+        expectOneMember(fittingMembers, key);
 
         if fittingMembers[1].memberType == "Field" or fittingMembers[1].memberType == "AutoProperty" then
             expectOneMember(fittingMembers, key);
