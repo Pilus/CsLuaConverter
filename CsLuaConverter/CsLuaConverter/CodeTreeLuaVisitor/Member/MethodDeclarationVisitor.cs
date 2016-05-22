@@ -60,7 +60,7 @@
                 foreach (var genericName in this.methodGenerics.GetNames())
                 {
                     // TODO: Determine the correct object type for the generic.
-                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Method, typeof(object));
+                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.MethodDeclaration, typeof(object));
                 }
             }
 
@@ -72,9 +72,9 @@
             textWriter.WriteLine("scope = '{0}',", this.scope);
             textWriter.WriteLine("static = {0},", this.isStatic.ToString().ToLower());
             textWriter.WriteLine("numMethodGenerics = {0},", this.methodGenerics?.GetNumElements() ?? 0);
-            //textWriter.Write("signatureHash = ");
-            //this.parameters.GetTypes(providers).WriteSignature(textWriter, providers);
-            //textWriter.WriteLine(",");
+            textWriter.Write("signatureHash = ");
+            this.parameters.GetTypes(providers).WriteSignature(textWriter, providers);
+            textWriter.WriteLine(",");
 
 
             if (this.isOverride)
@@ -103,6 +103,16 @@
                 textWriter.WriteLine("generics = methodGenericsMapping,");
             }
 
+            if (this.methodGenerics != null)
+            {
+                providers.GenericsRegistry.ClearScope(GenericScope.MethodDeclaration);
+
+                foreach (var genericName in this.methodGenerics.GetNames())
+                {
+                    // TODO: Determine the correct object type for the generic.
+                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Method, typeof(object));
+                }
+            }
 
             if (this.block != null)
             { 

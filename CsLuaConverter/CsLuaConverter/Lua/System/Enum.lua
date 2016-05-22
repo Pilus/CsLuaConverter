@@ -1,6 +1,6 @@
 ﻿System.Enum = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Enum','System',baseTypeObject,0,nil,nil,interactionElement);
+    local typeObject = System.Type('Enum','System',baseTypeObject,0,nil,nil,interactionElement,'Class',763);
 
     _M.IM(members,'Parse',{
         level = typeObject.Level,

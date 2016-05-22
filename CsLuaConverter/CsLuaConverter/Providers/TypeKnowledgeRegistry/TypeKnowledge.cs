@@ -155,7 +155,7 @@
                 return new [] { new TypeKnowledge( this.type.GetElementType()) };
             }
 
-            return this.type.GetGenericArguments().Select(t => !t.IsGenericParameter || Providers.GenericsRegistry.IsGeneric(t.Name) ?  new TypeKnowledge(t) : null).ToArray();
+            return this.type.GetGenericArguments().Select(t => !t.IsGenericParameter || Providers.GenericsRegistry.IsGeneric(t.Name) ?  new TypeKnowledge(t) : new TypeKnowledge(t.Name)).ToArray();
         }
 
         public TypeKnowledge CreateWithGenerics(TypeKnowledge[] generics)

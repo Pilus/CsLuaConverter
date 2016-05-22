@@ -3,11 +3,13 @@
     using System.Linq;
     using Attribute;
     using CodeTree;
+    using Expression;
     using Filters;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
     using Providers.GenericsRegistry;
+    using Providers.TypeKnowledgeRegistry;
 
     public class InterfaceDeclarationVisitor : BaseVisitor, IElementVisitor
     {
@@ -77,9 +79,11 @@
 
             var typeObject = providers.TypeProvider.LookupType(this.name);
 
-            textWriter.WriteLine(
-                "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Interface');",
+            textWriter.Write(
+                "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Interface',",
                 typeObject.Name, typeObject.Namespace, this.GetNumOfGenerics());
+            new TypeKnowledge(typeObject.TypeObject).WriteSignature(textWriter, providers);
+            textWriter.WriteLine(");");
 
             this.WriteImplements(textWriter, providers);
             this.WriteAttributes(textWriter, providers);

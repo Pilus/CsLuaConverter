@@ -142,7 +142,7 @@ end
 local typeCache = {};
 
 
-local typeCall = function(name, namespace, baseType, numberOfGenerics, generics, implements, interactionElement, catagory)
+local typeCall = function(name, namespace, baseType, numberOfGenerics, generics, implements, interactionElement, catagory, signatureHash)
     assert(interactionElement, "Type cannot be created without an interactionElement.");
 
     catagory = catagory or "Class";
@@ -166,6 +166,7 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
     self.implements = implements;
     self.interactionElement = interactionElement;
     self.interactionElement.__typeof = self;
+    self.signatureHash = signatureHash;
     
     
     setmetatable(self, meta);
@@ -178,7 +179,7 @@ GetTypeFromHash = function(hash)
 end
 
 --objectType = typeCall("Object", "System"); -- TODO: Initialize in a way that does not require the type cache
-typeType = typeCall("Type", "System", nil, 0, nil, nil, {});
+typeType = typeCall("Type", "System", nil, 0, nil, nil, {}, 'Class', 707);
 
 local meta = {
     __typeof = typeType,

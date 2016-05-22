@@ -5,5 +5,6 @@
         Class,
         Method,
         Invocation,
+        MethodDeclaration,
     }
 }

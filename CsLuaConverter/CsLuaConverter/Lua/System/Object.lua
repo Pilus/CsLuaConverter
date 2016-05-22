@@ -1,5 +1,5 @@
 ﻿System.Object = _M.NE({[0] = function(interactionElement, generics, staticValues)
-    local typeObject = System.Type('Object','System',nil,0,nil,nil,interactionElement);
+    local typeObject = System.Type('Object','System',nil,0,nil,nil,interactionElement,'Class',1508);
     local members = {
         {
             -- Note: GetType is implemented as a shortcut inside DOT, to avoid additional looks through AM.

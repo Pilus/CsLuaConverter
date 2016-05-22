@@ -2,7 +2,7 @@
     local implements = {
     };
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('KeyValuePair','System.Collections.Generic',baseTypeObject,2,generics,implements,interactionElement);
+    local typeObject = System.Type('KeyValuePair','System.Collections.Generic',baseTypeObject,2,generics,implements,interactionElement,'Class', 4218);
     
     _M.IM(members,'Key',{
         level = typeObject.Level,

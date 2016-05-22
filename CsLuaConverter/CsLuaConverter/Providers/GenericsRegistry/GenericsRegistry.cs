@@ -12,6 +12,7 @@ namespace CsLuaConverter.Providers.GenericsRegistry
             { GenericScope.Class, new List<Tuple<string, Type>>() },
             { GenericScope.Method, new List<Tuple<string, Type>>() },
             { GenericScope.Invocation, new List<Tuple<string, Type>>() },
+            { GenericScope.MethodDeclaration, new List<Tuple<string, Type>>() },
         };
 
         public void SetGenerics(string name, GenericScope scope, Type type = null)

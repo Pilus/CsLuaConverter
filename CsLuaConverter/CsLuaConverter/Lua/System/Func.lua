@@ -1,5 +1,5 @@
 ﻿System.Func = _M.NE({["#"] = function(interactionElement, generics, staticValues)
-    local typeObject = System.Type('Func','System',System.Object.__typeof,#(generics),generics,nil,interactionElement);
+    local typeObject = System.Type('Func','System',System.Object.__typeof,#(generics),generics,nil,interactionElement,'Class',693);
     local level = 2;
     local members = {
         

@@ -5,6 +5,7 @@
     using Attribute;
     using CodeTree;
     using CsLuaFramework;
+    using Expression;
     using Filters;
     using Lists;
     using Member;
@@ -148,9 +149,11 @@
         private void WriteTypeGeneration(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var typeObject = providers.TypeProvider.LookupType(this.name);
-            textWriter.WriteLine(
-                "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement);",
+            textWriter.Write(
+                "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Class', ",
                 typeObject.Name, typeObject.Namespace, this.genericsVisitor?.GetNumElements() ?? 0);
+            new TypeKnowledge(typeObject.TypeObject).WriteSignature(textWriter, providers);
+            textWriter.WriteLine(");");
         }
 
         private void WriteBaseInheritance(IIndentedTextWriterWrapper textWriter, IProviders providers)
