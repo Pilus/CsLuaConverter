@@ -5,5 +5,6 @@
     public abstract class CodeTreeNode
     {
         public SyntaxKind Kind;
+        public abstract CodeTreeNode Clone();
     }
 }

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
+    using Microsoft.CodeAnalysis.CSharp;
     using Providers;
 
     public class CodeTreeVisitor
@@ -17,6 +18,7 @@
 
         public Dictionary<string, Action<IIndentedTextWriterWrapper>> CreateNamespaceBasedVisitorActions(CodeTreeBranch[] treeRoots)
         {
+            treeRoots = treeRoots.SelectMany(SeperateCodeElements).ToArray();
             var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree)).ToArray();
             BaseVisitor.LockVisitorCreation = true;
 
@@ -71,6 +73,68 @@
                     compilationUnitVisitor.WriteFooter(textWriter, this.providers);
                 }
             }));
+        }
+
+        private static CodeTreeBranch[] SeperateCodeElements(CodeTreeBranch tree)
+        {
+            var numElements = CountNumOfElements(tree);
+
+            if (numElements < 2)
+            {
+                return new []{ tree };
+            }
+
+            var newTrees = new List<CodeTreeBranch>();
+
+            for (var i = 0; i < numElements; i++)
+            {
+                var clone = (CodeTreeBranch)tree.Clone();
+                FilterElements(clone, i);
+                newTrees.Add(clone);
+            }
+
+            return newTrees.ToArray();
+        }
+
+        private static bool IsCodeElement(CodeTreeNode t)
+        {
+            return t.Kind == SyntaxKind.ClassDeclaration || t.Kind == SyntaxKind.InterfaceDeclaration ||
+            t.Kind == SyntaxKind.EnumDeclaration || t.Kind == SyntaxKind.StructDeclaration;
+        }
+
+        private static void FilterElements(CodeTreeBranch branch, int indexToKeep)
+        {
+            switch (branch.Kind)
+            {
+                case SyntaxKind.CompilationUnit:
+                    branch.Nodes.OfType<CodeTreeBranch>()
+                            .Where(t => t.Kind == SyntaxKind.NamespaceDeclaration)
+                            .ToList().ForEach(ns => FilterElements(ns, indexToKeep));
+                    break;
+                case SyntaxKind.NamespaceDeclaration:
+                    var elementToKeep = branch.Nodes.OfType<CodeTreeBranch>().Where(IsCodeElement).Skip(indexToKeep).First();
+                    branch.Nodes =
+                        branch.Nodes.Where(n => n is CodeTreeLeaf || !IsCodeElement(n) || n == elementToKeep).ToArray();
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private static int CountNumOfElements(CodeTreeBranch tree)
+        {
+            switch (tree.Kind)
+            {
+                case SyntaxKind.CompilationUnit:
+                    return
+                        tree.Nodes.OfType<CodeTreeBranch>()
+                            .Where(t => t.Kind == SyntaxKind.NamespaceDeclaration)
+                            .Sum(CountNumOfElements);
+                case SyntaxKind.NamespaceDeclaration:
+                    return tree.Nodes.OfType<CodeTreeBranch>().Count(IsCodeElement);
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         private void VisitFilesWithSameElementName(CompilationUnitVisitor[] visitors, IIndentedTextWriterWrapper textWriter)
