@@ -23,6 +23,7 @@
         scope = 'Public',
         types = {},
         numMethodGenerics = 0,
+        signatureHash = 0,
         func = function(element)
             if type(element) == "table" then
                 return ((element %_M.DOT).GetType() %_M).FullName;

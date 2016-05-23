@@ -16,6 +16,8 @@ System.Exception = _M.NE({[0] = function(interactionElement, generics, staticVal
         scope = 'Public',
         types = {typeObject},
         numMethodGenerics = 0,
+        signatureHash = 0,
+        override = true,
         func = function(element)
             return (element % _M.DOT).Message;
         end,

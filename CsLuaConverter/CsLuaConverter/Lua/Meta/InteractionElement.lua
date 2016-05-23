@@ -177,34 +177,22 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         
         fittingMembers = orderByLevel(fittingMembers);
 
-        local skippedMembers = {};
-        local acceptedMembers = {};
+        local result = {};
 
         for i,member in ipairs(fittingMembers) do
-            if not(acceptedMembers[i]) and not(skippedMembers[i]) then
-                acceptedMembers[i] = true;
-                if member.override then
-                    for j,otherMember in ipairs(fittingMembers) do
-                        if not(j == i) and matchesAll(member.types, otherMember.types) then
-                            if member.level > otherMember.level then
-                                acceptedMembers[i] = true;
-                                skippedMembers[j] = true;
-                                acceptedMembers[j] = false;
-                            else
-                                acceptedMembers[j] = true;
-                                skippedMembers[i] = true;
-                                acceptedMembers[i] = false;
-                            end
-                        end
-                    end
+            local accepted = true;
+            for j,otherMember in ipairs(fittingMembers) do
+                if not(i == j) and
+                    member.signatureHash == otherMember.signatureHash and
+                    member.numMethodGenerics == otherMember.numMethodGenerics and
+                    member.level < otherMember.level
+                then
+                    accepted = false;
                 end
             end
-        end
 
-        local result = {};
-        for i,v in pairs(acceptedMembers) do
-            if v then
-                table.insert(result, fittingMembers[i]);
+            if accepted then
+                table.insert(result, member);
             end
         end
 
