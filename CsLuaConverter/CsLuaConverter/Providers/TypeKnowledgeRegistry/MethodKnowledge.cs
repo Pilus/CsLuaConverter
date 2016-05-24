@@ -165,6 +165,11 @@
 
         private static bool InputTypeFitsParameterType(Type inputType, Type parameterType)
         {
+            if (inputType == typeof (Nullable))
+            {
+                return true;
+            }
+
             if (parameterType.IsAssignableFrom(inputType))
             {
                 return true;
@@ -323,6 +328,19 @@
             if (type.IsGenericParameter)
             {
                 return 1;
+            }
+
+            if (otherType == typeof (Nullable))
+            {
+                // Determine the best as the most advanced class.
+                var i = type.IsInterface ? 5 : 0;
+                while (type.BaseType != null)
+                {
+                    type = type.BaseType;
+                    i++;
+                }
+
+                return 100 - i;
             }
 
             var c = 0;
