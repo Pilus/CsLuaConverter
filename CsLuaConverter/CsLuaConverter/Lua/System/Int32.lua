@@ -17,6 +17,18 @@ System.Int32 = _M.NE({["#"] = function(interactionElement, generics, staticValue
         end,
     });
 
+    _M.IM(members,'Equals',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {typeObject},
+        numMethodGenerics = 0,
+        signatureHash = 1100,
+        func = function(element, obj)
+            return element == obj;
+        end,
+    });
+
     local constructors = {
         {
             types = {},

@@ -1,6 +1,6 @@
 ﻿CsLuaFramework.Serializer = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('CsLuaFramework','Serializer',baseTypeObject,0,nil,nil,interactionElement);
+    local typeObject = System.Type('Serializer','CsLuaFramework',baseTypeObject,0,nil,nil,interactionElement);
 
     local replaceTypeRefs;
     replaceTypeRefs = function(obj)
@@ -50,6 +50,7 @@
         scope = 'Public',
         static = false,
         numMethodGenerics = 1,
+        signatureHash = 2,
         types = {System.Object.__typeof},
         func = function(_, obj)
             return replaceTypeRefs(obj);
@@ -62,6 +63,7 @@
         scope = 'Public',
         static = false,
         numMethodGenerics = 1,
+        signatureHash = 8686,
         types = {System.Object.__typeof},
         func = function(_, obj)
             return replaceHashsWithTypes(obj);

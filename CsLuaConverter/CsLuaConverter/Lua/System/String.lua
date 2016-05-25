@@ -51,6 +51,18 @@
         end,
     });
 
+    _M.IM(members,'Equals',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        types = {typeObject},
+        numMethodGenerics = 0,
+        signatureHash = 2678,
+        func = function(element, obj)
+            return element == obj;
+        end,
+    });
+
     local constructors = {
         {
             types = {},
