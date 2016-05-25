@@ -49,6 +49,7 @@ end,
         scope = 'Public',
         types = {},
         numMethodGenerics = 0,
+        signatureHash = 0,
         func = function(element)
             return function(_, prevKey) 
                 local key;
