@@ -11,6 +11,7 @@ System.Int32 = _M.NE({["#"] = function(interactionElement, generics, staticValue
         static = true,
         types = {System.Object.__typeof},
         numMethodGenerics = 0,
+        signatureHash = 3016,
         func = function(_, value)
             return math.floor(tonumber(value));
         end,
