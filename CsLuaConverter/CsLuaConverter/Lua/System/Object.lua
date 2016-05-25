@@ -12,6 +12,7 @@
         scope = 'Public',
         types = {typeObject},
         numMethodGenerics = 0,
+        signatureHash = 3016,
         func = function(element, obj)
             return element == obj;
         end,
