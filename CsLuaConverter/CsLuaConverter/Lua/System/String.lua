@@ -46,6 +46,7 @@
         static = true,
         types = {typeObject},
         numMethodGenerics = 0,
+        signatureHash = 2678,
         func = function(_, str)
             return str == nil or str == "";
         end,

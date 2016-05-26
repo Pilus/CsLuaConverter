@@ -136,15 +136,13 @@
 
         private static void TestMethodGenericAsGenericInInputObject()
         {
-            throw new TestIgnoredException();
-            /*
             var theClass = new MethodsWithGeneric<int, int>();
             
             var a = theClass.MethodWithGenericAsObjectGenericInArg((() => 3));
             var b = theClass.MethodWithGenericAsObjectGenericInArg((() => "x"));
 
             Assert(3, a);
-            Assert("x", b); */
+            Assert("x", b);
         }
     }
 }

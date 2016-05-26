@@ -46,7 +46,7 @@ _M.DOT_LVL = function(level)
             assert(not(obj == nil), "Attempted to read index "..tostring(index).." on a nil value.");
             --assert(not(type(obj) == "table") or not(obj.__metaType == nil), "Attempted to read index "..tostring(index).." on a obj value with no meta type");
 
-            if (type(obj) == "table" and (obj.__metaType ~= _M.MetaTypes.ClassObject and obj.__metaType ~= _M.MetaTypes.StaticValues) and not(index == "GetType")) then
+            if (type(obj) == "table" and (obj.__metaType ~= _M.MetaTypes.ClassObject and obj.__metaType ~= _M.MetaTypes.StaticValues and obj.__metaType ~= _M.MetaTypes.NameSpaceElement) and not(index == "GetType")) then
                 if type(index) == "string" then
                     local newIndex, indexType, numGenerics, hash = string.split("_", index);
 
@@ -59,7 +59,11 @@ _M.DOT_LVL = function(level)
             end
 
             if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.NameSpaceElement)) then
-                return obj.__index(obj, index, level); 
+                local indexer = obj.__index;
+                if type(indexer) == "function" then
+                    return indexer(obj, index, level); 
+                end
+                return obj[index];
             end
 
             local typeObject = GetType(obj, index);

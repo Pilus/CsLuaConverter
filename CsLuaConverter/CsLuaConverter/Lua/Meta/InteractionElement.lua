@@ -231,33 +231,30 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         end
 
         expectOneMember(fittingMembers, key);
+        local member = fittingMembers[1];
 
-        if fittingMembers[1].memberType == "Field" or fittingMembers[1].memberType == "AutoProperty" then
-            expectOneMember(fittingMembers, key);
-
-            if fittingMembers[1].static then
-                return staticValues[fittingMembers[1].level][key];
+        if member.memberType == "Field" or member.memberType == "AutoProperty" then
+            if member.static then
+                return staticValues[member.level][key];
             end
 
-            return self[fittingMembers[1].level][key];
+            return self[member.level][key];
         end
 
-        if fittingMembers[1].memberType == "Indexer" then
-            expectOneMember(fittingMembers, "#");
-
-            if (fittingMembers[1].get) then
-                return fittingMembers[1].get(self, key);
+        if member.memberType == "Indexer" then
+            if (member.get) then
+                return member.get(self, key);
             end
 
-            return self[fittingMembers[1].level][key];
+            return self[member.level][key];
         end
 
-        if fittingMembers[1].memberType == "Method" then
-            return _M.GM(fittingMembers, self, key);
+        if member.memberType == "Method" then
+            return _M.GM(member, self, key);
         end
 
-        if fittingMembers[1].memberType == "Property" then
-            return fittingMembers[1].get(self);
+        if member.memberType == "Property" then
+            return member.get(self);
         end
 
         error("Could not handle member (get). Object: "..typeObject.FullName.." Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key));
@@ -362,12 +359,13 @@ local InteractionElement = function(metaProvider, generics, selfObj)
                 error("Could not find static member. Key: "..tostring(key)..". Object: "..typeObject.FullName);
             end
 
-            if (fittingMembers[1].memberType == "Method") then
-                return _M.GM(fittingMembers, staticValues, key);
-            end
-
             expectOneMember(fittingMembers, key);
+
             local member = fittingMembers[1];
+
+            if (member.memberType == "Method") then
+                return _M.GM(member, staticValues, key);
+            end
 
             if member.memberType == "Property" then
                 return member.get(staticValues);

@@ -87,6 +87,7 @@
                 textWriter.WriteLine("isParams = true,");
             }
 
+            /*
             if (this.type != null && (this.type as PredefinedTypeVisitor)?.IsVoid() != true)
             {
                 textWriter.Write("returnType = ");
@@ -96,7 +97,7 @@
 
             textWriter.Write("types = {");
             this.parameters.WriteAsTypes(textWriter, providers);
-            textWriter.WriteLine("},");
+            textWriter.WriteLine("},"); */
 
             if (this.methodGenerics != null)
             {

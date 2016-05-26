@@ -1,6 +1,6 @@
 ﻿
-local InvokeMethod = function(member, element, generics, args, foldOutArray)
-    if foldOutArray then
+local InvokeMethod = function(member, element, generics, args)
+    if member.isParams then
         local i = #(args);
 
         local value = args[i];
@@ -26,7 +26,7 @@ setmetatable(meta,{
     end
 });
 
-local GenericMethod = function(members, elementOrStaticValues, name)
+local GenericMethod = function(member, elementOrStaticValues, name)
     
     local t = {};
 
@@ -61,13 +61,11 @@ local GenericMethod = function(members, elementOrStaticValues, name)
             end
 
             return function(...)
-                local member, foldOutArray = _M.AM(members, {...}, name, generics);
-                return InvokeMethod(member, elementOrStaticValues, generics, {...}, foldOutArray);
+                return InvokeMethod(member, elementOrStaticValues, generics, {...});
             end
         end,
         __call = function(_, ...)
-            local member, foldOutArray = _M.AM(members, {...}, name);
-            return InvokeMethod(member, elementOrStaticValues, {}, {...}, foldOutArray);
+            return InvokeMethod(member, elementOrStaticValues, {}, {...});
         end,
     });
 
