@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Reflection;
     using CodeTree;
     using Expression;
     using Filters;
@@ -14,7 +15,7 @@
     public class MethodDeclarationVisitor : BaseVisitor
     {
         private readonly string name;
-        private readonly ITypeVisitor type;
+        private readonly ITypeVisitor returnTypeVisitor;
         private readonly TypeParameterListVisitor methodGenerics;
         private readonly Scope scope;
         private readonly bool isStatic;
@@ -26,7 +27,7 @@
         {
             var accessorAndTypeFilter = new KindRangeFilter(null, SyntaxKind.IdentifierToken);
             var accessorAndType = accessorAndTypeFilter.Filter(this.Branch.Nodes).ToArray();
-            this.type = (ITypeVisitor) this.CreateVisitor(accessorAndType.Length - 1);
+            this.returnTypeVisitor = (ITypeVisitor) this.CreateVisitor(accessorAndType.Length - 1);
             this.methodGenerics =
                 (TypeParameterListVisitor) this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameterList)).SingleOrDefault();
             this.name =
@@ -50,6 +51,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            var definingType = providers.NameProvider.GetScopeElement("this").Type.GetTypeObject();
+            var genericObjects = definingType.GetMember(this.name).OfType<MethodBase>().SelectMany(m => m.GetGenericArguments()).ToArray();
+
             if (this.methodGenerics != null)
             {
                 textWriter.Write("local methodGenericsMapping = {");
@@ -60,7 +64,7 @@
                 foreach (var genericName in this.methodGenerics.GetNames())
                 {
                     // TODO: Determine the correct object type for the generic.
-                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.MethodDeclaration, typeof(object));
+                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.MethodDeclaration, genericObjects.First(t => t.Name == genericName), typeof(object));
                 }
             }
 
@@ -88,10 +92,10 @@
             }
 
             /*
-            if (this.type != null && (this.type as PredefinedTypeVisitor)?.IsVoid() != true)
+            if (this.returnTypeVisitor != null && (this.returnTypeVisitor as PredefinedTypeVisitor)?.IsVoid() != true)
             {
                 textWriter.Write("returnType = ");
-                this.type.WriteAsType(textWriter, providers);
+                this.returnTypeVisitor.WriteAsType(textWriter, providers);
                 textWriter.WriteLine(",");
             }
 
@@ -111,7 +115,7 @@
                 foreach (var genericName in this.methodGenerics.GetNames())
                 {
                     // TODO: Determine the correct object type for the generic.
-                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Method, typeof(object));
+                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Method, genericObjects.First(t => t.Name == genericName), typeof(object));
                 }
             }
 

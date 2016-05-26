@@ -14,7 +14,6 @@
         public static IProviders Providers;
         private readonly Type type;
         private readonly bool restrictToStatic;
-        private readonly string genericName;
 
         public TypeKnowledge(Type type, bool restrictToStatic = false)
         {
@@ -22,7 +21,7 @@
 
             if (!this.type.IsGenericParameter) return;
 
-            var genericType = Providers.GenericsRegistry.GetGenericType(this.type.Name);
+            var genericType = Providers.GenericsRegistry.GetType(this.type.Name);
             if (genericType == null)
             {
                 return;
@@ -38,27 +37,22 @@
 
             if (this.type.IsGenericParameter)
             {
-                this.type = Providers.GenericsRegistry.GetGenericType(this.type.Name);
+                this.type = Providers.GenericsRegistry.GetType(this.type.Name);
             }
-        }
-
-        public TypeKnowledge(string genericName)
-        {
-            this.genericName = genericName;
         }
 
         public bool IsParams { get; set; }
         public Type[] MethodGenerics { get; private set; }
 
-        public string Name => this.type?.Name.Split('`').First() ?? this.genericName;
+        public string Name => this.type.Name.Split('`').First();
 
-        public bool IsGenericParameter => this.type?.IsGenericParameter ?? !string.IsNullOrEmpty(this.genericName);
+        public bool IsGenericParameter => this.type.IsGenericParameter;
 
         public bool IsGenericType => this.type?.IsGenericType ?? false;
 
         public IKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)
         {
-            var type = this.type ?? providers.GenericsRegistry.GetGenericType(this.genericName);
+            var type = this.type;
 
             var members = GetMembers(type, this.restrictToStatic, str);
             var extensions = providers.TypeProvider.GetExtensionMethods(type, str);
@@ -155,7 +149,8 @@
                 return new [] { new TypeKnowledge( this.type.GetElementType()) };
             }
 
-            return this.type.GetGenericArguments().Select(t => !t.IsGenericParameter || Providers.GenericsRegistry.IsGeneric(t.Name) ?  new TypeKnowledge(t) : new TypeKnowledge(t.Name)).ToArray();
+            //return this.type.GetGenericArguments().Select(t => !t.IsGenericParameter || Providers.GenericsRegistry.IsGeneric(t.Name) ?  new TypeKnowledge(t) : new TypeKnowledge(t.Name)).ToArray();
+            return this.type.GetGenericArguments().Select(t => new TypeKnowledge(t)).ToArray();
         }
 
         public TypeKnowledge CreateWithGenerics(TypeKnowledge[] generics)

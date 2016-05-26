@@ -377,10 +377,14 @@
                 return;
             }
 
+            var classTypeResult = providers.TypeProvider.LookupType(this.name);
+            var generics = classTypeResult.TypeObject.GetGenericArguments();
+
             foreach (var genericName in this.genericsVisitor.GetNames())
             {
                 // TODO: Determine the correct object type for the generic.
-                providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Class, typeof(object));
+                
+                providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Class, generics.Single(t => t.Name == genericName), typeof(object));
             }
         }
     }

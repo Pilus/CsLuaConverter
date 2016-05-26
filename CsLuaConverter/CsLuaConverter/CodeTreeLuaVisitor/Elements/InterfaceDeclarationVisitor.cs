@@ -10,6 +10,7 @@
     using Providers;
     using Providers.GenericsRegistry;
     using Providers.TypeKnowledgeRegistry;
+    using Providers.TypeProvider;
 
     public class InterfaceDeclarationVisitor : BaseVisitor, IElementVisitor
     {
@@ -79,6 +80,8 @@
 
             var typeObject = providers.TypeProvider.LookupType(this.name);
 
+            providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(typeObject.TypeObject)));
+
             textWriter.Write(
                 "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Interface',",
                 typeObject.Name, typeObject.Namespace, this.GetNumOfGenerics());
@@ -108,9 +111,12 @@
                 return;
             }
 
+            var classTypeResult = providers.TypeProvider.LookupType(this.name);
+            var generics = classTypeResult.TypeObject.GetGenericArguments();
+
             foreach (var genericName in this.genericsVisitor.GetNames())
             {
-                providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Class, typeof(object));
+                providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Class, generics.Single(t => t.Name == genericName), typeof(object));
             }
         }
 

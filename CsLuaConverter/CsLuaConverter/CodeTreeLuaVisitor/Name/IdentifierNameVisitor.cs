@@ -60,7 +60,8 @@
         {
             if (providers.GenericsRegistry.IsGeneric(this.text))
             {
-                return new TypeKnowledge(this.text); // TODO: use other type if there are a generic 
+                var genericType = providers.GenericsRegistry.GetGenericTypeObject(this.text);
+                return new TypeKnowledge(genericType); // TODO: use other type if there are a generic 
             }
 
             var type = providers.TypeProvider.LookupType(this.text);

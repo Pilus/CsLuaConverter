@@ -62,7 +62,7 @@
         {
             if (type.IsGenericParameter)
             {
-                TypeKnowledge.Providers.GenericsRegistry.SetGenerics(type.Name, GenericScope.Invocation, genericType);
+                TypeKnowledge.Providers.GenericsRegistry.SetGenerics(type.Name, GenericScope.Invocation, type, genericType);
                 return genericType;
             }
 
@@ -145,7 +145,7 @@
         {
             if (type.IsGenericParameter)
             {
-                var resolvedType = providers.GenericsRegistry.GetGenericType(type.Name);
+                var resolvedType = providers.GenericsRegistry.GetType(type.Name);
                 if (resolvedType == null)
                 {
                     throw new Exception($"Could not resolve generic {type.Name}.");
@@ -314,7 +314,7 @@
             {
                 if (!TypeKnowledge.Providers.GenericsRegistry.IsGeneric(type.Name))
                 {
-                    TypeKnowledge.Providers.GenericsRegistry.SetGenerics(type.Name, GenericScope.Invocation, appliedType);
+                    TypeKnowledge.Providers.GenericsRegistry.SetGenerics(type.Name, GenericScope.Invocation, type, appliedType);
                 }
                 return;
             }
@@ -390,10 +390,10 @@
                 var reg = TypeKnowledge.Providers.GenericsRegistry;
                 if (reg.IsGeneric(type.Name))
                 {
-                    return reg.GetGenericType(type.Name);
+                    return reg.GetType(type.Name);
                 }
 
-                reg.SetGenerics(type.Name, GenericScope.Invocation, actualType);
+                reg.SetGenerics(type.Name, GenericScope.Invocation, type, actualType);
                 return actualType;
             }
 
