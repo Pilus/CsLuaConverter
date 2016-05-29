@@ -113,7 +113,7 @@
         {
             if (type.IsGenericParameter)
             {
-                if (providers.GenericsRegistry.IsGeneric(type.Name))
+                if (providers.GenericsRegistry.IsGeneric(type.Name) && providers.GenericsRegistry.GetGenericScope(type.Name) != GenericScope.MethodDeclaration)
                 { 
                     components.Add(new SignatureComponent(coefficient, type.Name));
                 }

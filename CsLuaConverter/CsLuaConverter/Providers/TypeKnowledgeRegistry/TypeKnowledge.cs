@@ -6,6 +6,7 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
+    using GenericsRegistry;
     using TypeProvider;
 
     [DebuggerDisplay("TypeKnowledge: {type}")]
@@ -22,7 +23,8 @@
             if (!this.type.IsGenericParameter) return;
 
             var genericType = Providers.GenericsRegistry.GetType(this.type.Name);
-            if (genericType == null)
+            var genericScope = Providers.GenericsRegistry.GetGenericScope(this.type.Name);
+            if (genericType == null || genericScope == GenericScope.MethodDeclaration)
             {
                 return;
             }
