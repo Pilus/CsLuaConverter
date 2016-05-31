@@ -236,7 +236,7 @@
 
             if (type.IsGenericParameter)
             {
-                return this.methodGenericMapping[type].GetTypeObject();
+                return this.methodGenericMapping.ContainsKey(type) ? this.methodGenericMapping[type].GetTypeObject() : type;
             }
 
             var genericArgs = type.GetGenericArguments();

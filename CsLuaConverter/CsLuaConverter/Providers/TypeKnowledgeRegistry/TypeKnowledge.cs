@@ -19,7 +19,7 @@
         public TypeKnowledge(Type type, bool restrictToStatic = false)
         {
             this.type = type;
-
+            /*
             if (!this.type.IsGenericParameter) return;
 
             var genericType = Providers.GenericsRegistry.GetType(this.type.Name);
@@ -30,7 +30,7 @@
             }
 
             this.type = genericType;
-            this.restrictToStatic = restrictToStatic;
+            this.restrictToStatic = restrictToStatic; */
         }
 
         public TypeKnowledge(MemberInfo member, bool skipFirstInputArg = false)
