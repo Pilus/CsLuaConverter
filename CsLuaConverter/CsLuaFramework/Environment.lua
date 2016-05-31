@@ -20,7 +20,7 @@
         static = true,
         types = {System.String.__typeof},
         numMethodGenerics = 0,
-        signatureHash = 2678,
+        signatureHash = 8736,
         func = function(_, lua)
             local func, err = loadstring(lua);
             return func();

@@ -6,7 +6,7 @@
     };
 
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',1331);
+    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',3052);
 
     local constructors = {
         {

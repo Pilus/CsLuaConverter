@@ -1,7 +1,7 @@
 ﻿
 System.Action = _M.NE({["#"] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Action','System',baseTypeObject,#(generics),generics,nil,interactionElement,'Class', 1430);
+    local typeObject = System.Type('Action','System',baseTypeObject,#(generics),generics,nil,interactionElement,'Class', 4393);
     
     local members = {
         

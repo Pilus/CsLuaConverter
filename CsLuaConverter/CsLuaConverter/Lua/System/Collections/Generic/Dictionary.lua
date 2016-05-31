@@ -10,7 +10,7 @@
         System.Collections.Generic.IReadOnlyCollection[{System.Collections.Generic.KeyValuePair[generics].__typeof}].__typeof,
     };
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Dictionary','System.Collections.Generic',baseTypeObject,2,generics,implements,interactionElement,'Class',3509);
+    local typeObject = System.Type('Dictionary','System.Collections.Generic',baseTypeObject,2,generics,implements,interactionElement,'Class',14200);
     
     _M.IM(members,'Keys',{
         level = typeObject.Level,

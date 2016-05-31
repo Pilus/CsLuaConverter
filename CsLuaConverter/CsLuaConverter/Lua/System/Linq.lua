@@ -7,7 +7,7 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
     };
     
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Iterator','System.Linq', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',2166);
+    local typeObject = System.Type('Iterator','System.Linq', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',8425);
 
     _M.IM(members,'GetEnumerator',{
         level = typeObject.Level,

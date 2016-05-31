@@ -1,6 +1,6 @@
 ﻿System.String = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('String','System',baseTypeObject,0,nil,nil,interactionElement,'Class',1339);
+    local typeObject = System.Type('String','System',baseTypeObject,0,nil,nil,interactionElement,'Class',4368);
 
     _M.IM(members,'Split',{
         level = typeObject.Level,
@@ -8,7 +8,7 @@
         scope = 'Public',
         types = {typeObject},
         numMethodGenerics = 0,
-        signatureHash = 2418,
+        signatureHash = 8736,
         func = function(element, delimiter)
             local t = {string.split(delimiter, element)};
             t[0] = t[1];
@@ -23,6 +23,7 @@
         scope = 'Public',
         types = {typeObject},
         numMethodGenerics = 0,
+        signatureHash = 8736,
         func = function(element, str)
             return not(string.find(element, str) == nil)
         end,
@@ -46,7 +47,7 @@
         static = true,
         types = {typeObject},
         numMethodGenerics = 0,
-        signatureHash = 2678,
+        signatureHash = 8736,
         func = function(_, str)
             return str == nil or str == "";
         end,
@@ -58,7 +59,7 @@
         scope = 'Public',
         types = {typeObject},
         numMethodGenerics = 0,
-        signatureHash = 2678,
+        signatureHash = 8736,
         func = function(element, obj)
             return element == obj;
         end,

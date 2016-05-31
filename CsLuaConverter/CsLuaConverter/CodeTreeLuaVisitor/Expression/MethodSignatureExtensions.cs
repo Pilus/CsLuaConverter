@@ -84,7 +84,7 @@
 
             for (var i = 0; i < chars.Length; i++)
             {
-                value = chars[i] * Primes[i];
+                value = value + (chars[i] * Primes[i]);
             }
 
             return value;

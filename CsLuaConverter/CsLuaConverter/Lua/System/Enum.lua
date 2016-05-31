@@ -1,6 +1,6 @@
 ﻿System.Enum = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Enum','System',baseTypeObject,0,nil,nil,interactionElement,'Class',763);
+    local typeObject = System.Type('Enum','System',baseTypeObject,0,nil,nil,interactionElement,'Class',1816);
 
     _M.IM(members,'Parse',{
         level = typeObject.Level,
@@ -8,7 +8,7 @@
         scope = 'Public',
         static = true,
         numMethodGenerics = 0,
-        signatureHash = 5431,
+        signatureHash = 16700,
         types = {System.Type.__typeof, System.String.__typeof},
         func = function(staticValues, typeObj, str)
             for _,v in pairs(typeObj.interactionElement) do

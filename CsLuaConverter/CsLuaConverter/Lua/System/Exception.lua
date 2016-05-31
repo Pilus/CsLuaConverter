@@ -1,7 +1,7 @@
 ﻿
 System.Exception = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Exception','System',baseTypeObject,0,nil,nil,interactionElement,'Class',2530);
+    local typeObject = System.Type('Exception','System',baseTypeObject,0,nil,nil,interactionElement,'Class',10864);
     local level = 2;
 
     _M.IM(members,'Message',{

@@ -179,7 +179,7 @@ GetTypeFromHash = function(hash)
 end
 
 --objectType = typeCall("Object", "System"); -- TODO: Initialize in a way that does not require the type cache
-typeType = typeCall("Type", "System", nil, 0, nil, nil, {}, 'Class', 707);
+typeType = typeCall("Type", "System", nil, 0, nil, nil, {}, 'Class', 1798);
 
 local meta = {
     __typeof = typeType,

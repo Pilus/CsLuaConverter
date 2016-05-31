@@ -1,6 +1,6 @@
 ﻿System.Single = _M.NE({[0] = function(interactionElement, generics, staticValues) -- AKA float
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Single','System',baseTypeObject,0,nil,nil,interactionElement,'Class',1313);
+    local typeObject = System.Type('Single','System',baseTypeObject,0,nil,nil,interactionElement,'Class',4253);
 
     local constructors = {
         {

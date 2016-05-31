@@ -10,7 +10,7 @@
         System.Collections.Generic.IReadOnlyCollection[generics].__typeof,
     };
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('List','System.Collections.Generic',baseTypeObject,1,generics,implements,interactionElement,'Class', 812);
+    local typeObject = System.Type('List','System.Collections.Generic',baseTypeObject,1,generics,implements,interactionElement,'Class', 1854);
 
     local getCount = function(element)
         return not(element[typeObject.level][0] == nil) and (#(element[typeObject.level]) + 1) or 0;
@@ -21,7 +21,7 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        signatureHash = 2*1430*2*generics[1].signatureHash,
+        signatureHash = 2*4393*2*generics[1].signatureHash,
         types = {System.Action[{generics[1]}].__typeof},
         func = function(element,action)
             for i = 0,getCount(element)-1 do
