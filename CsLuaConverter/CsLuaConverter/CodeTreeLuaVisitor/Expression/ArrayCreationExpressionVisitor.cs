@@ -24,7 +24,9 @@
             textWriter.Write("(");
             this.arrayType.Visit(textWriter, providers);
             textWriter.Write(" % _M.DOT)");
+            var currentType = providers.TypeKnowledgeRegistry.CurrentType;
             this.initializer.Visit(textWriter, providers);
+            providers.TypeKnowledgeRegistry.CurrentType = currentType;
         }
     }
 }

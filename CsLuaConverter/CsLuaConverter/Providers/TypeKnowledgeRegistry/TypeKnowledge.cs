@@ -301,5 +301,10 @@
 
             return lastParameter?.GetCustomAttributes(typeof(ParamArrayAttribute), false).Any() ?? false;
         }
+
+        public bool IsArray()
+        {
+            return this.type.IsArray;
+        }
     }
 }
