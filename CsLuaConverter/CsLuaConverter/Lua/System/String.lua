@@ -8,7 +8,7 @@
         scope = 'Public',
         types = {typeObject},
         numMethodGenerics = 0,
-        signatureHash = 8736,
+        signatureHash = 7878,
         func = function(element, delimiter)
             local t = {string.split(delimiter, element)};
             t[0] = t[1];

@@ -63,7 +63,7 @@
         scope = 'Public',
         static = false,
         numMethodGenerics = 1,
-        signatureHash = 8572,
+        signatureHash = 55918,
         types = {System.Object.__typeof},
         func = function(_, obj)
             return replaceHashsWithTypes(obj);
