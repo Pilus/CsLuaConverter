@@ -1,6 +1,33 @@
-﻿System.String = _M.NE({[0] = function(interactionElement, generics, staticValues)
+System.String = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
     local typeObject = System.Type('String','System',baseTypeObject,0,nil,nil,interactionElement,'Class',4368);
+
+    -- String compare
+    local compare = function(strA, indexA, strB, indexB, length)
+        for (i=1,length) do
+            local ca = string.char(strA, indexA+i);
+            local cb = string.char(strB, indexB+i);
+            
+            if ca > cb then
+                return 1;
+            elseif cb > ba then
+                return -1;
+            end
+        end
+        return 0;
+    end
+    
+    _M.IM(members,'Compare',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 21840, -- String, String
+        func = function(element, strA, strB)
+            return compare(strA, 0, strB, 0, math.max(string.len(strA), string.len(strB));
+        end,
+    });
 
     _M.IM(members,'Split',{
         level = typeObject.Level,
@@ -64,7 +91,7 @@
             return element == obj;
         end,
     });
-
+    
     local constructors = {
         {
             types = {},
