@@ -111,6 +111,10 @@
 
         private static void AddSignatureComponents(int coefficient, TypeKnowledge type, List<SignatureComponent> components, IProviders providers)
         {
+            if (type.IsArray())
+            {
+                AddSignatureComponents(coefficient * 3, type.GetArrayGeneric(), components, providers);
+            }
             if (type.IsGenericParameter)
             {
                 if (providers.GenericsRegistry.IsGeneric(type.Name) && providers.GenericsRegistry.GetGenericScope(type.Name) != GenericScope.MethodDeclaration)
