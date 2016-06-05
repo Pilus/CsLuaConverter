@@ -230,6 +230,13 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             assert(type(fittingMembers[i].memberType) == "string", "Missing member type on member. Object: "..typeObject.FullName..". Key: "..tostring(key).." Level: "..tostring(level).." Member #: "..tostring(i))
         end
 
+        if (#(fittingMembers) > 1) then
+            local nonMethodMembers = where(fittingMembers, function(m) return not(m.memberType == "Method"); end)
+            if #(nonMethodMembers) > 0 then
+                fittingMembers = nonMethodMembers;
+            end
+        end
+
         expectOneMember(fittingMembers, key);
         local member = fittingMembers[1];
 

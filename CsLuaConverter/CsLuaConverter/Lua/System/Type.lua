@@ -112,6 +112,8 @@ local meta = {
             return self.namespace .. "." .. self.name .. generic;
         elseif index == "IsEnum" then
             return self.catagory == "Enum";
+        elseif index == "IsArray" then
+            return self.name == "Array" and self.namespace == "System";
         elseif index == "type" then
             return typeType;
         elseif index == "GetGenericArguments" then

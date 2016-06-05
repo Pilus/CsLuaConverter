@@ -13,6 +13,7 @@ System.Action = _M.NE({["#"] = function(interactionElement, generics, staticValu
         scope = 'Public',
         types = generics,
         numMethodGenerics = 0,
+        signatureHash = _M.SH(generics),
         func = function(element,...)
             (element[typeObject.level].innerAction % _M.DOT)(...);
         end,

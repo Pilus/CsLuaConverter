@@ -4,11 +4,14 @@ local InvokeMethod = function(member, element, generics, args)
         local i = #(args);
 
         local value = args[i];
-        args[i] = nil;
-        for j = 0, (value % _M.DOT).Length - 1 do
-            args[i+j] = (value % _M.DOT)[j];
+
+        if not(value == nil) and ((value % _M.DOT).GetType() % _M.DOT).IsArray then
+            args[i] = nil;
+            for j = 0, (value % _M.DOT).Length - 1 do
+                args[i+j] = (value % _M.DOT)[j];
+            end
         end
-    end
+    end 
 
     if member.generics then
         return member.func(element, member.generics, generics, unpack(args));
