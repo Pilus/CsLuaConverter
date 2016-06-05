@@ -112,7 +112,8 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
                 end;
             elseif member.memberType == "Method" then
                 m.types = member.types;
-                m.numMethodGenerics = 0;
+                m.numMethodGenerics = member.numMethodGenerics;
+                m.signatureHash = member.signatureHash;
                 m.func = function(element,...)
                     local args = selectOn({...}, unwrap);
                     if hasProvideSelfAttribute(attributes) then
