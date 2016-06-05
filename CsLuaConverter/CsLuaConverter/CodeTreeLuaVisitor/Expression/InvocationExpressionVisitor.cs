@@ -32,19 +32,9 @@
 
                 if (!method.IsGetType())
                 {
-                    textWriter.Write($"_M_{method.GetNumberOfMethodGenerics()}");
+                    textWriter.Write($"_M_{method.GetNumberOfMethodGenerics()}_");
 
-                    if (!method.IsSignatureGenericDependent(providers))
-                    {
-                        textWriter.Write("_");
-                        method.WriteSignature(textWriter, providers);
-                    }
-                    else
-                    {
-                        textWriter.Write("[");
-                        method.WriteSignature(textWriter, providers);
-                        textWriter.Write("]");
-                    }
+                    method.WriteSignature(textWriter, providers);
 
                     providers.TypeKnowledgeRegistry.PossibleMethods.WriteMethodGenerics();
                 }

@@ -5,6 +5,7 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
+    using GenericsRegistry;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     [DebuggerDisplay("MethodKnowledge: {method}")]
@@ -18,7 +19,6 @@
 
         public MethodKnowledge(MethodBase method)
         {
-            var x = (method as MethodInfo)?.ReturnType.Name == "T3";
             this.methodGenericMapping = new Dictionary<Type, TypeKnowledge>();
             this.method = method;
         }
@@ -28,6 +28,7 @@
             this.isExtension = isExtension;
             this.returnType = returnType;
             this.inputTypes = inputTypes;
+            this.methodGenericMapping = new Dictionary<Type, TypeKnowledge>();
         }
 
         public MethodKnowledge()
@@ -358,16 +359,6 @@
             }
 
             return type == otherType ? c : c + 1;
-        }
-
-        public bool IsSignatureGenericDependent(IProviders providers)
-        {
-            return this.GetInputParameterTypes().Any(t => HasGenericValue(t, providers));
-        }
-
-        private static bool HasGenericValue(Type type, IProviders providers)
-        {
-            return !type.IsGenericType ? (type.IsGenericParameter && providers.GenericsRegistry.IsGeneric(type.Name)) : type.GetGenericArguments().Any(t => HasGenericValue(t, providers));
         }
 
         public bool FilterByNumberOfLambdaArgs(int?[] numOfArgs)

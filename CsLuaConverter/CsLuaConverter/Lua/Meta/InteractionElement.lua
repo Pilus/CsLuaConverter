@@ -131,7 +131,11 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         local indexType, numGenerics, hash;
         key, indexType, numGenerics, hash = filterMethodSignature(key);
 
-        return where(extensions, function(ext) return ext.name == key; end);
+        return where(extensions, function(ext) 
+            return ext.name == key and
+                (numGenerics == nil or numGenerics == ext.numMethodGenerics) and
+                (hash == nil or hash == ext.signatureHash); 
+            end);
     end
 
     local matchesAll = function(t1, t2)

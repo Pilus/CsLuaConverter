@@ -73,7 +73,7 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
     };
 
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('WrappedLuaTable_'..interfaceType.name,'CsLuaFramework.Wrapping',baseTypeObject,#(generics),generics,implements,interactionElement);
+    local typeObject = System.Type('WrappedLuaTable_'..interfaceType.name,'CsLuaFramework.Wrapping',baseTypeObject,#(generics),generics,implements,interactionElement,"Class", 37615);
 
     local _, interfaceMembers, _, _, _, _, attributes = interfaceType.interactionElement.__meta({});
 

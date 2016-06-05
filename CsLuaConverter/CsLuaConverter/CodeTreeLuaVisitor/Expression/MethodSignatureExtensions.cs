@@ -117,7 +117,7 @@
             }
             if (type.IsGenericParameter)
             {
-                if (providers.GenericsRegistry.IsGeneric(type.Name) && providers.GenericsRegistry.GetGenericScope(type.Name) != GenericScope.MethodDeclaration)
+                if (providers.GenericsRegistry.IsGeneric(type.Name) && providers.GenericsRegistry.GetGenericScope(type.Name) != GenericScope.MethodDeclaration && providers.GenericsRegistry.GetGenericScope(type.Name) != GenericScope.Invocation)
                 { 
                     components.Add(new SignatureComponent(coefficient, type.Name));
                 }

@@ -1,6 +1,6 @@
 ﻿CsLuaFramework.Environment = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('CsLuaFramework','Environment',baseTypeObject,0,nil,nil,interactionElement);
+    local typeObject = System.Type('CsLuaFramework','Environment',baseTypeObject,0,nil,nil,interactionElement, "Class", 29943);
 
     _M.IM(members,'IsExecutingAsLua',{
         level = typeObject.Level,

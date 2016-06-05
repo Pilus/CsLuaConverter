@@ -88,8 +88,8 @@
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
-        types = {generics[1]},
         numMethodGenerics = 0,
+        signatureHash = 2*generics[1].signatureHash;
         func = function(element,value)
             local c = getCount(element);
             element[typeObject.level][c] = value;
@@ -97,11 +97,24 @@
         end,
     });
 
+    _M.IM(members,'Add',{  --  IList.Add(system.object)
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        numMethodGenerics = 0,
+        signatureHash = 8572;
+        func = function(element,value)
+            local c = getCount(element);
+            element[typeObject.level][c] = value;
+            return c;
+        end,
+    });
+    
     _M.IM(members,'AddRange',{
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
-        types = {System.Collections.Generic.IEnumerable[generics].__typeof},
+        signatureHash = 2*System.Collections.Generic.IEnumerable[generics].__typeof.signatureHash,
         numMethodGenerics = 0,
         func = function(element,value)
             local c = getCount(element);
@@ -181,7 +194,8 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {},
+        signatureHash = 0;
+        --types = {},
         func = function(element)
             element[typeObject.level] = {};
         end,
@@ -192,10 +206,11 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {generics[1]},
+        --types = {generics[1]},
+        signatureHash = 2*generics[1].signatureHash;
         func = function(element,value)
             for i = 0,getCount(element)-1 do
-                if (element[typeObject.level][i] % _M.DOT).Equals(value) then
+                if (element[typeObject.level][i] % _M.DOT).Equals_M_0_8572(value) then
                     return true;
                 end
             end
@@ -208,7 +223,8 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {System.Predicate[generics].__typeof},
+        --types = {System.Predicate[generics].__typeof},
+        signatureHash = 2*(System.Predicate[generics].__typeof).signatureHash,
         func = function(element,f)
             for i = 0,getCount(element)-1 do
                 local v = element[typeObject.level][i];
@@ -224,7 +240,8 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {System.Predicate[generics].__typeof},
+        --types = {System.Predicate[generics].__typeof},
+        signatureHash = 2*(System.Predicate[generics].__typeof).signatureHash,
         func = function(element,f)
             for i = 0,getCount(element)-1 do
                 local v = element[typeObject.level][i];
@@ -240,7 +257,8 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {System.Predicate[generics].__typeof},
+        --types = {System.Predicate[generics].__typeof},
+        signatureHash = 2*(System.Predicate[generics].__typeof).signatureHash,
         func = function(element,f)
             for i = getCount(element)-1,0,-1 do
                 local v = element[typeObject.level][i];
@@ -256,7 +274,8 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {System.Predicate[generics].__typeof},
+        --types = {System.Predicate[generics].__typeof},
+        signatureHash = 2*(System.Predicate[generics].__typeof).signatureHash,
         func = function(element,f)
             for i = getCount(element)-1,0,-1 do
                 local v = element[typeObject.level][i];
@@ -272,13 +291,14 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {System.Predicate[generics].__typeof},
+        --types = {System.Predicate[generics].__typeof},
+        signatureHash = 2*(System.Predicate[generics].__typeof).signatureHash,
         func = function(element,f)
             local list = System.Collections.Generic.List[generics]();
             for i = 0,getCount(element)-1 do
                 local v = element[typeObject.level][i];
                 if (f % _M.DOT)(v) then
-                    (list % _M.DOT).Add(v);
+                    (list % _M.DOT).Add_M_0_8572(v);
                 end
             end
             return list;
@@ -290,11 +310,12 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {generics[1]},
+        --types = {generics[1]},
+        signatureHash = 2*generics[1].signatureHash,
         func = function(element,value)
             for i = 0,getCount(element)-1 do
                 local v = element[typeObject.level][i];
-                if (v % _M.DOT).Equals(value) then
+                if (v % _M.DOT).Equals_M_0_8572(value) then
                     return i;
                 end
             end
@@ -307,11 +328,12 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {generics[1]},
+        --types = {generics[1]},
+        signatureHash = 2*generics[1].signatureHash,
         func = function(element,value)
             for i = getCount(element)-1,0,-1 do
                 local v = element[typeObject.level][i];
-                if (v % _M.DOT).Equals(value) then
+                if (v % _M.DOT).Equals_M_0_8572(value) then
                     return i;
                 end
             end
@@ -324,6 +346,7 @@
         scope = 'Public',
         numMethodGenerics = 0,
         types = {System.Int.__typeof, generics[1]},
+        signatureHash = 2*System.Int.__typeof.signatureHash + 3*generics[1].signatureHash,
         func = function(element,index,value)
             for i = getCount(element)-1,index,-1 do
                 element[typeObject.level][i+1] = element[typeObject.level][i];
@@ -337,11 +360,12 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {System.Int.__typeof, System.Int.__typeof},
+        --types = {System.Int.__typeof, System.Int.__typeof},
+        signatureHash = 2*System.Int.__typeof.signatureHash + 3*System.Int.__typeof.signatureHash,
         func = function(element, start, num)
             local list = System.Collections.Generic.List[generics]();
             for i = start, start + num - 1 do
-                (list % _M.DOT).Add(element[typeObject.level][i]);
+                (list % _M.DOT).Add_M_0_8572(element[typeObject.level][i]);
             end
             return list;
         end,
@@ -352,7 +376,8 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {System.Int.__typeof, System.Collections.Generic.IEnumerable[generics].__typeof},
+        --types = {System.Int.__typeof, System.Collections.Generic.IEnumerable[generics].__typeof},
+        signatureHash = 2*System.Int.__typeof.signatureHash + 3*System.Collections.Generic.IEnumerable[generics].__typeof.signatureHash,
         func = function(element,start, value)
             local count = 0;
             for _,v in (value  % _M.DOT).GetEnumerator() do
@@ -376,7 +401,8 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {generics[1]},
+        --types = {generics[1]},
+        signatureHash = 2*generics[1].signatureHash,
         func = function(element, obj)
             local index = (element % _M.DOT).IndexOf(obj);
             if index < 0 then
@@ -395,7 +421,8 @@
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
-        types = {System.Int.__typeof, System.Int.__typeof},
+        --types = {System.Int.__typeof, System.Int.__typeof},
+        signatureHash = 2*System.Int.__typeof.signatureHash + 3*System.Int.__typeof.signatureHash,
         func = function(element, start, num)
             local count = getCount(element);
             for i = start, count do

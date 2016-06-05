@@ -143,7 +143,6 @@ end
 
 local typeCache = {};
 
-
 local typeCall = function(name, namespace, baseType, numberOfGenerics, generics, implements, interactionElement, catagory, signatureHash)
     assert(interactionElement, "Type cannot be created without an interactionElement.");
 
@@ -168,7 +167,9 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
     self.implements = implements;
     self.interactionElement = interactionElement;
     self.interactionElement.__typeof = self;
-    self.signatureHash = signatureHash;
+    local genericHash = _M.SH(unpack(generics or {}));
+    if genericHash == 0 then genericHash = 1; end;
+    self.signatureHash = signatureHash*genericHash;
     
     
     setmetatable(self, meta);

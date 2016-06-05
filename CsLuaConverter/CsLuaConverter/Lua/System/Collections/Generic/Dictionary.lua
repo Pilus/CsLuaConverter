@@ -100,7 +100,7 @@ System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElem
         System.Collections.Generic.ICollection[{generics[1]}].__typeof,
     };
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('KeyCollection','System.Collections.Generic',baseTypeObject,#(generics),generics,implements,interactionElement);
+    local typeObject = System.Type('KeyCollection','System.Collections.Generic',baseTypeObject,#(generics),generics,implements,interactionElement,"Class", 25420);
     
     _M.IM(members,'GetEnumerator',{
         level = typeObject.Level,
@@ -144,7 +144,7 @@ System.Collections.Generic.ValueCollection = _M.NE({[2] = function(interactionEl
         System.Collections.Generic.ICollection[{generics[2]}].__typeof,
     };
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('ValueCollection','System.Collections.Generic',baseTypeObject,#(generics),generics,implements,interactionElement);
+    local typeObject = System.Type('ValueCollection','System.Collections.Generic',baseTypeObject,#(generics),generics,implements,interactionElement, "Class", 34765);
     
     _M.IM(members,'GetEnumerator',{
         level = typeObject.Level,

@@ -37,7 +37,7 @@ end,
     };
     
     local baseTypeObject, members = System.Array.__meta(staticValues);
-    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement);
+    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',3052);
 
     local len = function(element)
         return (element[typeObject.level][0] and 1 or 0) + #(element[typeObject.level]);

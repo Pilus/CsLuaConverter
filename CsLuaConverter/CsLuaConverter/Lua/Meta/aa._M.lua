@@ -42,8 +42,13 @@ local GetSignatureHash = function(...)
 
     local value = 0;
     for i, type in ipairs(types) do
-        if (type[1]) then
+        
+        if type.signatureHash then
+            value = value + (primes[i] * type.signatureHash);
+        elseif (type[1]) then
             value = value + (primes[i] * type[1].signatureHash);
+        elseif type then
+            error("Could not find signatureHash of given generic.");
         end
     end
 
