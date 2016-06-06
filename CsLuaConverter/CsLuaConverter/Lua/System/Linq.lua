@@ -118,15 +118,25 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             --types = {System.Func[{generics[1], methodGenerics[methodGenericsMapping['T']]}].__typeof},
             signatureHash = 2*1734*(2*generics[1].signatureHash + 3*1), -- Func<generic[T], TMethod>
             numMethodGenerics = 1,
-            func = function(element, predicate)
+            func = function(element, methodGenericsMapping, methodGenerics, predicate)
                 local enumerator = (element % _M.DOT).GetEnumerator();
-                return System.Linq.Iterator[generics](function(_, prevKey)
+                return System.Linq.Iterator[methodGenerics](function(_, prevKey)
                     local key, value = enumerator(_, prevKey);
                     if (key == nil) then
                         return nil;
                     end
-                    return key, predicate(value);
+                    return key, (predicate %_M.DOT)(value);
                 end);
+            end
+        },
+        {
+            name = "ToList",
+            numMethodGenerics = 0,
+            signatureHash = 0,
+            func = function(element, predicate)
+                local list = System.Collections.Generic.List[generics]();
+                (list % _M.DOT)["AddRange_M_0_"..(2*System.Collections.Generic.IEnumerable[generics].__typeof.signatureHash)](element);
+                return list;
             end
         },
     };

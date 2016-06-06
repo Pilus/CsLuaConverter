@@ -71,7 +71,7 @@
         level = typeObject.Level,
         memberType = 'Indexer',
         scope = 'Public',
-        types = {generics[1]},
+        --types = {generics[1]},
         get = function(element, index)
             ThrowIfIndexNotNumber(element, index);
             ThrowIfOutOfRange(element, index);

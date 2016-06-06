@@ -15,6 +15,7 @@
         private readonly MethodBase method;
         private readonly Type[] inputTypes;
         private readonly Type returnType;
+        private readonly int numGenerics;
         private Dictionary<Type, TypeKnowledge> methodGenericMapping;
 
         public MethodKnowledge(MethodBase method)
@@ -23,10 +24,11 @@
             this.method = method;
         }
 
-        public MethodKnowledge(bool isExtension, Type returnType, params Type[] inputTypes)
+        public MethodKnowledge(bool isExtension, Type returnType, int numGenerics, params Type[] inputTypes)
         {
             this.isExtension = isExtension;
             this.returnType = returnType;
+            this.numGenerics = numGenerics;
             this.inputTypes = inputTypes;
             this.methodGenericMapping = new Dictionary<Type, TypeKnowledge>();
         }
@@ -44,7 +46,7 @@
 
         public int GetNumberOfMethodGenerics()
         {
-            return (this.method as MethodInfo)?.GetGenericArguments().Length ?? 0;
+            return (this.method as MethodInfo)?.GetGenericArguments().Length ?? this.numGenerics;
         }
 
         public int GetNumberOfArgs()
@@ -81,7 +83,8 @@
         {
             if (this.method == null)
             {
-                throw new Exception("Could not apply generics to non methodInfo based MethodKnowledge.");
+                //throw new Exception("Could not apply generics to non methodInfo based MethodKnowledge.");
+                return true;
             }
 
             var genericArgs = this.method.GetGenericArguments();

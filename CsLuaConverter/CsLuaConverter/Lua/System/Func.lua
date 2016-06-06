@@ -16,6 +16,7 @@
         scope = 'Public',
         types = inputGenerics,
         numMethodGenerics = 0,
+        signatureHash = 0, -- TODO: Fix hash
         func = function(element,...)
             return (element[typeObject.level].innerAction % _M.DOT)(...);
         end,

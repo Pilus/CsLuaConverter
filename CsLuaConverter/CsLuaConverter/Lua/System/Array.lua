@@ -81,7 +81,7 @@ end,
         level = typeObject.Level,
         memberType = 'Indexer',
         scope = 'Public',
-        types = {generics[1]},
+        --types = {generics[1]},
         get = function(element, key)
             assert(type(key) == "number", "Attempted to address array with a non number index: "..tostring(key));
             return element[typeObject.Level][key];
