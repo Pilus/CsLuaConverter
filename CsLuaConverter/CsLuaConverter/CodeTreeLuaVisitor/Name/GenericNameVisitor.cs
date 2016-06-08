@@ -39,7 +39,7 @@
                 providers.TypeKnowledgeRegistry.PossibleMethods = new PossibleMethods(current.GetTypeKnowledgeForSubElement(this.name, providers).OfType<MethodKnowledge>().ToArray());
                 providers.TypeKnowledgeRegistry.PossibleMethods.FilterOnNumberOfGenerics(this.argumentListVisitor.GetNumElements());
                 textWriter.Write(this.name);
-                providers.TypeKnowledgeRegistry.PossibleMethods.SetWriteMethodGenericsMethod(() => this.WriteGenericTypes(textWriter, providers));
+                providers.TypeKnowledgeRegistry.PossibleMethods.WriteMethodGenerics = (() => this.WriteGenericTypes(textWriter, providers));
                 providers.TypeKnowledgeRegistry.PossibleMethods.MethodGenerics = this.argumentListVisitor.GetTypes(providers);
             }
         }

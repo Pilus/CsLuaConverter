@@ -2,11 +2,12 @@
 {
     using System;
     using System.Linq;
+    using System.Runtime.Remoting.Messaging;
 
     public class PossibleMethods
     {
         private MethodKnowledge[] methods;
-        private Action writeMethodGenerics;
+        public Action WriteMethodGenerics { get; set; }
         public TypeKnowledge[] MethodGenerics { get; set; }
 
         public PossibleMethods(MethodKnowledge[] methods)
@@ -44,16 +45,6 @@
             this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
         }
 
-        public void SetWriteMethodGenericsMethod(Action action)
-        {
-            this.writeMethodGenerics = action;
-        }
-
-        public void WriteMethodGenerics()
-        {
-            this.writeMethodGenerics?.Invoke();
-        }
-
         public MethodKnowledge GetOnlyRemainingMethodOrThrow()
         {
             if (this.methods.Length == 1)
@@ -68,7 +59,6 @@
         {
             return this.methods.Length == 1;
         }
-
 
         private void ThrowIfAllMethodsAreFilteredAway(MethodKnowledge[] methodsBeforeFilter)
         {

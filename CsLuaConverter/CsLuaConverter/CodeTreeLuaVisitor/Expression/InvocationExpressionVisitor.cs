@@ -30,13 +30,23 @@
 
                 var method = providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow();
 
+                var numGenerics = method.GetNumberOfMethodGenerics();
+
                 if (!method.IsGetType())
                 {
-                    textWriter.Write($"_M_{method.GetNumberOfMethodGenerics()}_");
+                    textWriter.Write($"_M_{numGenerics}_");
 
                     method.WriteSignature(textWriter, providers);
 
-                    providers.TypeKnowledgeRegistry.PossibleMethods.WriteMethodGenerics();
+                    var writeMethodGenericsAction = providers.TypeKnowledgeRegistry.PossibleMethods.WriteMethodGenerics;
+                    if (writeMethodGenericsAction != null)
+                    {
+                        writeMethodGenericsAction();
+                    }
+                    else if (numGenerics > 0)
+                    {
+                        WriteMethodGenerics(method.GetResolvedMethodGenerics(), textWriter, providers);
+                    }
                 }
 
                 textWriter.Write(" % _M.DOT)");
@@ -66,6 +76,26 @@
             }
 
             providers.TypeKnowledgeRegistry.PossibleMethods = null;
+        }
+
+        private static void WriteMethodGenerics(TypeKnowledge[] genericTypes, IIndentedTextWriterWrapper textWriter, IProviders providers)
+        {
+            textWriter.Write("[{");
+            var first = true;
+            genericTypes.ToList().ForEach(genericType =>
+            {
+                if (first)
+                {
+                    first = false;
+                }
+                else
+                {
+                    textWriter.Write(", ");
+                }
+
+                genericType.WriteAsType(textWriter, providers);
+            });
+            textWriter.Write("}]");
         }
     }
 }
