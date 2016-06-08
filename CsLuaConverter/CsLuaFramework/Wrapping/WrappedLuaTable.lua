@@ -73,7 +73,7 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
     };
 
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('WrappedLuaTable_'..interfaceType.name,'CsLuaFramework.Wrapping',baseTypeObject,#(generics),generics,implements,interactionElement);
+    local typeObject = System.Type('WrappedLuaTable_'..interfaceType.name,'CsLuaFramework.Wrapping',baseTypeObject,#(generics),generics,implements,interactionElement,"Class", 37615);
 
     local _, interfaceMembers, _, _, _, _, attributes = interfaceType.interactionElement.__meta({});
 
@@ -112,6 +112,8 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
                 end;
             elseif member.memberType == "Method" then
                 m.types = member.types;
+                m.numMethodGenerics = member.numMethodGenerics;
+                m.signatureHash = member.signatureHash;
                 m.func = function(element,...)
                     local args = selectOn({...}, unwrap);
                     if hasProvideSelfAttribute(attributes) then

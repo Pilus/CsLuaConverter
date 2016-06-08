@@ -10,7 +10,7 @@
         System.Collections.Generic.IReadOnlyCollection[{System.Collections.Generic.KeyValuePair[generics].__typeof}].__typeof,
     };
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Dictionary','System.Collections.Generic',baseTypeObject,2,generics,implements,interactionElement);
+    local typeObject = System.Type('Dictionary','System.Collections.Generic',baseTypeObject,2,generics,implements,interactionElement,'Class',14200);
     
     _M.IM(members,'Keys',{
         level = typeObject.Level,
@@ -35,6 +35,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = {},
+        numMethodGenerics = 0,
         func = function(element)
             local ith, t, s = pairs(element[2]);
             return function(_, prevKey)
@@ -53,6 +54,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = {generics[1], generics[2]},
+        numMethodGenerics = 0,
         func = function(element, key, value)
             element[2][key] = value;
         end,
@@ -98,12 +100,13 @@ System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElem
         System.Collections.Generic.ICollection[{generics[1]}].__typeof,
     };
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('KeyCollection','System.Collections.Generic',baseTypeObject,#(generics),generics,implements,interactionElement);
+    local typeObject = System.Type('KeyCollection','System.Collections.Generic',baseTypeObject,#(generics),generics,implements,interactionElement,"Class", 25420);
     
     _M.IM(members,'GetEnumerator',{
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {},
         func = function(element)
             return pairs(element[2]);
@@ -141,12 +144,13 @@ System.Collections.Generic.ValueCollection = _M.NE({[2] = function(interactionEl
         System.Collections.Generic.ICollection[{generics[2]}].__typeof,
     };
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('ValueCollection','System.Collections.Generic',baseTypeObject,#(generics),generics,implements,interactionElement);
+    local typeObject = System.Type('ValueCollection','System.Collections.Generic',baseTypeObject,#(generics),generics,implements,interactionElement, "Class", 34765);
     
     _M.IM(members,'GetEnumerator',{
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {},
         func = function(element)
             return pairs(element[2]);

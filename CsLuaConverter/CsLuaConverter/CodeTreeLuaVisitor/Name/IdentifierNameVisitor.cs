@@ -24,17 +24,11 @@
                 textWriter.Write(this.text);
                 var newCrurrentTypes = currentType.GetTypeKnowledgeForSubElement(this.text, providers);
 
-                if (newCrurrentTypes.Count() == 1)
-                {
-                    providers.TypeKnowledgeRegistry.CurrentType = newCrurrentTypes.Single();
-                    providers.TypeKnowledgeRegistry.PossibleMethods = null;
-                }
-                else
-                {
-                    providers.TypeKnowledgeRegistry.CurrentType = null;
-                    providers.TypeKnowledgeRegistry.PossibleMethods = newCrurrentTypes;
-                }
-                
+                providers.TypeKnowledgeRegistry.CurrentType = newCrurrentTypes.OfType<TypeKnowledge>().SingleOrDefault();
+
+                var possibleMethods = newCrurrentTypes.OfType<MethodKnowledge>().ToArray();
+                providers.TypeKnowledgeRegistry.PossibleMethods = possibleMethods.Any() ? new PossibleMethods(possibleMethods) : null;
+
                 return;
             }
 
@@ -66,7 +60,8 @@
         {
             if (providers.GenericsRegistry.IsGeneric(this.text))
             {
-                return new TypeKnowledge(typeof(object)); // TODO: use other type if there are a generic 
+                var genericType = providers.GenericsRegistry.GetGenericTypeObject(this.text);
+                return new TypeKnowledge(genericType); // TODO: use other type if there are a generic 
             }
 
             var type = providers.TypeProvider.LookupType(this.text);

@@ -11,7 +11,7 @@
             Name = "Serialization";
             this.Tests["TestBasicSerializableClass"] = TestBasicSerializableClass;
             this.Tests["TestClassWithSubObject"] = TestClassWithSubObject;
-            this.Tests["TestClassInCsLuaList"] = TestClassInCsLuaList;
+            this.Tests["TestClassInList"] = TestClassInList;
             this.Tests["TestSerializeDictionary"] = TestSerializeDictionary;
         }
         
@@ -71,7 +71,7 @@
             Assert(theClass.AClass.ANumber, processedClass.AClass.ANumber);
         }
 
-        private static void TestClassInCsLuaList()
+        private static void TestClassInList()
         {
             if (!Environment.IsExecutingAsLua)
             {

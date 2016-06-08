@@ -18,6 +18,33 @@
             var stopWatch = new Stopwatch();
             stopWatch.Start();
             var solution = await this.GetSolutionAsync(solutionPath);
+
+            this.ConvertSolution(solution, wowPath);
+
+            stopWatch.Stop();
+
+            Console.WriteLine("Lua converting successfull. Time: {0}.{1} sec.", stopWatch.Elapsed.Seconds, stopWatch.Elapsed.Milliseconds);
+        }
+
+        public void Convert(string solutionPath, string wowPath)
+        {
+            Console.WriteLine("Started CsToLua converter.");
+
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            var solutionTask = this.GetSolutionAsync(solutionPath);
+            solutionTask.Wait();
+
+            this.ConvertSolution(solutionTask.Result, wowPath);
+
+            stopWatch.Stop();
+
+            Console.WriteLine("Lua converting successfull. Time: {0}.{1} sec.", stopWatch.Elapsed.Seconds, stopWatch.Elapsed.Milliseconds);
+        }
+
+
+        private void ConvertSolution(Solution solution, string wowPath)
+        {
             var providers = new Providers.Providers(solution);
 
             ISyntaxAnalyser analyzer = new Analyzer(providers);
@@ -29,10 +56,6 @@
             {
                 addon.DeployAddOn(wowPath);
             }
-
-            stopWatch.Stop();
-
-            Console.WriteLine("Lua converting successfull. Time: {0}.{1} sec.", stopWatch.Elapsed.Seconds, stopWatch.Elapsed.Milliseconds);
         }
 
         private async Task<Solution> GetSolutionAsync(string path)

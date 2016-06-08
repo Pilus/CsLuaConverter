@@ -1,14 +1,17 @@
 ﻿
-local InvokeMethod = function(member, element, generics, args, foldOutArray)
-    if foldOutArray then
+local InvokeMethod = function(member, element, generics, args)
+    if member.isParams then
         local i = #(args);
 
         local value = args[i];
-        args[i] = nil;
-        for j = 0, (value % _M.DOT).Length - 1 do
-            args[i+j] = (value % _M.DOT)[j];
+
+        if not(value == nil) and ((value % _M.DOT).GetType() % _M.DOT).IsArray then
+            args[i] = nil;
+            for j = 0, (value % _M.DOT).Length - 1 do
+                args[i+j] = (value % _M.DOT)[j];
+            end
         end
-    end
+    end 
 
     if member.generics then
         return member.func(element, member.generics, generics, unpack(args));
@@ -26,7 +29,7 @@ setmetatable(meta,{
     end
 });
 
-local GenericMethod = function(members, elementOrStaticValues, name)
+local GenericMethod = function(member, elementOrStaticValues, name)
     
     local t = {};
 
@@ -61,13 +64,11 @@ local GenericMethod = function(members, elementOrStaticValues, name)
             end
 
             return function(...)
-                local member, foldOutArray = _M.AM(members, {...}, name, generics);
-                return InvokeMethod(member, elementOrStaticValues, generics, {...}, foldOutArray);
+                return InvokeMethod(member, elementOrStaticValues, generics, {...});
             end
         end,
         __call = function(_, ...)
-            local member, foldOutArray = _M.AM(members, {...}, name);
-            return InvokeMethod(member, elementOrStaticValues, {}, {...}, foldOutArray);
+            return InvokeMethod(member, elementOrStaticValues, {}, {...});
         end,
     });
 

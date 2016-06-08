@@ -4,6 +4,6 @@
     {
         public TypeKnowledge CurrentType { get; set; }
         public TypeKnowledge ExpectedType { get; set; }
-        public TypeKnowledge[] PossibleMethods { get; set; }
+        public PossibleMethods PossibleMethods { get; set; }
     }
 }

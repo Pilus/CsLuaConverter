@@ -1,5 +1,5 @@
 ﻿System.Func = _M.NE({["#"] = function(interactionElement, generics, staticValues)
-    local typeObject = System.Type('Func','System',System.Object.__typeof,#(generics),generics,nil,interactionElement);
+    local typeObject = System.Type('Func','System',System.Object.__typeof,#(generics),generics,nil,interactionElement,'Class',1734);
     local level = 2;
     local members = {
         
@@ -15,6 +15,8 @@
         memberType = 'Method',
         scope = 'Public',
         types = inputGenerics,
+        numMethodGenerics = 0,
+        signatureHash = 0, -- TODO: Fix hash
         func = function(element,...)
             return (element[typeObject.level].innerAction % _M.DOT)(...);
         end,

@@ -6,7 +6,7 @@
     };
 
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement);
+    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',3052);
 
     local constructors = {
         {
@@ -37,7 +37,7 @@ end,
     };
     
     local baseTypeObject, members = System.Array.__meta(staticValues);
-    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement);
+    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',3052);
 
     local len = function(element)
         return (element[typeObject.level][0] and 1 or 0) + #(element[typeObject.level]);
@@ -48,6 +48,8 @@ end,
         memberType = 'Method',
         scope = 'Public',
         types = {},
+        numMethodGenerics = 0,
+        signatureHash = 0,
         func = function(element)
             return function(_, prevKey) 
                 local key;
@@ -79,7 +81,7 @@ end,
         level = typeObject.Level,
         memberType = 'Indexer',
         scope = 'Public',
-        types = {generics[1]},
+        --types = {generics[1]},
         get = function(element, key)
             assert(type(key) == "number", "Attempted to address array with a non number index: "..tostring(key));
             return element[typeObject.Level][key];

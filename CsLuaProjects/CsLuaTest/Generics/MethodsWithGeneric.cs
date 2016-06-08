@@ -39,10 +39,9 @@
             return value.GetType().Name;
         }
 
-        /*
         public T3 MethodWithGenericAsObjectGenericInArg<T3>(Func<T3> f)
         {
             return f();
-        } */
+        } 
     }
 }

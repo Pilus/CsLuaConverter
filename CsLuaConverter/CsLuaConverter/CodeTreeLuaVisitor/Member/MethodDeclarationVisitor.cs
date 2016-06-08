@@ -2,7 +2,9 @@
 {
     using System;
     using System.Linq;
+    using System.Reflection;
     using CodeTree;
+    using Expression;
     using Filters;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
@@ -13,7 +15,7 @@
     public class MethodDeclarationVisitor : BaseVisitor
     {
         private readonly string name;
-        private readonly ITypeVisitor type;
+        private readonly ITypeVisitor returnTypeVisitor;
         private readonly TypeParameterListVisitor methodGenerics;
         private readonly Scope scope;
         private readonly bool isStatic;
@@ -25,7 +27,7 @@
         {
             var accessorAndTypeFilter = new KindRangeFilter(null, SyntaxKind.IdentifierToken);
             var accessorAndType = accessorAndTypeFilter.Filter(this.Branch.Nodes).ToArray();
-            this.type = (ITypeVisitor) this.CreateVisitor(accessorAndType.Length - 1);
+            this.returnTypeVisitor = (ITypeVisitor) this.CreateVisitor(accessorAndType.Length - 1);
             this.methodGenerics =
                 (TypeParameterListVisitor) this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameterList)).SingleOrDefault();
             this.name =
@@ -49,6 +51,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            var definingType = providers.NameProvider.GetScopeElement("this").Type.GetTypeObject();
+            var genericObjects = definingType.GetMember(this.name).OfType<MethodBase>().SelectMany(m => m.GetGenericArguments()).ToArray();
+
             if (this.methodGenerics != null)
             {
                 textWriter.Write("local methodGenericsMapping = {");
@@ -59,7 +64,7 @@
                 foreach (var genericName in this.methodGenerics.GetNames())
                 {
                     // TODO: Determine the correct object type for the generic.
-                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Method, typeof(object));
+                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.MethodDeclaration, genericObjects.First(t => t.Name == genericName), typeof(object));
                 }
             }
 
@@ -70,6 +75,11 @@
             textWriter.WriteLine("memberType = 'Method',");
             textWriter.WriteLine("scope = '{0}',", this.scope);
             textWriter.WriteLine("static = {0},", this.isStatic.ToString().ToLower());
+            textWriter.WriteLine("numMethodGenerics = {0},", this.methodGenerics?.GetNumElements() ?? 0);
+            textWriter.Write("signatureHash = ");
+            this.parameters.GetTypes(providers).WriteSignature(textWriter, providers);
+            textWriter.WriteLine(",");
+
 
             if (this.isOverride)
             {
@@ -81,22 +91,33 @@
                 textWriter.WriteLine("isParams = true,");
             }
 
-            if (this.type != null && (this.type as PredefinedTypeVisitor)?.IsVoid() != true)
+            
+            if (this.returnTypeVisitor != null && (this.returnTypeVisitor as PredefinedTypeVisitor)?.IsVoid() != true)
             {
                 textWriter.Write("returnType = ");
-                this.type.WriteAsType(textWriter, providers);
+                this.returnTypeVisitor.WriteAsType(textWriter, providers);
                 textWriter.WriteLine(",");
             }
-
+            /*
             textWriter.Write("types = {");
             this.parameters.WriteAsTypes(textWriter, providers);
-            textWriter.WriteLine("},");
+            textWriter.WriteLine("},"); */
 
             if (this.methodGenerics != null)
             {
                 textWriter.WriteLine("generics = methodGenericsMapping,");
             }
 
+            if (this.methodGenerics != null)
+            {
+                providers.GenericsRegistry.ClearScope(GenericScope.MethodDeclaration);
+
+                foreach (var genericName in this.methodGenerics.GetNames())
+                {
+                    // TODO: Determine the correct object type for the generic.
+                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Method, genericObjects.First(t => t.Name == genericName), typeof(object));
+                }
+            }
 
             if (this.block != null)
             { 

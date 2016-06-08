@@ -1,6 +1,6 @@
 ﻿System.Int = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Double.__meta(staticValues);
-    local typeObject = System.Type('Int','System',baseTypeObject,0,nil,nil,interactionElement);
+    local typeObject = System.Type('Int','System',baseTypeObject,0,nil,nil,interactionElement,'Class',1056);
 
     local constructors = {
         {

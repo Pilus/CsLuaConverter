@@ -35,6 +35,12 @@
 
             this.elementVisitors.VisitAll(textWriter, providers, ", ");
             textWriter.Write("})");
+
+            if (providers.TypeKnowledgeRegistry.CurrentType.IsArray())
+            {
+                return;
+            }
+
             providers.TypeKnowledgeRegistry.CurrentType = providers.TypeKnowledgeRegistry.CurrentType.GetAsArrayType();
         }
     }

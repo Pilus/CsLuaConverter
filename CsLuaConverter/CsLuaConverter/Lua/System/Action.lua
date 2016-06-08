@@ -1,7 +1,7 @@
 ﻿
 System.Action = _M.NE({["#"] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Action','System',baseTypeObject,#(generics),generics,nil,interactionElement);
+    local typeObject = System.Type('Action','System',baseTypeObject,#(generics),generics,nil,interactionElement,'Class', 4393);
     
     local members = {
         
@@ -12,6 +12,8 @@ System.Action = _M.NE({["#"] = function(interactionElement, generics, staticValu
         memberType = 'Method',
         scope = 'Public',
         types = generics,
+        numMethodGenerics = 0,
+        signatureHash = _M.SH(unpack(generics)),
         func = function(element,...)
             (element[typeObject.level].innerAction % _M.DOT)(...);
         end,

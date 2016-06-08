@@ -26,41 +26,22 @@
 
             if (current == null)
             {
+                // TODO: Handle case where this.name refers to a method on the current element.
+
                 var type = providers.TypeProvider.LookupType(this.name);
                 textWriter.Write(type.FullNameWithoutGenerics);
 
-                var memberWithClassGenerics = this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
-                var memberWithMethodGenerics = memberWithClassGenerics.ApplyMethodGenerics(this.argumentListVisitor.GetTypes(providers));
-
-                providers.TypeKnowledgeRegistry.CurrentType = memberWithMethodGenerics;
+                this.WriteGenericTypes(textWriter, providers);
+                providers.TypeKnowledgeRegistry.CurrentType = this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
             }
             else
             {
-                var possibleMembers = current.GetTypeKnowledgeForSubElement(this.name, providers);
-                var numAppliedGenerics = this.argumentListVisitor.GetNumElements();
-                var fittingMembers = possibleMembers.Where(m => m.MethodGenerics?.Length == numAppliedGenerics).ToArray();
-
-                if (!fittingMembers.Any())
-                {
-                    throw new VisitorException("Could not find fitting member.");
-                }
-
+                providers.TypeKnowledgeRegistry.PossibleMethods = new PossibleMethods(current.GetTypeKnowledgeForSubElement(this.name, providers).OfType<MethodKnowledge>().ToArray());
+                providers.TypeKnowledgeRegistry.PossibleMethods.FilterOnNumberOfGenerics(this.argumentListVisitor.GetNumElements());
                 textWriter.Write(this.name);
-
-                var fittingMembersWithMethodGenericsApplied = fittingMembers.Select(m => m.ApplyMethodGenerics(this.argumentListVisitor.GetTypes(providers))).ToArray();
-
-                if (fittingMembersWithMethodGenericsApplied.Length == 1)
-                {
-                    providers.TypeKnowledgeRegistry.CurrentType = fittingMembersWithMethodGenericsApplied.Single();
-                }
-                else
-                {
-                    providers.TypeKnowledgeRegistry.PossibleMethods = fittingMembersWithMethodGenericsApplied;
-                    providers.TypeKnowledgeRegistry.CurrentType = null;
-                }
+                providers.TypeKnowledgeRegistry.PossibleMethods.WriteMethodGenerics = (() => this.WriteGenericTypes(textWriter, providers));
+                providers.TypeKnowledgeRegistry.PossibleMethods.MethodGenerics = this.argumentListVisitor.GetTypes(providers);
             }
-
-            this.WriteGenericTypes(textWriter, providers);
         }
 
         public string[] GetName()

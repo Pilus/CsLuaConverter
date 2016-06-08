@@ -1,5 +1,5 @@
 ﻿System.Predicate = _M.NE({["#"] = function(interactionElement, generics, staticValues)
-    local typeObject = System.Type('Predicate','System',System.Object.__typeof,#(generics),generics,nil,interactionElement);
+    local typeObject = System.Type('Predicate','System',System.Object.__typeof,#(generics),generics,nil,interactionElement,'Class',10325);
     local level = 2;
     local members = {
         
@@ -10,6 +10,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = generics,
+        numMethodGenerics = 0,
         returnType = System.Boolean.__typeof,
         func = function(element,...)
             return (element[typeObject.level].innerAction % _M.DOT)(...);

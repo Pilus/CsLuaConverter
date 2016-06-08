@@ -183,8 +183,6 @@
 
         private static void TestSelect()
         {
-            throw new TestIgnoredException();
-
             var a = new int[] { 2, 4, 8, 16, 32, 64 };
 
             var l1 = a.Select(v => v.ToString()).ToList();

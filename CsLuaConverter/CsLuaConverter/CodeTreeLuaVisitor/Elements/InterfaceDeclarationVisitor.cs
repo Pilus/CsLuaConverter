@@ -3,11 +3,14 @@
     using System.Linq;
     using Attribute;
     using CodeTree;
+    using Expression;
     using Filters;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
     using Providers.GenericsRegistry;
+    using Providers.TypeKnowledgeRegistry;
+    using Providers.TypeProvider;
 
     public class InterfaceDeclarationVisitor : BaseVisitor, IElementVisitor
     {
@@ -77,9 +80,13 @@
 
             var typeObject = providers.TypeProvider.LookupType(this.name);
 
-            textWriter.WriteLine(
-                "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Interface');",
+            providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(typeObject.TypeObject)));
+
+            textWriter.Write(
+                "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Interface',",
                 typeObject.Name, typeObject.Namespace, this.GetNumOfGenerics());
+            new TypeKnowledge(typeObject.TypeObject).WriteSignature(textWriter, providers);
+            textWriter.WriteLine(");");
 
             this.WriteImplements(textWriter, providers);
             this.WriteAttributes(textWriter, providers);
@@ -104,9 +111,12 @@
                 return;
             }
 
+            var classTypeResult = providers.TypeProvider.LookupType(this.name);
+            var generics = classTypeResult.TypeObject.GetGenericArguments();
+
             foreach (var genericName in this.genericsVisitor.GetNames())
             {
-                providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Class, typeof(object));
+                providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Class, generics.Single(t => t.Name == genericName), typeof(object));
             }
         }
 

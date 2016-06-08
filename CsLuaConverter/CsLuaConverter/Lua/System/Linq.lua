@@ -7,13 +7,14 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
     };
     
     local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Iterator','System.Linq', baseTypeObject,#(generics),generics,implements,interactionElement);
+    local typeObject = System.Type('Iterator','System.Linq', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',8425);
 
     _M.IM(members,'GetEnumerator',{
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
         types = {},
+        numMethodGenerics = 0,
         func = function(element)
             return element[typeObject.level]["Enumerator"];
         end,
@@ -23,6 +24,7 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
         level = typeObject.Level,
         memberType = 'Method',
         scope = 'Public',
+        numMethodGenerics = 0,
         types = {},
         func = function(element)
             return ((System.Collections.Generic.List % _M.DOT)[generics] % _M.DOT)(element[typeObject.level]["Enumerator"]);
@@ -54,7 +56,9 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
     return {
         {
             name = "Any",
-            types = {},
+            --types = {},
+            numMethodGenerics = 0,
+            signatureHash = 0,
             func = function(element)
                 for _,v in (element % _M.DOT).GetEnumerator() do
                     return true;
@@ -64,7 +68,9 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
         },
         {
             name = "Any",
-            types = {System.Func[{System.Boolean.__typeof}].__typeof},
+            --types = {System.Func[{System.Boolean.__typeof}].__typeof},
+            numMethodGenerics = 0,
+            signatureHash = 2*System.Func[{generics[1], System.Boolean.__typeof}].__typeof.signatureHash,
             func = function(element, predicate)
                 for _,v in (element % _M.DOT).GetEnumerator() do
                     if (predicate(v)) then
@@ -76,7 +82,9 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
         },
         {
             name = "Count",
-            types = {},
+            --types = {},
+            numMethodGenerics = 0,
+            signatureHash = 0,
             func = function(element)
                 local c = 0;
                 for _,v in (element % _M.DOT).GetEnumerator() do
@@ -87,7 +95,9 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
         },
         {
             name = "Where",
-            types = {System.Func[{generics[1], System.Boolean.__typeof}].__typeof},
+            --types = {System.Func[{generics[1], System.Boolean.__typeof}].__typeof},
+            numMethodGenerics = 0,
+            signatureHash = 2*System.Func[{generics[1], System.Boolean.__typeof}].__typeof.signatureHash,
             func = function(element, predicate)
                 local enumerator = (element % _M.DOT).GetEnumerator();
                 return System.Linq.Iterator[generics](function(_, prevKey)
@@ -103,19 +113,30 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
         },
         {
             name = "Select",
-            returnType = methodGenerics[methodGenericsMapping['T']],
+            --returnType = methodGenerics[methodGenericsMapping['T']],
             generics = methodGenericsMapping,
             --types = {System.Func[{generics[1], methodGenerics[methodGenericsMapping['T']]}].__typeof},
-            types = {System.Func[{generics[1], System.Object.__typeof}].__typeof},
-            func = function(element, predicate)
+            signatureHash = 2*1734*(2*generics[1].signatureHash + 3*1), -- Func<generic[T], TMethod>
+            numMethodGenerics = 1,
+            func = function(element, methodGenericsMapping, methodGenerics, predicate)
                 local enumerator = (element % _M.DOT).GetEnumerator();
-                return System.Linq.Iterator[generics](function(_, prevKey)
+                return System.Linq.Iterator[methodGenerics](function(_, prevKey)
                     local key, value = enumerator(_, prevKey);
                     if (key == nil) then
                         return nil;
                     end
-                    return key, predicate(value);
+                    return key, (predicate %_M.DOT)(value);
                 end);
+            end
+        },
+        {
+            name = "ToList",
+            numMethodGenerics = 0,
+            signatureHash = 0,
+            func = function(element, predicate)
+                local list = System.Collections.Generic.List[generics]();
+                (list % _M.DOT)["AddRange_M_0_"..(2*System.Collections.Generic.IEnumerable[generics].__typeof.signatureHash)](element);
+                return list;
             end
         },
     };

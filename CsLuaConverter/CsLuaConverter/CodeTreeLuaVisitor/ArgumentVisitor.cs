@@ -24,6 +24,11 @@
             return this.inner is ILambdaVisitor;
         }
 
+        public bool IsArgumentVisitorParenLambda()
+        {
+            return this.inner is ParenthesizedLambdaExpressionVisitor;
+        }
+
         public int? GetInputArgCountOfLambda()
         {
             var lambda = this.inner as ILambdaVisitor;

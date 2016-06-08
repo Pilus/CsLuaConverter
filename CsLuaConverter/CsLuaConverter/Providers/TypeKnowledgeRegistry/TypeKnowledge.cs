@@ -6,10 +6,11 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
+    using GenericsRegistry;
     using TypeProvider;
 
     [DebuggerDisplay("TypeKnowledge: {type}")]
-    public class TypeKnowledge
+    public class TypeKnowledge : IKnowledge
     {
         public static IProviders Providers;
         private readonly Type type;
@@ -18,17 +19,18 @@
         public TypeKnowledge(Type type, bool restrictToStatic = false)
         {
             this.type = type;
-
+            /*
             if (!this.type.IsGenericParameter) return;
 
-            var genericType = Providers.GenericsRegistry.GetGenericType(this.type.Name);
-            if (genericType == null)
+            var genericType = Providers.GenericsRegistry.GetType(this.type.Name);
+            var genericScope = Providers.GenericsRegistry.GetGenericScope(this.type.Name);
+            if (genericType == null || genericScope == GenericScope.MethodDeclaration)
             {
-                throw new Exception($"Could not find generic type for {this.type.Name}.");
+                return;
             }
 
             this.type = genericType;
-            this.restrictToStatic = restrictToStatic;
+            this.restrictToStatic = restrictToStatic; */
         }
 
         public TypeKnowledge(MemberInfo member, bool skipFirstInputArg = false)
@@ -37,18 +39,26 @@
 
             if (this.type.IsGenericParameter)
             {
-                this.type = Providers.GenericsRegistry.GetGenericType(this.type.Name);
+                this.type = Providers.GenericsRegistry.GetType(this.type.Name);
             }
         }
 
         public bool IsParams { get; set; }
         public Type[] MethodGenerics { get; private set; }
 
-        public TypeKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)
+        public string Name => this.type.Name.Split('`').First();
+
+        public bool IsGenericParameter => this.type.IsGenericParameter;
+
+        public bool IsGenericType => this.type?.IsGenericType ?? false;
+
+        public IKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)
         {
-            var members = this.GetMembers(str);
-            var extensions = providers.TypeProvider.GetExtensionMethods(this.type, str);
-            var membersIncludingExtensions = new []{ members, extensions}.SelectMany(v => v).GroupBy(v => v.type.ToString()).Select(g => g.First()).ToArray();
+            var type = this.type;
+
+            var members = GetMembers(type, this.restrictToStatic, str);
+            var extensions = providers.TypeProvider.GetExtensionMethods(type, str);
+            var membersIncludingExtensions = new []{ members, extensions}.SelectMany(v => v).ToArray();
             
             if (!membersIncludingExtensions.Any())
             {
@@ -58,22 +68,20 @@
             return membersIncludingExtensions;
         }
 
-        public TypeKnowledge[] GetConstructors()
+        public MethodKnowledge[] GetConstructors()
         {
             if (typeof(Delegate).IsAssignableFrom(this.type))
             {
-                var cstorType = typeof (Action<>).MakeGenericType(this.type);
-                return new[] {new TypeKnowledge(cstorType)};
+                return new[] {new MethodKnowledge(false, null, new Type[] {}, new [] { this.type}), new MethodKnowledge() };
             }
 
-            var cstors = GetMembersOfType(this.type, true) //this.type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic)
+            var cstors = GetMembersOfType(this.type, true, true) //this.type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(m => m.MemberType.Equals(MemberTypes.Constructor))
-                .Select(m => new TypeKnowledge(m))
-                .GroupBy(tk => tk.type)
-                .Select(group => group.First())
+                .OfType<MethodBase>()
+                .Select(m => new MethodKnowledge(m))
                 .ToArray();
 
-            return cstors.Length > 0 ? cstors : new[] {new TypeKnowledge(typeof (Action))};
+            return cstors.Length > 0 ? cstors : new[] {new MethodKnowledge()};
         }
 
         public TypeKnowledge GetEnumeratorType()
@@ -143,7 +151,8 @@
                 return new [] { new TypeKnowledge( this.type.GetElementType()) };
             }
 
-            return this.type.GetGenericArguments().Select(t => !t.IsGenericParameter || Providers.GenericsRegistry.IsGeneric(t.Name) ?  new TypeKnowledge(t) : null).ToArray();
+            //return this.type.GetGenericArguments().Select(t => !t.IsGenericParameter || Providers.GenericsRegistry.IsGeneric(t.Name) ?  new TypeKnowledge(t) : new TypeKnowledge(t.Name)).ToArray();
+            return this.type.GetGenericArguments().Select(t => new TypeKnowledge(t)).ToArray();
         }
 
         public TypeKnowledge CreateWithGenerics(TypeKnowledge[] generics)
@@ -156,11 +165,20 @@
             return this.type;
         }
 
-        private TypeKnowledge[] GetMembers(string name)
+        private static IKnowledge[] GetMembers(Type type, bool restrictToStatic, string name)
         {
-            var members = GetMembersOfType(this.type).Distinct().Where(e => e.Name == name && (this.restrictToStatic == false || IsMemberStatic(e)));
+            var members = GetMembersOfType(type).Distinct().Where(e => e.Name == name && (restrictToStatic == false || IsMemberStatic(e)));
 
-            return members.Select(m => new TypeKnowledge(m)).ToArray();
+            return members.Select<MemberInfo, IKnowledge>(m =>
+            {
+                var method = m as MethodBase;
+                if (method != null)
+                {
+                    return new MethodKnowledge(method);
+                }
+
+                return new TypeKnowledge(m);
+            }).ToArray();
         }
 
         private static bool IsMemberStatic(MemberInfo member)
@@ -171,7 +189,7 @@
             return method?.IsStatic ?? field?.IsStatic ?? false;
         }
 
-        private static IEnumerable<MemberInfo> GetMembersOfType(Type type, bool excludeBase = false)
+        private static IEnumerable<MemberInfo> GetMembersOfType(Type type, bool excludeBase = false, bool excludeStatic = false)
         {
             var all = new List<MemberInfo>();
 
@@ -184,15 +202,23 @@
             while (_base != null && excludeBase == false)
             {
                 all.AddRange(_base.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
-                all.AddRange(_base.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
-                all.AddRange(_base.GetMembers(BindingFlags.Public | BindingFlags.Static));
+                if (!excludeStatic)
+                { 
+                    all.AddRange(_base.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+                    all.AddRange(_base.GetMembers(BindingFlags.Public | BindingFlags.Static));
+                }
+
                 _base = _base.BaseType;
             }
 
             all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Instance));
             all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
-            all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Static));
-            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+
+            if (!excludeStatic)
+            {
+                all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Static));
+                all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+            }
 
             return all;
         }
@@ -274,6 +300,11 @@
             var lastParameter = mi.GetParameters().LastOrDefault();
 
             return lastParameter?.GetCustomAttributes(typeof(ParamArrayAttribute), false).Any() ?? false;
+        }
+
+        public bool IsArray()
+        {
+            return this.type.IsArray;
         }
     }
 }

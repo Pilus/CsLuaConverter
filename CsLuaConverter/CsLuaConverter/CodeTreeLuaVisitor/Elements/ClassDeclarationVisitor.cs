@@ -5,6 +5,7 @@
     using Attribute;
     using CodeTree;
     using CsLuaFramework;
+    using Expression;
     using Filters;
     using Lists;
     using Member;
@@ -148,9 +149,11 @@
         private void WriteTypeGeneration(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var typeObject = providers.TypeProvider.LookupType(this.name);
-            textWriter.WriteLine(
-                "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement);",
+            textWriter.Write(
+                "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Class', ",
                 typeObject.Name, typeObject.Namespace, this.genericsVisitor?.GetNumElements() ?? 0);
+            new TypeKnowledge(typeObject.TypeObject).WriteSignature(textWriter, providers);
+            textWriter.WriteLine(");");
         }
 
         private void WriteBaseInheritance(IIndentedTextWriterWrapper textWriter, IProviders providers)
@@ -374,10 +377,14 @@
                 return;
             }
 
+            var classTypeResult = providers.TypeProvider.LookupType(this.name);
+            var generics = classTypeResult.TypeObject.GetGenericArguments();
+
             foreach (var genericName in this.genericsVisitor.GetNames())
             {
                 // TODO: Determine the correct object type for the generic.
-                providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Class, typeof(object));
+                
+                providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Class, generics.Single(t => t.Name == genericName), typeof(object));
             }
         }
     }

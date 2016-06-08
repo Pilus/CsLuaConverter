@@ -91,6 +91,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\LessThanExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ConditionalExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\ILambdaVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\MethodSignatureExtensions.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\BaseConstructorInitializerVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\EnumMemberDeclarationVisitor.cs" />
@@ -216,7 +217,10 @@
     <Compile Include="Providers\NameProvider\NameProvider.cs" />
     <Compile Include="Providers\ProviderException.cs" />
     <Compile Include="Providers\Providers.cs" />
+    <Compile Include="Providers\TypeKnowledgeRegistry\IKnowledge.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\ITypeKnowledgeRegistry.cs" />
+    <Compile Include="Providers\TypeKnowledgeRegistry\MethodKnowledge.cs" />
+    <Compile Include="Providers\TypeKnowledgeRegistry\PossibleMethods.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\TypeKnowledge.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\TypeKnowledgeRegistry.cs" />
     <Compile Include="Providers\TypeProvider\ActionFuncTypes.cs" />

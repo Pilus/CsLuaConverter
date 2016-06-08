@@ -70,10 +70,24 @@ local InteractionElement = function(metaProvider, generics, selfObj)
 
     local cachedMembers = nil;
 
+    local filterMethodSignature = function(key)
+        local methodMetaIndex = type(key) == "string" and string.find(key, "_M_") or nil;
+        if (methodMetaIndex) then
+            local newKey = string.sub(key, 0, methodMetaIndex-1);
+            local indexType, numGenerics, hash = string.split("_", string.sub(key, methodMetaIndex+1));
+            return newKey, indexType, tonumber(numGenerics), tonumber(hash);
+        end
+
+        return key;
+    end
+
     local getMembers = function(key, level, staticOnly)
         if not(cachedMembers) then
             cachedMembers = _M.RTEF(memberProvider);
         end
+
+        local indexType, numGenerics, hash;
+        key, indexType, numGenerics, hash = filterMethodSignature(key);
 
         return where(cachedMembers[key] or {}, function(member)
             assert(member.memberType, "Member without member type in "..typeObject.FullName..". Key: "..key.." Level: "..tostring(member.level));
@@ -85,11 +99,13 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             local typeLevel = typeObject.level;
 
             return (not(staticOnly) or static) and
-            (
-                (levelProvided and memberLevel <= level) or
-                (not(levelProvided) and (public or protected) and memberLevel <= typeLevel) or
-                (not(levelProvided) and not(public or protected) and memberLevel == typeLevel)
-            );
+                (numGenerics == nil or numGenerics == member.numMethodGenerics) and
+                (hash == nil or hash == member.signatureHash) and
+                (
+                    (levelProvided and memberLevel <= level) or
+                    (not(levelProvided) and (public or protected) and memberLevel <= typeLevel) or
+                    (not(levelProvided) and not(public or protected) and memberLevel == typeLevel)
+                );
         end);
     end
 
@@ -112,7 +128,14 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             extensions = getExtensions();
         end
 
-        return where(extensions, function(ext) return ext.name == key; end);
+        local indexType, numGenerics, hash;
+        key, indexType, numGenerics, hash = filterMethodSignature(key);
+
+        return where(extensions, function(ext) 
+            return ext.name == key and
+                (numGenerics == nil or numGenerics == ext.numMethodGenerics) and
+                (hash == nil or hash == ext.signatureHash); 
+            end);
     end
 
     local matchesAll = function(t1, t2)
@@ -158,34 +181,22 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         
         fittingMembers = orderByLevel(fittingMembers);
 
-        local skippedMembers = {};
-        local acceptedMembers = {};
+        local result = {};
 
         for i,member in ipairs(fittingMembers) do
-            if not(acceptedMembers[i]) and not(skippedMembers[i]) then
-                acceptedMembers[i] = true;
-                if member.override then
-                    for j,otherMember in ipairs(fittingMembers) do
-                        if not(j == i) and matchesAll(member.types, otherMember.types) then
-                            if member.level > otherMember.level then
-                                acceptedMembers[i] = true;
-                                skippedMembers[j] = true;
-                                acceptedMembers[j] = false;
-                            else
-                                acceptedMembers[j] = true;
-                                skippedMembers[i] = true;
-                                acceptedMembers[i] = false;
-                            end
-                        end
-                    end
+            local accepted = true;
+            for j,otherMember in ipairs(fittingMembers) do
+                if not(i == j) and
+                    member.signatureHash == otherMember.signatureHash and
+                    member.numMethodGenerics == otherMember.numMethodGenerics and
+                    member.level < otherMember.level
+                then
+                    accepted = false;
                 end
             end
-        end
 
-        local result = {};
-        for i,v in pairs(acceptedMembers) do
-            if v then
-                table.insert(result, fittingMembers[i]);
+            if accepted then
+                table.insert(result, member);
             end
         end
 
@@ -223,32 +234,38 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             assert(type(fittingMembers[i].memberType) == "string", "Missing member type on member. Object: "..typeObject.FullName..". Key: "..tostring(key).." Level: "..tostring(level).." Member #: "..tostring(i))
         end
 
-        if fittingMembers[1].memberType == "Field" or fittingMembers[1].memberType == "AutoProperty" then
-            expectOneMember(fittingMembers, key);
+        if (#(fittingMembers) > 1) then
+            local nonMethodMembers = where(fittingMembers, function(m) return not(m.memberType == "Method"); end)
+            if #(nonMethodMembers) > 0 then
+                fittingMembers = nonMethodMembers;
+            end
+        end
 
-            if fittingMembers[1].static then
-                return staticValues[fittingMembers[1].level][key];
+        expectOneMember(fittingMembers, key);
+        local member = fittingMembers[1];
+
+        if member.memberType == "Field" or member.memberType == "AutoProperty" then
+            if member.static then
+                return staticValues[member.level][key];
             end
 
-            return self[fittingMembers[1].level][key];
+            return self[member.level][key];
         end
 
-        if fittingMembers[1].memberType == "Indexer" then
-            expectOneMember(fittingMembers, "#");
-
-            if (fittingMembers[1].get) then
-                return fittingMembers[1].get(self, key);
+        if member.memberType == "Indexer" then
+            if (member.get) then
+                return member.get(self, key);
             end
 
-            return self[fittingMembers[1].level][key];
+            return self[member.level][key];
         end
 
-        if fittingMembers[1].memberType == "Method" then
-            return _M.GM(fittingMembers, self, key);
+        if member.memberType == "Method" then
+            return _M.GM(member, self, key);
         end
 
-        if fittingMembers[1].memberType == "Property" then
-            return fittingMembers[1].get(self);
+        if member.memberType == "Property" then
+            return member.get(self);
         end
 
         error("Could not handle member (get). Object: "..typeObject.FullName.." Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key));
@@ -353,12 +370,13 @@ local InteractionElement = function(metaProvider, generics, selfObj)
                 error("Could not find static member. Key: "..tostring(key)..". Object: "..typeObject.FullName);
             end
 
-            if (fittingMembers[1].memberType == "Method") then
-                return _M.GM(fittingMembers, staticValues, key);
-            end
-
             expectOneMember(fittingMembers, key);
+
             local member = fittingMembers[1];
+
+            if (member.memberType == "Method") then
+                return _M.GM(member, staticValues, key);
+            end
 
             if member.memberType == "Property" then
                 return member.get(staticValues);

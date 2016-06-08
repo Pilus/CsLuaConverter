@@ -2,10 +2,12 @@
 {
     using System.Linq;
     using CodeTree;
+    using Expression;
     using Filters;
     using Member;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.TypeKnowledgeRegistry;
 
     public class EnumDeclarationVisitor : BaseVisitor, IElementVisitor
     {
@@ -34,7 +36,9 @@
             textWriter.WriteLine("");
 
             var type = providers.TypeProvider.LookupType(this.name);
-            textWriter.WriteLine($"}},'{this.name}','{type.Namespace}'),");
+            textWriter.Write($"}},'{this.name}','{type.Namespace}',");
+            new TypeKnowledge(type.TypeObject).WriteSignature(textWriter, providers);
+            textWriter.WriteLine("),");
         }
 
         public string GetName()

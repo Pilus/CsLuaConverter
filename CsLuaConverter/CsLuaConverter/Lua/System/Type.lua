@@ -112,6 +112,8 @@ local meta = {
             return self.namespace .. "." .. self.name .. generic;
         elseif index == "IsEnum" then
             return self.catagory == "Enum";
+        elseif index == "IsArray" then
+            return self.name == "Array" and self.namespace == "System";
         elseif index == "type" then
             return typeType;
         elseif index == "GetGenericArguments" then
@@ -141,8 +143,7 @@ end
 
 local typeCache = {};
 
-
-local typeCall = function(name, namespace, baseType, numberOfGenerics, generics, implements, interactionElement, catagory)
+local typeCall = function(name, namespace, baseType, numberOfGenerics, generics, implements, interactionElement, catagory, signatureHash)
     assert(interactionElement, "Type cannot be created without an interactionElement.");
 
     catagory = catagory or "Class";
@@ -166,6 +167,9 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
     self.implements = implements;
     self.interactionElement = interactionElement;
     self.interactionElement.__typeof = self;
+    local genericHash = _M.SH(unpack(generics or {}));
+    if genericHash == 0 then genericHash = 1; end;
+    self.signatureHash = signatureHash*genericHash;
     
     
     setmetatable(self, meta);
@@ -178,7 +182,7 @@ GetTypeFromHash = function(hash)
 end
 
 --objectType = typeCall("Object", "System"); -- TODO: Initialize in a way that does not require the type cache
-typeType = typeCall("Type", "System", nil, 0, nil, nil, {});
+typeType = typeCall("Type", "System", nil, 0, nil, nil, {}, 'Class', 1798);
 
 local meta = {
     __typeof = typeType,

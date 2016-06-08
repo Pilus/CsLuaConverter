@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Runtime.CompilerServices;
     using TypeKnowledgeRegistry;
 
@@ -49,12 +50,12 @@
             return null;
         }
 
-        public TypeKnowledge[] GetExtensionMethods(Type type, string name)
+        public MethodKnowledge[] GetExtensionMethods(Type type, string name)
         {
-            return !this.ExtensionMethods.ContainsKey(name) ? new TypeKnowledge[] {} :
+            return !this.ExtensionMethods.ContainsKey(name) ? new MethodKnowledge[] {} :
             this.ExtensionMethods[name]
                 .Where(extension => GetMatchingType(extension.Item1, type) != null)
-                .Select(v => v.Item2.GetTypeKnowledgeOnExtensionOfType(type)).ToArray();
+                .Select(v => v.Item2.GetKnowledgeOnExtensionOfType(type)).ToArray();
         }
 
         private static Type GetMatchingType(Type extensionType, Type type)

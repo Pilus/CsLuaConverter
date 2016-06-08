@@ -3,7 +3,7 @@ CsLuaFramework.Wrapping.MultipleValues = _M.NE({['#'] = function(interactionElem
     local implements = {
         CsLuaFramework.Wrapping.IMultipleValues[generics].__typeof,
     };
-    local typeObject = System.Type('MultipleValues','CsLuaFramework.Wrapping',baseTypeObject,#(generics),generics,implements,interactionElement);
+    local typeObject = System.Type('MultipleValues','CsLuaFramework.Wrapping',baseTypeObject,#(generics),generics,implements,interactionElement, "Class", 29777);
     
     for i=1,#(generics) do
         _M.IM(members,'Value'..i,{
