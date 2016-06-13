@@ -19,6 +19,7 @@
             this.Tests["NonStaticClassWithStaticMethod"] = NonStaticClassWithStaticMethod;
             this.Tests["TestClassReferencingSelfInMethod"] = TestClassReferencingSelfInMethod;
             this.Tests["TestPartialClasses"] = TestPartialClasses;
+            this.Tests["TestIndexerInClass"] = TestIndexerInClass; 
         }
 
         private static void NonStaticClassWithStaticMethod()
@@ -148,6 +149,17 @@
             Assert(1, pClass.MethodA());
             Assert(2, pClass.MethodB());
             Assert(3, pClass.MethodC());
+        }
+
+        public static void TestIndexerInClass()
+        {
+            var c1 = new ClassWithIndexer();
+
+            Assert("GetAtIndexTest1", c1["Test1"]);
+
+            c1["Test2"] = "TheValue";
+
+            Assert("SetAtIndexTest2IsTheValue", c1.Set);
         }
     }
 }

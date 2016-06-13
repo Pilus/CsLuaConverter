@@ -23,6 +23,7 @@
         private BaseListVisitor baseListVisitor;
         private FieldDeclarationVisitor[] fieldVisitors;
         private PropertyDeclarationVisitor[] propertyVisitors;
+        private IndexerDeclarationVisitor[] indexerVisitors;
         private AttributeListVisitor attributeListVisitor;
         private ConstructorDeclarationVisitor[] constructorVisitors;
         private MethodDeclarationVisitor[] methodVisitors;
@@ -49,6 +50,10 @@
             this.propertyVisitors =
                 this.CreateVisitors(new KindFilter(SyntaxKind.PropertyDeclaration))
                     .Select(v => (PropertyDeclarationVisitor)v)
+                    .ToArray();
+            this.indexerVisitors =
+                this.CreateVisitors(new KindFilter(SyntaxKind.IndexerDeclaration))
+                    .Select(v => (IndexerDeclarationVisitor)v)
                     .ToArray();
             this.attributeListVisitor =
                 this.CreateVisitors(new KindFilter(SyntaxKind.AttributeList))
@@ -286,6 +291,7 @@
 
             this.fieldVisitors.VisitAll(textWriter, providers);
             this.propertyVisitors.VisitAll(textWriter, providers);
+            this.indexerVisitors.VisitAll(textWriter, providers);
             this.methodVisitors.VisitAll(textWriter, providers);
 
             providers.NameProvider.SetScope(scope);
