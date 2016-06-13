@@ -29,6 +29,7 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.initialVisitor.Visit(textWriter, providers);
+            textWriter.WriteLine(";");
             textWriter.Write("while (");
             this.conditionVisitor.Visit(textWriter, providers);
             textWriter.WriteLine(") do");
@@ -36,6 +37,7 @@
             this.bodyVisitor.Visit(textWriter, providers);
             this.increamentVisitor.Visit(textWriter, providers);
             providers.TypeKnowledgeRegistry.CurrentType = null;
+            textWriter.WriteLine(";");
             textWriter.WriteLine("end");
         }
     }

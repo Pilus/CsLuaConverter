@@ -33,7 +33,7 @@
 
             var c3 = 0;
 
-            for (List<int> i = new List<int>() {7, 9, 13}; i.Count > 0; i.Remove(0))
+            for (List<int> i = new List<int>() {7, 9, 13}; i.Count > 0; i.RemoveAt(0))
             {
                 c3 = c3 + 1;
             }

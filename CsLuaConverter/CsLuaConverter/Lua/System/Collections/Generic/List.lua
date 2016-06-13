@@ -431,6 +431,22 @@
         end,
     });
 
+    _M.IM(members,'RemoveAt',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        numMethodGenerics = 0,
+        signatureHash = 3926,
+        func = function(element, index)
+            ThrowIfIndexNotNumber(element, index);
+            ThrowIfOutOfRange(element, index);
+            local count = getCount(element);
+            for i = index, count do
+                element[typeObject.level][i] = element[typeObject.level][i+1];
+            end
+        end,
+    });
+
     local constructors = {
         {
             types = {},
