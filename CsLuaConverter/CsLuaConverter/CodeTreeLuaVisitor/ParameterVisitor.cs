@@ -40,6 +40,7 @@
             }
 
             providers.NameProvider.AddToScope(new ScopeElement(this.name, this.type?.GetType(providers) ?? providers.TypeKnowledgeRegistry.CurrentType ?? providers.TypeKnowledgeRegistry.ExpectedType));
+            providers.TypeKnowledgeRegistry.CurrentType = null;
         }
 
         public void WriteAsTypes(IIndentedTextWriterWrapper textWriter, IProviders providers)

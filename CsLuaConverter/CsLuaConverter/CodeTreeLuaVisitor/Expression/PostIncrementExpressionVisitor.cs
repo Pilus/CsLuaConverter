@@ -23,6 +23,8 @@
             providers.TypeKnowledgeRegistry.CurrentType = currentType;
             this.target.Visit(textWriter, providers);
             textWriter.Write(" + 1");
+
+            providers.TypeKnowledgeRegistry.CurrentType = null;
         }
     }
 }

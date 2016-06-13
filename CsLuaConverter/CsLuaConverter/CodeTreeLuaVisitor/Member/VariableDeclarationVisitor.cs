@@ -30,6 +30,7 @@
             this.declaratorVisitor.Visit(textWriter, providers);
 
             providers.NameProvider.AddToScope(new ScopeElement(this.declaratorVisitor.GetName(), type ?? providers.TypeKnowledgeRegistry.CurrentType));
+            providers.TypeKnowledgeRegistry.CurrentType = null;
         }
 
         public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IProviders providers)

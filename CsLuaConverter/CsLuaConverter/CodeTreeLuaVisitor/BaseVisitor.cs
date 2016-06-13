@@ -63,7 +63,7 @@
         {
             if (!kinds.Contains(this.Branch.Nodes[index].Kind))
             {
-                throw new VisitorException($"Expected kind {string.Join(", ", kinds)} at index {index}. Got {this.Branch.Nodes[index].Kind}.");
+                throw new VisitorException($"In {this.Branch.Kind}: Expected kind {string.Join(", ", kinds)} at index {index}. Got {this.Branch.Nodes[index].Kind}.");
             }
         }
 

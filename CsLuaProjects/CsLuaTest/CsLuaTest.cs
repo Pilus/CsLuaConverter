@@ -16,6 +16,7 @@ namespace CsLuaTest
     using Override;
     using Params;
     using Serialization;
+    using Statements;
     using Static;
     using StringExtensions;
     using TryCatchFinally;
@@ -47,6 +48,7 @@ namespace CsLuaTest
                 new ActionsFunctionsTests(),
                 new WrapTests(),
                 new CollectionsTests(),
+                new StatementsTests(),
             };
 
             tests.ForEach(test => test.PerformTests(new IndentedLineWriter()));

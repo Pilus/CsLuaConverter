@@ -18,6 +18,7 @@
 
         public Dictionary<string, Action<IIndentedTextWriterWrapper>> CreateNamespaceBasedVisitorActions(CodeTreeBranch[] treeRoots)
         {
+            BaseVisitor.LockVisitorCreation = false;
             treeRoots = treeRoots.SelectMany(SeperateCodeElements).ToArray();
             var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree)).ToArray();
             BaseVisitor.LockVisitorCreation = true;

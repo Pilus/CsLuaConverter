@@ -95,6 +95,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\BaseConstructorInitializerVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\EnumMemberDeclarationVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Member\IndexerDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\BreakStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\LiteralVisitorBase.cs" />
@@ -141,11 +142,14 @@
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ElseClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\FinallyClauseVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Statement\ForStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\Switch\CaseSwitchLabelVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\Switch\DefaultSwitchLabelVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\Switch\ISwitchLabelVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\Switch\SwitchSectionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ThrowStatementVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Statement\WhileStatementVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Type\NullableTypeVisitor.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="IIndentedTextWriterWrapper.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorListVisitor.cs" />

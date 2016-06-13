@@ -25,6 +25,8 @@
             this.lhs.Visit(textWriter, providers);
             textWriter.Write(" - ");
             this.rhs.Visit(textWriter, providers);
+
+            providers.TypeKnowledgeRegistry.CurrentType = null;
         }
     }
 }

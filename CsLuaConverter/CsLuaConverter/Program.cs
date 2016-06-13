@@ -23,6 +23,11 @@
                     converter.ConvertAsync(args[0], args[1]).Wait();
                     return 0;
                 }
+                catch (AggregateException exception)
+                {
+                    Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "Exception: {0}", exception.InnerException.Message));
+                    return -1;
+                }
                 catch (Exception exception)
                 {
                     Console.WriteLine(string.Format(CultureInfo.InvariantCulture, "Exception: {0}", exception.Message));
