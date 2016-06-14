@@ -7,6 +7,7 @@
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
+    using Providers.TypeProvider;
     using Type;
 
     public class IndexerDeclarationVisitor : BaseVisitor
@@ -40,7 +41,30 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            throw new System.NotImplementedException();
+
+            if (this.accessorList.IsAutoProperty())
+            {
+                // indexer assessors must declare a body. Ignore the cases of abstact
+                return;
+            }
+
+            textWriter.WriteLine("_M.IM(members,'#',{");
+            textWriter.Indent++;
+            textWriter.WriteLine("level = typeObject.Level,");
+            textWriter.WriteLine("memberType = 'Indexer',");
+            textWriter.WriteLine($"scope = '{this.scope}',");
+
+            var scope = providers.NameProvider.CloneScope();
+
+            var indexerParameter = this.indexerParameter.GetName();
+            this.accessorList.SetAdditionalParameters("," + indexerParameter, "," + indexerParameter);
+            providers.NameProvider.AddToScope(new ScopeElement(indexerParameter, providers.TypeKnowledgeRegistry.CurrentType));
+            this.accessorList.Visit(textWriter, providers);
+
+            providers.NameProvider.SetScope(scope);
+
+            textWriter.Indent--;
+            textWriter.WriteLine("});");
         }
     }
 }

@@ -9,6 +9,9 @@
     public class GetAccessorDeclarationVisitor : BaseVisitor, IAccessor
     {
         private readonly BlockVisitor block;
+
+        public string AdditionalParameters = string.Empty;
+
         public GetAccessorDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
             var accessor = new KindRangeFilter(null, SyntaxKind.GetKeyword).Filter(this.Branch.Nodes).ToArray();
@@ -26,7 +29,7 @@
                 return;
             }
 
-            textWriter.WriteLine("get = function(element)");
+            textWriter.WriteLine($"get = function(element{this.AdditionalParameters})");
             this.block.Visit(textWriter, providers);
             textWriter.WriteLine("end,");
         }

@@ -28,5 +28,11 @@
         {
             return (this.getVisitor?.IsAutoProperty() ?? false) && (this.setVisitor == null || this.setVisitor.IsAutoProperty());
         }
+
+        public void SetAdditionalParameters(string getParameters, string setParameters)
+        {
+            this.getVisitor.AdditionalParameters = getParameters;
+            this.setVisitor.AdditionalParameters = setParameters;
+        }
     }
 }

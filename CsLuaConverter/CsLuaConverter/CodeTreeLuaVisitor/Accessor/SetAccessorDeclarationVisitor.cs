@@ -10,6 +10,9 @@
     public class SetAccessorDeclarationVisitor : BaseVisitor, IAccessor
     {
         private readonly BlockVisitor block;
+
+        public string AdditionalParameters = string.Empty;
+
         public SetAccessorDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
             var accessor = new KindRangeFilter(null, SyntaxKind.SetKeyword).Filter(this.Branch.Nodes).ToArray();
@@ -29,7 +32,7 @@
 
             var scope = providers.NameProvider.CloneScope();
             providers.NameProvider.AddToScope(new ScopeElement("value", providers.TypeKnowledgeRegistry.CurrentType));
-            textWriter.WriteLine("set = function(element, value)");
+            textWriter.WriteLine($"set = function(element{this.AdditionalParameters} , value)");
             this.block.Visit(textWriter, providers);
             textWriter.WriteLine("end,");
             providers.NameProvider.SetScope(scope);
