@@ -42,11 +42,7 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
 
-            if (this.accessorList.IsAutoProperty())
-            {
-                // indexer assessors must declare a body. Ignore the cases of abstact
-                return;
-            }
+            
 
             textWriter.WriteLine("_M.IM(members,'#',{");
             textWriter.Indent++;
@@ -54,14 +50,24 @@
             textWriter.WriteLine("memberType = 'Indexer',");
             textWriter.WriteLine($"scope = '{this.scope}',");
 
-            var scope = providers.NameProvider.CloneScope();
+            if (!this.accessorList.IsAutoProperty())
+            {
+                var scope = providers.NameProvider.CloneScope();
 
-            var indexerParameter = this.indexerParameter.GetName();
-            this.accessorList.SetAdditionalParameters("," + indexerParameter, "," + indexerParameter);
-            providers.NameProvider.AddToScope(new ScopeElement(indexerParameter, providers.TypeKnowledgeRegistry.CurrentType));
-            this.accessorList.Visit(textWriter, providers);
+                var indexerParameter = this.indexerParameter.GetName();
+                this.accessorList.SetAdditionalParameters("," + indexerParameter, "," + indexerParameter);
+                providers.NameProvider.AddToScope(new ScopeElement(indexerParameter,
+                    providers.TypeKnowledgeRegistry.CurrentType));
+                this.accessorList.Visit(textWriter, providers);
 
-            providers.NameProvider.SetScope(scope);
+                providers.NameProvider.SetScope(scope);
+            }
+            else
+            {
+                textWriter.Write("returnType = ");
+                this.indexerParameter.WriteAsTypes(textWriter, providers);
+                textWriter.WriteLine(",");
+            }
 
             textWriter.Indent--;
             textWriter.WriteLine("});");

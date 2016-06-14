@@ -121,6 +121,14 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
                     end
                     return wrap(member.returnType, element[typeObject.level].typeTranslator, element[typeObject.level].luaTable[name](unpack(args)));
                 end;
+            elseif member.memberType == "Indexer" then
+                m.memberType = "Indexer";
+                m.get = function(element, key)
+                    return wrap(member.returnType, element[typeObject.level].typeTranslator, element[typeObject.level].luaTable[key]);
+                end;
+                m.set = function(element, key, value)
+                    element[typeObject.level].luaTable[key] = unwrap(value);
+                end;
             end
 
             _M.IM(members, name, m);

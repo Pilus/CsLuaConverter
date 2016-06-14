@@ -21,6 +21,7 @@
             this.Tests["WrapWithTargetTypeTranslation"] = WrapWithTargetTypeTranslation;
             this.Tests["NonWrappedAsPropertyInWrappedObject"] = NonWrappedAsPropertyInWrappedObject;
             this.Tests["WrappedObjectWithPartialInterface"] = WrappedObjectWithPartialInterface;
+            this.Tests["WrappedObjectWithInterfaceWithIndexer"] = WrappedObjectWithInterfaceWithIndexer; 
         }
 
 
@@ -265,6 +266,27 @@
 
             Assert("MA", obj.MethodA());
             Assert("MB", obj.MethodB());
+        }
+
+        public static void WrappedObjectWithInterfaceWithIndexer()
+        {
+            if (!Environment.IsExecutingAsLua)
+            {
+                return;
+            }
+
+            Environment.ExecuteLuaCode(@"
+                P = { Value1 = 'V1' };
+            ");
+            var wrapper = new Wrapper();
+
+            var obj = wrapper.Wrap<IInterfaceWithIndexer>("P");
+
+            Assert("V1", obj["Value1"]);
+
+            obj["Value2"] = "V2";
+
+            Assert("V2", obj["Value2"]);
         }
     }
 }
