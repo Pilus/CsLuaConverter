@@ -1,4 +1,4 @@
-﻿namespace CsLuaTest.General
+﻿namespace CsLuaTest.Statements
 {
     public static class ClassWithSwitch
     {

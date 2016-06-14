@@ -9,6 +9,7 @@
         {
             this.Name = "Statement";
             this.Tests["ForStatementTest"] = ForStatementTest;
+            this.Tests["TestSwitch"] = TestSwitch;
         }
 
         private static void ForStatementTest()
@@ -39,6 +40,20 @@
             }
 
             Assert(3, c3);
+        }
+
+        private static void TestSwitch()
+        {
+            Assert(1, ClassWithSwitch.Switch("a"));
+            Assert(2, ClassWithSwitch.Switch("b"));
+            Assert(3, ClassWithSwitch.Switch("c"));
+            Assert(4, ClassWithSwitch.Switch("d"));
+            Assert(5, ClassWithSwitch.Switch("e"));
+            Assert(5, ClassWithSwitch.Switch("f"));
+            Assert(6, ClassWithSwitch.Switch("g"));
+            Assert(6, ClassWithSwitch.Switch("XX"));
+
+            Assert(0, ClassWithSwitch.Switch2("XX"));
         }
     }
 }
