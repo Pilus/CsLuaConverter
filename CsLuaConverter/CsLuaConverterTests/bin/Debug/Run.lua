@@ -113,7 +113,29 @@ bit = {
         end
 
         return getValueFromBitTable(t);
-    end
+    end,
+    bor = function(a,b)
+        local ta = getBitTable(a);
+        local tb = getBitTable(b);
+        local t = {};
+
+        for i = 1,bitLimit,1 do
+            t[i] = ta[i] or tb[i];
+        end
+
+        return getValueFromBitTable(t);
+    end,
+    bxor = function(a,b)
+        local ta = getBitTable(a);
+        local tb = getBitTable(b);
+        local t = {};
+
+        for i = 1,bitLimit,1 do
+            t[i] = (ta[i] or tb[i]) and not(ta[i] and tb[i]);
+        end
+
+        return getValueFromBitTable(t);
+    end,
 };
 
 dofile("CsLuaTest.lua");

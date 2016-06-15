@@ -15,6 +15,8 @@
             new Regex(@"Keyword$"),
             new Regex(@"Trivia$"),
             new Regex(@"UsingStatement"), // Using is being handled inside the file or namespace visitors and does not need a separate visitor.
+            new Regex(@"Cref"),
+            new Regex(@"^Xml"),
         };
 
         [TestMethod]
