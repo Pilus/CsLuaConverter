@@ -37,7 +37,7 @@
             if (entity == null)
             {
                 throw new EntityStorageException("Could not find the tracked entity to remove.");
-            };
+            }
 
             this.trackedEntities.Remove(entity);
             this.SaveTrackedEntities();

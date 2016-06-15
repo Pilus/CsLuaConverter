@@ -152,6 +152,7 @@
     <Compile Include="CodeTreeLuaVisitor\Accessor\GetAccessorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ElseClauseVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Statement\EmptyStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\FinallyClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ForStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\Switch\CaseSwitchLabelVisitor.cs" />
