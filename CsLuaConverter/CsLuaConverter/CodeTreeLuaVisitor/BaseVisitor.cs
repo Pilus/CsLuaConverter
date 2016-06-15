@@ -106,7 +106,14 @@
 
             try
             {
-                return type.GetConstructors().Single().Invoke(new object[] { branch }) as BaseVisitor;
+                var constructor = type.GetConstructors().SingleOrDefault();
+
+                if (constructor == null)
+                {
+                    throw new VisitorException($"Visitor for kind: {branch.Kind} does not implemet any constructors");
+                }
+
+                return constructor.Invoke(new object[] { branch }) as BaseVisitor;
             }
             catch (TargetInvocationException ex)
             {

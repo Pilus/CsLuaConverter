@@ -71,4 +71,71 @@ Lua.Strings.format = function(str,...)
     return string.format(str,...)
 end
 
+local bitLimit = 32;
+function getBitTable(value)
+    local t = {};
+    for i = bitLimit,1,-1 do
+        local c = math.pow(2, i);
+        t[i] = value >= c/2;
+
+        if t[i] then
+            value = value - c/2;
+        end
+    end
+    return t;
+end
+
+function getValueFromBitTable(t)
+    local value = 0;
+    for i = 1,bitLimit,1 do
+        local c = math.pow(2, i);
+        if t[i] then
+            value = value + c/2;
+        end
+    end
+    return value;
+end
+
+bit = {
+    lshift = function(a,b)
+        return a*math.pow(2, b);
+    end,
+    rshift = function(a,b)
+        return math.floor(a/math.pow(2, b));
+    end,
+    band = function(a,b)
+        local ta = getBitTable(a);
+        local tb = getBitTable(b);
+        local t = {};
+
+        for i = 1,bitLimit,1 do
+            t[i] = ta[i] and tb[i];
+        end
+
+        return getValueFromBitTable(t);
+    end,
+    bor = function(a,b)
+        local ta = getBitTable(a);
+        local tb = getBitTable(b);
+        local t = {};
+
+        for i = 1,bitLimit,1 do
+            t[i] = ta[i] or tb[i];
+        end
+
+        return getValueFromBitTable(t);
+    end,
+    bxor = function(a,b)
+        local ta = getBitTable(a);
+        local tb = getBitTable(b);
+        local t = {};
+
+        for i = 1,bitLimit,1 do
+            t[i] = (ta[i] or tb[i]) and not(ta[i] and tb[i]);
+        end
+
+        return getValueFromBitTable(t);
+    end,
+};
+
 dofile("CsLuaTest.lua");

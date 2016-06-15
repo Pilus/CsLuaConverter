@@ -9,6 +9,7 @@ namespace CsLuaTest
     using CsLuaFramework;
     using CsLuaFramework.Attributes;
     using DefaultValues;
+    using Expressions;
     using General;
     using Generics;
     using Interfaces;
@@ -37,6 +38,7 @@ namespace CsLuaTest
                 new AmbigousMethodsTests(),
                 new OverrideTest(),
                 new StaticTests(),
+                new ExpressionsTests(),
                 new TypeMethodsTests(),
                 new GenericsTests(),
                 new DefaultValuesTests(),
