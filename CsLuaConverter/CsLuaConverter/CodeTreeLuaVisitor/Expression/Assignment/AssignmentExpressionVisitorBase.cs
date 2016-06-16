@@ -1,17 +1,23 @@
-﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
+﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Assignment
 {
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
 
-    public class SubtractAssignmentExpressionVisitor : BaseVisitor
+    public class AssignmentExpressionVisitorBase : BaseVisitor
     {
         private readonly BaseVisitor lhs;
         private readonly BaseVisitor rhs;
+        private readonly string prefix;
+        private readonly string delimiter;
+        private readonly string suffix;
 
-        public SubtractAssignmentExpressionVisitor(CodeTreeBranch branch) : base(branch)
+        protected AssignmentExpressionVisitorBase(CodeTreeBranch branch, SyntaxKind expectedKind, string delimiter, string prefix = "", string suffix = "") : base(branch)
         {
-            this.ExpectKind(1, SyntaxKind.MinusEqualsToken);
+            this.prefix = prefix;
+            this.delimiter = delimiter;
+            this.suffix = suffix;
+            this.ExpectKind(1, expectedKind);
             this.lhs = this.CreateVisitor(0);
             this.rhs = this.CreateVisitor(2);
         }
@@ -22,9 +28,11 @@
             this.lhs.Visit(textWriter, providers);
             textWriter.Write(" = ");
             providers.TypeKnowledgeRegistry.CurrentType = null;
+            textWriter.Write(this.prefix);
             this.lhs.Visit(textWriter, providers);
-            textWriter.Write(" - ");
+            textWriter.Write(this.delimiter);
             this.rhs.Visit(textWriter, providers);
+            textWriter.Write(this.suffix);
 
             providers.TypeKnowledgeRegistry.CurrentType = null;
         }

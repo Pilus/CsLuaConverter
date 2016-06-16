@@ -8,6 +8,7 @@
         {
             this.Name = "Expressions";
             this.Tests["BinaryExpressionsTest"] = BinaryExpressionsTest;
+            this.Tests["AssignmentExpressionTest"] = AssignmentExpressionTest;
         }
 
         private static void BinaryExpressionsTest()
@@ -51,6 +52,23 @@
 
             string value = null;
             Assert("Default", value ?? "Default");
+        }
+
+        private static void AssignmentExpressionTest()
+        {
+            var v1 = 3;
+            v1 += 2;
+            Assert(5, v1);
+            v1 -= 3;
+            Assert(2, v1);
+            v1 *= 3;
+            Assert(6, v1);
+            v1 /= 2;
+            Assert(3, v1);
+
+            var v2 = 32;
+            v2 %= 20;
+            Assert(12, v2);
         }
     }
 }
