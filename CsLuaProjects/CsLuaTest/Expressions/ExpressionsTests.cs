@@ -69,6 +69,20 @@
             var v2 = 32;
             v2 %= 20;
             Assert(12, v2);
+
+            var v3 = 56;
+            v3 <<= 2;
+            Assert(224, v3);
+            v3 >>= 1;
+            Assert(112, v3);
+
+            var v4 = 50;
+            v4 |= 30;
+            Assert(62, v4);
+            v4 &= 124;
+            Assert(60, v4);
+            v4 ^= 34;
+            Assert(30, v4);
         }
     }
 }
