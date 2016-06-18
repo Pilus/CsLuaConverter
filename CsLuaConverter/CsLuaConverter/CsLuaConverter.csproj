@@ -113,6 +113,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\ILambdaVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\MethodSignatureExtensions.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectInitializerExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\UnaryPlusExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\BaseConstructorInitializerVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\EnumMemberDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\IndexerDeclarationVisitor.cs" />

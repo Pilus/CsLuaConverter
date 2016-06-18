@@ -21,6 +21,7 @@
         {
             this.type.WriteAsReference(textWriter, providers);
             textWriter.Write(".__as(");
+            providers.TypeKnowledgeRegistry.CurrentType = null;
             this.target.Visit(textWriter, providers);
             textWriter.Write(")");
             providers.TypeKnowledgeRegistry.CurrentType = this.type.GetType(providers);
