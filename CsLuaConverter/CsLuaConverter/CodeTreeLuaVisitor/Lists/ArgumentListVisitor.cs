@@ -44,6 +44,7 @@
                 this.FilterOnBestScore,
                 this.FilterOnNumberOfArgsInSimpleLambda,
                 this.FilterPrioitizeNonExtensions,
+                this.FilterPrioitizeNonParams,
             };
 
             foreach (var step in steps)
@@ -201,7 +202,10 @@
             possibleMethods.FilterPrioitizeNonExtensions();
         }
 
-        
+        private void FilterPrioitizeNonParams(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        {
+            possibleMethods.FilterPrioitizeNonParams();
+        }
 
         private static bool IsArgumentVisitorALambda(IVisitor visitor)
         {

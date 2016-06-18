@@ -86,5 +86,15 @@
                 this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
             }
         }
+
+        public void FilterPrioitizeNonParams()
+        {
+            if (this.methods.Any(m => !m.IsParams()))
+            {
+                var methodsBefore = this.methods;
+                this.methods = this.methods.Where(m => !m.IsParams()).ToArray();
+                this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
+            }
+        }
     }
 }
