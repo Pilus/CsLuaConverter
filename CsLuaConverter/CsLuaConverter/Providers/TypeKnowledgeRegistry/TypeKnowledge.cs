@@ -257,6 +257,11 @@
 
                 parameterTypes = parameterTypes.Select(t => Translations.ContainsKey(t?.FullName ?? string.Empty) ? Translations[t.FullName] : t).ToList();
 
+                if (parameterTypes.Any(t => t.IsByRef))
+                {
+                    parameterTypes = parameterTypes.Select(t => t.IsByRef ? t.GetElementType() : t).ToList();
+                }
+
                 return type.MakeGenericType(parameterTypes.ToArray());
             }
 
