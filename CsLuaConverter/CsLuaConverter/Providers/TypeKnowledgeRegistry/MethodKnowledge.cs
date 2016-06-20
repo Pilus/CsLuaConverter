@@ -190,7 +190,7 @@
                 return true;
             }
 
-            if (parameterType.IsAssignableFrom(inputType))
+            if (parameterType.IsAssignableFrom(inputType) || IsImplicitConvertable(inputType, parameterType))
             {
                 return true;
             }
@@ -225,6 +225,19 @@
             }
 
             return true;
+        }
+
+        private static readonly Dictionary<Type, List<Type>> ConversionMatrix = new Dictionary<Type, List<Type>>()
+        {
+            { typeof(float), new List<Type>() { typeof(long), typeof(double), typeof(int) } },
+            { typeof(long), new List<Type>() { typeof(float), typeof(double), typeof(int) } },
+            { typeof(double), new List<Type>() { typeof(float), typeof(long), typeof(int) } },
+        };
+
+        private static bool IsImplicitConvertable(Type type, Type targetType)
+        {
+            List<Type> allowed;
+            return ConversionMatrix.TryGetValue(targetType, out allowed) && allowed.Contains(type);
         }
 
         public TypeKnowledge[] GetInputArgs()
