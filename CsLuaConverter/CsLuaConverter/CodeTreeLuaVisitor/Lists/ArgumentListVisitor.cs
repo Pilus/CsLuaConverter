@@ -39,10 +39,10 @@
                 this.FilterOnNumberOfArgs,
                 this.VisitNonLambdaArgs,
                 this.FilterOnArgTypes,
+                this.FilterOnNumberOfArgsInLambda,
                 this.VisitParenLambdaVisitors,
                 this.FilterOnArgTypes,
                 this.FilterOnBestScore,
-                this.FilterOnNumberOfArgsInSimpleLambda,
                 this.FilterPrioitizeNonExtensions,
                 this.FilterPrioitizeNonParams,
             };
@@ -187,15 +187,14 @@
             possibleMethods.FilterByBestScore(argVisitings.Select(av => av?.Item2).ToArray());
         }
 
-        private void FilterOnNumberOfArgsInSimpleLambda(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        private void FilterOnNumberOfArgsInLambda(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
         {
             var numOfArgs =
                 this.argumentVisitors.Select(
-                    v => (v is ArgumentVisitor && IsArgumentVisitorALambda(v) && !IsArgumentVisitorParenLambda(v)) ? ((ArgumentVisitor) v).GetInputArgCountOfLambda() : null).ToArray();
+                    v => (v is ArgumentVisitor && IsArgumentVisitorALambda(v)) ? ((ArgumentVisitor) v).GetInputArgCountOfLambda() : null).ToArray();
 
             possibleMethods.FilterByNumberOfLambdaArgs(numOfArgs);
         }
-
 
         private void FilterPrioitizeNonExtensions(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
         {
