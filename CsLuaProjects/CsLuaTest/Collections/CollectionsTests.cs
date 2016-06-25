@@ -50,6 +50,8 @@
 
             list.Add(5);
             Assert(2, iList.Add(50));
+            list.Add(75);
+            Assert(4, list.Count);
 
             // Test Index
             Assert(43, list[0]);
@@ -71,7 +73,7 @@
 
             try
             {
-                list[3] = 10;
+                list[4] = 10;
                 throw new Exception("Expected IndexOutOfRangeException");
             }
             catch (ArgumentOutOfRangeException ex)
@@ -110,7 +112,7 @@
             Assert(6, list.Find(i => i == 6));
             Assert(1, list.FindIndex(i => i == 6));
             Assert(6, list.FindLast(i => i == 6));
-            Assert(3, list.FindLastIndex(i => i == 6));
+            Assert(4, list.FindLastIndex(i => i == 6));
 
             var all = list.FindAll(i => i == 6);
             Assert(2, all.Count);
@@ -119,10 +121,10 @@
 
             Assert(1, list.IndexOf(6));
             Assert(-1, list.IndexOf(500));
-            Assert(3, list.LastIndexOf(6));
+            Assert(4, list.LastIndexOf(6));
 
             list.Insert(1, 24);
-            Assert(5, list.Count);
+            Assert(6, list.Count);
             Assert(24, list[1]);
 
             var res = list.GetRange(1, 2);
@@ -131,12 +133,12 @@
             Assert(6, res[1]);
 
             list.InsertRange(1, new [] {110, 120});
-            Assert(7, list.Count);
+            Assert(8, list.Count);
             Assert(110, list[1]);
             Assert(120, list[2]);
 
             list.RemoveRange(2, 2);
-            Assert(5, list.Count);
+            Assert(6, list.Count);
             Assert(110, list[1]);
             Assert(6, list[2]);
             Assert(50, list[3]);

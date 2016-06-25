@@ -81,7 +81,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         return key;
     end
 
-    local getMembers = function(key, level, staticOnly)
+    local getMembers = function(key, level, staticOnly, extensions)
         if not(cachedMembers) then
             cachedMembers = _M.RTEF(memberProvider);
         end
@@ -214,9 +214,9 @@ local InteractionElement = function(metaProvider, generics, selfObj)
 
         local fittingMembers = filterOverrides(getMembers(key, level, false), level or typeObject.level);
 
-        local fittingExtensions = getFittingExtensions(key);
-
-        fittingMembers = join(fittingMembers, fittingExtensions);
+        if #(fittingMembers) == 0 then
+            fittingMembers = getFittingExtensions(key);
+        end
 
         if #(fittingMembers) == 0 then
             fittingMembers = getMembers("#", level, false); -- Look up indexers
@@ -434,6 +434,10 @@ _M.IE = InteractionElement;
 local InsertMember = function(members, key, member)
     if not(members[key]) then
         members[key] = {};
+    end
+
+    if member.memberType == 'Method' and member.signatureHash == nil then 
+        error("No signature hash for member ".. key); 
     end
 
     table.insert(members[key], member);

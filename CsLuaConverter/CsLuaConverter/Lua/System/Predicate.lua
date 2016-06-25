@@ -11,6 +11,7 @@
         scope = 'Public',
         types = generics,
         numMethodGenerics = 0,
+        signatureHash = _M.SH(unpack(generics)),
         returnType = System.Boolean.__typeof,
         func = function(element,...)
             return (element[typeObject.level].innerAction % _M.DOT)(...);

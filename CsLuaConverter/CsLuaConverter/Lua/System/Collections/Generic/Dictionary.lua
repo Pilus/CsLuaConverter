@@ -36,6 +36,7 @@
         scope = 'Public',
         types = {},
         numMethodGenerics = 0,
+        signatureHash = 0,
         func = function(element)
             local ith, t, s = pairs(element[2]);
             return function(_, prevKey)
@@ -54,6 +55,7 @@
         memberType = 'Method',
         scope = 'Public',
         types = {generics[1], generics[2]},
+        signatureHash = 2*generics[1].signatureHash + 3*generics[2].signatureHash,
         numMethodGenerics = 0,
         func = function(element, key, value)
             element[2][key] = value;
@@ -107,6 +109,7 @@ System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElem
         memberType = 'Method',
         scope = 'Public',
         numMethodGenerics = 0,
+        signatureHash = 0,
         types = {},
         func = function(element)
             return pairs(element[2]);
@@ -152,6 +155,7 @@ System.Collections.Generic.ValueCollection = _M.NE({[2] = function(interactionEl
         scope = 'Public',
         numMethodGenerics = 0,
         types = {},
+        signatureHash = 2*generics[1].signatureHash,
         func = function(element)
             return pairs(element[2]);
         end,

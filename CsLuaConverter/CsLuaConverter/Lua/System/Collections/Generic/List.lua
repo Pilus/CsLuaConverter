@@ -131,6 +131,7 @@
         scope = 'Public',
         types = {},
         numMethodGenerics = 0,
+        signatureHash = 0,
         func = function(element)
             return function(_, prevKey) 
                 local key;
@@ -463,7 +464,7 @@
             end,
         },
         {
-            types = {System.Action.__typeof},
+            types = {Lua.Function.__typeof},
             func = function(element, values)
                 local c = 0;
                 for _,v in values do

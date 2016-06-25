@@ -15,6 +15,7 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
         scope = 'Public',
         types = {},
         numMethodGenerics = 0,
+        signatureHash = 0,
         func = function(element)
             return element[typeObject.level]["Enumerator"];
         end,
@@ -26,8 +27,9 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
         scope = 'Public',
         numMethodGenerics = 0,
         types = {},
+        signatureHash = 0,
         func = function(element)
-            return ((System.Collections.Generic.List % _M.DOT)[generics] % _M.DOT)(element[typeObject.level]["Enumerator"]);
+            return (System.Collections.Generic.List[generics] % _M.DOT)(element[typeObject.level]["Enumerator"]);
         end,
     });
 
