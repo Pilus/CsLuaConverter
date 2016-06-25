@@ -195,6 +195,7 @@
 
             if (type.IsInterface)
             {
+                all.AddRange(GetMembersOfType(typeof(object), excludeStatic: excludeStatic));
                 all.AddRange(type.GetInterfaces().SelectMany(i => GetMembersOfType(i)));
             }
 

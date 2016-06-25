@@ -7,6 +7,8 @@
             Name = "Interfaces";
             this.Tests["InheritiedInterfaceShouldBeloadedInSignature"] = InheritiedInterfaceShouldBeloadedInSignature;
             this.Tests["ImplementedInterfaceWithGenerics"] = ImplementedInterfaceWithGenerics;
+            this.Tests["TestInterfaceWithMethod"] = TestInterfaceWithMethod;
+            this.Tests["TestInterfaceWithBuildInMethod"] = TestInterfaceWithBuildInMethod;
         }
 
         private static void InheritiedInterfaceShouldBeloadedInSignature()
@@ -25,5 +27,26 @@
             Assert("test", value);
         }
 
+        private static void TestInterfaceWithMethod()
+        {
+            var theClass = new ClassWithMethod();
+
+            var castClass = (InterfaceWithMethod)theClass;
+
+            var value = castClass.Method("str");
+
+            Assert("strX", value);
+        }
+
+        private static void TestInterfaceWithBuildInMethod()
+        {
+            var theClass = new ClassWithMethod();
+
+            var castClass = (InterfaceWithMethod)theClass;
+
+            var value = castClass.Equals(castClass);
+
+            Assert(true, value);
+        }
     }
 }
