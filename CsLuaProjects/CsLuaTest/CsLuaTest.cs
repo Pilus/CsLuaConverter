@@ -6,6 +6,7 @@ namespace CsLuaTest
     using AmbigousMethods;
     using Arrays;
     using Collections;
+    using Constructors;
     using CsLuaFramework;
     using CsLuaFramework.Attributes;
     using DefaultValues;
@@ -36,6 +37,7 @@ namespace CsLuaTest
                 new TypeTests(),
                 new TryCatchFinallyTests(),
                 new AmbigousMethodsTests(),
+                new ConstructorsTests(),
                 new OverrideTest(),
                 new StaticTests(),
                 new ExpressionsTests(),

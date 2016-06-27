@@ -68,6 +68,8 @@
     <Compile Include="Arrays\ArraysTests.cs" />
     <Compile Include="Arrays\ClassWithArrays.cs" />
     <Compile Include="Collections\CollectionsTests.cs" />
+    <Compile Include="Constructors\Class1.cs" />
+    <Compile Include="Constructors\ConstructorsTests.cs" />
     <Compile Include="Expressions\ExpressionsTests.cs" />
     <Compile Include="General\ACommonName.cs" />
     <Compile Include="General\Base.cs" />
