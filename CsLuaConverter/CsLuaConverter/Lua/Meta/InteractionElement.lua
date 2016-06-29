@@ -218,9 +218,9 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             fittingMembers = getFittingExtensions(key);
         end
 
-        if #(fittingMembers) == 0 then
+        --[[ if #(fittingMembers) == 0 then
             fittingMembers = getMembers("#", level, false); -- Look up indexers
-        end
+        end --]]
 
         if #(fittingMembers) == 0 and type(key) == "table" then
             return self[key];
@@ -274,9 +274,9 @@ local InteractionElement = function(metaProvider, generics, selfObj)
     local newIndex = function(self, key, value, level)
         local fittingMembers = getMembers(key, level, false);
 
-        if #(fittingMembers) == 0 then
+        --[[ if #(fittingMembers) == 0 then
             fittingMembers = getMembers("#", level, false); -- Look up indexers
-        end
+        end --]]
 
         if #(fittingMembers) == 0 then
             error("Could not find member (set). Key: "..tostring(key)..". Object: "..typeObject.FullName.." Level: "..tostring(level));
