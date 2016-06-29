@@ -40,11 +40,6 @@ local GenericMethod = function(member, elementOrStaticValues, name)
             end
 
             if generics == "type" then
-                if #(members) > 1 then
-                    error("Can not reference ambigious method.")
-                end
-
-                local member = members[1];
                 local actionGenerics = {};
                 for _,v in pairs(member.types) do
                     table.insert(actionGenerics, v)
