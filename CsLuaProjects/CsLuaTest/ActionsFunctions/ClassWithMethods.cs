@@ -12,6 +12,11 @@
             return value.ToString();
         }
 
+        public string MethodWithReturnAndGeneric<T>(T value)
+        {
+            return value.ToString();
+        }
+
         public static void StaticMethodWithNoReturn(int value)
         {
 

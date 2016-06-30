@@ -54,6 +54,13 @@
             var value1 = func1(43);
             Assert("43", value1);
 
+            var genericMethod = (Func<double, string>)mc.MethodWithReturnAndGeneric;
+            var genericFuncType = genericMethod.GetType();
+            Assert(typeof(Func<double, string>), genericFuncType);
+
+            var valueGeneric = genericMethod(43.03);
+            Assert("43.03", valueGeneric);
+
             var action2 = (Action<int>)ClassWithMethods.StaticMethodWithNoReturn;
             var action2Type = action2.GetType();
             Assert(typeof(Action<int>), action2Type);
