@@ -50,6 +50,10 @@ local join = function(t1, t2)
     return t3;
 end
 
+local memberTypeTranslation = {
+    ["M"] = "Method"
+};
+
 local InteractionElement = function(metaProvider, generics, selfObj)
     if (type(metaProvider)=="table" and type(metaProvider.__typeof) == "table" and metaProvider.__typeof.IsEnum) then
         for i,v in pairs(metaProvider) do
@@ -97,8 +101,10 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             local memberLevel = member.level;
             local levelProvided = not(level == nil);
             local typeLevel = typeObject.level;
+            local memberType = member.memberType;
 
             return (not(staticOnly) or static) and
+                (indexType == nil or memberType == memberTypeTranslation[indexType]) and
                 (numGenerics == nil or numGenerics == member.numMethodGenerics) and
                 (hash == nil or hash == member.signatureHash) and
                 (
@@ -203,7 +209,6 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         return result;
     end
 
-    
 
     local index = function(self, key, level)
         if (key == "__metaType") then return _M.MetaTypes.InteractionElement; end
@@ -218,9 +223,9 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             fittingMembers = getFittingExtensions(key);
         end
 
-        --[[ if #(fittingMembers) == 0 then
+        if #(fittingMembers) == 0 then
             fittingMembers = getMembers("#", level, false); -- Look up indexers
-        end --]]
+        end
 
         if #(fittingMembers) == 0 and type(key) == "table" then
             return self[key];
@@ -274,9 +279,9 @@ local InteractionElement = function(metaProvider, generics, selfObj)
     local newIndex = function(self, key, value, level)
         local fittingMembers = getMembers(key, level, false);
 
-        --[[ if #(fittingMembers) == 0 then
+        if #(fittingMembers) == 0 then
             fittingMembers = getMembers("#", level, false); -- Look up indexers
-        end --]]
+        end
 
         if #(fittingMembers) == 0 then
             error("Could not find member (set). Key: "..tostring(key)..". Object: "..typeObject.FullName.." Level: "..tostring(level));

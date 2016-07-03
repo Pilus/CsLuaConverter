@@ -2,6 +2,7 @@
 {
     using System.Linq;
     using CodeTree;
+    using Expression;
     using Filters;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
@@ -33,6 +34,10 @@
             textWriter.Write("types = {");
             this.parameterList.WriteAsTypes(textWriter, providers);
             textWriter.WriteLine("},");
+
+            textWriter.Write("signatureHash = ");
+            this.parameterList.GetTypes(providers).WriteSignature(textWriter, providers);
+            textWriter.WriteLine(",");
 
             textWriter.Write("func = function(element");
             this.parameterList.FirstElementPrefix = ", ";

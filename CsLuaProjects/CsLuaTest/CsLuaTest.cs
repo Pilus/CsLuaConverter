@@ -49,10 +49,10 @@ namespace CsLuaTest
                 new InterfacesTests(),
                 new ParamsTests(),
                 new StringExtensionTests(),
-                new ActionsFunctionsTests(),
                 new WrapTests(),
                 new CollectionsTests(),
                 new StatementsTests(),
+                new ActionsFunctionsTests(),
             };
 
             tests.ForEach(test => test.PerformTests(new IndentedLineWriter()));

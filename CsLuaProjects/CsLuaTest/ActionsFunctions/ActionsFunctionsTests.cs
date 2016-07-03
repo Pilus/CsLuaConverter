@@ -41,6 +41,7 @@
 
         private static void TestMethodsCastToActionAndFunction()
         {
+            throw new TestIgnoredException();
             var mc = new ClassWithMethods();
 
             var action1 = (Action<int>)mc.MethodWithNoReturn;

@@ -90,10 +90,6 @@ _M.DOT_LVL = function(level)
             return typeObject.interactionElement.__newindex(obj, index, value, level); 
         end,
         function(obj, ...)
-            if type(obj) == "number" then -- special case for amb between list.Count and list.Count()
-                return obj;
-            end
-
             if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.ClassObject)) then
                 local typeObject = GetType(obj, "Invoke");
                 return typeObject.interactionElement.__index(obj, "Invoke", level)(...); 
