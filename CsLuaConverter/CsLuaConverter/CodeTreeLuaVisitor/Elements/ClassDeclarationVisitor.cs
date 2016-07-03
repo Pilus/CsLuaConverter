@@ -94,10 +94,6 @@
                         break;
                     case ClassState.WriteMembers:
                         this.WriteMembers(textWriter, providers);
-                        providers.PartialElementState.NextState = (int)ClassState.WriteConstructors;
-                        break;
-                    case ClassState.WriteConstructors:
-                        this.WriteConstructors(textWriter, providers);
                         providers.PartialElementState.NextState = (int)ClassState.Close;
                         break;
                     case ClassState.Close:
@@ -289,6 +285,13 @@
             providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(classTypeResult.TypeObject)));
             providers.NameProvider.AddToScope(new ScopeElement("base", new TypeKnowledge(classTypeResult.TypeObject.BaseType)));
 
+            this.constructorVisitors.VisitAll(textWriter, providers);
+            if (!this.constructorVisitors.Any() && providers.PartialElementState.IsLast)
+            {
+                // TODO: This might cause issues in partial classes where the constructors are placed in the first part.
+                ConstructorDeclarationVisitor.WriteEmptyConstructor(textWriter);
+            }
+
             this.fieldVisitors.VisitAll(textWriter, providers);
             this.propertyVisitors.VisitAll(textWriter, providers);
             this.indexerVisitors.VisitAll(textWriter, providers);
@@ -303,7 +306,7 @@
                 textWriter.WriteLine("end");
             }
         }
-
+        /*
         private void WriteConstructors(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             if (providers.PartialElementState.IsFirst)
@@ -336,7 +339,7 @@
                 textWriter.Indent--;
                 textWriter.WriteLine("};");
             }
-        }
+        } */
 
         private void WriteClose(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
@@ -363,7 +366,7 @@
             var type = providers.TypeProvider.LookupType(this.name);
             textWriter.Write("(");
             textWriter.Write(type.FullNameWithoutGenerics);
-            textWriter.WriteLine("() % _M.DOT).Execute();");
+            textWriter.WriteLine("._C_0() % _M.DOT).Execute();");
         }
 
         public string GetName()

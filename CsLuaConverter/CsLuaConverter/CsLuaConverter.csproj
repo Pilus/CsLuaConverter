@@ -192,7 +192,7 @@
     <Compile Include="CodeTreeLuaVisitor\Statement\IfStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\LocalDeclarationStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ReturnStatementVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Statement\SimpleMemberAccessExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\SimpleMemberAccessExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\Switch\SwitchStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\TryStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeKnowledgeExtensions.cs" />

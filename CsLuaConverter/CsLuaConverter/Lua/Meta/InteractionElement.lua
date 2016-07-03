@@ -51,7 +51,8 @@ local join = function(t1, t2)
 end
 
 local memberTypeTranslation = {
-    ["M"] = "Method"
+    ["M"] = "Method",
+    ["C"] = "Cstor",
 };
 
 local InteractionElement = function(metaProvider, generics, selfObj)
@@ -75,7 +76,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
     local cachedMembers = nil;
 
     local filterMethodSignature = function(key)
-        local methodMetaIndex = type(key) == "string" and string.find(key, "_M_") or nil;
+        local methodMetaIndex = type(key) == "string" and (string.find(key, "_M_") or string.find(key, "_C_")) or nil;
         if (methodMetaIndex) then
             local newKey = string.sub(key, 0, methodMetaIndex-1);
             local indexType, numGenerics, hash = string.split("_", string.sub(key, methodMetaIndex+1));
@@ -391,6 +392,14 @@ local InteractionElement = function(metaProvider, generics, selfObj)
                 return staticValues[member.level][key];
             end
 
+            if member.memberType == "Cstor" then
+                local classElement = elementGenerator();
+                return function(...)
+                    member.func(classElement, ...);
+                    return classElement;
+                end;
+            end
+
             assert(member.memberType == "Field", "Expected field member for key "..tostring(key)..". Got "..tostring(member.memberType)..". Object: "..typeObject.FullName..".");
             return staticValues[member.level][key];
         end,
@@ -415,8 +424,10 @@ local InteractionElement = function(metaProvider, generics, selfObj)
 
             assert(member.memberType == "Field", "Expected field member for key "..tostring(key)..". Got "..tostring(member.memberType)..". Object: "..typeObject.FullName..".");
             staticValues[member.level][key] = value;
-        end,
+        end, --[[
         __call = function(_, ...)
+            
+            
             assert(type(constructors)=="table" and #(constructors) > 0, "Class did not provide any constructors. Type: "..typeObject.FullName);
             -- Generate the base class element from constructor.GenerateBaseClass
             local classElement = elementGenerator();
@@ -425,8 +436,8 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             -- Call the constructor
             constructor.func(classElement, ...);
 
-            return classElement;
-        end,
+            return classElement; 
+        end, --]]
     });
 
     _M.RPR(tostring(metaProvider));

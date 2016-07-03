@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Member
 {
+    using System;
     using System.Linq;
     using CodeTree;
     using Expression;
@@ -10,12 +11,15 @@
 
     public class ConstructorDeclarationVisitor : BaseVisitor
     {
+        private readonly Scope scope;
         private readonly ParameterListVisitor parameterList;
         private readonly BlockVisitor block;
         private readonly BaseConstructorInitializerVisitor baseConstructorInitializer;
 
         public ConstructorDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
+            this.ExpectKind(0, SyntaxKind.PublicKeyword, SyntaxKind.ProtectedKeyword);
+            this.scope = (Scope)Enum.Parse(typeof(Scope), ((CodeTreeLeaf)this.Branch.Nodes[0]).Text, true);
             this.parameterList =
                 (ParameterListVisitor) this.CreateVisitors(new KindFilter(SyntaxKind.ParameterList)).Single();
             this.block =
@@ -26,18 +30,23 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            textWriter.WriteLine("{");
+            textWriter.WriteLine("_M.IM(members, '', {");
             textWriter.Indent++;
 
             var scope = providers.NameProvider.CloneScope();
 
-            textWriter.Write("types = {");
-            this.parameterList.WriteAsTypes(textWriter, providers);
-            textWriter.WriteLine("},");
+            //textWriter.Write("types = {");
+            //this.parameterList.WriteAsTypes(textWriter, providers);
+            //textWriter.WriteLine("},");
 
+            textWriter.WriteLine("level = typeObject.Level,");
+            textWriter.WriteLine("memberType = 'Cstor',");
+            textWriter.WriteLine("static = true,");
+            textWriter.WriteLine("numMethodGenerics = 0,");
             textWriter.Write("signatureHash = ");
             this.parameterList.GetTypes(providers).WriteSignature(textWriter, providers);
             textWriter.WriteLine(",");
+            textWriter.WriteLine("scope = '{0}',", this.scope);
 
             textWriter.Write("func = function(element");
             this.parameterList.FirstElementPrefix = ", ";
@@ -57,12 +66,36 @@
             textWriter.Indent--;
 
             this.block.Visit(textWriter, providers);
+
             textWriter.WriteLine("end,");
 
             providers.NameProvider.SetScope(scope);
 
             textWriter.Indent--;
-            textWriter.WriteLine("},");
+            textWriter.WriteLine("});");
+        }
+
+        public static void WriteEmptyConstructor(IIndentedTextWriterWrapper textWriter)
+        {
+            textWriter.WriteLine("_M.IM(members, '', {");
+            textWriter.Indent++;
+
+            textWriter.WriteLine("level = typeObject.Level,");
+            textWriter.WriteLine("memberType = 'Cstor',");
+            textWriter.WriteLine("static = true,");
+            textWriter.WriteLine("numMethodGenerics = 0,");
+            textWriter.WriteLine("signatureHash = 0,");
+            textWriter.WriteLine("scope = 'Public',");
+            textWriter.WriteLine("func = function(element)");
+
+            textWriter.Indent++;
+            textWriter.WriteLine("_M.BC(element, baseConstructors);");
+            textWriter.Indent--;
+
+            textWriter.WriteLine("end,");
+
+            textWriter.Indent--;
+            textWriter.WriteLine("});");
         }
     }
 }

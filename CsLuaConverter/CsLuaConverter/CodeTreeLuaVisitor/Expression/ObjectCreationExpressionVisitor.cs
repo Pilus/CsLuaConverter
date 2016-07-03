@@ -35,10 +35,18 @@
 
             this.objectTypeVisitor.WriteAsReference(textWriter, providers);
             var type = this.objectTypeVisitor.GetType(providers);
-            textWriter.Write(" % _M.DOT)");
+            textWriter.Write(" % _M.DOT)._C_");
             providers.TypeKnowledgeRegistry.PossibleMethods = new PossibleMethods(type.GetConstructors());
 
-            this.constructorArgumentsVisitor.Visit(textWriter, providers);
+            var cstorArgsWriter = textWriter.CreateTextWriterAtSameIndent();
+            this.constructorArgumentsVisitor.Visit(cstorArgsWriter, providers);
+
+            var method = providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow();
+            
+            method.WriteSignature(textWriter, providers);
+
+            textWriter.AppendTextWriter(cstorArgsWriter);
+
             providers.TypeKnowledgeRegistry.PossibleMethods = null;
             providers.TypeKnowledgeRegistry.CurrentType = null;
 

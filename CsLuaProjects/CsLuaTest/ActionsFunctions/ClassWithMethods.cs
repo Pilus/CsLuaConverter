@@ -20,7 +20,7 @@
         public static void StaticMethodWithNoReturn(int value)
         {
 
-        }
+        }   
 
         public static string StaticMethodWithReturn(int value)
         {
