@@ -109,7 +109,8 @@ local InteractionElement = function(metaProvider, generics, selfObj)
                 (numGenerics == nil or numGenerics == member.numMethodGenerics) and
                 (hash == nil or hash == member.signatureHash) and
                 (
-                    (levelProvided and memberLevel <= level) or
+                    (levelProvided and not(indexType == "C") and memberLevel <= level) or
+                    (levelProvided and (indexType == "C") and memberLevel == level) or
                     (not(levelProvided) and (public or protected) and memberLevel <= typeLevel) or
                     (not(levelProvided) and not(public or protected) and memberLevel == typeLevel)
                 );
@@ -370,7 +371,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
                 error(string.format("Could not find key on a non class element. Category: %s. Key: %s.", tostring(catagory), tostring(key)));
             end
 
-            local fittingMembers = getMembers(key, nil, true);
+            local fittingMembers = getMembers(key, typeObject.level, true);
 
             if #(fittingMembers) == 0 then
                 error("Could not find static member. Key: "..tostring(key)..". Object: "..typeObject.FullName);

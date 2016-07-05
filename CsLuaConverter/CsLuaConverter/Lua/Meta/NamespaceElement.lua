@@ -54,9 +54,6 @@ local NamespaceElement = function(metaProviders)
         __newindex = function(_, key, value)
             getInteractionElement()[key] = value;
         end,
-        __call = function(_, ...)
-            return getInteractionElement()(...);
-        end,
     });
 
     return element;

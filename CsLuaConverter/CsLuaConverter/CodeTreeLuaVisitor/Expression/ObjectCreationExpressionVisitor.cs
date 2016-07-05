@@ -31,11 +31,11 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            textWriter.Write(this.initializer != null ? "((" : "(");
+            textWriter.Write(this.initializer != null ? "(" : "");
 
             this.objectTypeVisitor.WriteAsReference(textWriter, providers);
             var type = this.objectTypeVisitor.GetType(providers);
-            textWriter.Write(" % _M.DOT)._C_");
+            textWriter.Write("._C_0_");
             providers.TypeKnowledgeRegistry.PossibleMethods = new PossibleMethods(type.GetConstructors());
 
             var cstorArgsWriter = textWriter.CreateTextWriterAtSameIndent();

@@ -448,32 +448,48 @@
         end,
     });
 
-    local constructors = {
-        {
-            types = {},
-            func = function() end,
-        },
-        {
-            types = {System.Collections.Generic.IEnumerable[{generics[1]}].__typeof},
-            func = function(element, values)
-                local c = 0;
-                for _,v in (values %_M.DOT).GetEnumerator() do
+
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 0,
+        scope = 'Public',
+        func = function(element)
+        end,
+    });
+
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 2*System.Collections.Generic.IEnumerable[{generics[1]}].__typeof.signatureHash,
+        scope = 'Public',
+        func = function(element, values)
+            for _,v in (values %_M.DOT).GetEnumerator() do
                     element[typeObject.level][c] = v;
                     c = c + 1;
                 end
-            end,
-        },
-        {
-            types = {Lua.Function.__typeof},
-            func = function(element, values)
-                local c = 0;
-                for _,v in values do
-                    element[typeObject.level][c] = v;
-                    c = c + 1;
-                end
-            end,
-        },
-    };
+        end,
+    });
+
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 2*Lua.Function.__typeof.signatureHash,
+        scope = 'Public',
+        func = function(element)
+            local c = 0;
+            for _,v in values do
+                element[typeObject.level][c] = v;
+                c = c + 1;
+            end
+        end,
+    });
 
     local initialize = function(element, values)
         for i=1,#(values) do

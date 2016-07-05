@@ -366,7 +366,7 @@
             var type = providers.TypeProvider.LookupType(this.name);
             textWriter.Write("(");
             textWriter.Write(type.FullNameWithoutGenerics);
-            textWriter.WriteLine("._C_0() % _M.DOT).Execute();");
+            textWriter.WriteLine("._C_0_0() % _M.DOT).Execute();");
         }
 
         public string GetName()

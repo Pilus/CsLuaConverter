@@ -69,12 +69,16 @@
         types = {generics[1], generics[2]},
     });
 
-    local constructors = {
-        {
-            types = {},
-            func = function() end,
-        }
-    };
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 0,
+        scope = 'Public',
+        func = function(element)
+        end,
+    });
 
     local initialize = function(element, values)
         for i,v in pairs(values) do
