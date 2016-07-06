@@ -281,7 +281,7 @@
             return fieldInfo.FieldType;
         }
 
-        public static TypeKnowledge ConstructLamdaType(TypeKnowledge[] inputs, TypeKnowledge returnArg)
+        public static TypeKnowledge ConstructLambdaType(TypeKnowledge[] inputs, TypeKnowledge returnArg)
         {
             if (returnArg == null)
             {

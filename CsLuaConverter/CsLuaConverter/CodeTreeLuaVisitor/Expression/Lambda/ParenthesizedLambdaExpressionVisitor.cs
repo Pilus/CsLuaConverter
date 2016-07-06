@@ -34,9 +34,10 @@
 
                 var returnType = providers.TypeKnowledgeRegistry.CurrentType;
                 var inputTypes = this.parameters.GetTypes(providers);
-                delegateType = TypeKnowledge.ConstructLamdaType(inputTypes, returnType);
+                delegateType = TypeKnowledge.ConstructLambdaType(inputTypes, returnType);
 
                 delegateType.WriteAsReference(textWriter, providers);
+                textWriter.Write("._C_0_16704"); // Lua.Function as argument
                 textWriter.AppendTextWriter(bodyWriter);
             }
             

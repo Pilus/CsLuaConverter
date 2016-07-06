@@ -2,7 +2,7 @@
 local lambda = function(f, retArg, ...)
     
     if (retArg == nil) then
-        return System.Action[{...}](f);
+        return System.Action[{...}]._C_0_0(f);
     end
 
     return System.Func[{..., retArg}](f);

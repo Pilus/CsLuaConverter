@@ -12,8 +12,6 @@
 
     public class ArgumentListVisitor : BaseVisitor
     {
-        public bool SkipOpeningParen { get; set; }
-
         private readonly IVisitor[] argumentVisitors;
         public ArgumentListVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -99,10 +97,7 @@
 
             //selectedMethod.RegisterMethodGenericsWithAppliedTypes(argResultingTypes);
 
-            if (!this.SkipOpeningParen)
-            {
-                textWriter.Write("(");
-            }
+            textWriter.Write("(");
 
             for (var index = 0; index < argVisitings.Length; index++)
             {

@@ -30,9 +30,10 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
 
             var generics = new[] { this.parameter.GetType(providers), returnType};
 
-            delegateType = delegateType?.ApplyMissingGenerics(generics) ?? TypeKnowledge.ConstructLamdaType(inputTypes, returnType);
+            delegateType = delegateType?.ApplyMissingGenerics(generics) ?? TypeKnowledge.ConstructLambdaType(inputTypes, returnType);
 
             delegateType.WriteAsReference(textWriter, providers);
+            textWriter.Write("._C_0_16704"); // Lua.Function as argument
             textWriter.AppendTextWriter(bodyWriter);
 
             providers.TypeKnowledgeRegistry.CurrentType = delegateType;

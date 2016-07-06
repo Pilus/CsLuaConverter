@@ -275,6 +275,12 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             return member.get(self);
         end
 
+        if member.memberType == "Cstor" then
+            return function(...)
+                member.func(self, ...);
+            end
+        end
+
         error("Could not handle member (get). Object: "..typeObject.FullName.." Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key));
     end;
 

@@ -19,6 +19,29 @@ System.Action = _M.NE({["#"] = function(interactionElement, generics, staticValu
         end,
     });
 
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 2*Lua.Function.__typeof.signatureHash,
+        scope = 'Public',
+        func = function(element, innerAction)
+        end,
+    });
+
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 2*typeObject.signatureHash,
+        scope = 'Public',
+        func = function(element, innerAction)
+        end,
+    });
+
+    --[[
     local constructors = {
         {
             types = {typeObject},
@@ -32,7 +55,7 @@ System.Action = _M.NE({["#"] = function(interactionElement, generics, staticValu
                 element[typeObject.level].innerAction = innerAction;
             end,
         }
-    };
+    };--]]
     local objectGenerator = function() 
         return {
             [1] = {},

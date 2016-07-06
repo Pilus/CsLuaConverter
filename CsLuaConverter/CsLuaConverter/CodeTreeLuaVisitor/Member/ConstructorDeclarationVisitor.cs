@@ -60,7 +60,7 @@
             }
             else
             {
-                textWriter.WriteLine("_M.BC(element, baseConstructors);");
+                textWriter.WriteLine("(element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();");
             }
 
             textWriter.Indent--;
@@ -89,7 +89,7 @@
             textWriter.WriteLine("func = function(element)");
 
             textWriter.Indent++;
-            textWriter.WriteLine("_M.BC(element, baseConstructors);");
+            textWriter.WriteLine("(element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();");
             textWriter.Indent--;
 
             textWriter.WriteLine("end,");

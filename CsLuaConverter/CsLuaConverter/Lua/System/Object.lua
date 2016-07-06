@@ -36,12 +36,16 @@
         end,
     });
 
-    local constructors = {
-        {
-            types = {},
-            func = function() end,
-        }
-    };
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 0,
+        scope = 'Public',
+        func = function(element)
+        end,
+    });
 
     local elementGenerator = function() 
         return {
