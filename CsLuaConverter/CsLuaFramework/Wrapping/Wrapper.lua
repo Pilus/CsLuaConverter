@@ -17,7 +17,7 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
         numMethodGenerics = 1,
         signatureHash = 8736,
         func = function(element,methodGenericsMapping,methodGenerics,globalVarName)
-            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics](_G[globalVarName]);
+            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics]._C_0_8686(_G[globalVarName]);
         end,
     });
 
@@ -31,7 +31,7 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
         types = {System.String.__typeof, System.Func[{Lua.NativeLuaTable.__typeof, System.Type.__typeof}].__typeof},
         generics = methodGenericsMapping,
         func = function(element,methodGenericsMapping,methodGenerics, globalVarName, typeTranslator)
-            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics](_G[globalVarName], typeTranslator);
+            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics]._C_0_73252846(_G[globalVarName], typeTranslator);
         end,
     });
 
@@ -45,7 +45,7 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
         numMethodGenerics = 1,
         signatureHash = 55918,
         func = function(element,methodGenericsMapping,methodGenerics,value)
-            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics](value);
+            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics]._C_0_8686(value);
         end,
     });
 
@@ -59,7 +59,18 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
         types = {Lua.NativeLuaTable.__typeof, System.Func[{Lua.NativeLuaTable.__typeof, System.Type.__typeof}].__typeof},
         generics = methodGenericsMapping,
         func = function(element,methodGenericsMapping,methodGenerics,value, typeTranslator)
-            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics](value, typeTranslator);
+            return CsLuaFramework.Wrapping.WrappedLuaTable[methodGenerics]._C_0_73252846(value, typeTranslator);
+        end,
+    });
+
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 0,
+        scope = 'Public',
+        func = function(element)
         end,
     });
 

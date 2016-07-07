@@ -77,6 +77,32 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
 
     local _, interfaceMembers, _, _, _, _, attributes = interfaceType.interactionElement.__meta({});
 
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 8686,
+        scope = 'Public',
+        func = function(element, luaTable)
+            element[typeObject.level].luaTable = luaTable
+        end,
+    });
+
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 8686 + 3*System.Func[{Lua.NativeLuaTable.__typeof, System.Type.__typeof}].__typeof.signatureHash,
+        scope = 'Public',
+        func = function(element, luaTable, typeTranslator)
+            element[typeObject.level].luaTable = luaTable;
+            element[typeObject.level].typeTranslator = typeTranslator;
+        end,
+    });
+
+    --[[
     local constructors = {
         {
             types = {Lua.NativeLuaTable.__typeof},
@@ -91,7 +117,7 @@ CsLuaFramework.Wrapping.WrappedLuaTable = _M.NE({[1] = function(interactionEleme
                 element[typeObject.level].typeTranslator = typeTranslator;
             end,
         }
-    };
+    }; --]]
 
     for name,memberSet in pairs(interfaceMembers) do
         for _, member in pairs(memberSet) do

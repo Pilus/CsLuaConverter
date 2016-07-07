@@ -25,6 +25,7 @@
             if (delegateType != null)
             {
                 delegateType.WriteAsReference(textWriter, providers);
+                textWriter.Write("._C_0_16704"); // Lua.Function as argument
                 this.VisitParametersAndBody(textWriter, providers);
             }
             else
