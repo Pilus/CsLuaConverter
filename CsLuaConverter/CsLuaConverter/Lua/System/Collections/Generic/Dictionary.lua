@@ -17,7 +17,7 @@
         memberType = 'Property',
         scope = 'Public',
         get = function(element)
-            return System.Collections.Generic.KeyCollection[generics](element);
+            return System.Collections.Generic.KeyCollection[generics]["_C_0_" .. (2*System.Collections.Generic.Dictionary[generics].__typeof.signatureHash)](element);
         end,
     });
 
@@ -26,7 +26,7 @@
         memberType = 'Property',
         scope = 'Public',
         get = function(element)
-            return System.Collections.Generic.ValueCollection[generics](element);
+            return System.Collections.Generic.ValueCollection[generics]["_C_0_" .. (2*System.Collections.Generic.Dictionary[generics].__typeof.signatureHash)](element);
         end,
     });
 
@@ -120,6 +120,21 @@ System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElem
         end,
     });
 
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 2*System.Collections.Generic.Dictionary[generics].__typeof.signatureHash,
+        scope = 'Public',
+        func = function(element, dictionary)
+            for key,_ in pairs(dictionary[2]) do
+                table.insert(element[2],key);
+            end
+        end,
+    });
+
+    --[[
     local constructors = {
         {
             types = {System.Collections.Generic.Dictionary[generics].__typeof},
@@ -129,7 +144,7 @@ System.Collections.Generic.KeyCollection = _M.NE({[2] = function(interactionElem
                 end
             end,
         }
-    };
+    }; --]]
 
     local objectGenerator = function() 
         return {
@@ -165,6 +180,21 @@ System.Collections.Generic.ValueCollection = _M.NE({[2] = function(interactionEl
         end,
     });
 
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 2*System.Collections.Generic.Dictionary[generics].__typeof.signatureHash,
+        scope = 'Public',
+        func = function(element, dictionary)
+            for _,value in pairs(dictionary[2]) do
+                table.insert(element[2],value);
+            end
+        end,
+    });
+
+    --[[
     local constructors = {
         {
             types = {System.Collections.Generic.Dictionary[generics].__typeof},
@@ -174,7 +204,7 @@ System.Collections.Generic.ValueCollection = _M.NE({[2] = function(interactionEl
                 end
             end,
         }
-    };
+    }; --]]
 
     local objectGenerator = function() 
         return {

@@ -6,7 +6,7 @@ _M.Try = function(try, catch, finally)
     _M._CurrentException = nil;
 
     if not(success) then
-        exception = exception or System.Exception("Lua error:\n" .. (err or "nil"));
+        exception = exception or System.Exception._C_0_8736("Lua error:\n" .. (err or "nil"));
         
         local matchFound = false;
         for _, catchCase in ipairs(catch or {}) do

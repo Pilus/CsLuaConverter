@@ -23,6 +23,31 @@ System.Exception = _M.NE({[0] = function(interactionElement, generics, staticVal
         end,
     });
 
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 0,
+        scope = 'Public',
+        func = function(element)
+            (element %_M.DOT).Message = "";
+        end,
+    });
+
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 8736,
+        scope = 'Public',
+        func = function(element, msg)
+            (element %_M.DOT).Message = msg;
+        end,
+    });
+
+    --[[
     local constructors = {
         {
             types = {},
@@ -37,6 +62,8 @@ System.Exception = _M.NE({[0] = function(interactionElement, generics, staticVal
             end,
         }
     };
+    -- ]]
+
     local objectGenerator = function() 
         return {
             [1] = {},

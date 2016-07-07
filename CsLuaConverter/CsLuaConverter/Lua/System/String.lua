@@ -40,7 +40,7 @@
             local t = {string.split(delimiter, element)};
             t[0] = t[1];
             table.remove(t,1);
-            return (System.Array[{typeObject}]()%_M.DOT).__Initialize(t);
+            return (System.Array[{typeObject}]._C_0_0()%_M.DOT).__Initialize(t);
         end,
     });
 

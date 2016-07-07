@@ -27,6 +27,7 @@ System.Action = _M.NE({["#"] = function(interactionElement, generics, staticValu
         signatureHash = 2*Lua.Function.__typeof.signatureHash,
         scope = 'Public',
         func = function(element, innerAction)
+            element[typeObject.level].innerAction = innerAction;
         end,
     });
 
@@ -38,6 +39,7 @@ System.Action = _M.NE({["#"] = function(interactionElement, generics, staticValu
         signatureHash = 2*typeObject.signatureHash,
         scope = 'Public',
         func = function(element, innerAction)
+            element[typeObject.level].innerAction = innerAction;
         end,
     });
 

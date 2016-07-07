@@ -8,12 +8,16 @@
     local baseTypeObject, members = System.Object.__meta(staticValues);
     local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',3052);
 
-    local constructors = {
-        {
-            types = {},
-            func = function() end,
-        }
-    };
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 0,
+        scope = 'Public',
+        func = function(element, innerAction)
+        end,
+    });
 
     local initialize = function(self, values)
     end;
@@ -91,12 +95,16 @@ end,
         end
     });
 
-    local constructors = {
-        {
-            types = {},
-            func = function() end,
-        }
-    };
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 0,
+        scope = 'Public',
+        func = function(element, innerAction)
+        end,
+    });
 
     local initialize = function(self, values)
         for i,v in pairs(values) do
