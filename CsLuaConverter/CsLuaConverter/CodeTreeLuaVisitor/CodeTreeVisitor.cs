@@ -173,6 +173,8 @@
         {
             var state = this.providers.PartialElementState;
             state.CurrentState = null;
+            state.DefinedConstructorWritten = false;
+
             state.NumberOfGenerics = numOfGenerics;
             while (true)
             {

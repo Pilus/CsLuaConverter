@@ -7,5 +7,6 @@
         public bool IsFirst { get; set; }
         public bool IsLast { get; set; }
         public int NumberOfGenerics { get; set; }
+        public bool DefinedConstructorWritten { get; set; }
     }
 }

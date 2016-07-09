@@ -286,7 +286,12 @@
             providers.NameProvider.AddToScope(new ScopeElement("base", new TypeKnowledge(classTypeResult.TypeObject.BaseType)));
 
             this.constructorVisitors.VisitAll(textWriter, providers);
-            if (!this.constructorVisitors.Any() && providers.PartialElementState.IsLast)
+            if (providers.PartialElementState.DefinedConstructorWritten == false && this.constructorVisitors.Any())
+            {
+                providers.PartialElementState.DefinedConstructorWritten = true;
+            }
+
+            if (providers.PartialElementState.DefinedConstructorWritten == false && providers.PartialElementState.IsLast)
             {
                 // TODO: This might cause issues in partial classes where the constructors are placed in the first part.
                 ConstructorDeclarationVisitor.WriteEmptyConstructor(textWriter);

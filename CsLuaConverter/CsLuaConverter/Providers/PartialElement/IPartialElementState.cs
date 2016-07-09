@@ -7,5 +7,6 @@
         bool IsLast { get; set; }
         int? NextState { get; set; }
         int NumberOfGenerics { get; set; }
+        bool DefinedConstructorWritten { get; set; }
     }
 }
