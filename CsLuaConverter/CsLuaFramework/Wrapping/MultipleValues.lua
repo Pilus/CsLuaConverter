@@ -17,6 +17,21 @@ CsLuaFramework.Wrapping.MultipleValues = _M.NE({['#'] = function(interactionElem
         });
     end
     
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 0, -- TODO: Replace with correct signature once signatures from N generics is solved.
+        scope = 'Public',
+        func = function(element, ...)
+            for i = 1, #(generics) do
+                element[typeObject.level]["Value"..i] = select(i, ...);
+            end
+        end,
+    });
+
+    --[[
     local constructors = {
         {
             types = generics,
@@ -26,7 +41,7 @@ CsLuaFramework.Wrapping.MultipleValues = _M.NE({['#'] = function(interactionElem
                 end
             end,
         },
-    };
+    }; --]]
     
     local objectGenerator = function() 
         return {

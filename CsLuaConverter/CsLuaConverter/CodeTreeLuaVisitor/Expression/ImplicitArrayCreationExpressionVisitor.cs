@@ -24,7 +24,7 @@
 
             textWriter.Write("(");
             arrayType.WriteAsReference(textWriter, providers);
-            textWriter.Write("()%_M.DOT)");
+            textWriter.Write("._C_0_0()%_M.DOT)");
             textWriter.AppendTextWriter(creationWriter);
         }
     }

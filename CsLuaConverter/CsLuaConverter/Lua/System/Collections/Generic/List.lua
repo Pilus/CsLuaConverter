@@ -63,7 +63,7 @@
     local ThrowIfOutOfRange = function(element, index)
         local c = getCount(element);
         if index < 0 or index >= c then
-            _M.Throw(System.ArgumentOutOfRangeException());
+            _M.Throw(System.ArgumentOutOfRangeException._C_0_0());
         end
     end
 
@@ -186,7 +186,7 @@
         scope = 'Public',
         types = {},
         get = function(element)
-            return System.Object();
+            return System.Object._C_0_0();
         end,
     });
 
@@ -295,7 +295,7 @@
         --types = {System.Predicate[generics].__typeof},
         signatureHash = 2*(System.Predicate[generics].__typeof).signatureHash,
         func = function(element,f)
-            local list = System.Collections.Generic.List[generics]();
+            local list = System.Collections.Generic.List[generics]._C_0_0();
             for i = 0,getCount(element)-1 do
                 local v = element[typeObject.level][i];
                 if (f % _M.DOT)(v) then
@@ -364,7 +364,7 @@
         --types = {System.Int.__typeof, System.Int.__typeof},
         signatureHash = 2*System.Int.__typeof.signatureHash + 3*System.Int.__typeof.signatureHash,
         func = function(element, start, num)
-            local list = System.Collections.Generic.List[generics]();
+            local list = System.Collections.Generic.List[generics]._C_0_0();
             for i = start, start + num - 1 do
                 (list % _M.DOT).Add_M_0_8572(element[typeObject.level][i]);
             end
@@ -468,10 +468,11 @@
         signatureHash = 2*System.Collections.Generic.IEnumerable[{generics[1]}].__typeof.signatureHash,
         scope = 'Public',
         func = function(element, values)
+            local c = 0;
             for _,v in (values %_M.DOT).GetEnumerator() do
-                    element[typeObject.level][c] = v;
-                    c = c + 1;
-                end
+                element[typeObject.level][c] = v;
+                c = c + 1;
+            end
         end,
     });
 

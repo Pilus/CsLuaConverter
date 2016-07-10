@@ -33,12 +33,25 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
         end,
     });
 
+    --[[
     local constructors = {
         {
             types = {Lua.Function.__typeof},
             func = function(element, enumerator) element[typeObject.level]["Enumerator"] = enumerator; end,
         }
-    };
+    }; --]]
+
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 2*Lua.Function.__typeof.signatureHash,
+        scope = 'Public',
+        func = function(element, enumerator)
+            element[typeObject.level]["Enumerator"] = enumerator; 
+        end,
+    });
 
     local objectGenerator = function() 
         return {
@@ -102,7 +115,7 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             signatureHash = 2*System.Func[{generics[1], System.Boolean.__typeof}].__typeof.signatureHash,
             func = function(element, predicate)
                 local enumerator = (element % _M.DOT).GetEnumerator();
-                return System.Linq.Iterator[generics](function(_, prevKey)
+                return System.Linq.Iterator[generics]._C_0_16704(function(_, prevKey)
                     while (true) do
                         local key, value = enumerator(_, prevKey);
                         if (key == nil) or (predicate % _M.DOT)(value) == true then
@@ -122,7 +135,7 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             numMethodGenerics = 1,
             func = function(element, methodGenericsMapping, methodGenerics, predicate)
                 local enumerator = (element % _M.DOT).GetEnumerator();
-                return System.Linq.Iterator[methodGenerics](function(_, prevKey)
+                return System.Linq.Iterator[methodGenerics]._C_0_16704(function(_, prevKey)
                     local key, value = enumerator(_, prevKey);
                     if (key == nil) then
                         return nil;

@@ -22,6 +22,31 @@
         end,
     });
 
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 2*typeObject.signatureHash,
+        scope = 'Public',
+        func = function(element, innerAction)
+            element[typeObject.level].innerAction = innerAction;
+        end,
+    });
+
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 2*Lua.Function.__typeof.signatureHash,
+        scope = 'Public',
+        func = function(element, innerAction)
+            element[typeObject.level].innerAction = innerAction;
+        end,
+    });
+
+    --[[
     local constructors = {
         {
             types = {typeObject},
@@ -35,7 +60,7 @@
                 element[typeObject.level].innerAction = innerAction;
             end,
         }
-    };
+    }; --]]
 
     local objectGenerator = function() 
         return {

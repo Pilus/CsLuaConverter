@@ -45,7 +45,7 @@
                     return nil;
                 end
 
-                return k, System.Collections.Generic.KeyValuePair[generics](k, v);
+                return k, System.Collections.Generic.KeyValuePair[generics]._C_0_0(k, v);
             end
         end,
     });

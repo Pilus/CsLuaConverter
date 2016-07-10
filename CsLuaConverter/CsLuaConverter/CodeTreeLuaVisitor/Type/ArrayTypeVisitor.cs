@@ -17,7 +17,7 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.WriteAsReference(textWriter, providers);
-            textWriter.Write("()");
+            textWriter.Write("._C_0_0()");
             providers.TypeKnowledgeRegistry.CurrentType = this.GetType(providers);
         }
 

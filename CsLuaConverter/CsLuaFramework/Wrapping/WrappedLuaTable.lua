@@ -5,7 +5,7 @@ local wrap = function(typeObj, typeTranslator, value, ...)
     end
 
     if (typeObj.FullName == "CsLuaFramework.Wrapping.IMultipleValues") then
-        return CsLuaFramework.Wrapping.MultipleValues[typeObj.Generics](value, ...);
+        return CsLuaFramework.Wrapping.MultipleValues[typeObj.Generics]._C_0_0(value, ...);
     end
     
     if not(type(value) == "table") then
@@ -20,7 +20,7 @@ local wrap = function(typeObj, typeTranslator, value, ...)
         typeObj = (typeTranslator %_M.DOT)(value) or typeObj;
     end
     
-    return CsLuaFramework.Wrapping.WrappedLuaTable[{typeObj}](value, typeTranslator);
+    return CsLuaFramework.Wrapping.WrappedLuaTable[{typeObj}]["_C_0_"..(8686 + 3*System.Func[{Lua.NativeLuaTable.__typeof, System.Type.__typeof}].__typeof.signatureHash)](value, typeTranslator);
 end
 
 local unwrap = function(value)

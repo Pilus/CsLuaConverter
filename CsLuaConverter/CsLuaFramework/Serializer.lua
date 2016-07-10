@@ -70,6 +70,16 @@
         end,
     });
 
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 0,
+        scope = 'Public',
+        func = function(element)
+        end,
+    });
 
     local constructors = {
         {

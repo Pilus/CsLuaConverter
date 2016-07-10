@@ -160,9 +160,9 @@
             var types = this.parameters.GetTypes(providers);
             textWriter.Write("local ");
             textWriter.Write(names.Last());
-            textWriter.Write(" = ((");
+            textWriter.Write(" = (");
             types.Last().WriteAsReference(textWriter, providers);
-            textWriter.WriteLine(" % _M.DOT)() % _M.DOT).__Initialize({[0] = firstParam, ...});");
+            textWriter.WriteLine("._C_0_0() % _M.DOT).__Initialize({[0] = firstParam, ...});");
         }
     }
 }
