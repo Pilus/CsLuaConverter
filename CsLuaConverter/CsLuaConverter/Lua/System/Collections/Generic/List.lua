@@ -483,7 +483,7 @@
         numMethodGenerics = 0,
         signatureHash = 2*Lua.Function.__typeof.signatureHash,
         scope = 'Public',
-        func = function(element)
+        func = function(element, values)
             local c = 0;
             for _,v in values do
                 element[typeObject.level][c] = v;

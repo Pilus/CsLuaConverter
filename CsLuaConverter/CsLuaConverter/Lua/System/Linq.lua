@@ -29,7 +29,7 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
         types = {},
         signatureHash = 0,
         func = function(element)
-            return (System.Collections.Generic.List[generics] % _M.DOT)(element[typeObject.level]["Enumerator"]);
+            return System.Collections.Generic.List[generics]["_C_0_" .. (2*Lua.Function.__typeof.signatureHash)](element[typeObject.level]["Enumerator"]);
         end,
     });
 
