@@ -31,7 +31,7 @@
         private static void WriteSignature(SignatureComponent[] components, IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             
-            var nonGenericHash = components.Where(c => c.GenericReference == null).Sum(c => c.Coefficient*c.SignatureHash);
+            var nonGenericHash = components.Where(c => c.GenericReference == null).Sum(c => (long)c.Coefficient*(long)c.SignatureHash);
             var genericComponents = components.Where(c => c.GenericReference != null).ToArray();
 
             if (nonGenericHash > 0 || !genericComponents.Any())
