@@ -21,7 +21,8 @@
             this.Tests["WrapWithTargetTypeTranslation"] = WrapWithTargetTypeTranslation;
             this.Tests["NonWrappedAsPropertyInWrappedObject"] = NonWrappedAsPropertyInWrappedObject;
             this.Tests["WrappedObjectWithPartialInterface"] = WrappedObjectWithPartialInterface;
-            this.Tests["WrappedObjectWithInterfaceWithIndexer"] = WrappedObjectWithInterfaceWithIndexer; 
+            this.Tests["WrappedObjectWithInterfaceWithIndexer"] = WrappedObjectWithInterfaceWithIndexer;
+            this.Tests["WrapperReplacesActionAndFuncWithLuaFunctions"] = WrapperReplacesActionAndFuncWithLuaFunctions;
         }
 
 
@@ -287,6 +288,29 @@
             obj["Value2"] = "V2";
 
             Assert("V2", obj["Value2"]);
+        }
+
+        public static void WrapperReplacesActionAndFuncWithLuaFunctions()
+        {
+            if (!Environment.IsExecutingAsLua)
+            {
+                return;
+            }
+
+            Environment.ExecuteLuaCode(@"
+                P = { 
+                    Method = function(f, a)
+                        return type(f) == 'function' and type(a) == 'function';
+                    end
+                };
+            ");
+            var wrapper = new Wrapper();
+
+            var obj = wrapper.Wrap<IInterfaceWithMethod>("P");
+
+
+            bool inputValue;
+            Assert(true, obj.Method((int x) => x < 10, input => inputValue = input));
         }
     }
 }

@@ -10,6 +10,7 @@
             this.Tests["TestActionGenericsFromConstructed"] = TestActionGenericsFromConstructed;
             this.Tests["OtherTests"] = OtherTests;
             this.Tests["TestMethodsCastToActionAndFunction"] = TestMethodsCastToActionAndFunction;
+            this.Tests["TestActionWithAssignment"] = TestActionWithAssignment;
         }
 
         private static void TestActionGenericsFromConstructed()
@@ -37,6 +38,13 @@
             Assert("obj", r2);
             var r3 = StaticClass.ExpectFunc((v) => v.ToString(), true);
             Assert("float", r3);
+        }
+
+        private static void TestActionWithAssignment()
+        {
+            int value = 0;
+            StaticClass.ExpectAction((int v) => value = v);
+            Assert(43, value);
         }
 
         private static void TestMethodsCastToActionAndFunction()

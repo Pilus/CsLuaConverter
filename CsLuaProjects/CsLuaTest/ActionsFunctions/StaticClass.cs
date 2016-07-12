@@ -23,5 +23,10 @@
         {
             return input;
         }
+
+        public static void ExpectAction(Action<int> a)
+        {
+            a(43);
+        }
     }
 }

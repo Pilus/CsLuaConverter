@@ -148,7 +148,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\ParenthesizedLambdaExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\PostDecrementExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\PostIncrementExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\Binary\SimpleAssignmentExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\SimpleAssignmentExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\SimpleLambdaExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\StringLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Assignment\SubtractAssignmentExpressionVisitor.cs" />

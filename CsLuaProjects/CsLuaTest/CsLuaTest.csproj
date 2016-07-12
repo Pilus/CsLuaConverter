@@ -160,6 +160,7 @@
     <Compile Include="Wrap\IInheritingInterfaceWithGenerics.cs" />
     <Compile Include="Wrap\IInterfaceWithGenerics.cs" />
     <Compile Include="Wrap\IInterfaceWithIndexer.cs" />
+    <Compile Include="Wrap\IInterfaceWithMethod.cs" />
     <Compile Include="Wrap\IInterfaceWithMultipleReturnValues.cs" />
     <Compile Include="Wrap\IInterfaceWithWrappedValues.cs" />
     <Compile Include="Wrap\INonWrappedProperty.cs" />

@@ -58,7 +58,11 @@
             }
             else
             {
-                textWriter.Write(" return ");
+                if (!(this.body is SimpleAssignmentExpressionVisitor))
+                {
+                    textWriter.Write(" return ");
+                }
+
                 this.body.Visit(textWriter, providers);
             }
 

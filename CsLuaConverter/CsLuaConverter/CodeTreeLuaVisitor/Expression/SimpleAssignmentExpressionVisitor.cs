@@ -1,4 +1,4 @@
-﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Binary
+﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
