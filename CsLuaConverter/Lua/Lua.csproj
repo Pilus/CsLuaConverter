@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Function.cs" />
+    <Compile Include="FunctionExtensions.cs" />
     <Compile Include="LuaMath.cs" />
     <Compile Include="NativeLuaTable.cs" />
     <Compile Include="Strings.cs" />
@@ -50,6 +51,7 @@
   <ItemGroup>
     <None Include="aa.lua" />
     <None Include="Function.lua" />
+    <None Include="FunctionExtensions.lua" />
     <None Include="Lua.lua" />
     <None Include="NativeLuaTable.lua" />
   </ItemGroup>

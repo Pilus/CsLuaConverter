@@ -23,9 +23,17 @@ end
 local GetExtensions = function(name, generics)
     local numGenerics = #(generics);
     local t = {};
-    if type(Extensions[name]) == "table" and type(Extensions[name][numGenerics]) == "table" then
-        for _, provider in pairs(Extensions[name][numGenerics]) do
-            addRange(t, addMethodType(provider(generics)));
+    if type(Extensions[name]) == "table" then
+        if type(Extensions[name][numGenerics]) == "table" then
+            for _, provider in pairs(Extensions[name][numGenerics]) do
+                addRange(t, addMethodType(provider(generics)));
+            end
+        end
+
+        if type(Extensions[name]["#"]) == "table" then
+            for _, provider in pairs(Extensions[name]["#"]) do
+                addRange(t, addMethodType(provider(generics)));
+            end
         end
     end
     return t;

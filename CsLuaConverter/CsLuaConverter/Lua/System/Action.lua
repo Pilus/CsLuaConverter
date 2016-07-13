@@ -48,7 +48,7 @@ System.Action = _M.NE({["#"] = function(interactionElement, generics, staticValu
         {
             types = {typeObject},
             func = function(element, innerAction) 
-                element[typeObject.level].innerAction = innerAction;
+                element[typeObject.level].innerAction = innerAction[typeObject.level].innerAction;
             end,
         },
         {

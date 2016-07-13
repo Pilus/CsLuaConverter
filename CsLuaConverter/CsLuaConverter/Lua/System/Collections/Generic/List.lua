@@ -56,7 +56,7 @@
 
     local ThrowIfIndexNotNumber = function(element, index)
         if not(type(index) == "number") then
-            _M.Throw(System.Exception("Attempted to index list with a non number index: "..tostring(index)));
+            _M.Throw(System.Exception._C_0_8736("Attempted to index list with a non number index: "..tostring(index)));
         end
     end
 

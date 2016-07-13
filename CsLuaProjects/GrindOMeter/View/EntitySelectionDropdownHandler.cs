@@ -75,7 +75,7 @@
 
             entry["text"] = entity.Name;
             entry["icon"] = entity.IconPath;
-            entry["func"] = entity.OnSelect;
+            entry["func"] = entity.OnSelect.ToLuaFunction();
             entry["notCheckable"] = true;
 
             return entry;
