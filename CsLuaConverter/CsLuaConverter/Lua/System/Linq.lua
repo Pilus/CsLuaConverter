@@ -88,7 +88,7 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             signatureHash = 2*System.Func[{generics[1], System.Boolean.__typeof}].__typeof.signatureHash,
             func = function(element, predicate)
                 for _,v in (element % _M.DOT).GetEnumerator() do
-                    if (predicate(v)) then
+                    if ((predicate % _M.DOT)(v)) then
                         return true;
                     end
                 end
@@ -148,7 +148,7 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             name = "ToList",
             numMethodGenerics = 0,
             signatureHash = 0,
-            func = function(element, predicate)
+            func = function(element)
                 local list = System.Collections.Generic.List[generics]();
                 (list % _M.DOT)["AddRange_M_0_"..(2*System.Collections.Generic.IEnumerable[generics].__typeof.signatureHash)](element);
                 return list;

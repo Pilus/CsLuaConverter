@@ -30,10 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsLuaFramework">
+    <Reference Include="CsLuaFramework, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\CsLuaConverter\CsLuaFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Lua">
+    <Reference Include="Lua, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\CsLuaConverter\Lua.dll</HintPath>
     </Reference>

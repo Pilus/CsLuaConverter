@@ -40,6 +40,7 @@
 
             titleEntry["isTitle"] = true;
             titleEntry["text"] = "Select an entity to track";
+            titleEntry["notCheckable"] = true;
 
             return titleEntry;
         }
@@ -51,6 +52,7 @@
             entry["hasArrow"] = true;
             entry["text"] = entityTypeName;
             entry["menuList"] = GenerateMenuListForEntities(entities);
+            entry["notCheckable"] = true;
 
             return entry;
         }
@@ -74,6 +76,7 @@
             entry["text"] = entity.Name;
             entry["icon"] = entity.IconPath;
             entry["func"] = entity.OnSelect;
+            entry["notCheckable"] = true;
 
             return entry;
         }

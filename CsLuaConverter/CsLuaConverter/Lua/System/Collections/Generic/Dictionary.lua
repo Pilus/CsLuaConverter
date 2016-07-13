@@ -45,7 +45,7 @@
                     return nil;
                 end
 
-                return k, System.Collections.Generic.KeyValuePair[generics]._C_0_0(k, v);
+                return k, System.Collections.Generic.KeyValuePair[generics]["_C_0_" .. (2*generics[1].signatureHash + 3*generics[2].signatureHash)](k, v);
             end
         end,
     });

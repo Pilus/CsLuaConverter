@@ -21,6 +21,9 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("(");
+            var originalMethods = providers.TypeKnowledgeRegistry.PossibleMethods;
+            providers.TypeKnowledgeRegistry.PossibleMethods = null;
+
             this.target.Visit(textWriter, providers);
 
             if (providers.TypeKnowledgeRegistry.PossibleMethods != null)
@@ -75,7 +78,7 @@
                 providers.TypeKnowledgeRegistry.CurrentType = method.GetReturnType();
             }
 
-            providers.TypeKnowledgeRegistry.PossibleMethods = null;
+            providers.TypeKnowledgeRegistry.PossibleMethods = originalMethods;
         }
 
         private static void WriteMethodGenerics(TypeKnowledge[] genericTypes, IIndentedTextWriterWrapper textWriter, IProviders providers)
