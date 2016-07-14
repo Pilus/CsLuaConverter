@@ -127,6 +127,30 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             end
         },
         {
+            name = "FirstOrDefault",
+            numMethodGenerics = 0,
+            signatureHash = 0,
+            func = function(element)
+                local enumerator = (element % _M.DOT).GetEnumerator();
+                local key, value = enumerator(nil, nil);
+                return value;
+            end
+        },
+        {
+            name = "LastOrDefault",
+            numMethodGenerics = 0,
+            signatureHash = 0,
+            func = function(element)
+                local enumerator = (element % _M.DOT).GetEnumerator();
+                local key, value = nil, nil;
+                while (true) do
+                    key, value = enumerator(_, key);
+                end
+
+                return value;
+            end
+        },
+        {
             name = "Select",
             --returnType = methodGenerics[methodGenericsMapping['T']],
             generics = methodGenericsMapping,
