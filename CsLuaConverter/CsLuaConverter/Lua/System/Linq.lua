@@ -64,6 +64,14 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
     return "Class", typeObject, members, constructors, objectGenerator, implements, nil;
 end});
 
+local NoElements = function()
+    _M.Throw(System.InvalidOperationException._C_0_8736("Sequence contains no elements"));
+end
+
+local NoMatch = function()
+    _M.Throw(System.InvalidOperationException._C_0_8736("Sequence contains no matching element"));
+end
+
 _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
     local genericsMapping = {['TSource'] = 1, ['TFirst'] = 1, ['TOuter'] = 1};
 
@@ -735,7 +743,14 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             numMethodGenerics = 0,
             signatureHash = 0,
             func = function(source)
-                _M.Throw(System.NotImplementedException._C_0_0());
+                local enumerator = (source % _M.DOT).GetEnumerator();
+                local key, value = enumerator(nil, nil);
+
+                if (key == nil) then
+                    NoElements();
+                end
+
+                return value;
             end,
         },
         { -- TSource First(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,System.Boolean>)
@@ -743,7 +758,16 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             numMethodGenerics = 0,
             signatureHash = 62611272+(6936*generics[genericsMapping['TSource']].signatureHash),
             func = function(source, predicate)
-                _M.Throw(System.NotImplementedException._C_0_0());
+                local enumerator = (source % _M.DOT).GetEnumerator();
+                local key, value = enumerator(nil, nil);
+                while (key) do
+                    if ((predicate % _M.DOT)(value) == true) then
+                        return value;
+                    end
+                    key, value = enumerator(nil, key);
+                end
+
+                NoMatch();
             end,
         },
         { -- TSource FirstOrDefault(System.Collections.Generic.IEnumerable`1<TSource>)
@@ -761,7 +785,15 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             numMethodGenerics = 0,
             signatureHash = 62611272+(6936*generics[genericsMapping['TSource']].signatureHash),
             func = function(source, predicate)
-                _M.Throw(System.NotImplementedException._C_0_0());
+                local enumerator = (source % _M.DOT).GetEnumerator();
+                local key, value = enumerator(nil, nil);
+                while (key) do
+                    if ((predicate % _M.DOT)(value) == true) then
+                        return value;
+                    end
+                    key, value = enumerator(nil, key);
+                end
+                return nil;
             end,
         },
         { -- TSource Last(System.Collections.Generic.IEnumerable`1<TSource>)
@@ -769,7 +801,21 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             numMethodGenerics = 0,
             signatureHash = 0,
             func = function(source)
-                _M.Throw(System.NotImplementedException._C_0_0());
+                local enumerator = (source % _M.DOT).GetEnumerator();
+                local key, value = enumerator(nil, nil);
+                local lastKey, lastValue = nil, nil;
+
+                while (key) do
+                    lastKey = key;
+                    lastValue = value;
+                    key, value = enumerator(_, key);
+                end
+
+                if (lastKey == nil) then
+                    NoElements();
+                end
+
+                return lastValue;
             end,
         },
         { -- TSource Last(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,System.Boolean>)
@@ -777,7 +823,24 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             numMethodGenerics = 0,
             signatureHash = 62611272+(6936*generics[genericsMapping['TSource']].signatureHash),
             func = function(source, predicate)
-                _M.Throw(System.NotImplementedException._C_0_0());
+                local enumerator = (source % _M.DOT).GetEnumerator();
+                local key, value = enumerator(nil, nil);
+                local lastKey, lastValue = nil, nil;
+
+                while (key) do
+                    if ((predicate % _M.DOT)(value) == true) then
+                        lastKey = key;
+                        lastValue = value;
+                    end
+
+                    key, value = enumerator(_, key);
+                end
+
+                if (lastKey == nil) then
+                    NoElements();
+                end
+
+                return lastValue;
             end,
         },
         { -- TSource LastOrDefault(System.Collections.Generic.IEnumerable`1<TSource>)
@@ -786,12 +849,15 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             signatureHash = 0,
             func = function(source)
                 local enumerator = (source % _M.DOT).GetEnumerator();
-                local key, value = nil, nil;
-                while (true) do
+                local key, value = enumerator(nil, nil);
+                local lastValue = nil;
+
+                while (key) do
+                    lastValue = value;
                     key, value = enumerator(_, key);
                 end
 
-                return value;
+                return lastValue;
             end,
         },
         { -- TSource LastOrDefault(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,System.Boolean>)
@@ -799,7 +865,19 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             numMethodGenerics = 0,
             signatureHash = 62611272+(6936*generics[genericsMapping['TSource']].signatureHash),
             func = function(source, predicate)
-                _M.Throw(System.NotImplementedException._C_0_0());
+                local enumerator = (source % _M.DOT).GetEnumerator();
+                local key, value = enumerator(nil, nil);
+                local lastValue = nil;
+
+                while (key) do
+                    if ((predicate % _M.DOT)(value) == true) then
+                        lastValue = value;
+                    end
+
+                    key, value = enumerator(_, key);
+                end
+
+                return lastValue;
             end,
         },
         { -- TSource Single(System.Collections.Generic.IEnumerable`1<TSource>)

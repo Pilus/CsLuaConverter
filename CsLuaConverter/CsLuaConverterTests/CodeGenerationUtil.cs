@@ -29,7 +29,7 @@
             {
                 Indent = 2
             };
-
+                
             var extensionMethods = type.GetMethods().Where(m => m.CustomAttributes.Any(a => a.AttributeType == typeof(ExtensionAttribute)))
                 .Where(m => FilterOn(m, typeof(IEnumerable<>)));
 

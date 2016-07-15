@@ -89,9 +89,9 @@
             var subItem1A = (NativeLuaTable)subMenuList2[1];
             Assert.AreEqual("A1", subItem1A["text"]);
             Assert.AreEqual("A1Icon", subItem1A["icon"]);
-            Assert.IsTrue(subItem1A["func"] is Action);
+            Assert.IsTrue(subItem1A["func"] is Function);
             Assert.AreEqual(0, a1ActionInvoked);
-            ((Action) subItem1A["func"])();
+            ((Function) subItem1A["func"])();
             Assert.AreEqual(1, a1ActionInvoked);
 
             var subItem2A = (NativeLuaTable)subMenuList2[2];

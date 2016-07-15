@@ -25,7 +25,7 @@
         </FontString>
         <FontString name="$parentAmountFontString" parentKey="Amount" inherits="GrindOMeterTrackingRowLabelTemplate">
           <Size>
-            <AbsDimension y="15" x="25"/>
+            <AbsDimension y="15" x="60"/>
           </Size>
           <Anchors>
             <Anchor point="RIGHT" relativeTo="$parentVelocityFontString" relativePoint="LEFT"/>
@@ -33,7 +33,7 @@
         </FontString>
         <FontString name="$parentVelocityFontString" parentKey="Velocity" inherits="GrindOMeterTrackingRowLabelTemplate">
           <Size>
-            <AbsDimension y="15" x="40"/>
+            <AbsDimension y="15" x="60"/>
           </Size>
           <Anchors>
             <Anchor point="RIGHT" relativeTo="$parentResetButton" relativePoint="LEFT"/>

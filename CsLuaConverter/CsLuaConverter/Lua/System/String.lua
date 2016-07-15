@@ -91,6 +91,17 @@
             return element == obj;
         end,
     });
+
+    _M.IM(members,'Empty',{
+        level = typeObject.Level,
+        memberType = 'Property',
+        scope = 'Public',
+        types = {typeObject},
+        static = true,
+        get = function(element)
+            return "";
+        end,
+    });
     
     local constructors = {
         {

@@ -84,6 +84,16 @@ namespace BlizzardApi.Global
                     return typeof(IGameTooltip);
                 case FrameType.ScrollFrame:
                     return typeof(IScrollFrame);
+                case FrameType.FontString:
+                    return typeof(IFontString);
+                case FrameType.FontInstance:
+                    return typeof (IFontInstance);
+                case FrameType.Slider:
+                    return typeof (ISlider);
+                case FrameType.StatusBar:
+                    return typeof (IStatusBar);
+                case FrameType.Texture:
+                    return typeof (ITexture);
                 default:
                     throw new Exception("Could not translate frame type " + type);
             }

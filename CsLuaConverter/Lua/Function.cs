@@ -1,10 +1,4 @@
 ﻿namespace Lua
 {
-    using System;
-
-    public class Function
-    {
-
-        
-    }
+    public delegate void Function(params object[] obj);
 }
