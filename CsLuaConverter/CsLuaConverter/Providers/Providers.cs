@@ -8,7 +8,7 @@ namespace CsLuaConverter.Providers
     using TypeKnowledgeRegistry;
     using TypeProvider;
 
-    internal class Providers : IProviders
+    public class Providers : IProviders
     {
         private readonly IGenericsRegistry genericsRegistry;
         private readonly ITypeProvider typeProvider;
@@ -19,6 +19,16 @@ namespace CsLuaConverter.Providers
         public Providers(Solution solution)
         {
             this.typeProvider = new TypeNameProvider(solution);
+            this.genericsRegistry = new GenericsRegistry.GenericsRegistry();
+            this.nameProvider = new NameProvider.NameProvider(this.typeProvider);
+            this.typeKnowledgeRegistry = new TypeKnowledgeRegistry.TypeKnowledgeRegistry();
+            this.partialElementState = new PartialElementState();
+            TypeKnowledge.Providers = this;
+        }
+
+        public Providers()
+        {
+            this.typeProvider = null;
             this.genericsRegistry = new GenericsRegistry.GenericsRegistry();
             this.nameProvider = new NameProvider.NameProvider(this.typeProvider);
             this.typeKnowledgeRegistry = new TypeKnowledgeRegistry.TypeKnowledgeRegistry();
