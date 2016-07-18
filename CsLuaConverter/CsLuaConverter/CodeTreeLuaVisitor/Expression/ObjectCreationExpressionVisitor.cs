@@ -17,13 +17,19 @@
         {
             this.ExpectKind(0, SyntaxKind.NewKeyword);
             this.objectTypeVisitor = (ITypeVisitor) this.CreateVisitor(1);
-            this.constructorArgumentsVisitor = (ArgumentListVisitor)this.CreateVisitor(2);
 
-            if (this.IsKind(3, SyntaxKind.CollectionInitializerExpression) || this.IsKind(3, SyntaxKind.ObjectInitializerExpression))
+            var i = 2;
+            if (this.IsKind(i, SyntaxKind.ArgumentList))
             {
-                this.initializer = this.CreateVisitor(3);
+                this.constructorArgumentsVisitor = (ArgumentListVisitor)this.CreateVisitor(i);
+                i++;
+            }            
+
+            if (this.IsKind(i, SyntaxKind.CollectionInitializerExpression) || this.IsKind(i, SyntaxKind.ObjectInitializerExpression))
+            {
+                this.initializer = this.CreateVisitor(i);
             }
-            else if (this.Branch.Nodes.Length > 3)
+            else if (this.Branch.Nodes.Length > i)
             {
                 throw new VisitorException($"Unknown following argument to object creation: {branch.Nodes[3].Kind}.");
             }
@@ -36,16 +42,24 @@
             this.objectTypeVisitor.WriteAsReference(textWriter, providers);
             var type = this.objectTypeVisitor.GetType(providers);
             textWriter.Write("._C_0_");
-            providers.TypeKnowledgeRegistry.PossibleMethods = new PossibleMethods(type.GetConstructors());
 
-            var cstorArgsWriter = textWriter.CreateTextWriterAtSameIndent();
-            this.constructorArgumentsVisitor.Visit(cstorArgsWriter, providers);
+            if (this.constructorArgumentsVisitor != null)
+            { 
+                providers.TypeKnowledgeRegistry.PossibleMethods = new PossibleMethods(type.GetConstructors());
 
-            var method = providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow();
+                var cstorArgsWriter = textWriter.CreateTextWriterAtSameIndent();
+                this.constructorArgumentsVisitor.Visit(cstorArgsWriter, providers);
+
+                var method = providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow();
             
-            method.WriteSignature(textWriter, providers);
+                method.WriteSignature(textWriter, providers);
 
-            textWriter.AppendTextWriter(cstorArgsWriter);
+                textWriter.AppendTextWriter(cstorArgsWriter);
+            }
+            else
+            {
+                textWriter.Write("0()");    
+            }
 
             providers.TypeKnowledgeRegistry.PossibleMethods = null;
             providers.TypeKnowledgeRegistry.CurrentType = null;

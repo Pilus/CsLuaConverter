@@ -11,9 +11,16 @@
         private readonly VariableDeclarationVisitor variableDeclarationVisitor;
         public LocalDeclarationStatementVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.ExpectKind(0, SyntaxKind.VariableDeclaration);
-            this.ExpectKind(1, SyntaxKind.SemicolonToken);
-            this.variableDeclarationVisitor = (VariableDeclarationVisitor)this.CreateVisitor(0);
+            var i = 0;
+
+            if (this.IsKind(i, SyntaxKind.ConstKeyword))
+            {
+                i++;
+            }
+
+            this.ExpectKind(i, SyntaxKind.VariableDeclaration);
+            this.ExpectKind(i+1, SyntaxKind.SemicolonToken);
+            this.variableDeclarationVisitor = (VariableDeclarationVisitor)this.CreateVisitor(i);
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)

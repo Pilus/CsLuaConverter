@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
     using System.Reflection;
+    using Attribute;
     using CodeTree;
     using Expression;
     using Filters;
@@ -22,18 +23,26 @@
         private readonly bool isOverride;
         private readonly ParameterListVisitor parameters;
         private readonly BlockVisitor block;
+        private readonly AttributeListVisitor attributeList;
 
         public MethodDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
-            var accessorAndTypeFilter = new KindRangeFilter(null, SyntaxKind.IdentifierToken);
+            var offset = 0;
+            if (branch.Nodes[0].Kind == SyntaxKind.AttributeList)
+            {
+                this.attributeList = (AttributeListVisitor)this.CreateVisitor(0);
+                offset++;
+            }
+
+            var accessorAndTypeFilter = new KindRangeFilter(branch.Nodes[offset].Kind, SyntaxKind.IdentifierToken);
             var accessorAndType = accessorAndTypeFilter.Filter(this.Branch.Nodes).ToArray();
-            this.returnTypeVisitor = (ITypeVisitor) this.CreateVisitor(accessorAndType.Length - 1);
+            this.returnTypeVisitor = (ITypeVisitor) this.CreateVisitor(offset + accessorAndType.Length - 1);
             this.methodGenerics =
                 (TypeParameterListVisitor) this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameterList)).SingleOrDefault();
             this.name =
                 ((CodeTreeLeaf) (new KindFilter(SyntaxKind.IdentifierToken)).Filter(this.Branch.Nodes).Single()).Text;
 
-            if (accessorAndType.Length > 1)
+            if (accessorAndType.Length > 1 && ((CodeTreeLeaf)accessorAndType[0]).Text != "static")
             {
                 this.scope = (Scope) Enum.Parse(typeof (Scope), ((CodeTreeLeaf) accessorAndType[0]).Text, true);
             }
