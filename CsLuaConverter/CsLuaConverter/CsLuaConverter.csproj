@@ -84,6 +84,9 @@
     <Compile Include="CodeTreeLuaVisitor\Attribute\AttributeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\BaseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\BlockVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Constraint\ConstructorConstraintVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Constraint\IConstraint.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Constraint\TypeConstraintVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Elements\InterfaceState.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Assignment\AndAssignmentExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Assignment\AssignmentExpressionVisitorBase.cs" />
@@ -172,6 +175,7 @@
     <Compile Include="CodeTreeLuaVisitor\Statement\ThrowStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\WhileStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\NullableTypeVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Constraint\TypeParameterConstraintClauseVisitor.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="IIndentedTextWriterWrapper.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorListVisitor.cs" />

@@ -20,7 +20,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            var propertyType = providers.TypeKnowledgeRegistry.CurrentType;
             this.getVisitor?.Visit(textWriter, providers);
+            providers.TypeKnowledgeRegistry.CurrentType = propertyType;
             this.setVisitor?.Visit(textWriter, providers);
         }
 

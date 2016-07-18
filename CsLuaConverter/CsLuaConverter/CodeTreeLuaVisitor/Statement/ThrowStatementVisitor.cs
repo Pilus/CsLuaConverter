@@ -19,6 +19,7 @@
             textWriter.Write("_M.Throw(");
             this.inner.Visit(textWriter, providers);
             textWriter.WriteLine(");");
+            providers.TypeKnowledgeRegistry.CurrentType = null;
         }
     }
 }

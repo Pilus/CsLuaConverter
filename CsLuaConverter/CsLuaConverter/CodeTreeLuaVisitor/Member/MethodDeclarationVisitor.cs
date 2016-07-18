@@ -5,6 +5,7 @@
     using System.Reflection;
     using Attribute;
     using CodeTree;
+    using Constraint;
     using Expression;
     using Filters;
     using Lists;
@@ -24,6 +25,7 @@
         private readonly ParameterListVisitor parameters;
         private readonly BlockVisitor block;
         private readonly AttributeListVisitor attributeList;
+        private readonly TypeParameterConstraintClauseVisitor genericsConstraint;
 
         public MethodDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -56,6 +58,7 @@
 
             this.parameters = (ParameterListVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.ParameterList)).Single();
             this.block = (BlockVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.Block)).SingleOrDefault();
+            this.genericsConstraint = (TypeParameterConstraintClauseVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameterConstraintClause)).SingleOrDefault();
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
@@ -72,8 +75,11 @@
 
                 foreach (var genericName in this.methodGenerics.GetNames())
                 {
-                    // TODO: Determine the correct object type for the generic.
-                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.MethodDeclaration, genericObjects.First(t => t.Name == genericName), typeof(object));
+                    providers.GenericsRegistry.SetGenerics(
+                        genericName, 
+                        GenericScope.MethodDeclaration, 
+                        genericObjects.First(t => t.Name == genericName), 
+                        this.genericsConstraint?.GetConstrainedType(providers, genericName).GetTypeObject() ?? typeof(object));
                 }
             }
 
@@ -123,8 +129,11 @@
 
                 foreach (var genericName in this.methodGenerics.GetNames())
                 {
-                    // TODO: Determine the correct object type for the generic.
-                    providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Method, genericObjects.First(t => t.Name == genericName), typeof(object));
+                    providers.GenericsRegistry.SetGenerics(
+                        genericName,
+                        GenericScope.Method,
+                        genericObjects.First(t => t.Name == genericName),
+                        this.genericsConstraint?.GetConstrainedType(providers, genericName).GetTypeObject() ?? typeof(object));
                 }
             }
 

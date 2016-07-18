@@ -24,7 +24,7 @@
             this.elseIfStatement?.Visit(textWriter, providers);
             this.block?.Visit(textWriter, providers);
 
-            if (this.elseIfStatement != null)
+            if (this.elseIfStatement == null)
             {
                 textWriter.WriteLine("end");
             }

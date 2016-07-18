@@ -56,6 +56,14 @@
         {
             var type = this.type;
 
+            if (type.IsGenericParameter)
+            {
+                if (providers.GenericsRegistry.IsGeneric(type.Name))
+                {
+                    type = providers.GenericsRegistry.GetType(type.Name);
+                }
+            }
+
             var members = GetMembers(type, this.restrictToStatic, str);
             var extensions = providers.TypeProvider.GetExtensionMethods(type, str);
             var membersIncludingExtensions = new []{ members, extensions}.SelectMany(v => v).ToArray();

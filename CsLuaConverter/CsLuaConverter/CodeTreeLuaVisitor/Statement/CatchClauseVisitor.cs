@@ -38,6 +38,7 @@
                 textWriter.WriteLine("func = function()");
             }
 
+            providers.TypeKnowledgeRegistry.CurrentType = null;
             this.block.Visit(textWriter, providers);
             
             textWriter.WriteLine("end,");
