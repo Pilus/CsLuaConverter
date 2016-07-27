@@ -3,6 +3,7 @@ namespace CsLuaTest
 {
     using System.Collections.Generic;
     using ActionsFunctions;
+    using ActivatorImplementation;
     using AmbigousMethods;
     using Arrays;
     using Collections;
@@ -52,6 +53,7 @@ namespace CsLuaTest
                 new WrapTests(),
                 new CollectionsTests(),
                 new StatementsTests(),
+                new ActivatorTests(),
                 new ActionsFunctionsTests(),
             };
 

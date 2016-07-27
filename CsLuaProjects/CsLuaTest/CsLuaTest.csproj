@@ -55,6 +55,8 @@
     <Compile Include="ActionsFunctions\ActionsFunctionsTests.cs" />
     <Compile Include="ActionsFunctions\ClassWithMethods.cs" />
     <Compile Include="ActionsFunctions\StaticClass.cs" />
+    <Compile Include="ActivatorImplementation\ActivatorTests.cs" />
+    <Compile Include="ActivatorImplementation\Class1.cs" />
     <Compile Include="AmbigousMethods\AmbigousMethodsTests.cs" />
     <Compile Include="AmbigousMethods\ClassC1.cs" />
     <Compile Include="AmbigousMethods\ClassA.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="General\Base.cs" />
     <Compile Include="General\ClassAmb.cs" />
     <Compile Include="General\ClassInitializerAndCstor.cs" />
+    <Compile Include="General\ClassInSubSubNamespace.cs" />
     <Compile Include="General\ClassWithEquals.cs" />
     <Compile Include="General\ClassWithIndexer.cs" />
     <Compile Include="General\ClassWithProperty.cs" />

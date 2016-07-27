@@ -18,7 +18,8 @@
             this.Tests["NonStaticClassWithStaticMethod"] = NonStaticClassWithStaticMethod;
             this.Tests["TestClassReferencingSelfInMethod"] = TestClassReferencingSelfInMethod;
             this.Tests["TestPartialClasses"] = TestPartialClasses;
-            this.Tests["TestIndexerInClass"] = TestIndexerInClass; 
+            this.Tests["TestIndexerInClass"] = TestIndexerInClass;
+            //this.Tests["TestCompleteReferences"] = TestCompleteReferences;
         }
 
         private static void NonStaticClassWithStaticMethod()
@@ -146,5 +147,15 @@
 
             Assert("SetAtIndexTest2IsTheValue", c1.Set);
         }
+
+        /*
+        public static void TestCompleteReferences()
+        {
+            var staticValue = General.SubNamespace.SubSubNamespace.ClassInSubSubNamespace.GetStatic();
+            Assert("static", staticValue);
+
+            var instance = new General.SubNamespace.SubSubNamespace.ClassInSubSubNamespace();
+            Assert("normal", instance.GetNormal());
+        } */
     }
 }

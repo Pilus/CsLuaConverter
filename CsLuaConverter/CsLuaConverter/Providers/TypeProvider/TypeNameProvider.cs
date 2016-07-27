@@ -108,6 +108,7 @@
             this.LoadType(typeof(IMultipleValues<, , , , , , , , , , >));
             this.LoadType(typeof(IMultipleValues<, , , , , , , , , , , >));
             this.LoadType(typeof(Enumerable));
+            this.LoadType(typeof(Activator));
         }
 
         private void LoadSolution(Solution solution)
