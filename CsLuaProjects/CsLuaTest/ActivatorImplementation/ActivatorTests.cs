@@ -6,6 +6,7 @@
     {
         public ActivatorTests()
         {
+            this.Name = "Activator";
             this.Tests["TestCreateInstance"] = TestCreateInstance;
         }
 
