@@ -4,12 +4,12 @@
 
     public class MethodsWithGeneric<T1,T2>
     {
-        public void GenericMethod(T1 x)
+        public void AmbGenericMethod(T1 x)
         {
             BaseTest.Output = "GenericMethodT1";
         }
 
-        public void GenericMethod(T2 x)
+        public void AmbGenericMethod(T2 x)
         {
             BaseTest.Output = "GenericMethodT2";
         }

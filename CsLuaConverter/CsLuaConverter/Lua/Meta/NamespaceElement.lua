@@ -2,11 +2,11 @@
 --============= Namespace Element =============
 
 local getHashOfGenerics = function(generics)
-    local i = 1;
-    for _,v in ipairs(generics) do
-        i = i*v.GetHashCode();
+    local hash = 0;
+    for i,v in ipairs(generics) do
+        hash = hash + (primes[i]*v.GetHashCode());
     end
-    return i;
+    return hash;
 end
 
 local isGenericsTable = function(t)

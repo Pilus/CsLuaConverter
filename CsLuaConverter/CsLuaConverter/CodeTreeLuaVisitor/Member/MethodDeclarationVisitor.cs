@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Member
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using Attribute;
@@ -60,11 +61,23 @@
             this.block = (BlockVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.Block)).SingleOrDefault();
             this.genericsConstraint = (TypeParameterConstraintClauseVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameterConstraintClause)).SingleOrDefault();
         }
+        
+        private static MethodBase[] GetAllMembers(Type type, string name)
+        {
+            var all = new List<MemberInfo>();
+            all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Instance));
+            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
+
+            all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Static));
+            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
+
+            return all.OfType<MethodBase>().Where(m => m.Name == name).ToArray();
+        }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var definingType = providers.NameProvider.GetScopeElement("this").Type.GetTypeObject();
-            var genericObjects = definingType.GetMember(this.name).OfType<MethodBase>().SelectMany(m => m.GetGenericArguments()).ToArray();
+            var genericObjects = GetAllMembers(definingType, this.name).SelectMany(m => m.GetGenericArguments()).ToList();
 
             if (this.methodGenerics != null)
             {

@@ -54,7 +54,7 @@
             Assert(101098, res["type"]);
 
             var arrayRes = res["2_AnArray"] as NativeLuaTable;
-            Assert(789430, arrayRes["type"]);
+            Assert(851046, arrayRes["type"]);
             Assert(theClass.AnArray[0], arrayRes["3#_0"]);
             Assert(theClass.AnArray[1], arrayRes["3#_1"]);
 
@@ -88,7 +88,7 @@
 
             var res = serializer.Serialize(list);
 
-            Assert(593470, res["type"]);
+            Assert(370891, res["type"]);
 
             var subRes = res["2#_0"] as NativeLuaTable;
             Assert(theClass.AString, subRes["2_AString"]);

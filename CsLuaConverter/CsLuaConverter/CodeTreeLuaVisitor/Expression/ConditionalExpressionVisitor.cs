@@ -22,10 +22,17 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.condition.Visit(textWriter, providers);
+
             textWriter.Write(" and ");
+            providers.TypeKnowledgeRegistry.CurrentType = null;
             this.trueStatement.Visit(textWriter, providers);
+            var valueType1 = providers.TypeKnowledgeRegistry.CurrentType;
+
             textWriter.Write(" or ");
+            providers.TypeKnowledgeRegistry.CurrentType = null;
             this.falseStatement.Visit(textWriter, providers);
+
+            providers.TypeKnowledgeRegistry.CurrentType = providers.TypeKnowledgeRegistry.CurrentType ?? valueType1;
         }
     }
 }

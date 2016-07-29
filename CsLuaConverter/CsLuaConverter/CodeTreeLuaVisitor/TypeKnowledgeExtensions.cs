@@ -14,6 +14,18 @@
         {
             if (typeKnowledge.GetTypeObject().IsGenericParameter)
             {
+                var genericScope = providers.GenericsRegistry.GetGenericScope(typeKnowledge.Name);
+                if (genericScope == GenericScope.Class)
+                {
+                    textWriter.Write("generics[genericsMapping['{0}']]", typeKnowledge.Name);
+                    return;
+                }
+                else if (genericScope == GenericScope.Method)
+                {
+                    textWriter.Write("methodGenerics[methodGenericsMapping['{0}']]", typeKnowledge.Name);
+                    return;
+                }
+
                 throw new Exception("Cannot perform action on a generic type.");
             }
 
@@ -62,7 +74,10 @@
         {
             if (type.IsGenericParameter)
             {
-                TypeKnowledge.Providers.GenericsRegistry.SetGenerics(type.Name, GenericScope.Invocation, type, genericType);
+                if (!TypeKnowledge.Providers.GenericsRegistry.IsGeneric(type.Name))
+                { 
+                    TypeKnowledge.Providers.GenericsRegistry.SetGenerics(type.Name, GenericScope.Invocation, type, genericType);
+                }
                 return genericType;
             }
 

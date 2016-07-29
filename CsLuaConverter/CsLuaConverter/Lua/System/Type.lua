@@ -134,7 +134,7 @@ local getHash = function(name, namespace, numberOfGenerics, generics)
     local genericsHash = 1;
     if generics then
         for i,v in pairs(generics) do
-            genericsHash = genericsHash * v.GetHashCode();
+            genericsHash = genericsHash  + (primes[i]* v.GetHashCode());
         end
     end
 

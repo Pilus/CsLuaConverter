@@ -18,17 +18,19 @@
             this.Tests["TestGenericsInStaticMethods"] = TestGenericsInStaticMethods;
             this.Tests["TestSelfRefInInterface"] = TestSelfRefInInterface;
             this.Tests["TestMethodGenericAsGenericInInputObject"] = TestMethodGenericAsGenericInInputObject;
+            this.Tests["TestPassOfGenericsToGenericMethod"] = TestPassOfGenericsToGenericMethod;
+            this.Tests["TestPassofGenericsToGenericMethodThroughLambda"] = TestPassofGenericsToGenericMethodThroughLambda;
         }
 
         private static void TestGenericMethod()
         {
             var theClass = new MethodsWithGeneric<int, string>();
 
-            theClass.GenericMethod(1);
+            theClass.AmbGenericMethod(1);
             Assert("GenericMethodT1", Output);
 
             ResetOutput();
-            theClass.GenericMethod("x");
+            theClass.AmbGenericMethod("x");
             Assert("GenericMethodT2", Output);
         }
 
@@ -143,6 +145,21 @@
 
             Assert(3, a);
             Assert("x", b);
+        }
+
+        private static void TestPassOfGenericsToGenericMethod()
+        {
+            var theClass = new ClassUsingGenericsInMethods<int>();
+
+            Assert(true, theClass.UseClassGenericAsMethodGeneric());
+            Assert(true, theClass.UseMethodGenericAsMethodGeneric(3));
+        }
+
+        private static void TestPassofGenericsToGenericMethodThroughLambda()
+        {
+            var theClass = new ClassUsingGenericsInMethods<string>();
+
+            Assert(true, theClass.UseClassGenericInLambda("correct", "incorrect"));
         }
     }
 }
