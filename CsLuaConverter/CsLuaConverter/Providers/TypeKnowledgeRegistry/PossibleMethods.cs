@@ -1,8 +1,11 @@
 ﻿namespace CsLuaConverter.Providers.TypeKnowledgeRegistry
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Runtime.Remoting.Messaging;
+    using CodeTreeLuaVisitor;
 
     public class PossibleMethods
     {
@@ -35,6 +38,46 @@
             var types = typeKnowledges.Select(tk => tk?.GetTypeObject()).ToArray();
             this.methods = this.methods.Where(m => m.FitsArguments(types)).ToArray();
             this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
+        }
+
+        public void FilterOnArgLambdaReturnType(TypeKnowledge[] typeKnowledges)
+        {
+            var methodsBefore = this.methods;
+            this.methods = this.methods.Where(m => FilterOnArgLambdaReturnType(m, typeKnowledges)).ToArray();
+            this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
+        }
+
+        private static bool FilterOnArgLambdaReturnType(MethodKnowledge method, TypeKnowledge[] typeKnowledges)
+        {
+            for (var index = 0; index < typeKnowledges.Length; index++)
+            {
+                var returnType = typeKnowledges[index]?.GetTypeObject();
+
+                if (returnType == null)
+                {
+                    continue;
+                }
+
+                var args = method.GetInputArgs();
+                if (args.Length < index || args[index] == null)
+                {
+                    return false;
+                }
+
+                if (args[index].Name != "Func")
+                {
+                    continue;
+                }
+
+                var returnArg = args[index].GetReturnArg().GetTypeObject();
+
+                if (returnArg != returnType) // && !(returnArg == typeof(Nullable) && returnArg.GetGenericArguments()[0] == returnType))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void FilterByBestScore(TypeKnowledge[] typeKnowledges)

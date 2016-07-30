@@ -6,6 +6,7 @@
     using System.IO;
     using System.Linq;
     using CodeTree;
+    using Expression.Lambda;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
@@ -13,6 +14,8 @@
     public class ArgumentListVisitor : BaseVisitor
     {
         private readonly IVisitor[] argumentVisitors;
+        private int writerIndent;
+
         public ArgumentListVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.ExpectKind(0, SyntaxKind.OpenParenToken);
@@ -32,6 +35,8 @@
             var possibleMethods = providers.TypeKnowledgeRegistry.PossibleMethods;
             var argVisitings = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[this.argumentVisitors.Length];
 
+            this.writerIndent = textWriter.Indent;
+
             var steps = new Action<Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[], PossibleMethods, IProviders>[]
             {
                 this.FilterOnNumberOfArgs,
@@ -41,6 +46,7 @@
                 this.VisitParenLambdaVisitors,
                 this.FilterOnArgTypes,
                 this.FilterOnBestScore,
+                this.FilterOnSimpleLambdaReturnType,
                 this.FilterPrioitizeNonExtensions,
                 this.FilterPrioitizeNonParams,
             };
@@ -131,6 +137,7 @@
 
                 providers.TypeKnowledgeRegistry.CurrentType = null;
                 var argTextWriter = new IndentedTextWriterWrapper(new StringWriter());
+                argTextWriter.Indent = this.writerIndent;
                 argumentVisitor.Visit(argTextWriter, providers);
                 var type = providers.TypeKnowledgeRegistry.CurrentType;
                 argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
@@ -155,11 +162,29 @@
                 providers.TypeKnowledgeRegistry.CurrentType = null;
                 providers.TypeKnowledgeRegistry.ExpectedType = null;
                 var argTextWriter = new IndentedTextWriterWrapper(new StringWriter());
+                argTextWriter.Indent = this.writerIndent;
                 argumentVisitor.Visit(argTextWriter, providers);
                 var type = providers.TypeKnowledgeRegistry.CurrentType;
                 argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter,
                     type);
             }
+        }
+
+        private void FilterOnSimpleLambdaReturnType(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        {
+            var simpleLambdaType = new TypeKnowledge[argVisitings.Length];
+            for (var index = 0; index < this.argumentVisitors.Length; index++)
+            {
+                var argumentVisitor = this.argumentVisitors[index];
+                if (argumentVisitor == null || !IsArgumentVisitorALambda(argumentVisitor) || IsArgumentVisitorParenLambda(argumentVisitor))
+                {
+                    continue;
+                }
+
+                simpleLambdaType[index] = ((ArgumentVisitor) argumentVisitor).GetReturnTypeOfSimpleLambdaVisitor(providers);
+            }
+
+            possibleMethods.FilterOnArgLambdaReturnType(simpleLambdaType);
         }
 
         private void VisitRemainingArgs(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
@@ -171,6 +196,7 @@
 
                 providers.TypeKnowledgeRegistry.ExpectedType = args[Math.Min(index, args.Length - 1)];
                 var argTextWriter = new IndentedTextWriterWrapper(new StringWriter());
+                argTextWriter.Indent = this.writerIndent;
                 this.argumentVisitors[index].Visit(argTextWriter, providers);
                 var type = providers.TypeKnowledgeRegistry.CurrentType;
                 argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);

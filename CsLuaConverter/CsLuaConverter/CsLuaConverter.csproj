@@ -43,6 +43,7 @@
     <Reference Include="System.Collections.Immutable">
       <HintPath>.\System.Collections.Immutable.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Linq" />
     <Reference Include="System.Reflection.Metadata">
       <HintPath>.\System.Reflection.Metadata.dll</HintPath>

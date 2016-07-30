@@ -24,6 +24,12 @@
             typeof (Action<,,,>),
             typeof (Action<,,,,>),
             typeof (Action<,,,,,>),
+            typeof (Action<,,,,,,>),
+            typeof (Action<,,,,,,,>),
+            typeof (Action<,,,,,,,,>),
+            typeof (Action<,,,,,,,,,>),
+            typeof (Action<,,,,,,,,,,>),
+            typeof (Action<,,,,,,,,,,,>),
         };
 
         private static readonly List<Type> Funcs = new List<Type>()
@@ -35,6 +41,12 @@
             typeof (Func<,,,>),
             typeof (Func<,,,,>),
             typeof (Func<,,,,,>),
+            typeof (Func<,,,,,,>),
+            typeof (Func<,,,,,,,>),
+            typeof (Func<,,,,,,,,>),
+            typeof (Func<,,,,,,,,,>),
+            typeof (Func<,,,,,,,,,,>),
+            typeof (Func<,,,,,,,,,,,>),
         };
     }
 }

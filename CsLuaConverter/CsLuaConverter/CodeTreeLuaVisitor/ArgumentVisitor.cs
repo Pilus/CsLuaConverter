@@ -4,6 +4,7 @@
     using CodeTree;
     using Providers;
     using CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda;
+    using Providers.TypeKnowledgeRegistry;
 
     public class ArgumentVisitor : BaseVisitor
     {
@@ -27,6 +28,11 @@
         public bool IsArgumentVisitorParenLambda()
         {
             return this.inner is ParenthesizedLambdaExpressionVisitor;
+        }
+
+        public TypeKnowledge GetReturnTypeOfSimpleLambdaVisitor(IProviders providers)
+        {
+            return (this.inner as SimpleLambdaExpressionVisitor)?.GetReturnType(providers);
         }
 
         public int? GetInputArgCountOfLambda()

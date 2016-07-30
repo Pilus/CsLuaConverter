@@ -15,7 +15,6 @@
         public static IProviders Providers;
         private readonly Type type;
         private readonly bool restrictToStatic;
-
         public TypeKnowledge(Type type, bool restrictToStatic = false)
         {
             this.type = type;
@@ -52,6 +51,16 @@
 
         public bool IsGenericType => this.type?.IsGenericType ?? false;
 
+        public override int GetHashCode()
+        {
+            if (this.type != null)
+            {
+                return this.type.GetHashCode() + 43;
+            }
+
+            return base.GetHashCode();
+        }
+
         public IKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)
         {
             var type = this.type;
@@ -64,7 +73,11 @@
                 }
             }
 
-            var members = GetMembers(type, this.restrictToStatic, str);
+            var members =
+                GetMembers(type, this.restrictToStatic, str)
+                    .GroupBy(m => m.GetHashCode())
+                    .Select(g => g.First())
+                    .ToArray();
             var extensions = providers.TypeProvider.GetExtensionMethods(type, str);
             var membersIncludingExtensions = new []{ members, extensions}.SelectMany(v => v).ToArray();
             
@@ -118,12 +131,38 @@
 
         public TypeKnowledge GetIndexerValueType()
         {
-            if (this.type.IsArray)
+            return GetIndexerValueType(this.type);
+        }
+
+        public static TypeKnowledge GetIndexerValueType(Type type)
+        {
+            if (type.IsArray)
             {
                 return new TypeKnowledge(typeof(int));
             }
 
-            var indexParameters = this.type.GetProperties().Single(p => p.GetIndexParameters().Length > 0).GetIndexParameters().Single();
+            var indexParameters = type.GetProperties().SingleOrDefault(p => p.GetIndexParameters().Length > 0)?.GetIndexParameters().SingleOrDefault();
+
+            if (indexParameters == null)
+            {
+                if (type.IsInterface)
+                {
+                    var interfaces = type.GetInterfaces();
+                    foreach (var inheritedInterface in interfaces)
+                    {
+                        var indexer = GetIndexerValueType(inheritedInterface);
+                        if (indexer != null)
+                        {
+                            return indexer;
+                        }
+                    }
+
+                    return null;
+                }
+
+                return type.BaseType != null ? GetIndexerValueType(type.BaseType) : null;
+            }
+
             return new TypeKnowledge((indexParameters.Member as PropertyInfo).PropertyType);
         }
 

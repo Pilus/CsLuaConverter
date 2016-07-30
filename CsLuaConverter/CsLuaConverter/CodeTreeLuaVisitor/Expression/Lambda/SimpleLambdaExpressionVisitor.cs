@@ -6,6 +6,9 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
 {
+    using System;
+    using System.IO;
+
     public class SimpleLambdaExpressionVisitor : BaseVisitor, ILambdaVisitor
     {
         private readonly ParameterVisitor parameter;
@@ -68,6 +71,17 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
         public int GetNumParameters()
         {
             return this.parameter == null ? 0 : 1;
+        }
+
+        public TypeKnowledge GetReturnType(IProviders providers)
+        {
+            providers.TypeKnowledgeRegistry.CurrentType = null;
+            var tempTextWriter = new IndentedTextWriterWrapper(new StringWriter());
+            this.body.Visit(tempTextWriter, providers);
+            var type = providers.TypeKnowledgeRegistry.CurrentType;
+            providers.TypeKnowledgeRegistry.CurrentType = null;
+
+            return type;
         }
     }
 }

@@ -62,6 +62,24 @@
         {
             if (TypeNameAndNamespaceAreIdentical(extensionType, type))
             {
+                if (type.IsGenericType)
+                {
+                    var extensionGenerics = extensionType.GetGenericArguments();
+                    var typeGenerics = type.GetGenericArguments();
+
+                    if (typeGenerics.Length != extensionGenerics.Length)
+                    {
+                        return null;
+                    }
+
+                    for (var index = 0; index < typeGenerics.Length; index++)
+                    {
+                        if (!(extensionGenerics[index].IsAssignableFrom(typeGenerics[index]) || extensionGenerics[index].IsGenericParameter))
+                        {
+                            return null;
+                        }
+                    }
+                }
                 return type;
             }
 
@@ -75,7 +93,7 @@
 
         private static bool TypeNameAndNamespaceAreIdentical(Type a, Type b)
         {
-            return a.Name == b.Name && a.Namespace == b.Namespace;
+            return a.Name == b.Name && a.Namespace == b.Namespace && a.IsGenericType == b.IsGenericType;
         }
 
         private void AddPossibleExtensionMethods(Type type)

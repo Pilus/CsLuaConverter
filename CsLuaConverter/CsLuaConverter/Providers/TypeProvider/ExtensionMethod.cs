@@ -70,12 +70,12 @@
 
             if (!parameter.IsGenericType) return new Tuple<string, Type>[] {};
 
-            type = As(type, parameter);
+            var castType = As(type, parameter);
 
             var list = new List<Tuple<string, Type>>();
 
             var parameterGenerics = parameter.GetGenericArguments();
-            var typeGenerics = type.GetGenericArguments();
+            var typeGenerics = castType.GetGenericArguments();
 
             for (var index = 0; index < parameterGenerics.Length; index++)
             {
