@@ -162,7 +162,9 @@
 
             foreach (var visitorsWithSameNumGenerics in visitorsByNumGenerics.OrderBy(v => v.Key))
             {
+                var scope = this.providers.NameProvider.CloneScope();
                 this.VisitFilesWithSameElementNameAndNumGenerics(visitorsWithSameNumGenerics.Value.ToArray(), textWriter, visitorsWithSameNumGenerics.Key);
+                this.providers.NameProvider.SetScope(scope);
             }
 
             textWriter.Indent--;

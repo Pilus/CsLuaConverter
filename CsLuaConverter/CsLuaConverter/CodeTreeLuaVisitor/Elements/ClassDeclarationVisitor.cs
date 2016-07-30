@@ -4,6 +4,7 @@
     using System.Linq;
     using Attribute;
     using CodeTree;
+    using Constraint;
     using CsLuaFramework;
     using Expression;
     using Filters;
@@ -27,6 +28,7 @@
         private AttributeListVisitor attributeListVisitor;
         private ConstructorDeclarationVisitor[] constructorVisitors;
         private MethodDeclarationVisitor[] methodVisitors;
+        private TypeParameterConstraintClauseVisitor constraintClauseVisitor;
 
         public ClassDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -43,6 +45,8 @@
                 (TypeParameterListVisitor)
                     this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameterList)).SingleOrDefault();
             this.baseListVisitor = (BaseListVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.BaseList)).SingleOrDefault();
+            this.constraintClauseVisitor = (TypeParameterConstraintClauseVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameterConstraintClause)).SingleOrDefault();
+
             this.fieldVisitors =
                 this.CreateVisitors(new KindFilter(SyntaxKind.FieldDeclaration))
                     .Select(v => (FieldDeclarationVisitor) v)
@@ -281,9 +285,9 @@
             }
 
             var scope = providers.NameProvider.CloneScope();
-            var classTypeResult = providers.TypeProvider.LookupType(this.name);
-            providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(classTypeResult.TypeObject)));
-            providers.NameProvider.AddToScope(new ScopeElement("base", new TypeKnowledge(classTypeResult.TypeObject.BaseType)));
+            //var classTypeResult = providers.TypeProvider.LookupType(this.name);
+            //providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(classTypeResult.TypeObject)));
+            //providers.NameProvider.AddToScope(new ScopeElement("base", new TypeKnowledge(classTypeResult.TypeObject.BaseType)));
 
             this.constructorVisitors.VisitAll(textWriter, providers);
             if (providers.PartialElementState.DefinedConstructorWritten == false && this.constructorVisitors.Any())
@@ -396,9 +400,11 @@
 
             foreach (var genericName in this.genericsVisitor.GetNames())
             {
-                // TODO: Determine the correct object type for the generic.
-                
-                providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Class, generics.Single(t => t.Name == genericName), typeof(object));
+                providers.GenericsRegistry.SetGenerics(
+                    genericName, 
+                    GenericScope.Class, 
+                    generics.Single(t => t.Name == genericName), 
+                    this.constraintClauseVisitor?.GetConstrainedType(providers, genericName)?.GetTypeObject() ?? typeof(object));
             }
         }
     }

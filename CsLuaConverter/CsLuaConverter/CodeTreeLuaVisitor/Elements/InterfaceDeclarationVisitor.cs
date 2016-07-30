@@ -116,7 +116,11 @@
 
             foreach (var genericName in this.genericsVisitor.GetNames())
             {
-                providers.GenericsRegistry.SetGenerics(genericName, GenericScope.Class, generics.Single(t => t.Name == genericName), typeof(object));
+                providers.GenericsRegistry.SetGenerics(
+                    genericName, 
+                    GenericScope.Class, 
+                    generics.Single(t => t.Name == genericName), 
+                    typeof(object));
             }
         }
 

@@ -231,7 +231,8 @@
                 throw new VisitorException($"Cannot get invocation input args on current type {typeKnowledge.GetFullName()}.");
             }
 
-            return del.GetMethod("Invoke").GetParameters().Select(p => p.ParameterType.IsGenericParameter ? null : new TypeKnowledge(p.ParameterType)).ToArray();
+            //return del.GetMethod("Invoke").GetParameters().Select(p => p.ParameterType.IsGenericParameter ? null : new TypeKnowledge(p.ParameterType)).ToArray();
+            return del.GetMethod("Invoke").GetParameters().Select(p => new TypeKnowledge(p.ParameterType)).ToArray();
         }
 
         public static bool IsDelegate(this TypeKnowledge typeKnowledge)
