@@ -116,7 +116,7 @@
         {
             if (providers.PartialElementState.IsFirst)
             {
-                providers.GenericsRegistry.ClearScope(GenericScope.Class);
+                
                 this.originalScope = providers.NameProvider.CloneScope();
                 providers.NameProvider.AddAllInheritedMembersToScope(this.name);
 
@@ -357,6 +357,7 @@
                 textWriter.WriteLine("return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;");
                 textWriter.Indent--;
                 textWriter.WriteLine("end,");
+                providers.GenericsRegistry.ClearScope(GenericScope.Class);
             }
 
             if (providers.PartialElementState.IsFirst)
