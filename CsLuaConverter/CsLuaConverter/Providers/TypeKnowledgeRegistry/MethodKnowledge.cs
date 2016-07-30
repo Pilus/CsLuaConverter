@@ -213,6 +213,11 @@
             var parameterTypeGenerics = parameterType.GetGenericArguments();
             var inputTypeGenerics = inputType.GetGenericArguments();
 
+            if (parameterTypeGenerics.Length != inputTypeGenerics.Length)
+            {
+                return false;
+            }
+
             for (int index = 0; index < parameterTypeGenerics.Length; index++)
             {
                 var parameterTypeGeneric = parameterTypeGenerics[index];

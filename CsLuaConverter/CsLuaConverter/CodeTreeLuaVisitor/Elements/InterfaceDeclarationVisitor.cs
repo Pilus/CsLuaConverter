@@ -111,7 +111,7 @@
                 return;
             }
 
-            var classTypeResult = providers.TypeProvider.LookupType(this.name);
+            var classTypeResult = providers.TypeProvider.LookupType(new []{this.name}, this.GetNumOfGenerics());
             var generics = classTypeResult.TypeObject.GetGenericArguments();
 
             foreach (var genericName in this.genericsVisitor.GetNames())
