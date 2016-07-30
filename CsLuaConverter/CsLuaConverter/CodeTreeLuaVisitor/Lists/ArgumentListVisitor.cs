@@ -181,7 +181,14 @@
                     continue;
                 }
 
-                simpleLambdaType[index] = ((ArgumentVisitor) argumentVisitor).GetReturnTypeOfSimpleLambdaVisitor(providers);
+                var inputArg =
+                    possibleMethods.GetArgumentForAllMethods(index)
+                        .Select(tk => tk.GetInputArgs().Single())
+                        .GroupBy(tk => tk.GetTypeObject())
+                        .Single()
+                        .First();
+
+                simpleLambdaType[index] = ((ArgumentVisitor) argumentVisitor).GetReturnTypeOfSimpleLambdaVisitor(providers, inputArg);
             }
 
             possibleMethods.FilterOnArgLambdaReturnType(simpleLambdaType);

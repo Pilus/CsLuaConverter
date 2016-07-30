@@ -30,9 +30,9 @@
             return this.inner is ParenthesizedLambdaExpressionVisitor;
         }
 
-        public TypeKnowledge GetReturnTypeOfSimpleLambdaVisitor(IProviders providers)
+        public TypeKnowledge GetReturnTypeOfSimpleLambdaVisitor(IProviders providers, TypeKnowledge inputType)
         {
-            return (this.inner as SimpleLambdaExpressionVisitor)?.GetReturnType(providers);
+            return (this.inner as SimpleLambdaExpressionVisitor)?.GetReturnType(providers, inputType);
         }
 
         public int? GetInputArgCountOfLambda()

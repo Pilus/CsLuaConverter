@@ -47,6 +47,11 @@
             this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
         }
 
+        public TypeKnowledge[] GetArgumentForAllMethods(int argumentIndex)
+        {
+            return this.methods.Select(m => m.GetInputParameterTypeKnowledge()[argumentIndex]).ToArray();
+        }
+
         private static bool FilterOnArgLambdaReturnType(MethodKnowledge method, TypeKnowledge[] typeKnowledges)
         {
             for (var index = 0; index < typeKnowledges.Length; index++)

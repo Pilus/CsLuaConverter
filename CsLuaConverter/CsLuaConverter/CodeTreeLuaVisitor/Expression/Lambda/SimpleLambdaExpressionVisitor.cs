@@ -73,10 +73,11 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
             return this.parameter == null ? 0 : 1;
         }
 
-        public TypeKnowledge GetReturnType(IProviders providers)
+        public TypeKnowledge GetReturnType(IProviders providers, TypeKnowledge inputType)
         {
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.TypeKnowledgeRegistry.CurrentType = inputType;
             var tempTextWriter = new IndentedTextWriterWrapper(new StringWriter());
+            this.parameter.Visit(tempTextWriter, providers);
             this.body.Visit(tempTextWriter, providers);
             var type = providers.TypeKnowledgeRegistry.CurrentType;
             providers.TypeKnowledgeRegistry.CurrentType = null;
