@@ -139,7 +139,7 @@
                 var argTextWriter = new IndentedTextWriterWrapper(new StringWriter());
                 argTextWriter.Indent = this.writerIndent;
                 argumentVisitor.Visit(argTextWriter, providers);
-                var type = providers.TypeKnowledgeRegistry.CurrentType;
+                var type = providers.TypeKnowledgeRegistry.CurrentType ?? providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow().ToTypeKnowledge();
                 argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
             }
         }
