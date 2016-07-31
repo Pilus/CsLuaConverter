@@ -85,6 +85,13 @@
             return true;
         }
 
+        public void FilterDistinctTypes()
+        {
+            var methodsBefore = this.methods;
+            this.methods = this.methods.Distinct().ToArray();
+            this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
+        }
+
         public void FilterByBestScore(TypeKnowledge[] typeKnowledges)
         {
             var methodsBefore = this.methods;

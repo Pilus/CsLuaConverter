@@ -39,6 +39,23 @@
             this.inputTypes = new Type[] {};
         }
 
+
+        public override int GetHashCode()
+        {
+            if (this.method != null)
+            {
+                return this.method.Name.GetHashCode() +
+                       this.method.GetParameters().Sum(p => p.ParameterType.GetHashCode()) +
+                       this.method.GetGenericArguments().Sum(p => p.GetHashCode());
+
+            }
+            else
+            {
+                return this.returnType.GetHashCode() + this.returnType.GetHashCode() +
+                       this.genericsTypes.Sum(t => t.GetHashCode()) + this.inputTypes.Sum(t => t.GetHashCode());
+            }
+        }
+
         public TypeKnowledge ToTypeKnowledge()
         {
             return new TypeKnowledge(this.method);

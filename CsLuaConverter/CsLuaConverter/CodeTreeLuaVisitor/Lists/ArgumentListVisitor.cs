@@ -40,6 +40,7 @@
             var steps = new Action<Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[], PossibleMethods, IProviders>[]
             {
                 this.FilterOnNumberOfArgs,
+                this.FilterDistinctTypes,
                 this.VisitNonLambdaArgs,
                 this.FilterOnArgTypes,
                 this.FilterOnNumberOfArgsInLambda,
@@ -232,6 +233,11 @@
         private void FilterPrioitizeNonParams(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
         {
             possibleMethods.FilterPrioitizeNonParams();
+        }
+
+        private void FilterDistinctTypes(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        {
+            possibleMethods.FilterDistinctTypes();
         }
 
         private static bool IsArgumentVisitorALambda(IVisitor visitor)
