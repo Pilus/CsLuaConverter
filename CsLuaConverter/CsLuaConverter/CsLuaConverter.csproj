@@ -292,6 +292,7 @@
     <None Include="Lua\Meta\Try.lua" />
     <None Include="Lua\Meta\aa._M.lua" />
     <None Include="Lua\System\Activator.lua" />
+    <None Include="Lua\System\Guid.lua" />
     <None Include="Lua\System\InvalidOperationException.lua" />
     <None Include="Lua\System\NotImplementedException.lua" />
     <None Include="Lua\System\Collections\aa.lua" />

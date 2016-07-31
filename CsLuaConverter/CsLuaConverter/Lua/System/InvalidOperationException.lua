@@ -1,6 +1,6 @@
 ﻿System.InvalidOperationException = _M.NE({[0] = function(interactionElement, generics, staticValues)
     local baseTypeObject, members, baseConstructors = System.Exception.__meta(staticValues);
-    local typeObject = System.Type('InvalidOperationException','System',baseTypeObject,0,nil,nil,interactionElement,'Class',0); -- TODO: Fix type hash
+    local typeObject = System.Type('InvalidOperationException','System',baseTypeObject,0,nil,nil,interactionElement,'Class',112244); -- TODO: Fix type hash
 
     _M.IM(members, '', {
         level = typeObject.Level,
