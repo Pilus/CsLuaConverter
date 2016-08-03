@@ -15,6 +15,7 @@ namespace CsLuaConverter.Providers.TypeProvider
         ITypeResult LookupType(IEnumerable<string> names, int numGenerics);
         ITypeResult LookupType(string name);
         ITypeResult TryLookupType(string name, int? numGenerics);
+        ITypeResult TryLookupType(IEnumerable<string> names, int? numGenerics);
         MethodKnowledge[] GetExtensionMethods(Type type, string name);
     }
 }

@@ -194,12 +194,26 @@
 
         public ITypeResult LookupType(IEnumerable<string> names)
         {
-            return this.LookupTypeWithGenerics(names, null);
+            var type = this.TryLookupTypeWithGenerics(names, null);
+            if (type == null)
+            {
+                throw new ProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.",
+                    string.Join(".", names)));
+            }
+
+            return type;
         }
 
         public ITypeResult LookupType(IEnumerable<string> names, int numGenerics)
         {
-            return this.LookupTypeWithGenerics(names, numGenerics);
+            var type = this.TryLookupTypeWithGenerics(names, numGenerics);
+            if (type == null)
+            {
+                throw new ProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.",
+                    string.Join(".", names)));
+            }
+
+            return type;
         }
 
 
@@ -242,6 +256,11 @@
             return null;
         }
 
+        public ITypeResult TryLookupType(IEnumerable<string> names, int? numGenerics)
+        {
+            return this.TryLookupTypeWithGenerics(names, null);
+        }
+
         private ITypeResult LookupTypeWithGenerics(string name, int? numGenerics)
         {
             var type = this.TryLookupType(name, numGenerics);
@@ -254,7 +273,7 @@
             throw new ProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", name));
         }
 
-        private ITypeResult LookupTypeWithGenerics(IEnumerable<string> names, int? numGenerics)
+        private ITypeResult TryLookupTypeWithGenerics(IEnumerable<string> names, int? numGenerics)
         {
             if (names.Count() == 1)
             {
@@ -304,8 +323,8 @@
                     }
                 }
             }
-          
-            throw new ProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", string.Join(".", names)));
+
+            return null;
         }
 
         public MethodKnowledge[] GetExtensionMethods(Type type, string name)

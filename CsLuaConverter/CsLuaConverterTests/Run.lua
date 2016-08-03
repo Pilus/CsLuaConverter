@@ -138,4 +138,5 @@ bit = {
     end,
 };
 
+dofile("NamespaceA.lua");
 dofile("CsLuaTest.lua");

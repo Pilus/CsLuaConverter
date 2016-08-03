@@ -39,7 +39,7 @@ System.Action = _M.NE({["#"] = function(interactionElement, generics, staticValu
         signatureHash = 2*typeObject.signatureHash,
         scope = 'Public',
         func = function(element, innerAction)
-            element[typeObject.level].innerAction = innerAction;
+            element[typeObject.level].innerAction = innerAction[typeObject.level].innerAction;
         end,
     });
 

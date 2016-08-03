@@ -25,7 +25,7 @@
                 var list = providers.Context.NamespaceReference.ToList();
                 list.Add(this.text);
                 
-                var refType = providers.TypeProvider.TryLookupType(this.text, null);
+                var refType = providers.TypeProvider.TryLookupType(list.ToArray(), null);
 
                 if (refType == null) // Another namespace
                 {

@@ -30,7 +30,7 @@
         signatureHash = 2*typeObject.signatureHash,
         scope = 'Public',
         func = function(element, innerAction)
-            element[typeObject.level].innerAction = innerAction;
+            element[typeObject.level].innerAction = innerAction[typeObject.level].innerAction;
         end,
     });
 
@@ -45,22 +45,6 @@
             element[typeObject.level].innerAction = innerAction;
         end,
     });
-
-    --[[
-    local constructors = {
-        {
-            types = {typeObject},
-            func = function(element, innerAction) 
-                element[typeObject.level].innerAction = innerAction[typeObject.level].innerAction;
-            end,
-        },
-        {
-            types = {Lua.Function.__typeof},
-            func = function(element, innerAction) 
-                element[typeObject.level].innerAction = innerAction;
-            end,
-        }
-    }; --]]
 
     local objectGenerator = function() 
         return {
