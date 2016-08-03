@@ -22,8 +22,10 @@
 
             textWriter.Write(" = ");
 
+            providers.Context.ExpectedType = providers.Context.CurrentType;
             providers.Context.CurrentType = null;
             this.innerVisitor.Visit(textWriter, providers);
+            providers.Context.ExpectedType = null;
             providers.Context.CurrentType = null;
         }
     }

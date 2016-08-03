@@ -20,8 +20,16 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            textWriter.WriteLine("else");
-            this.elseIfStatement?.Visit(textWriter, providers);
+            textWriter.Write("else");
+            if (this.elseIfStatement != null)
+            {
+                this.elseIfStatement.Visit(textWriter, providers);
+            }
+            else
+            {
+                textWriter.WriteLine("");
+            }
+            
             this.block?.Visit(textWriter, providers);
 
             if (this.elseIfStatement == null)
