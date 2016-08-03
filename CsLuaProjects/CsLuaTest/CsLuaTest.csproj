@@ -85,6 +85,8 @@
     <Compile Include="Generics\ClassUsingGenericsInMethods.cs" />
     <Compile Include="Interfaces\ClassWithMethod.cs" />
     <Compile Include="Interfaces\InterfaceWithMethod.cs" />
+    <Compile Include="Namespaces\Class1.cs" />
+    <Compile Include="Namespaces\NamespacesTests.cs" />
     <Compile Include="Statements\ClassWithSwitch.cs" />
     <Compile Include="General\ClassWithTypeAndVariableNaming.cs" />
     <Compile Include="General\GeneralTests.cs" />

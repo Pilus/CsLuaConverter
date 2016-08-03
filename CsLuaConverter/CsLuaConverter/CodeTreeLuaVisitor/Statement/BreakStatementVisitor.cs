@@ -12,7 +12,7 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.WriteLine("break;");
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
         }
     }
 }

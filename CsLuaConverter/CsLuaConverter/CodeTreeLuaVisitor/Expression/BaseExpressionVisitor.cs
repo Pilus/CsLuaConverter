@@ -12,7 +12,7 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("element");
-            providers.TypeKnowledgeRegistry.CurrentType = providers.NameProvider.GetScopeElement("base").Type;
+            providers.Context.CurrentType = providers.NameProvider.GetScopeElement("base").Type;
         }
     }
 }

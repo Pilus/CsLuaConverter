@@ -16,7 +16,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
             this.inner.Visit(textWriter, providers);
         }
 

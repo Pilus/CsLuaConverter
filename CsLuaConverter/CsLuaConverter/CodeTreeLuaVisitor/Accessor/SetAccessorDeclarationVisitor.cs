@@ -31,7 +31,7 @@
             }
 
             var scope = providers.NameProvider.CloneScope();
-            providers.NameProvider.AddToScope(new ScopeElement("value", providers.TypeKnowledgeRegistry.CurrentType));
+            providers.NameProvider.AddToScope(new ScopeElement("value", providers.Context.CurrentType));
             textWriter.WriteLine($"set = function(element{this.AdditionalParameters} , value)");
             this.block.Visit(textWriter, providers);
             textWriter.WriteLine("end,");

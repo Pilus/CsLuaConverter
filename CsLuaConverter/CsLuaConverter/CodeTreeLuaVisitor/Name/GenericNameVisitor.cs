@@ -22,7 +22,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var current = providers.TypeKnowledgeRegistry.CurrentType;
+            var current = providers.Context.CurrentType;
 
             if (current == null)
             {
@@ -32,15 +32,15 @@
                 textWriter.Write(type.FullNameWithoutGenerics);
 
                 this.WriteGenericTypes(textWriter, providers);
-                providers.TypeKnowledgeRegistry.CurrentType = this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
+                providers.Context.CurrentType = this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
             }
             else
             {
-                providers.TypeKnowledgeRegistry.PossibleMethods = new PossibleMethods(current.GetTypeKnowledgeForSubElement(this.name, providers).OfType<MethodKnowledge>().ToArray());
-                providers.TypeKnowledgeRegistry.PossibleMethods.FilterOnNumberOfGenerics(this.argumentListVisitor.GetNumElements());
+                providers.Context.PossibleMethods = new PossibleMethods(current.GetTypeKnowledgeForSubElement(this.name, providers).OfType<MethodKnowledge>().ToArray());
+                providers.Context.PossibleMethods.FilterOnNumberOfGenerics(this.argumentListVisitor.GetNumElements());
                 textWriter.Write(this.name);
-                providers.TypeKnowledgeRegistry.PossibleMethods.WriteMethodGenerics = (() => this.WriteGenericTypes(textWriter, providers));
-                providers.TypeKnowledgeRegistry.PossibleMethods.MethodGenerics = this.argumentListVisitor.GetTypes(providers);
+                providers.Context.PossibleMethods.WriteMethodGenerics = (() => this.WriteGenericTypes(textWriter, providers));
+                providers.Context.PossibleMethods.MethodGenerics = this.argumentListVisitor.GetTypes(providers);
             }
         }
 

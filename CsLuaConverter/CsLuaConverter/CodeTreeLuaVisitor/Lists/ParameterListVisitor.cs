@@ -26,14 +26,14 @@
                 textWriter.Write(this.FirstElementPrefix);
             }
 
-            var expectedTypeGenerics = providers.TypeKnowledgeRegistry.ExpectedType?.GetGenerics();
+            var expectedTypeGenerics = providers.Context.ExpectedType?.GetGenerics();
             for (var index = 0; index < this.parameters.Length; index++)
             {
                 var visitor = this.parameters[index];
 
                 if (expectedTypeGenerics != null)
                 {
-                    providers.TypeKnowledgeRegistry.ExpectedType = expectedTypeGenerics[index];
+                    providers.Context.ExpectedType = expectedTypeGenerics[index];
                 }
 
                 visitor.Visit(textWriter, providers);

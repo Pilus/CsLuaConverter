@@ -20,7 +20,7 @@
             var creationWriter = textWriter.CreateTextWriterAtSameIndent();
             this.creationExpression.Visit(creationWriter, providers);
 
-            var arrayType = providers.TypeKnowledgeRegistry.CurrentType;
+            var arrayType = providers.Context.CurrentType;
 
             textWriter.Write("(");
             arrayType.WriteAsReference(textWriter, providers);

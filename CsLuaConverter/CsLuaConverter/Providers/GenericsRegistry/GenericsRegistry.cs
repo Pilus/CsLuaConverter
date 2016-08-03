@@ -25,6 +25,21 @@ namespace CsLuaConverter.Providers.GenericsRegistry
             this.generics[scope].Add(new Tuple<string, Type, Type>(name, genericTypeObject, type));
         }
 
+        public void SetTypeForGeneric(string name, Type type)
+        {
+            if (!this.IsGeneric(name))
+            {
+                throw new Exception($"Generic with name {name} was not found.");
+            }
+
+            var scope = this.GetGenericScope(name);
+
+            var element = this.generics[scope].Single(s => s.Item1 == name);
+            this.generics[scope].Remove(element);
+            
+            this.SetGenerics(name, scope, element.Item2, type);
+        }
+
         public bool IsGeneric(string name)
         {
             return this.generics.Any(genByScope => genByScope.Value.Any(n => n.Item1 == name));

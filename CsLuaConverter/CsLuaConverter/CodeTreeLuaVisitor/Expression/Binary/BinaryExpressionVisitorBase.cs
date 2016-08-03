@@ -23,16 +23,16 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
             this.lhsVisitor.Visit(textWriter, providers);
-            var lhsType = providers.TypeKnowledgeRegistry.CurrentType;
+            var lhsType = providers.Context.CurrentType;
 
             textWriter.Write($" {this.token} ");
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
             this.rhsVisitor.Visit(textWriter, providers);
-            var rhsType = providers.TypeKnowledgeRegistry.CurrentType;
+            var rhsType = providers.Context.CurrentType;
 
-            providers.TypeKnowledgeRegistry.CurrentType = this.resultingType ?? DetermineResultingType(lhsType, rhsType);
+            providers.Context.CurrentType = this.resultingType ?? DetermineResultingType(lhsType, rhsType);
         }
 
         private static TypeKnowledge DetermineResultingType(TypeKnowledge a, TypeKnowledge b)

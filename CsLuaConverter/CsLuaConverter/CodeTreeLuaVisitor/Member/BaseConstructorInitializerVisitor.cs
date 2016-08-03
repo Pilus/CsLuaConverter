@@ -21,13 +21,13 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var baseType = providers.NameProvider.GetScopeElement("base");
-            providers.TypeKnowledgeRegistry.PossibleMethods = new PossibleMethods(baseType.Type.GetConstructors());
+            providers.Context.PossibleMethods = new PossibleMethods(baseType.Type.GetConstructors());
 
             var argumentWriter = textWriter.CreateTextWriterAtSameIndent();
 
             this.argumentList.Visit(argumentWriter, providers);
 
-            var cstor = providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow();
+            var cstor = providers.Context.PossibleMethods.GetOnlyRemainingMethodOrThrow();
 
             textWriter.Write("(element % _M.DOT_LVL(typeObject.Level - 1))._C_0_");
 
@@ -36,7 +36,7 @@
             textWriter.AppendTextWriter(argumentWriter);
 
             textWriter.WriteLine(";");
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
         }
 
         

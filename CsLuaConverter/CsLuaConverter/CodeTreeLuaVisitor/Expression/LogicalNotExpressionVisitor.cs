@@ -20,7 +20,7 @@
             textWriter.Write("not(");
             this.innnerVisitor.Visit(textWriter, providers);
             textWriter.Write(")");
-            providers.TypeKnowledgeRegistry.CurrentType = new TypeKnowledge(typeof(bool));
+            providers.Context.CurrentType = new TypeKnowledge(typeof(bool));
         }
     }
 }

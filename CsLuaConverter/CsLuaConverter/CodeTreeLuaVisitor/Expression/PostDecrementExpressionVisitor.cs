@@ -16,15 +16,15 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var currentType = providers.TypeKnowledgeRegistry.CurrentType;
+            var currentType = providers.Context.CurrentType;
             this.target.Visit(textWriter, providers);
             textWriter.Write(" = ");
 
-            providers.TypeKnowledgeRegistry.CurrentType = currentType;
+            providers.Context.CurrentType = currentType;
             this.target.Visit(textWriter, providers);
             textWriter.Write(" - 1");
 
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
         }
     }
 }

@@ -23,16 +23,16 @@
             if (this.innerVisitors.Length > 1)
                 textWriter.WriteLine();
 
-            var initializingType = providers.TypeKnowledgeRegistry.CurrentType;
+            var initializingType = providers.Context.CurrentType;
 
             textWriter.Indent++;
             this.innerVisitors.VisitAll(textWriter, providers, () =>
             {
                 textWriter.WriteLine(",");
-                providers.TypeKnowledgeRegistry.CurrentType = initializingType;
+                providers.Context.CurrentType = initializingType;
             });
             textWriter.Indent--;
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
 
             if (this.innerVisitors.Length > 1)
                 textWriter.WriteLine();

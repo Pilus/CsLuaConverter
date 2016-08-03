@@ -46,7 +46,7 @@
             {
                 return this.method.Name.GetHashCode() +
                        this.method.GetParameters().Sum(p => p.ParameterType.GetHashCode()) +
-                       this.method.GetGenericArguments().Sum(p => p.GetHashCode());
+                       (this.method.IsGenericMethod ? this.method.GetGenericArguments().Sum(p => p.GetHashCode()) : 0);
 
             }
             else

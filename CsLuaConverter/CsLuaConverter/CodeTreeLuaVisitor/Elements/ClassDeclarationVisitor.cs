@@ -405,7 +405,17 @@
                     genericName, 
                     GenericScope.Class, 
                     generics.Single(t => t.Name == genericName), 
-                    this.constraintClauseVisitor?.GetConstrainedType(providers, genericName)?.GetTypeObject() ?? typeof(object));
+                    typeof(object));
+            }
+
+            foreach (var genericName in this.genericsVisitor.GetNames())
+            {
+                var type = this.constraintClauseVisitor?.GetConstrainedType(providers, genericName)?.GetTypeObject();
+
+                if (type != null)
+                {
+                    providers.GenericsRegistry.SetTypeForGeneric(genericName, type);
+                }
             }
         }
     }

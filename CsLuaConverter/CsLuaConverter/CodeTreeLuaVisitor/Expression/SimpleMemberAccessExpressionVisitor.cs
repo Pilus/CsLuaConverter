@@ -19,17 +19,30 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
 
-            providers.TypeKnowledgeRegistry.CurrentType = null;
-            textWriter.Write("(");
-            this.targetVisitor.Visit(textWriter, providers);
-            textWriter.Write("% _M.DOT");
+            providers.Context.CurrentType = null;
 
-            if (this.targetVisitor is BaseExpressionVisitor)
+            var innerWriter = textWriter.CreateTextWriterAtSameIndent();
+
+            this.targetVisitor.Visit(innerWriter, providers);
+
+            if (providers.Context.NamespaceReference == null)
             {
-                textWriter.Write("_LVL(typeObject.Level - 1)");
+                textWriter.Write("(");
             }
 
-            textWriter.Write(").");
+            textWriter.AppendTextWriter(innerWriter);
+
+            if (providers.Context.NamespaceReference == null)
+            { 
+                textWriter.Write("% _M.DOT");
+
+                if (this.targetVisitor is BaseExpressionVisitor)
+                {
+                    textWriter.Write("_LVL(typeObject.Level - 1)");
+                }
+
+                textWriter.Write(").");
+            }
 
             this.indexVisitor.Visit(textWriter, providers);
         }

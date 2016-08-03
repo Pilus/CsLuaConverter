@@ -33,10 +33,10 @@
             textWriter.Write("while (");
             this.conditionVisitor.Visit(textWriter, providers);
             textWriter.WriteLine(") do");
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
             this.bodyVisitor.Visit(textWriter, providers);
             this.increamentVisitor.Visit(textWriter, providers);
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
             textWriter.WriteLine(";");
             textWriter.WriteLine("end");
         }

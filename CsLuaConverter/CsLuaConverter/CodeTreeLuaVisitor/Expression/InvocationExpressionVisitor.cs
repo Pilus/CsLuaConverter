@@ -21,17 +21,17 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("(");
-            var originalMethods = providers.TypeKnowledgeRegistry.PossibleMethods;
-            providers.TypeKnowledgeRegistry.PossibleMethods = null;
+            var originalMethods = providers.Context.PossibleMethods;
+            providers.Context.PossibleMethods = null;
 
             this.target.Visit(textWriter, providers);
 
-            if (providers.TypeKnowledgeRegistry.PossibleMethods != null)
+            if (providers.Context.PossibleMethods != null)
             {
                 var argumentListWriter = textWriter.CreateTextWriterAtSameIndent();
                 this.argumentList.Visit(argumentListWriter, providers);
 
-                var method = providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow();
+                var method = providers.Context.PossibleMethods.GetOnlyRemainingMethodOrThrow();
 
                 var numGenerics = method.GetNumberOfMethodGenerics();
 
@@ -41,7 +41,7 @@
 
                     method.WriteSignature(textWriter, providers);
 
-                    var writeMethodGenericsAction = providers.TypeKnowledgeRegistry.PossibleMethods.WriteMethodGenerics;
+                    var writeMethodGenericsAction = providers.Context.PossibleMethods.WriteMethodGenerics;
                     if (writeMethodGenericsAction != null)
                     {
                         writeMethodGenericsAction();
@@ -56,11 +56,11 @@
 
                 textWriter.AppendTextWriter(argumentListWriter);
 
-                providers.TypeKnowledgeRegistry.CurrentType = method.GetReturnType();
+                providers.Context.CurrentType = method.GetReturnType();
             }
             else
             {
-                var currentType = providers.TypeKnowledgeRegistry.CurrentType;
+                var currentType = providers.Context.CurrentType;
 
                 if (!currentType.IsDelegate())
                 {
@@ -69,16 +69,16 @@
 
                 var invoke = currentType.GetTypeObject().GetMember("Invoke").OfType<MethodBase>().First();
                 var method = new MethodKnowledge(invoke);
-                providers.TypeKnowledgeRegistry.PossibleMethods = new PossibleMethods(new []{ method });
-                providers.TypeKnowledgeRegistry.CurrentType = null;
+                providers.Context.PossibleMethods = new PossibleMethods(new []{ method });
+                providers.Context.CurrentType = null;
 
                 textWriter.Write(" % _M.DOT)");
                 this.argumentList.Visit(textWriter, providers);
 
-                providers.TypeKnowledgeRegistry.CurrentType = method.GetReturnType();
+                providers.Context.CurrentType = method.GetReturnType();
             }
 
-            providers.TypeKnowledgeRegistry.PossibleMethods = originalMethods;
+            providers.Context.PossibleMethods = originalMethods;
         }
 
         private static void WriteMethodGenerics(TypeKnowledge[] genericTypes, IIndentedTextWriterWrapper textWriter, IProviders providers)

@@ -20,7 +20,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var delegateType = providers.TypeKnowledgeRegistry.ExpectedType;
+            var delegateType = providers.Context.ExpectedType;
 
             if (delegateType != null)
             {
@@ -33,7 +33,7 @@
                 var bodyWriter = textWriter.CreateTextWriterAtSameIndent();
                 this.VisitParametersAndBody(bodyWriter, providers);
 
-                var returnType = providers.TypeKnowledgeRegistry.CurrentType;
+                var returnType = providers.Context.CurrentType;
                 var inputTypes = this.parameters.GetTypes(providers);
                 delegateType = TypeKnowledge.ConstructLambdaType(inputTypes, returnType);
 
@@ -42,7 +42,7 @@
                 textWriter.AppendTextWriter(bodyWriter);
             }
             
-            providers.TypeKnowledgeRegistry.CurrentType = delegateType;
+            providers.Context.CurrentType = delegateType;
         }
 
         private void VisitParametersAndBody(IIndentedTextWriterWrapper textWriter, IProviders providers)

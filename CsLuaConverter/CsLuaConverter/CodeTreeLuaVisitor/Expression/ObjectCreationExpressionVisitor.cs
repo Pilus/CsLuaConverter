@@ -45,12 +45,12 @@
 
             if (this.constructorArgumentsVisitor != null)
             { 
-                providers.TypeKnowledgeRegistry.PossibleMethods = new PossibleMethods(type.GetConstructors());
+                providers.Context.PossibleMethods = new PossibleMethods(type.GetConstructors());
 
                 var cstorArgsWriter = textWriter.CreateTextWriterAtSameIndent();
                 this.constructorArgumentsVisitor.Visit(cstorArgsWriter, providers);
 
-                var method = providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow();
+                var method = providers.Context.PossibleMethods.GetOnlyRemainingMethodOrThrow();
             
                 method.WriteSignature(textWriter, providers);
 
@@ -61,18 +61,18 @@
                 textWriter.Write("0()");    
             }
 
-            providers.TypeKnowledgeRegistry.PossibleMethods = null;
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.PossibleMethods = null;
+            providers.Context.CurrentType = null;
 
             if (this.initializer != null)
             {
                 textWriter.Write(" % _M.DOT)");
-                providers.TypeKnowledgeRegistry.CurrentType = type;
+                providers.Context.CurrentType = type;
                 this.initializer.Visit(textWriter, providers);
             }
             
 
-            providers.TypeKnowledgeRegistry.CurrentType = type;
+            providers.Context.CurrentType = type;
         }
     }
 }

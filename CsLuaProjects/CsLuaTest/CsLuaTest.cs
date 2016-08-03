@@ -16,6 +16,7 @@ namespace CsLuaTest
     using Generics;
     using Interfaces;
     using Lua;
+    using Namespaces;
     using Override;
     using Params;
     using Serialization;
@@ -35,6 +36,7 @@ namespace CsLuaTest
             var tests = new List<ITestSuite>()
             {
                 new GeneralTests(),
+                new NamespacesTests(),
                 new TypeTests(),
                 new TryCatchFinallyTests(),
                 new AmbigousMethodsTests(),

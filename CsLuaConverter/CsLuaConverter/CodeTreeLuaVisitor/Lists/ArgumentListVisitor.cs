@@ -32,7 +32,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var possibleMethods = providers.TypeKnowledgeRegistry.PossibleMethods;
+            var possibleMethods = providers.Context.PossibleMethods;
             var argVisitings = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[this.argumentVisitors.Length];
 
             this.writerIndent = textWriter.Indent;
@@ -117,8 +117,8 @@
             }
             textWriter.Write(")");
 
-            providers.TypeKnowledgeRegistry.ExpectedType = null;
-            providers.TypeKnowledgeRegistry.PossibleMethods = possibleMethods;
+            providers.Context.ExpectedType = null;
+            providers.Context.PossibleMethods = possibleMethods;
         }
 
         private void FilterOnNumberOfArgs(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
@@ -136,11 +136,11 @@
                     continue;
                 }
 
-                providers.TypeKnowledgeRegistry.CurrentType = null;
+                providers.Context.CurrentType = null;
                 var argTextWriter = new IndentedTextWriterWrapper(new StringWriter());
                 argTextWriter.Indent = this.writerIndent;
                 argumentVisitor.Visit(argTextWriter, providers);
-                var type = providers.TypeKnowledgeRegistry.CurrentType ?? providers.TypeKnowledgeRegistry.PossibleMethods.GetOnlyRemainingMethodOrThrow().ToTypeKnowledge();
+                var type = providers.Context.CurrentType ?? providers.Context.PossibleMethods.GetOnlyRemainingMethodOrThrow().ToTypeKnowledge();
                 argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
             }
         }
@@ -160,12 +160,12 @@
                     continue;
                 }
 
-                providers.TypeKnowledgeRegistry.CurrentType = null;
-                providers.TypeKnowledgeRegistry.ExpectedType = null;
+                providers.Context.CurrentType = null;
+                providers.Context.ExpectedType = null;
                 var argTextWriter = new IndentedTextWriterWrapper(new StringWriter());
                 argTextWriter.Indent = this.writerIndent;
                 argumentVisitor.Visit(argTextWriter, providers);
-                var type = providers.TypeKnowledgeRegistry.CurrentType;
+                var type = providers.Context.CurrentType;
                 argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter,
                     type);
             }
@@ -202,11 +202,11 @@
             {
                 if (argVisitings[index] != null) continue;
 
-                providers.TypeKnowledgeRegistry.ExpectedType = args[Math.Min(index, args.Length - 1)];
+                providers.Context.ExpectedType = args[Math.Min(index, args.Length - 1)];
                 var argTextWriter = new IndentedTextWriterWrapper(new StringWriter());
                 argTextWriter.Indent = this.writerIndent;
                 this.argumentVisitors[index].Visit(argTextWriter, providers);
-                var type = providers.TypeKnowledgeRegistry.CurrentType;
+                var type = providers.Context.CurrentType;
                 argVisitings[index] = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>(argTextWriter, type);
             }
         }

@@ -11,7 +11,7 @@ namespace CsLuaConverter.Providers
         ITypeProvider TypeProvider { get; }
         INameProvider NameProvider { get; }
         IGenericsRegistry GenericsRegistry { get; }
-        ITypeKnowledgeRegistry TypeKnowledgeRegistry { get; }
+        IContext Context { get; }
         IPartialElementState PartialElementState { get; }
     }
 }

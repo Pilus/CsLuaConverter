@@ -22,9 +22,9 @@
 
             textWriter.Write(" = ");
 
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
             this.innerVisitor.Visit(textWriter, providers);
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
         }
     }
 }

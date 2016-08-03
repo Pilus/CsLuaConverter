@@ -13,7 +13,7 @@ namespace CsLuaConverter.Providers
         private readonly IGenericsRegistry genericsRegistry;
         private readonly ITypeProvider typeProvider;
         private readonly INameProvider nameProvider;
-        private readonly ITypeKnowledgeRegistry typeKnowledgeRegistry;
+        private readonly IContext context;
         private readonly IPartialElementState partialElementState;
 
         public Providers(Solution solution)
@@ -21,7 +21,7 @@ namespace CsLuaConverter.Providers
             this.typeProvider = new TypeNameProvider(solution);
             this.genericsRegistry = new GenericsRegistry.GenericsRegistry();
             this.nameProvider = new NameProvider.NameProvider(this.typeProvider);
-            this.typeKnowledgeRegistry = new TypeKnowledgeRegistry.TypeKnowledgeRegistry();
+            this.context = new TypeKnowledgeRegistry.Context();
             this.partialElementState = new PartialElementState();
             TypeKnowledge.Providers = this;
         }
@@ -31,7 +31,7 @@ namespace CsLuaConverter.Providers
             this.typeProvider = null;
             this.genericsRegistry = new GenericsRegistry.GenericsRegistry();
             this.nameProvider = new NameProvider.NameProvider(this.typeProvider);
-            this.typeKnowledgeRegistry = new TypeKnowledgeRegistry.TypeKnowledgeRegistry();
+            this.context = new TypeKnowledgeRegistry.Context();
             this.partialElementState = new PartialElementState();
             TypeKnowledge.Providers = this;
         }
@@ -60,11 +60,11 @@ namespace CsLuaConverter.Providers
             }
         }
 
-        public ITypeKnowledgeRegistry TypeKnowledgeRegistry
+        public IContext Context
         {
             get
             {
-                return this.typeKnowledgeRegistry;
+                return this.context;
             }
         }
 

@@ -18,7 +18,7 @@
         {
             var type = providers.TypeProvider.LookupType(this.text);
             textWriter.Write(type.FullNameWithoutGenerics);
-            providers.TypeKnowledgeRegistry.CurrentType = new TypeKnowledge(type.TypeObject, true);
+            providers.Context.CurrentType = new TypeKnowledge(type.TypeObject, true);
         }
 
         public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)

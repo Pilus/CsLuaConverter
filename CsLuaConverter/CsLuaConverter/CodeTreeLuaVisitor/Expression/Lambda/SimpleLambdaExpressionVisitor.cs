@@ -23,12 +23,12 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var delegateType = providers.TypeKnowledgeRegistry.ExpectedType;
+            var delegateType = providers.Context.ExpectedType;
 
             var bodyWriter = textWriter.CreateTextWriterAtSameIndent();
             this.VisitParametersAndBody(bodyWriter, providers, delegateType);
 
-            var returnType = providers.TypeKnowledgeRegistry.CurrentType;
+            var returnType = providers.Context.CurrentType;
             var inputTypes = new[] {this.parameter.GetType(providers)};
 
             var generics = new[] { this.parameter.GetType(providers), returnType};
@@ -39,13 +39,13 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
             textWriter.Write("._C_0_16704"); // Lua.Function as argument
             textWriter.AppendTextWriter(bodyWriter);
 
-            providers.TypeKnowledgeRegistry.CurrentType = delegateType;
+            providers.Context.CurrentType = delegateType;
         }
 
         private void VisitParametersAndBody(IIndentedTextWriterWrapper textWriter, IProviders providers, TypeKnowledge delegateType)
         {
             textWriter.Write("(function(");
-            providers.TypeKnowledgeRegistry.CurrentType = delegateType?.GetInputArgs().Single();
+            providers.Context.CurrentType = delegateType?.GetInputArgs().Single();
             this.parameter.Visit(textWriter, providers);
             textWriter.Write(")");
 
@@ -75,12 +75,12 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
 
         public TypeKnowledge GetReturnType(IProviders providers, TypeKnowledge inputType)
         {
-            providers.TypeKnowledgeRegistry.CurrentType = inputType;
+            providers.Context.CurrentType = inputType;
             var tempTextWriter = new IndentedTextWriterWrapper(new StringWriter());
             this.parameter.Visit(tempTextWriter, providers);
             this.body.Visit(tempTextWriter, providers);
-            var type = providers.TypeKnowledgeRegistry.CurrentType;
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            var type = providers.Context.CurrentType;
+            providers.Context.CurrentType = null;
 
             return type;
         }

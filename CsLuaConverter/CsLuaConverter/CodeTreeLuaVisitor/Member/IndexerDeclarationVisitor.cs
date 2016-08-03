@@ -57,7 +57,7 @@
                 var indexerParameter = this.indexerParameter.GetName();
                 this.accessorList.SetAdditionalParameters("," + indexerParameter, "," + indexerParameter);
                 providers.NameProvider.AddToScope(new ScopeElement(indexerParameter,
-                    providers.TypeKnowledgeRegistry.CurrentType));
+                    providers.Context.CurrentType));
                 this.accessorList.Visit(textWriter, providers);
 
                 providers.NameProvider.SetScope(scope);

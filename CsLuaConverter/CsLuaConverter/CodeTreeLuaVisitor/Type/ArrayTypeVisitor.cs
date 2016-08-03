@@ -18,7 +18,7 @@
         {
             this.WriteAsReference(textWriter, providers);
             textWriter.Write("._C_0_0()");
-            providers.TypeKnowledgeRegistry.CurrentType = this.GetType(providers);
+            providers.Context.CurrentType = this.GetType(providers);
         }
 
         public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)

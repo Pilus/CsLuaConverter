@@ -20,7 +20,7 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write(this.value);
-            providers.TypeKnowledgeRegistry.CurrentType = this.GetTypeKnowledge();
+            providers.Context.CurrentType = this.GetTypeKnowledge();
         }
 
         private TypeKnowledge GetTypeKnowledge()

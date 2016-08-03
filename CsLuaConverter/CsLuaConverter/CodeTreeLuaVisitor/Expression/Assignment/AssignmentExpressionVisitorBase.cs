@@ -24,17 +24,17 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
             this.lhs.Visit(textWriter, providers);
             textWriter.Write(" = ");
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
             textWriter.Write(this.prefix);
             this.lhs.Visit(textWriter, providers);
             textWriter.Write(this.delimiter);
             this.rhs.Visit(textWriter, providers);
             textWriter.Write(this.suffix);
 
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
         }
     }
 }

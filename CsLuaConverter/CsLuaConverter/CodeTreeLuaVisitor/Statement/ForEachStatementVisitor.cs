@@ -39,7 +39,7 @@
 
             if (iteratorTypeKnowledge == null)
             {
-                iteratorTypeKnowledge = providers.TypeKnowledgeRegistry.CurrentType.GetEnumeratorType();
+                iteratorTypeKnowledge = providers.Context.CurrentType.GetEnumeratorType();
             }
 
             providers.NameProvider.AddToScope(new ScopeElement(this.iteratorName, iteratorTypeKnowledge));

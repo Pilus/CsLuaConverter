@@ -18,32 +18,62 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var currentType = providers.TypeKnowledgeRegistry.CurrentType;
+            var currentType = providers.Context.CurrentType;
+
+            if (providers.Context.NamespaceReference != null)
+            {
+                var list = providers.Context.NamespaceReference.ToList();
+                list.Add(this.text);
+                
+                var refType = providers.TypeProvider.TryLookupType(this.text, null);
+
+                if (refType == null) // Another namespace
+                {
+                    providers.Context.NamespaceReference = list.ToArray();
+                    return;
+                }
+
+                providers.Context.NamespaceReference = null;
+                providers.Context.CurrentType = new TypeKnowledge(refType.TypeObject);
+                textWriter.Write(refType.FullNameWithoutGenerics);
+                return;
+            }
+
+            
             if (currentType != null)
             {
                 textWriter.Write(this.text);
                 var newCrurrentTypes = currentType.GetTypeKnowledgeForSubElement(this.text, providers);
 
-                providers.TypeKnowledgeRegistry.CurrentType = newCrurrentTypes.OfType<TypeKnowledge>().SingleOrDefault();
+                providers.Context.CurrentType = newCrurrentTypes.OfType<TypeKnowledge>().SingleOrDefault();
 
                 var possibleMethods = newCrurrentTypes.OfType<MethodKnowledge>().ToArray();
-                providers.TypeKnowledgeRegistry.PossibleMethods = possibleMethods.Any() ? new PossibleMethods(possibleMethods) : null;
+                providers.Context.PossibleMethods = possibleMethods.Any() ? new PossibleMethods(possibleMethods) : null;
 
                 return;
             }
 
             var element = providers.NameProvider.GetScopeElement(this.text);
 
-            if (element == null) // Identifier is most likely a reference to a type
+            if (element != null) 
             {
-                var type = providers.TypeProvider.LookupType(this.text);
-                providers.TypeKnowledgeRegistry.CurrentType = new TypeKnowledge(type.TypeObject);
+                textWriter.Write(element.ToString());
+                providers.Context.CurrentType = element.Type;
+                return;
+            }
+
+            // Identifier is most likely a reference to a type or a namespace
+            var type = providers.TypeProvider.TryLookupType(this.text, null);
+
+            if (type != null)
+            {
+                providers.Context.CurrentType = new TypeKnowledge(type.TypeObject);
                 textWriter.Write(type.FullNameWithoutGenerics);
                 return;
             }
 
-            textWriter.Write(element.ToString());
-            providers.TypeKnowledgeRegistry.CurrentType = element.Type;
+            // It is a namespace.
+            providers.Context.NamespaceReference = new[] { this.text };
         }
 
         public new void WriteAsType(IIndentedTextWriterWrapper textWriter, IProviders providers)
@@ -62,6 +92,11 @@
             {
                 var genericType = providers.GenericsRegistry.GetGenericTypeObject(this.text);
                 return new TypeKnowledge(genericType); // TODO: use other type if there are a generic 
+            }
+
+            if (this.text == "var")
+            {
+                return null;
             }
 
             var type = providers.TypeProvider.LookupType(this.text);

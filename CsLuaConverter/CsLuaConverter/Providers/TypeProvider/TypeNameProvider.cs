@@ -208,7 +208,7 @@
             return this.LookupTypeWithGenerics(name, null);
         }
 
-        private ITypeResult LookupTypeWithGenerics(string name, int? numGenerics)
+        public ITypeResult TryLookupType(string name, int? numGenerics)
         {
             if (name == "var" || name == "void")
             {
@@ -238,6 +238,19 @@
                     }
                 }
             }
+
+            return null;
+        }
+
+        private ITypeResult LookupTypeWithGenerics(string name, int? numGenerics)
+        {
+            var type = this.TryLookupType(name, numGenerics);
+
+            if (type != null)
+            {
+                return type;
+            }
+
             throw new ProviderException(string.Format("Could not find type '{0}' in the referenced namespaces.", name));
         }
 

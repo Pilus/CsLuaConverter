@@ -21,7 +21,7 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.typeVisitor.WriteAsType(textWriter, providers);
-            providers.TypeKnowledgeRegistry.CurrentType = new TypeKnowledge(typeof(Type));
+            providers.Context.CurrentType = new TypeKnowledge(typeof(Type));
         }
     }
 }

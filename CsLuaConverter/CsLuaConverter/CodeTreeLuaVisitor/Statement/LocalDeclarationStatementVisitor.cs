@@ -26,7 +26,7 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.variableDeclarationVisitor.Visit(textWriter, providers);
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
             providers.GenericsRegistry.ClearScope(GenericScope.Invocation);
             textWriter.WriteLine(";");
         }

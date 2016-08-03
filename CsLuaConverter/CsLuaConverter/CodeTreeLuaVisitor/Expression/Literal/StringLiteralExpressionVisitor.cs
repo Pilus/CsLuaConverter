@@ -24,7 +24,7 @@
 
             textWriter.Write(txt);
 
-            providers.TypeKnowledgeRegistry.CurrentType = new TypeKnowledge(typeof(string));
+            providers.Context.CurrentType = new TypeKnowledge(typeof(string));
         }
     }
 }

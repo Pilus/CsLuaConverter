@@ -49,7 +49,7 @@
             this.type.WriteAsType(textWriter, providers);
             textWriter.WriteLine(";");
 
-            providers.TypeKnowledgeRegistry.CurrentType = this.type.GetType(providers);
+            providers.Context.CurrentType = this.type.GetType(providers);
             this.accessorList.Visit(textWriter, providers);
             textWriter.Indent--;
             textWriter.WriteLine("});");

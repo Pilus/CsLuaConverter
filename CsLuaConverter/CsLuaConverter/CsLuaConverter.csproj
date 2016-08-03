@@ -250,11 +250,11 @@
     <Compile Include="Providers\ProviderException.cs" />
     <Compile Include="Providers\Providers.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\IKnowledge.cs" />
-    <Compile Include="Providers\TypeKnowledgeRegistry\ITypeKnowledgeRegistry.cs" />
+    <Compile Include="Providers\TypeKnowledgeRegistry\IContext.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\MethodKnowledge.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\PossibleMethods.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\TypeKnowledge.cs" />
-    <Compile Include="Providers\TypeKnowledgeRegistry\TypeKnowledgeRegistry.cs" />
+    <Compile Include="Providers\TypeKnowledgeRegistry\Context.cs" />
     <Compile Include="Providers\TypeProvider\ActionFuncTypes.cs" />
     <Compile Include="Providers\TypeProvider\ExtensionMethod.cs" />
     <Compile Include="Providers\TypeProvider\ITypeProvider.cs" />

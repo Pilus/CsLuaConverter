@@ -21,11 +21,11 @@
             textWriter.WriteLine(".__Initialize({");
             textWriter.Indent++;
 
-            providers.TypeKnowledgeRegistry.CurrentType = null;
+            providers.Context.CurrentType = null;
             this.innerVisitors.VisitAll(textWriter, providers, () =>
             {
                 textWriter.WriteLine(",");
-                providers.TypeKnowledgeRegistry.CurrentType = null;
+                providers.Context.CurrentType = null;
             });
             textWriter.Indent--;
             textWriter.WriteLine();
