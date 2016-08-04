@@ -10,7 +10,7 @@
     public class PossibleMethods
     {
         private MethodKnowledge[] methods;
-        public Action WriteMethodGenerics { get; set; }
+        public Action<IIndentedTextWriterWrapper> WriteMethodGenerics { get; set; }
         public TypeKnowledge[] MethodGenerics { get; set; }
 
         public PossibleMethods(MethodKnowledge[] methods)

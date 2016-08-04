@@ -6,12 +6,12 @@
     {
         public void AmbGenericMethod(T1 x)
         {
-            BaseTest.Output = "GenericMethodT1";
+            BaseTest.Output += "GenericMethodT1";
         }
 
         public void AmbGenericMethod(T2 x)
         {
-            BaseTest.Output = "GenericMethodT2";
+            BaseTest.Output += "GenericMethodT2";
         }
 
         public T3 GenericReturnType<T3>(object value)

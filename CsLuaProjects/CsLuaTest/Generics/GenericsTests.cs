@@ -20,6 +20,7 @@
             this.Tests["TestMethodGenericAsGenericInInputObject"] = TestMethodGenericAsGenericInInputObject;
             this.Tests["TestPassOfGenericsToGenericMethod"] = TestPassOfGenericsToGenericMethod;
             this.Tests["TestPassofGenericsToGenericMethodThroughLambda"] = TestPassofGenericsToGenericMethodThroughLambda;
+            this.Tests["TestInvokingAmbMethodDependingOnClassGeneric"] = TestInvokingAmbMethodDependingOnClassGeneric;
         }
 
         private static void TestGenericMethod()
@@ -160,6 +161,13 @@
             var theClass = new ClassUsingGenericsInMethods<string>();
 
             Assert(true, theClass.UseClassGenericInLambda("correct", "incorrect"));
+        }
+
+        private static void TestInvokingAmbMethodDependingOnClassGeneric()
+        {
+            var theClass = new ClassUsingGenericsInMethods<bool>();
+            theClass.InvokingAmbMethodDependingOnClassGeneric(true);
+            Assert("GenericMethodT1GenericMethodT2", BaseTest.Output);
         }
     }
 }

@@ -39,7 +39,7 @@
                 providers.Context.PossibleMethods = new PossibleMethods(current.GetTypeKnowledgeForSubElement(this.name, providers).OfType<MethodKnowledge>().ToArray());
                 providers.Context.PossibleMethods.FilterOnNumberOfGenerics(this.argumentListVisitor.GetNumElements());
                 textWriter.Write(this.name);
-                providers.Context.PossibleMethods.WriteMethodGenerics = (() => this.WriteGenericTypes(textWriter, providers));
+                providers.Context.PossibleMethods.WriteMethodGenerics = ((tw) => this.WriteGenericTypes(tw, providers));
                 providers.Context.PossibleMethods.MethodGenerics = this.argumentListVisitor.GetTypes(providers);
             }
         }

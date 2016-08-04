@@ -36,5 +36,11 @@
         {
             return selector(43);
         }
+
+        public void InvokingAmbMethodDependingOnClassGeneric(T obj)
+        {
+            this.inner.AmbGenericMethod(obj);
+            this.inner.AmbGenericMethod(43);
+        }
     }
 }
