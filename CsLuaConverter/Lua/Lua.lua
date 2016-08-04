@@ -8,7 +8,7 @@ Lua.__isNamespace = true;
 Lua.Core = _G;
 Lua.Strings = _G;
 Lua.LuaMath = _G;
-Lua.Table = table;
+
 
     --NativeLuaTable = function() return {__Cstor = function() return {}; end}; end,    
 

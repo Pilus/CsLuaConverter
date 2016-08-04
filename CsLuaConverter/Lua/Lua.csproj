@@ -54,6 +54,7 @@
     <None Include="FunctionExtensions.lua" />
     <None Include="Lua.lua" />
     <None Include="NativeLuaTable.lua" />
+    <None Include="Table.lua" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
