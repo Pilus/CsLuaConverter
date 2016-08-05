@@ -38,7 +38,11 @@
 
                 if (this.targetVisitor is BaseExpressionVisitor)
                 {
-                    textWriter.Write("_LVL(typeObject.Level - 1)");
+                    textWriter.Write("_LVL(typeObject.Level - 1, true)");
+                }
+                else if (this.targetVisitor is ThisExpressionVisitor)
+                {
+                    textWriter.Write("_LVL(typeObject.Level)");
                 }
 
                 textWriter.Write(").");

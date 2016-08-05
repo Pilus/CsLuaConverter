@@ -86,7 +86,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         return key;
     end
 
-    local getMembers = function(key, level, staticOnly, extensions)
+    local getMembers = function(key, level, staticOnly, extensions, explicitLevel)
         if not(cachedMembers) then
             cachedMembers = _M.RTEF(memberProvider);
         end
@@ -94,7 +94,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         local indexType, numGenerics, hash;
         key, indexType, numGenerics, hash = filterMethodSignature(key);
 
-        return where(cachedMembers[key] or {}, function(member)
+        local members =  where(cachedMembers[key] or {}, function(member)
             assert(member.memberType, "Member without member type in "..typeObject.FullName..". Key: "..key.." Level: "..tostring(member.level));
             local static = member.static;
             local public = member.scope == "Public";
@@ -103,17 +103,34 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             local levelProvided = not(level == nil);
             local typeLevel = typeObject.level;
             local memberType = member.memberType;
+            local isCstor = indexType == "C";
 
             return (not(staticOnly) or static) and
                 (indexType == nil or memberType == memberTypeTranslation[indexType]) and
                 (numGenerics == nil or numGenerics == member.numMethodGenerics) and
                 (hash == nil or hash == member.signatureHash) and
                 (
-                    (levelProvided and not(indexType == "C") and memberLevel <= level) or
-                    (levelProvided and (indexType == "C") and memberLevel == level) or
-                    (not(levelProvided) and (public or protected) and memberLevel <= typeLevel) or
+                    (levelProvided and (explicitLevel) and memberLevel == level) or
+                    (levelProvided and (explicitLevel) and memberLevel < level and (public or protected)) or
+                    (levelProvided and not(explicitLevel) and memberLevel <= level) or
+                    (not(explicitLevel) and not(isCstor) and (public or protected) and memberLevel <= typeLevel) or
                     (not(levelProvided) and not(public or protected) and memberLevel == typeLevel)
                 );
+        end);
+
+        if #(members) <= 1 then
+            return members;
+        end
+
+        local maxLevel = nil;
+        for _,member in ipairs(members) do
+            if not(maxLevel) or maxLevel < member.level then
+                maxLevel = member.level;
+            end
+        end
+
+        return where(members, function(member)
+            return member.level == maxLevel;
         end);
     end
 
@@ -212,21 +229,21 @@ local InteractionElement = function(metaProvider, generics, selfObj)
     end
 
 
-    local index = function(self, key, level)
+    local index = function(self, key, level, explicitLevel)
         if (key == "__metaType") then return _M.MetaTypes.InteractionElement; end
 
         if (key == "__Initialize") and initialize then
             return function(values) initialize(self, values); return self; end
         end
 
-        local fittingMembers = filterOverrides(getMembers(key, level, false), level or typeObject.level);
+        local fittingMembers = filterOverrides(getMembers(key, level, false, nil, explicitLevel), level or typeObject.level);
 
         if #(fittingMembers) == 0 then
             fittingMembers = getFittingExtensions(key);
         end
 
         if #(fittingMembers) == 0 then
-            fittingMembers = getMembers("#", level, false); -- Look up indexers
+            fittingMembers = getMembers("#", level, false, nil, explicitLevel); -- Look up indexers
         end
 
         if #(fittingMembers) == 0 and type(key) == "table" then
@@ -284,11 +301,11 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         error("Could not handle member (get). Object: "..typeObject.FullName.." Type: "..tostring(fittingMembers[1].memberType)..". Key: "..tostring(key));
     end;
 
-    local newIndex = function(self, key, value, level)
-        local fittingMembers = getMembers(key, level, false);
+    local newIndex = function(self, key, value, level, explicitLevel)
+        local fittingMembers = getMembers(key, level, false, nil, explicitLevel);
 
         if #(fittingMembers) == 0 then
-            fittingMembers = getMembers("#", level, false); -- Look up indexers
+            fittingMembers = getMembers("#", level, false, nil, explicitLevel); -- Look up indexers
         end
 
         if #(fittingMembers) == 0 then
@@ -377,7 +394,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
                 error(string.format("Could not find key on a non class element. Category: %s. Key: %s.", tostring(catagory), tostring(key)));
             end
 
-            local fittingMembers = getMembers(key, typeObject.level, true);
+            local fittingMembers = getMembers(key, typeObject.level, true, nil, explicitLevel);
 
             if #(fittingMembers) == 0 then
                 error("Could not find static member. Key: "..tostring(key)..". Object: "..typeObject.FullName);
@@ -415,7 +432,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
                 error(string.format("Could not set key on a non class element. Category: %s. Key: %s.", tostring(catagory), tostring(key)));
             end
 
-            local fittingMembers = getMembers(key, nil, true);
+            local fittingMembers = getMembers(key, nil, true, nil, explicitLevel);
             expectOneMember(fittingMembers, key);
             local member = fittingMembers[1];
 

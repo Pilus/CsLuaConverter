@@ -83,6 +83,9 @@
     <Compile Include="General\ClassWithIndexer.cs" />
     <Compile Include="General\ClassWithProperty.cs" />
     <Compile Include="Generics\ClassUsingGenericsInMethods.cs" />
+    <Compile Include="Inheritance\Base.cs" />
+    <Compile Include="Inheritance\InheritanceTests.cs" />
+    <Compile Include="Inheritance\Inheriter.cs" />
     <Compile Include="Interfaces\ClassWithMethod.cs" />
     <Compile Include="Interfaces\InterfaceWithMethod.cs" />
     <Compile Include="Namespaces\Class1.cs" />

@@ -40,7 +40,7 @@ local GetType = function(obj, index)
     end
 end
 
-_M.DOT_LVL = function(level)
+_M.DOT_LVL = function(level, explicitLevel)
     return DotMeta(
         function(obj, index)  -- useage:  a%_M.dot%b
             assert(not(obj == nil), "Attempted to read index "..tostring(index).." on a nil value.");
@@ -71,7 +71,7 @@ _M.DOT_LVL = function(level)
                 return function() return typeObject; end
             end
 
-            return typeObject.interactionElement.__index(obj, index, level); 
+            return typeObject.interactionElement.__index(obj, index, level, explicitLevel); 
         end, 
         function(obj, index, value)
             assert(not(obj == nil), "Attempted to write index "..tostring(index).." to a nil value.");
@@ -87,7 +87,7 @@ _M.DOT_LVL = function(level)
             end
 
             local typeObject = GetType(obj, index);
-            return typeObject.interactionElement.__newindex(obj, index, value, level); 
+            return typeObject.interactionElement.__newindex(obj, index, value, level, explicitLevel); 
         end,
         function(obj, ...)
             if (type(obj) == "table" and (obj.__metaType == _M.MetaTypes.ClassObject)) then

@@ -14,6 +14,7 @@ namespace CsLuaTest
     using Expressions;
     using General;
     using Generics;
+    using Inheritance;
     using Interfaces;
     using Lua;
     using Namespaces;
@@ -41,6 +42,7 @@ namespace CsLuaTest
                 new TryCatchFinallyTests(),
                 new AmbigousMethodsTests(),
                 new ConstructorsTests(),
+                new InheritanceTests(),
                 new OverrideTest(),
                 new StaticTests(),
                 new ExpressionsTests(),
