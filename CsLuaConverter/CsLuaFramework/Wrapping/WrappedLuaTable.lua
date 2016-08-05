@@ -15,6 +15,10 @@ local wrap = function(typeObj, typeTranslator, value, ...)
     if (type(value.type) == "table" and value.type.type == System.Type.__typeof) then
         return value;
     end
+
+    if (typeObj.signatureHash == 4343 or typeObj.signatureHash == 4286) then -- Native lua table or object
+        return value;
+    end
     
     if (typeTranslator) then
         typeObj = (typeTranslator %_M.DOT)(value) or typeObj;

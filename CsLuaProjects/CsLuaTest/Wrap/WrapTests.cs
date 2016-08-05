@@ -2,6 +2,7 @@
 {
     using CsLuaFramework;
     using CsLuaFramework.Wrapping;
+    using Lua;
 
     class WrapTests : BaseTest
     {
@@ -23,6 +24,7 @@
             this.Tests["WrappedObjectWithPartialInterface"] = WrappedObjectWithPartialInterface;
             this.Tests["WrappedObjectWithInterfaceWithIndexer"] = WrappedObjectWithInterfaceWithIndexer;
             this.Tests["WrapperReplacesActionAndFuncWithLuaFunctions"] = WrapperReplacesActionAndFuncWithLuaFunctions;
+            this.Tests["WrapperDoesNotWrapAReturedLuaTableIfExpectingItOrObject"] = WrapperDoesNotWrapAReturedLuaTableIfExpectingItOrObject;
         }
 
 
@@ -47,7 +49,7 @@
             interfaceImplementation.MethodVoid(true);
         }
 
-        public static void WrapGenericInterface()
+        private static void WrapGenericInterface()
         {
             if (!Environment.IsExecutingAsLua)
             {
@@ -62,7 +64,7 @@
             Assert("OK10", interfaceImplementation.Method(10));
         }
 
-        public static void WrapGenericWithProperty()
+        private static void WrapGenericWithProperty()
         {
             if (!Environment.IsExecutingAsLua)
             {
@@ -97,7 +99,7 @@
             Assert(20, interfaceImplementation.Value);
         }
 
-        public static void WrapInheritingInterfaceWithGenericInterface()
+        private static void WrapInheritingInterfaceWithGenericInterface()
         {
             if (!Environment.IsExecutingAsLua)
             {
@@ -112,7 +114,7 @@
             Assert("OK10", interfaceImplementation.Method(10));
         }
 
-        public static void WrapInheritingInterfaceWithProvideSelf()
+        private static void WrapInheritingInterfaceWithProvideSelf()
         {
             if (!Environment.IsExecutingAsLua)
             {
@@ -128,7 +130,7 @@
             Assert("nilbc", interfaceImplementation.Method2(null, "b", "c"));
         }
 
-        public static void WrapHandleMultipleValues()
+        private static void WrapHandleMultipleValues()
         {
             if (!Environment.IsExecutingAsLua)
             {
@@ -146,7 +148,7 @@
             Assert(true, multiple.Value3);
         }
 
-        public static void WrapHandleRecursiveWrapping()
+        private static void WrapHandleRecursiveWrapping()
         {
             if (!Environment.IsExecutingAsLua)
             {
@@ -179,8 +181,8 @@
             var A = B.GetInner();
             Assert('a', A.GetValue());
         }
-        
-        public static void WrapWithTargetTypeTranslation()
+
+        private static void WrapWithTargetTypeTranslation()
         {
             if (!Environment.IsExecutingAsLua)
             {
@@ -218,7 +220,7 @@
             Assert(true, b.IsB());
         }
 
-        public static void NonWrappedAsPropertyInWrappedObject()
+        private static void NonWrappedAsPropertyInWrappedObject()
         {
             if (!Environment.IsExecutingAsLua)
             {
@@ -244,7 +246,7 @@
             Assert(true, objRef2.Property == cA);
         }
 
-        public static void WrappedObjectWithPartialInterface()
+        private static void WrappedObjectWithPartialInterface()
         {
             if (!Environment.IsExecutingAsLua)
             {
@@ -269,7 +271,7 @@
             Assert("MB", obj.MethodB());
         }
 
-        public static void WrappedObjectWithInterfaceWithIndexer()
+        private static void WrappedObjectWithInterfaceWithIndexer()
         {
             if (!Environment.IsExecutingAsLua)
             {
@@ -290,7 +292,7 @@
             Assert("V2", obj["Value2"]);
         }
 
-        public static void WrapperReplacesActionAndFuncWithLuaFunctions()
+        private static void WrapperReplacesActionAndFuncWithLuaFunctions()
         {
             if (!Environment.IsExecutingAsLua)
             {
@@ -311,6 +313,36 @@
 
             bool inputValue;
             Assert(true, obj.Method((int x) => x < 10, input => inputValue = input));
+        }
+
+        private static void WrapperDoesNotWrapAReturedLuaTableIfExpectingItOrObject()
+        {
+            if (!Environment.IsExecutingAsLua)
+            {
+                return;
+            }
+
+            Environment.ExecuteLuaCode(@"
+                P = { 
+                    ReturnObject = function()
+                        return { X = true };
+                    end,
+                    ReturnLuaTable = function()
+                        return { Y = true };
+                    end
+                };
+            ");
+            var wrapper = new Wrapper();
+
+            var obj = wrapper.Wrap<IReturningNativeTypes>("P");
+
+            var t1 = obj.ReturnLuaTable();
+            Assert(true, t1 is NativeLuaTable);
+            Assert(true, t1["Y"]);
+
+            var t2 = obj.ReturnObject();
+            Assert(true, t2 is NativeLuaTable);
+            Assert(true, (t2 as NativeLuaTable)["X"]);
         }
     }
 }

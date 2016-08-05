@@ -35,7 +35,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsLuaFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="CsLuaFramework, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\CsLuaConverter\CsLuaFramework.dll</HintPath>
     </Reference>
@@ -173,6 +173,7 @@
     <Compile Include="Wrap\IPartialA.cs" />
     <Compile Include="Wrap\IPartialB.cs" />
     <Compile Include="Wrap\IProducer.cs" />
+    <Compile Include="Wrap\IReturningNativeTypes.cs" />
     <Compile Include="Wrap\ISetSelfInterface.cs" />
     <Compile Include="Wrap\ISimpleInterface.cs" />
     <Compile Include="Wrap\WrapTests.cs" />

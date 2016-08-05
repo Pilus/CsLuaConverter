@@ -18,6 +18,7 @@
         public TypeKnowledge(Type type, bool restrictToStatic = false)
         {
             this.type = type;
+            this.restrictToStatic = restrictToStatic;
             /*
             if (!this.type.IsGenericParameter) return;
 
