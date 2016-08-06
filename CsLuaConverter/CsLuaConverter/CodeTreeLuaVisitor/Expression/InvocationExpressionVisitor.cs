@@ -50,7 +50,7 @@
                     textWriter.Write(targetElements[0]);
                     textWriter.Write(signatureHasGenericComponents ? "['" : ".");
                     textWriter.Write(targetElements[1]);
-                    textWriter.Write($"_M_{numGenerics}_" + (signatureHasGenericComponents ? "'.." : ""));
+                    textWriter.Write($"_M_{numGenerics}_" + (signatureHasGenericComponents ? "'..(" : ""));
                     textWriter.AppendTextWriter(signatureWriter);
 
                     var writeMethodGenericsAction = providers.Context.PossibleMethods.WriteMethodGenerics;
@@ -62,7 +62,7 @@
                     {
                         WriteMethodGenerics(method.GetResolvedMethodGenerics(), textWriter, providers);
                     }
-                    textWriter.Write((signatureHasGenericComponents ? "]" : "") + " % _M.DOT)");
+                    textWriter.Write((signatureHasGenericComponents ? ")]" : "") + " % _M.DOT)");
                 }
                 else
                 {

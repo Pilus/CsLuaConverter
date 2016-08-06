@@ -28,7 +28,9 @@ local wrap = function(typeObj, typeTranslator, value, ...)
 end
 
 local unwrap = function(value)
-    if type(value) == "table" and type(value[2]) == "table" and type(value[2].luaTable) == "table" then
+    if type(value) == "table" and value.__metaType == "GenericMethod" then
+        return function(...) return value(...); end
+    elseif type(value) == "table" and type(value[2]) == "table" and type(value[2].luaTable) == "table" then
         return value[2].luaTable;
     elseif type(value) == "table" and type(value.type) == "table" and value.type.Namespace == "System" and (value.type.Name == "Func" or value.type.Name == "Action") then
         return value[2].innerAction;

@@ -14,7 +14,8 @@
             this.Tests["TestListImplementation"] = TestListImplementation;
             this.Tests["TestDictionaryInterfaces"] = TestDictionaryInterfaces;
             this.Tests["TestCountAndAny"] = TestCountAndAny;
-            this.Tests["TestSelect"] = TestSelect; 
+            this.Tests["TestSelect"] = TestSelect;
+            this.Tests["TestUnion"] = TestUnion;
         }
 
         private static void TestListInterfaces()
@@ -193,6 +194,23 @@
             var l2 = a.Select(ToFloat).ToList();
             Assert(true, l2 is List<float>);
         }
+
+        private static void TestUnion()
+        {
+            var a = new int[] {1, 3, 5, 7};
+            var b = new int[] {3, 9, 11, 7};
+
+            var result = a.Union(b).ToArray();
+            Assert(6, result.Length);
+            Assert(1, result[0]);
+            Assert(3, result[1]);
+            Assert(5, result[2]);
+            Assert(7, result[3]);
+            Assert(9, result[4]);
+            Assert(11, result[5]);
+        }
+
+
 
         private static float ToFloat(int value)
         {

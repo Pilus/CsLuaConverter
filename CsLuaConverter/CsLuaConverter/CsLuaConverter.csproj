@@ -122,6 +122,7 @@
     <Compile Include="CodeTreeLuaVisitor\Member\BaseConstructorInitializerVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\EnumMemberDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\IndexerDeclarationVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Member\ThisConstructorInitializerVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\BreakStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\LiteralVisitorBase.cs" />

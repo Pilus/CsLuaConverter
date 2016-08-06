@@ -27,10 +27,13 @@
             providers.Context.CurrentType = null;
             this.lhs.Visit(textWriter, providers);
             textWriter.Write(" = ");
-            providers.Context.CurrentType = null;
             textWriter.Write(this.prefix);
+
+            providers.Context.CurrentType = null;
             this.lhs.Visit(textWriter, providers);
             textWriter.Write(this.delimiter);
+
+            providers.Context.CurrentType = null;
             this.rhs.Visit(textWriter, providers);
             textWriter.Write(this.suffix);
 

@@ -15,7 +15,7 @@
         numMethodGenerics = 0,
         signatureHash = 0,
         scope = 'Public',
-        func = function(element, innerAction)
+        func = function(element)
         end,
     });
 

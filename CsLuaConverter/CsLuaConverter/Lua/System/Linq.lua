@@ -565,7 +565,38 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             numMethodGenerics = 0,
             signatureHash = (66128*generics[genericsMapping['TSource']].signatureHash),
             func = function(first, second)
-                _M.Throw(System.NotImplementedException._C_0_0());
+                local firstSource = (first % _M.DOT).GetEnumerator();
+                local secondSource = (second % _M.DOT).GetEnumerator();
+                local currentSource, returned;
+                return System.Linq.Iterator[generics]._C_0_16704(function(_, prevKey)
+                    if prevKey == nil then
+                        currentSource = firstSource;
+                        returned = {};
+                    end
+                    
+                    while (true) do
+                        local key, value = currentSource(_, prevKey);
+                        if (key == nil) then
+                            if currentSource == firstSource then
+                                currentSource = secondSource;
+                            else
+                                return nil, nil;
+                            end
+                        else
+                            if (currentSource == firstSource) then
+                                table.insert(returned, value);
+                                return key, value;
+                            else
+                                if not(tContains(returned, value)) then
+                                    return key, value;
+                                end
+                                prevKey = key;
+                            end
+                        end
+
+                        prevKey = key;
+                    end
+                end);
             end,
         },
         { -- System.Collections.Generic.IEnumerable`1<TSource> Union(System.Collections.Generic.IEnumerable`1<TSource>, System.Collections.Generic.IEnumerable`1<TSource>, System.Collections.Generic.IEqualityComparer`1<TSource>)
@@ -645,7 +676,17 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             numMethodGenerics = 0,
             signatureHash = 0,
             func = function(source)
-                _M.Throw(System.NotImplementedException._C_0_0());
+                local array = System.Array[generics]._C_0_0();
+                local enumerator = (source % _M.DOT).GetEnumerator();
+                local key, value = enumerator(nil, nil);
+                local c = 0;
+                while not(key == nil) do
+                    (array %_M.DOT)[c] = value;
+                    c = c + 1;
+                    key, value = enumerator(nil, key);
+                end
+
+                return array;
             end,
         },
         { -- System.Collections.Generic.List`1<TSource> ToList(System.Collections.Generic.IEnumerable`1<TSource>)
@@ -653,7 +694,7 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
             numMethodGenerics = 0,
             signatureHash = 0,
             func = function(source)
-                local list = System.Collections.Generic.List[generics]();
+                local list = System.Collections.Generic.List[generics]._C_0_0();
                 (list % _M.DOT)["AddRange_M_0_"..(2*System.Collections.Generic.IEnumerable[generics].__typeof.signatureHash)](source);
                 return list;
             end,

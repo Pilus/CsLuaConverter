@@ -7,6 +7,8 @@
             Name = "Constructors";
             this.Tests["TestConstructorWithNoArgs"] = TestConstructorWithNoArgs;
             this.Tests["TestConstructorWithAmbArgs"] = TestConstructorWithAmbArgs;
+            this.Tests["TestConstructorCallingOtherConstructor"] = TestConstructorCallingOtherConstructor;
+            this.Tests["TestConstructorCallingOtherConstructorWithGenericInSignatureHash"] = TestConstructorCallingOtherConstructorWithGenericInSignatureHash;
         }
 
         private static void TestConstructorWithNoArgs()
@@ -25,6 +27,18 @@
 
             var c3 = new Class1(43.7);
             Assert("object43.7", c3.Value);
+        }
+
+        private static void TestConstructorCallingOtherConstructor()
+        {
+            var c = new Class2("abc");
+            Assert("this1this2abc", c.Result);
+        }
+
+        private static void TestConstructorCallingOtherConstructorWithGenericInSignatureHash()
+        {
+            var c = new Class3<int>(43);
+            Assert("abc", c.Str);
         }
     }
 }

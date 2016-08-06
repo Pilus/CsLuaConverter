@@ -15,6 +15,7 @@
         private readonly ParameterListVisitor parameterList;
         private readonly BlockVisitor block;
         private readonly BaseConstructorInitializerVisitor baseConstructorInitializer;
+        private readonly ThisConstructorInitializerVisitor thisConstructorInitializer;
 
         public ConstructorDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -26,6 +27,8 @@
                 (BlockVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.Block)).Single();
             this.baseConstructorInitializer =
                 (BaseConstructorInitializerVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.BaseConstructorInitializer)).SingleOrDefault();
+            this.thisConstructorInitializer =
+                (ThisConstructorInitializerVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.ThisConstructorInitializer)).SingleOrDefault();
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
@@ -57,6 +60,10 @@
             if (this.baseConstructorInitializer != null)
             {
                 this.baseConstructorInitializer.Visit(textWriter, providers);
+            }
+            else if (this.thisConstructorInitializer != null)
+            {
+                this.thisConstructorInitializer.Visit(textWriter, providers);
             }
             else
             {

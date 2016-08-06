@@ -6,8 +6,8 @@ end
 
 
 _M.Add = SetAddMeta(function(a, b)
-    assert(a, "Add called on a nil value (left).");
-    assert(b, "Add called on a nil value (right).");
+    assert(a or type(b) == "string", "Add called on a nil value (left).");
+    assert(b or type(a) == "string", "Add called on a nil value (right).");
     if type(a) == "number" and type(b) == "number" then return a + b; end
-    return tostring(a)..tostring(b);
+    return tostring(a or "")..tostring(b or "");
 end);
