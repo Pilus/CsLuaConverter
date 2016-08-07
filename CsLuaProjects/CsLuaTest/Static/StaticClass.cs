@@ -35,5 +35,7 @@
             get { return backingField; }
             set { backingField = value*2; } 
         }
+
+        public static int Field = 43;
     }
 }

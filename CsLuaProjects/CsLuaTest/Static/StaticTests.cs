@@ -9,6 +9,9 @@
             this.Tests["TestStaticClassWithVariable"] = TestStaticClassWithVariable;
             this.Tests["TestStaticClassWithAutoProperty"] = TestStaticClassWithAutoProperty;
             this.Tests["TestStaticClassWithCustomProperty"] = TestStaticClassWithCustomProperty;
+            this.Tests["TestStaticField"] = TestStaticField;
+            this.Tests["TestStaticFieldInNonStaticClass"] = TestStaticFieldInNonStaticClass;
+            this.Tests["TestConstFieldInNonStaticClass"] = TestConstFieldInNonStaticClass;
         }
 
         private static void TestStaticClassWithMethod()
@@ -45,6 +48,29 @@
             Assert(50, StaticClass.PropertyWithGetSet);
         }
 
-        
+        private static void TestStaticField()
+        {
+            Assert(43, StaticClass.Field);
+            StaticClass.Field = 55;
+            Assert(55, StaticClass.Field);
+        }
+
+        private static void TestStaticFieldInNonStaticClass()
+        {
+            var c = new NonStaticClass();
+
+            Assert(43, c.GetPrivateStaticFieldValue());
+
+            c.SetPrivateStaticFieldValue(55);
+
+            Assert(55, c.GetPrivateStaticFieldValue());
+        }
+
+        private static void TestConstFieldInNonStaticClass()
+        {
+            var c = new ClassInheritingNonStaticClass();
+
+            Assert(50, c.GetPrivateConstFieldValue());
+        }
     }
 }

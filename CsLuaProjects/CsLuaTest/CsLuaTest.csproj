@@ -123,6 +123,8 @@
     <Compile Include="Params\ClassWithParams.cs" />
     <Compile Include="Params\ParamsTests.cs" />
     <Compile Include="Statements\StatementsTests.cs" />
+    <Compile Include="Static\ClassInheritingNonStaticClass.cs" />
+    <Compile Include="Static\NonStaticClass.cs" />
     <Compile Include="Static\StaticClass.cs" />
     <Compile Include="Interfaces\InterfacesTests.cs" />
     <Compile Include="Interfaces\InterfaceWithGenerics.cs" />

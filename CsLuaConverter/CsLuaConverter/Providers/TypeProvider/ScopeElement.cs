@@ -16,7 +16,7 @@
         {
             if (type == null)
             {
-                throw new Exception($"Cannot create {nameof(ScopeElement)} from a null {nameof(TypeKnowledge)}.");    
+                throw new Exception($"Cannot create {nameof(ScopeElement)} from a null {nameof(TypeKnowledge)}.");
             }
 
             this.Name = name;
@@ -25,7 +25,15 @@
 
         public override string ToString()
         {
-            return (this.ClassPrefix == null ? string.Empty : ($"({this.ClassPrefix} % _M.DOT).")) + this.Name;
+            switch (this.ClassPrefix)
+            {
+                case "element":
+                    return "(element % _M.DOT_LVL(typeObject.Level))." + this.Name;
+                case null:
+                    return this.Name;
+                default:
+                    throw new NotImplementedException();
+            }
         }
     }
 }
