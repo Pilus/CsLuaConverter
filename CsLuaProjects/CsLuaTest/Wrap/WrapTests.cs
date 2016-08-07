@@ -11,6 +11,7 @@
         {
             Name = "Wrap";
             this.Tests["WrapSimpleInterface"] = WrapSimpleInterface;
+            this.Tests["TestWrapAndUnwrap"] = TestWrapAndUnwrap;
             this.Tests["WrapInheritingInterface"] = WrapInheritingInterface;
             this.Tests["WrapGenericInterface"] = WrapGenericInterface;
             this.Tests["WrapInheritingInterfaceWithGenericInterface"] = WrapInheritingInterfaceWithGenericInterface;
@@ -343,6 +344,28 @@
             var t2 = obj.ReturnObject();
             Assert(true, t2 is NativeLuaTable);
             Assert(true, (t2 as NativeLuaTable)["X"]);
+        }
+
+        private static void TestWrapAndUnwrap()
+        {
+            if (!Environment.IsExecutingAsLua)
+            {
+                return;
+            }
+
+            Environment.ExecuteLuaCode(@"
+                O = { 
+                    Value = 43;
+                };
+            ");
+
+            var wrapper = new Wrapper();
+
+            var obj = wrapper.Wrap<IReturningNativeTypes>("O");
+
+            var table = wrapper.Unwrap(obj);
+
+            Assert(43, table["Value"]);
         }
     }
 }

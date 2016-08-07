@@ -63,6 +63,19 @@ CsLuaFramework.Wrapping.Wrapper = _M.NE({[0] = function(interactionElement, gene
         end,
     });
 
+    _M.IM(members,'Unwrap',{
+        level = typeObject.Level,
+        memberType = 'Method',
+        scope = 'Public',
+        static = false,
+        numMethodGenerics = 1,
+        signatureHash = 2,
+        generics = methodGenericsMapping,
+        func = function(element,methodGenericsMapping,methodGenerics,value)
+            return unwrap(value);
+        end,
+    });
+
     _M.IM(members, '', {
         level = typeObject.Level,
         memberType = 'Cstor',

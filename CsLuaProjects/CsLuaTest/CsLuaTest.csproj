@@ -170,6 +170,7 @@
     <Compile Include="Wrap\IA.cs" />
     <Compile Include="Wrap\IB.cs" />
     <Compile Include="Wrap\IBase.cs" />
+    <Compile Include="Wrap\IEmptyInterface.cs" />
     <Compile Include="Wrap\IInheritingInterface.cs" />
     <Compile Include="Wrap\IInheritingInterfaceWithGenerics.cs" />
     <Compile Include="Wrap\IInterfaceWithGenerics.cs" />
