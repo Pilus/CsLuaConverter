@@ -129,13 +129,50 @@
             return new TypeKnowledge(indexParameters.ParameterType);
         }
 
-
-        public TypeKnowledge GetIndexerValueType()
+        public TypeKnowledge GetValueType()
         {
-            return GetIndexerValueType(this.type);
+            return GetValueType(this.type);
         }
 
-        public static TypeKnowledge GetIndexerValueType(Type type)
+        public static TypeKnowledge GetValueType(Type type)
+        {
+            if (type.IsArray)
+            {
+                return new TypeKnowledge(type.GetInterface(typeof(IEnumerable<object>).Name).GetGenericArguments().Single());
+            }
+
+            var propertyType =
+                type.GetProperties().SingleOrDefault(p => p.GetIndexParameters().Length > 0)?.PropertyType;
+
+            if (propertyType == null)
+            {
+                if (type.IsInterface)
+                {
+                    var interfaces = type.GetInterfaces();
+                    foreach (var inheritedInterface in interfaces)
+                    {
+                        var indexer = GetValueType(inheritedInterface);
+                        if (indexer != null)
+                        {
+                            return indexer;
+                        }
+                    }
+
+                    return null;
+                }
+
+                return type.BaseType != null ? GetValueType(type.BaseType) : null;
+            }
+
+            return new TypeKnowledge(propertyType);
+        }
+
+        public TypeKnowledge GetIndexerType()
+        {
+            return GetIndexerType(this.type);
+        }
+
+        public static TypeKnowledge GetIndexerType(Type type)
         {
             if (type.IsArray)
             {
@@ -151,7 +188,7 @@
                     var interfaces = type.GetInterfaces();
                     foreach (var inheritedInterface in interfaces)
                     {
-                        var indexer = GetIndexerValueType(inheritedInterface);
+                        var indexer = GetIndexerType(inheritedInterface);
                         if (indexer != null)
                         {
                             return indexer;
@@ -161,7 +198,7 @@
                     return null;
                 }
 
-                return type.BaseType != null ? GetIndexerValueType(type.BaseType) : null;
+                return type.BaseType != null ? GetIndexerType(type.BaseType) : null;
             }
 
             return new TypeKnowledge((indexParameters.Member as PropertyInfo).PropertyType);

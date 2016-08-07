@@ -36,8 +36,6 @@
 
                 var numGenerics = method.GetNumberOfMethodGenerics();
 
-                
-
                 if (!method.IsGetType())
                 {
                     var signatureWriter = textWriter.CreateTextWriterAtSameIndent();

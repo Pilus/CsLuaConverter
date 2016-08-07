@@ -16,6 +16,7 @@
             this.Tests["TestCountAndAny"] = TestCountAndAny;
             this.Tests["TestSelect"] = TestSelect;
             this.Tests["TestUnion"] = TestUnion;
+            this.Tests["TestOrderBy"] = TestOrderBy;
         }
 
         private static void TestListInterfaces()
@@ -208,6 +209,24 @@
             Assert(7, result[3]);
             Assert(9, result[4]);
             Assert(11, result[5]);
+        }
+
+        private static void TestOrderBy()
+        {
+            var input = new ClassWithProperties[]
+            {
+                new ClassWithProperties() { Number = 13 },
+                new ClassWithProperties() { Number = 7 },
+                new ClassWithProperties() { Number = 9 },
+                new ClassWithProperties() { Number = 5 },
+            };
+
+            var ordered = input.OrderBy(v => v.Number).ToArray();
+
+            Assert(5, ordered[0].Number);
+            Assert(7, ordered[1].Number);
+            Assert(9, ordered[2].Number);
+            Assert(13, ordered[3].Number);
         }
 
 

@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.Providers.TypeProvider
 {
     using System;
+    using System.CodeDom;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -49,6 +50,12 @@
 
         private static Type ApplyGenerics(Type type, Dictionary<string, Type> generics)
         {
+            if (type.IsArray)
+            {
+                var arrayGeneric = type.GetInterface(typeof (IEnumerable<object>).Name).GetGenericArguments().Single();
+                return ApplyGenerics(arrayGeneric, generics).MakeArrayType();
+            }
+
             if (type.IsGenericParameter)
             {
                 return generics.ContainsKey(type.Name) ? generics[type.Name] : type;

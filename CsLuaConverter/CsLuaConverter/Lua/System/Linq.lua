@@ -1132,15 +1132,42 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
         },
         { -- System.Linq.IOrderedEnumerable`1<TSource> OrderBy(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,TKey>)
             name = "OrderBy",
-            numMethodGenerics = 0,
+            numMethodGenerics = 1,
             signatureHash = 10404+(6936*generics[genericsMapping['TSource']].signatureHash),
             func = function(source, keySelector)
-                _M.Throw(System.NotImplementedException._C_0_0());
+                local enumerator = (source % _M.DOT).GetEnumerator();
+                local ordered;
+                return System.Linq.Iterator[generics]._C_0_16704(function(_, prevKey)
+                    if prevKey == nil then
+                        ordered  = {};
+                        local key, value = nil, nil;
+                        while (true) do
+                            key, value = enumerator(_, key);
+                            if (key == nil) then
+                                break;
+                            else
+                                table.insert(ordered, {
+                                    sortValue = (keySelector %_M.DOT)(value),
+                                    value = value
+                                });
+                            end
+                        end
+                        
+                        table.sort(ordered, function(a,b) return a.sortValue < b.sortValue; end);
+                    end
+
+                    local key = (prevKey or -1) + 1;
+                    if (ordered[key + 1] == nil) then
+                        return nil, nil;
+                    end
+
+                    return key, ordered[key + 1].value;
+                end);
             end,
         },
         { -- System.Linq.IOrderedEnumerable`1<TSource> OrderBy(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,TKey>, System.Collections.Generic.IComparer`1<TKey>)
             name = "OrderBy",
-            numMethodGenerics = 0,
+            numMethodGenerics = 1,
             signatureHash = 74226+(6936*generics[genericsMapping['TSource']].signatureHash),
             func = function(source, keySelector, comparer)
                 _M.Throw(System.NotImplementedException._C_0_0());
@@ -1148,7 +1175,7 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
         },
         { -- System.Linq.IOrderedEnumerable`1<TSource> OrderByDescending(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,TKey>)
             name = "OrderByDescending",
-            numMethodGenerics = 0,
+            numMethodGenerics = 1,
             signatureHash = 10404+(6936*generics[genericsMapping['TSource']].signatureHash),
             func = function(source, keySelector)
                 _M.Throw(System.NotImplementedException._C_0_0());
@@ -1156,7 +1183,7 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
         },
         { -- System.Linq.IOrderedEnumerable`1<TSource> OrderByDescending(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,TKey>, System.Collections.Generic.IComparer`1<TKey>)
             name = "OrderByDescending",
-            numMethodGenerics = 0,
+            numMethodGenerics = 1,
             signatureHash = 74226+(6936*generics[genericsMapping['TSource']].signatureHash),
             func = function(source, keySelector, comparer)
                 _M.Throw(System.NotImplementedException._C_0_0());

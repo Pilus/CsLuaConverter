@@ -22,7 +22,7 @@
             this.argument.Visit(textWriter, providers);
             textWriter.Write("]");
 
-            providers.Context.CurrentType = type.GetIndexerValueType();
+            providers.Context.CurrentType = type.GetValueType();
         }
     }
 }

@@ -70,6 +70,7 @@
     <Compile Include="Arrays\AClass.cs" />
     <Compile Include="Arrays\ArraysTests.cs" />
     <Compile Include="Arrays\ClassWithArrays.cs" />
+    <Compile Include="Collections\ClassWithProperties.cs" />
     <Compile Include="Collections\CollectionsTests.cs" />
     <Compile Include="Constructors\Class1.cs" />
     <Compile Include="Constructors\Class2.cs" />
