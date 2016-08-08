@@ -18,15 +18,16 @@ namespace Lua
 
             switch (type)
             {
+                case nameof(Int32):
                 case "int":
                 case "long":
                 case "float":
+                case "double":
                     return "number";
                 case "string":
+                    return "string";
                 case "boolean":
-                    return type;
-                case "Func":
-                    return "function";
+                    return "boolean";
                 default:
                     return "table";
             }

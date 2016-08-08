@@ -13,11 +13,26 @@ namespace Lua
         /// <returns></returns>
         public static int getn(NativeLuaTable t)
         {
+            if (t == null)
+            {
+                throw new ArgumentNullException(nameof(t));
+            }
+
             return t.__Count();
         }
 
         public static void Foreach(NativeLuaTable t, Action<object, object> iterator)
         {
+            if (t == null)
+            {
+                throw new ArgumentNullException(nameof(t));
+            }
+
+            if (iterator == null)
+            {
+                throw new ArgumentNullException(nameof(iterator));
+            }
+
             t.__Foreach(iterator);
         }
 
