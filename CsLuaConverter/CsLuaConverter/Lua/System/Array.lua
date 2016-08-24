@@ -40,7 +40,7 @@ end,
         System.Collections.Generic.IReadOnlyCollection[generics].__typeof,
     };
     
-    local baseTypeObject, members = System.Array.__meta(staticValues);
+    local baseTypeObject, members = System.Object.__meta(staticValues);
     local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',3052);
 
     local len = function(element)

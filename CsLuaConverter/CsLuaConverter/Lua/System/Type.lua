@@ -42,6 +42,22 @@ GetMatchScore = function(self, otherType, otherValue)
     return nil;
 end
 
+local GetFullNameWithGenerics;
+GetFullNameWithGenerics = function(self)
+    local generic = "";
+    if self.numberOfGenerics > 0 then
+        generic = "`" .. self.numberOfGenerics .. "[";
+        for i,v in ipairs(self.generics) do
+            if i > 1 then generic = generic .. ","; end
+            generic = generic .. GetFullNameWithGenerics(v);
+        end
+
+        generic = generic .. "]";
+    end
+
+    return self.namespace .. "." .. self.name .. generic;
+end
+
 local meta = {
     __index = function(self, index)
         if index == "__metaType" then
@@ -105,11 +121,13 @@ local meta = {
             return self.interactionElement;
         elseif index == "FullName" then
             local generic = "";
-            if self.numberOfGenerics > 1 then
+            if self.numberOfGenerics > 0 then
                 generic = "´" .. self.numberOfGenerics;
             end
 
             return self.namespace .. "." .. self.name .. generic;
+        elseif index == "GetFullNameWithGenerics" then
+            return function() return GetFullNameWithGenerics(self); end
         elseif index == "IsEnum" then
             return self.catagory == "Enum";
         elseif index == "IsArray" then
@@ -158,6 +176,7 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
 
     self.catagory = catagory; 
     self.namespace = namespace;
+    self.generics = generics;
     self.name = name; 
     self.numberOfGenerics = numberOfGenerics;
     self.hash = hash;
@@ -174,11 +193,16 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
     
     setmetatable(self, meta);
     typeCache[hash] = self;
+    typeCache[self.GetFullNameWithGenerics()] = self;
     return self;
 end
 
 GetTypeFromHash = function(hash)
     return typeCache[hash];
+end
+
+GetTypeFromFullName = function(name)
+    return typeCache[name];
 end
 
 --objectType = typeCall("Object", "System"); -- TODO: Initialize in a way that does not require the type cache

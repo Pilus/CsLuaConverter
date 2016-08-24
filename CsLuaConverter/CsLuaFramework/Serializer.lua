@@ -17,25 +17,25 @@
             end
         end
 
-        t.type = obj.type.hash;
+        t.type = (obj.type %_M.DOT).GetFullNameWithGenerics();
 
         return t;
     end
 
-    local replaceHashsWithTypes;
-    replaceHashsWithTypes = function(obj)
+    local replaceTypeNamesWithTypes;
+    replaceTypeNamesWithTypes = function(obj)
         if type(obj) == "table" then
             local t = {[1] = {}};
             for i,v in pairs(obj) do
-                if i == "type" and type(v) == "number" then
-                    t[i] = GetTypeFromHash(v);
+                if i == "type" and type(v) == "string" then
+                    t[i] = GetTypeFromFullName(v);
                     t.__metaType = _M.MetaTypes.ClassObject;
                 else
                     local level, isNum, index = string.match(i,"^(%d*)(#?)_(.*)");
                     level = tonumber(level);
                     index = not(isNum == nil) and tonumber(index) or index;
                     t[level] = t[level] or {};
-                    t[level][index] = replaceHashsWithTypes(v);
+                    t[level][index] = replaceTypeNamesWithTypes(v);
                 end
             end
             return t;
@@ -66,7 +66,7 @@
         signatureHash = 55918,
         types = {System.Object.__typeof},
         func = function(_, obj)
-            return replaceHashsWithTypes(obj);
+            return replaceTypeNamesWithTypes(obj);
         end,
     });
 

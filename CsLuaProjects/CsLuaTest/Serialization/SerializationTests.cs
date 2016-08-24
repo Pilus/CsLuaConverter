@@ -17,11 +17,6 @@
         
         private static void TestBasicSerializableClass()
         {
-            if (!Environment.IsExecutingAsLua)
-            {
-                return;
-            }
-
             var serializer = new Serializer();
 
             var theClass = new ClassWithNativeObjects();
@@ -30,7 +25,7 @@
 
             Assert(theClass.AString, res["2_AString"]);
             Assert(theClass.ANumber, res["2_ANumber"]);
-            Assert(223500, res["type"]);
+            Assert("CsLuaTest.Serialization.ClassWithNativeObjects", res["type"]);
 
             var processedClass = serializer.Deserialize<ClassWithNativeObjects>(res);
 
@@ -40,26 +35,21 @@
         
         private static void TestClassWithSubObject()
         {
-            if (!Environment.IsExecutingAsLua)
-            {
-                return;
-            }
-
             var serializer = new Serializer();
 
             var theClass = new ClassWithSubObject();
 
             var res = serializer.Serialize(theClass);
 
-            Assert(101098, res["type"]);
+            Assert("CsLuaTest.Serialization.ClassWithSubObject", res["type"]);
 
             var arrayRes = res["2_AnArray"] as NativeLuaTable;
-            Assert(851046, arrayRes["type"]);
-            Assert(theClass.AnArray[0], arrayRes["3#_0"]);
-            Assert(theClass.AnArray[1], arrayRes["3#_1"]);
+            Assert("System.String[]", arrayRes["type"]);
+            Assert(theClass.AnArray[0], arrayRes["2#_0"]);
+            Assert(theClass.AnArray[1], arrayRes["2#_1"]);
 
             var subRes = res["2_AClass"] as NativeLuaTable;
-            Assert(223500, subRes["type"]);
+            Assert("CsLuaTest.Serialization.ClassWithNativeObjects", subRes["type"]);
             Assert(theClass.AClass.AString, subRes["2_AString"]);
             Assert(theClass.AClass.ANumber, subRes["2_ANumber"]);
 
@@ -73,11 +63,6 @@
 
         private static void TestClassInList()
         {
-            if (!Environment.IsExecutingAsLua)
-            {
-                return;
-            }
-
             var theClass = new ClassWithNativeObjects();
             var list = new List<ClassWithNativeObjects>()
             {
@@ -88,7 +73,7 @@
 
             var res = serializer.Serialize(list);
 
-            Assert(370891, res["type"]);
+            Assert("System.Collections.Generic.List`1[CsLuaTest.Serialization.ClassWithNativeObjects]", res["type"]);
 
             var subRes = res["2#_0"] as NativeLuaTable;
             Assert(theClass.AString, subRes["2_AString"]);
@@ -107,11 +92,6 @@
 
         private static void TestSerializeDictionary()
         {
-            if (!Environment.IsExecutingAsLua)
-            {
-                return;
-            }
-
             var serializer = new Serializer();
 
             var dict = new Dictionary<object, object>()
