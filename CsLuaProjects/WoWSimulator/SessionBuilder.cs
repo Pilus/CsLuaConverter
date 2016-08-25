@@ -26,6 +26,9 @@
         private readonly List<Action<ISession>> postBuildActions = new List<Action<ISession>>();
         private float fps = 30;
         private NativeLuaTable savedVariables;
+        private Action<ISession> setActiveSessionAction;
+        private double uiParentWidth = 1024;
+        private double uiParentHeight = 800;
 
         public SessionBuilder()
         {
@@ -49,6 +52,8 @@
 
             var globalFrames = new GlobalFrames();
             globalFrames.UIParent = (IFrame)this.frameProvider.CreateFrame(FrameType.Frame, "UIParent");
+            globalFrames.UIParent.SetWidth(this.uiParentWidth);
+            globalFrames.UIParent.SetHeight(this.uiParentHeight);
 
             globalFrames.GameTooltip = (IGameTooltip)this.frameProvider.CreateFrame(FrameType.GameTooltip, "UIParent");
 
@@ -64,7 +69,7 @@
 
             var wrapper = new MockObjectWrapper(this.apiMock.Object);
             this.MockAddOnApi(this.apiMock);
-            var session = new Session(this.apiMock, globalFrames, this.util, this.actor, this.frameProvider, addOnLoadActions, this.fps, savedDataHandler, wrapper);
+            var session = new Session(this.apiMock, globalFrames, this.util, this.actor, this.frameProvider, addOnLoadActions, this.fps, savedDataHandler, wrapper, this.setActiveSessionAction);
 
             this.postBuildActions.ForEach(action => action(session));
 
@@ -163,6 +168,19 @@
         public SessionBuilder WithPlayerSex(int sex)
         {
             this.apiMock.Setup(api => api.UnitSex(UnitId.player)).Returns(sex);
+            return this;
+        }
+
+        public SessionBuilder WithScreenDimensions(double width, double height)
+        {
+            this.uiParentWidth = width;
+            this.uiParentHeight = height;
+            return this;
+        }
+
+        public SessionBuilder WithSetActiveSessionAction(Action<ISession> setActiveSessionAction)
+        {
+            this.setActiveSessionAction = setActiveSessionAction;
             return this;
         }
     }
