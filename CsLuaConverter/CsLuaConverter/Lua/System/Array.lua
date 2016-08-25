@@ -40,8 +40,8 @@ end,
         System.Collections.Generic.IReadOnlyCollection[generics].__typeof,
     };
     
-    local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',3052);
+    local baseTypeObject, members = System.Array.__meta(staticValues);
+    local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',3052, (generics[1] % _M.DOT).FullName .. '[]');
 
     local len = function(element)
         return (element[typeObject.level][0] and 1 or 0) + #(element[typeObject.level]);

@@ -44,6 +44,10 @@ end
 
 local GetFullNameWithGenerics;
 GetFullNameWithGenerics = function(self)
+    if (self.altTypeName) then
+        return self.altTypeName;
+    end
+
     local generic = "";
     if self.numberOfGenerics > 0 then
         generic = "`" .. self.numberOfGenerics .. "[";
@@ -55,7 +59,7 @@ GetFullNameWithGenerics = function(self)
         generic = generic .. "]";
     end
 
-    return self.namespace .. "." .. self.name .. generic;
+    return self.namespace .. "." ..  self.name .. generic;
 end
 
 local meta = {
@@ -161,7 +165,7 @@ end
 
 local typeCache = {};
 
-local typeCall = function(name, namespace, baseType, numberOfGenerics, generics, implements, interactionElement, catagory, signatureHash)
+local typeCall = function(name, namespace, baseType, numberOfGenerics, generics, implements, interactionElement, catagory, signatureHash, altTypeName)
     assert(interactionElement, "Type cannot be created without an interactionElement.");
 
     catagory = catagory or "Class";
@@ -186,6 +190,7 @@ local typeCall = function(name, namespace, baseType, numberOfGenerics, generics,
     self.implements = implements;
     self.interactionElement = interactionElement;
     self.interactionElement.__typeof = self;
+    self.altTypeName = altTypeName;
     local genericHash = _M.SH(unpack(generics or {}));
     if genericHash == 0 then genericHash = 1; end;
     self.signatureHash = signatureHash*genericHash;

@@ -35,8 +35,9 @@
                 foreach (var value in ((IDictionary)graph))
                 {
                     var keyValuePair = (DictionaryEntry)value;
-                    var key = (inheritanceOrder.IndexOf(type.GetMethod("GetEnumerator").DeclaringType) + 1) + "_" + keyValuePair.Key;
-                    t[key] = keyValuePair.Value;
+                    var keyAsString = IsNumber(keyValuePair.Key) ? ("#_" + keyValuePair.Key) : ("_" + keyValuePair.Key);
+                    var key = (inheritanceOrder.IndexOf(type.GetMethod("GetEnumerator").DeclaringType) + 1) + keyAsString;
+                    t[key] = this.SerializeValue(keyValuePair.Value);
                 }
             }
             else if (graph is IEnumerable)
@@ -44,13 +45,19 @@
                 var index = 0;
                 foreach (var value in (IEnumerable)graph)
                 {
-                    var key = (inheritanceOrder.IndexOf(type.GetMethod("GetEnumerator").DeclaringType) + 1) + "#_" + index;
-                    t[key] = value;
+                    var level = type.IsArray ? 3 : (inheritanceOrder.IndexOf(type.GetMethod("GetEnumerator").DeclaringType) + 1);
+                    var key = level + "#_" + index;
+                    t[key] = this.SerializeValue(value);
                     index++;
                 }
             }
 
             return t;
+        }
+
+        private static bool IsNumber(object obj)
+        {
+            return obj is int || obj is double || obj is float;
         }
 
         private static List<Type> GetTypeInheritanceOrder(Type type)
@@ -116,7 +123,7 @@
                 return newT;
             }
 
-            var type = this.LoadedAssemblies.Select(a => a.GetType(typeString)).First(tv => tv != null);
+            var type = GetTypeFromString(typeString);
             var obj = CreateInstance(type, t);
 
             var inheritanceOrder = GetTypeInheritanceOrder(type);
@@ -130,23 +137,62 @@
                     }
 
                     var split = key.Split('_');
-                    if (split[0].EndsWith("#"))
-                    {
-                        split[0] = split[0].TrimEnd('#');
+                    var typeIndex = int.Parse(split[0].TrimEnd('#'));
+                    var typeAtCorrectLevel = inheritanceOrder[typeIndex - 1];
 
-                        var collection = obj as IList;
-                        collection[int.Parse(split[1])] = this.DeserializeObject(value);
-                    }
-                    else
+                    var field = typeAtCorrectLevel.GetField(split[1]);
+                    if (field != null)
                     {
-                        var typeIndex = int.Parse(split[0]);
-                        var typeAtCorrectLevel = inheritanceOrder[typeIndex - 1];
-
-                        typeAtCorrectLevel.GetField(split[1]).SetValue(obj, this.DeserializeObject(value));
+                        field.SetValue(obj, this.DeserializeObject(value));
+                        return;
                     }
+
+                    var collection = obj as IList;
+                    if (collection != null && split[0].EndsWith("#"))
+                    {
+                        var index = int.Parse(split[1]);
+                        while (index >= collection.Count)
+                        {
+                            collection.Add(null);
+                        }
+
+                        collection[index] = this.DeserializeObject(value);
+
+                        return;
+                    }
+
+                    var dictionary = obj as IDictionary;
+                    if (dictionary != null)
+                    {
+                        var index = split[0].EndsWith("#") ? (object)int.Parse(split[1]) : split[1];
+                        dictionary[index] = this.DeserializeObject(value);
+                        return;
+                    }
+                    
+                    throw new NotImplementedException();
                 });
 
             return obj;
+        }
+
+        private Type GetTypeFromString(string str)
+        {
+            if (!str.EndsWith("]") || str.EndsWith("[]"))
+            {
+                return this.GetTypeFromStringWithoutGenerics(str);
+            }
+
+            var typeNameWithGenerics = str.Substring(0, str.IndexOf('['));
+            var genericsString = str.Substring(str.IndexOf('['));
+            var type = this.GetTypeFromStringWithoutGenerics(typeNameWithGenerics);
+            var generics = genericsString.Trim(new[] { '[', ']' }).Split(',').ToArray().Select(this.GetTypeFromString).ToArray();
+
+            return type.MakeGenericType(generics);
+        }
+
+        private Type GetTypeFromStringWithoutGenerics(string str)
+        {
+            return this.LoadedAssemblies.Select(a => a.GetType(str)).First(tv => tv != null);
         }
 
         private static object CreateInstance(Type type, NativeLuaTable t)
@@ -154,7 +200,7 @@
             if (type.IsArray)
             {
                 var length = 0;
-                while (t["2#_" + length] != null)
+                while (t["3#_" + length] != null)
                 {
                     length++;
                 }
