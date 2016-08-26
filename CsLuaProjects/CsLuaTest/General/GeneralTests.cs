@@ -20,6 +20,7 @@
             this.Tests["TestPartialClasses"] = TestPartialClasses;
             this.Tests["TestIndexerInClass"] = TestIndexerInClass;
             //this.Tests["TestCompleteReferences"] = TestCompleteReferences;
+            this.Tests["TestIndexerInClass"] = TestIndexerInClass;
         }
 
         private static void NonStaticClassWithStaticMethod()
@@ -157,5 +158,16 @@
             var instance = new General.SubNamespace.SubSubNamespace.ClassInSubSubNamespace();
             Assert("normal", instance.GetNormal());
         } */
+
+        public static void TestConditionalIndexers()
+        {
+            string value = null;
+            var len = value?.Length;
+            Assert(null, len);
+
+            string value2 = "abc";
+            var len2 = value2?.Length;
+            Assert(3, len2);
+        }
     }
 }

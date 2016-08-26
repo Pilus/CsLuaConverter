@@ -283,6 +283,7 @@
     <None Include="CopyLuaToOutput.ps1" />
     <None Include="Lua\Meta\Add.lua" />
     <None Include="Lua\Meta\ArgumentMatching.lua" />
+    <None Include="Lua\Meta\ConditionalAccess.lua" />
     <None Include="Lua\Meta\DefaultValue.lua" />
     <None Include="Lua\Meta\Dot.lua" />
     <None Include="Lua\Meta\Enum.lua" />
