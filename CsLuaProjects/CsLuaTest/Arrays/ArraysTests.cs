@@ -10,6 +10,8 @@
             this.Tests["ArrayImplementsInterfaces"] = ArrayImplementsInterfaces;
             this.Tests["ArrayInitializationAndAmbigurity"] = ArrayInitializationAndAmbigurity;
             this.Tests["ArraysAsMethodArgument"] = ArraysAsMethodArgument;
+            this.Tests["ArrayImplementedWithSpecificLength"] = ArrayImplementedWithSpecificLength;
+            this.Tests["ArrayImplementedWithSpecificLengthInClass"] = ArrayImplementedWithSpecificLengthInClass;
         }
 
         private static void ArrayImplementsInterfaces()
@@ -61,6 +63,21 @@
             var array = new [] { "abc", "def"};
 
             Assert(2, arrayClass.GetLengthOfStringArray(array));
+        }
+
+        public static void ArrayImplementedWithSpecificLength()
+        {
+            var array = new string[4];
+            Assert(4, array.Length);
+            array[2] = "ok";
+            Assert("ok", array[2]);
+        }
+
+        public static void ArrayImplementedWithSpecificLengthInClass()
+        {
+            var c = new ClassWithPredefinedArray();
+            Assert(3, c.Array1.Length);
+            Assert(5, c.Array2.Length);
         }
     }
 }

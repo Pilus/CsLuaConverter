@@ -8,16 +8,19 @@
     public class ArrayTypeVisitor : BaseTypeVisitor
     {
         private readonly ITypeVisitor type;
+
+        private readonly ArrayRankSpecifierVisitor arrayRank;
         public ArrayTypeVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.ExpectKind(1, SyntaxKind.ArrayRankSpecifier);
             this.type = (ITypeVisitor) this.CreateVisitor(0);
+            this.arrayRank = (ArrayRankSpecifierVisitor)this.CreateVisitor(1);
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             this.WriteAsReference(textWriter, providers);
-            textWriter.Write("._C_0_0()");
+            this.arrayRank.Visit(textWriter, providers);
             providers.Context.CurrentType = this.GetType(providers);
         }
 

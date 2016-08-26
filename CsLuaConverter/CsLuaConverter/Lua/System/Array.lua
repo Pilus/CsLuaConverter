@@ -43,8 +43,10 @@ end,
     local baseTypeObject, members = System.Array.__meta(staticValues);
     local typeObject = System.Type('Array','System', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',3052, (generics[1] % _M.DOT).FullName .. '[]');
 
+    local size;
+
     local len = function(element)
-        return (element[typeObject.level][0] and 1 or 0) + #(element[typeObject.level]);
+        return element[typeObject.level].size or ((element[typeObject.level][0] and 1 or 0) + #(element[typeObject.level]));
     end
 
     _M.IM(members,'GetEnumerator',{
@@ -103,6 +105,18 @@ end,
         signatureHash = 0,
         scope = 'Public',
         func = function(element)
+        end,
+    });
+
+    _M.IM(members, '', {
+        level = typeObject.Level,
+        memberType = 'Cstor',
+        static = true,
+        numMethodGenerics = 0,
+        signatureHash = 2112,
+        scope = 'Public',
+        func = function(element, size)
+            element[typeObject.level].size = size;
         end,
     });
 

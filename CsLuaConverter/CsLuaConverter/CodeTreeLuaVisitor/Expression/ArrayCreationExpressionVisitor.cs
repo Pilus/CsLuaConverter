@@ -14,8 +14,14 @@
         {
             this.ExpectKind(0, SyntaxKind.NewKeyword);
             this.ExpectKind(1, SyntaxKind.ArrayType);
-            this.ExpectKind(2, SyntaxKind.ArrayInitializerExpression);
+            
             this.arrayType = (ArrayTypeVisitor) this.CreateVisitor(1);
+            if (this.Branch.Nodes.Length == 2)
+            {
+                return;
+            }
+
+            this.ExpectKind(2, SyntaxKind.ArrayInitializerExpression);
             this.initializer = (ArrayInitializerExpressionVisitor) this.CreateVisitor(2);
         }
 
@@ -24,6 +30,12 @@
             textWriter.Write("(");
             this.arrayType.Visit(textWriter, providers);
             textWriter.Write(" % _M.DOT)");
+
+            if (this.initializer == null)
+            {
+                return;
+            }
+
             var currentType = providers.Context.CurrentType;
             this.initializer.Visit(textWriter, providers);
             providers.Context.CurrentType = currentType;

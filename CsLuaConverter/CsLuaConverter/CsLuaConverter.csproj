@@ -177,6 +177,7 @@
     <Compile Include="CodeTreeLuaVisitor\Statement\Switch\SwitchSectionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ThrowStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\WhileStatementVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Type\ArrayRankSpecifierVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\NullableTypeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Constraint\TypeParameterConstraintClauseVisitor.cs" />
     <Compile Include="Converter.cs" />
