@@ -76,7 +76,7 @@
 
                 var returnArg = args[index].GetReturnArg().GetTypeObject();
 
-                if (returnArg != returnType) // && !(returnArg == typeof(Nullable) && returnArg.GetGenericArguments()[0] == returnType))
+                if (returnArg != returnType && !returnArg.IsGenericParameter) // && !(returnArg == typeof(Nullable) && returnArg.GetGenericArguments()[0] == returnType))
                 {
                     return false;
                 }
@@ -142,6 +142,16 @@
             }
         }
 
+        public void FilterPrioitizeNonGenerics()
+        {
+            if (this.methods.Any(m => m.GetNumberOfMethodGenerics() == 0))
+            {
+                var methodsBefore = this.methods;
+                this.methods = this.methods.Where(m => m.GetNumberOfMethodGenerics() == 0).ToArray();
+                this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
+            }
+        }
+
         public void FilterPrioitizeNonParams()
         {
             if (this.methods.Any(m => !m.IsParams()))
@@ -150,6 +160,13 @@
                 this.methods = this.methods.Where(m => !m.IsParams()).ToArray();
                 this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
             }
+        }
+
+        public void FilterByUniqueSignature()
+        {
+            var methodsBefore = this.methods;
+            this.methods = this.methods.GroupBy(m => m.GetSignatureString()).Select(g => g.First()).ToArray();
+            this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
         }
     }
 }

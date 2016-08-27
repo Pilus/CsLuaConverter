@@ -45,7 +45,7 @@
                 textWriter.Write(this.text);
                 var newCrurrentTypes = currentType.GetTypeKnowledgeForSubElement(this.text, providers);
 
-                providers.Context.CurrentType = newCrurrentTypes.OfType<TypeKnowledge>().SingleOrDefault();
+                providers.Context.CurrentType = newCrurrentTypes.OfType<TypeKnowledge>().FirstOrDefault();
 
                 var possibleMethods = newCrurrentTypes.OfType<MethodKnowledge>().ToArray();
                 providers.Context.PossibleMethods = possibleMethods.Any() ? new PossibleMethods(possibleMethods) : null;

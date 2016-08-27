@@ -85,7 +85,8 @@
         {
             if (this.method == null)
             {
-                throw new Exception("Could not apply generics to non methodInfo based MethodKnowledge.");
+                //throw new Exception("Could not apply generics to non methodInfo based MethodKnowledge.");
+                return;
             }
 
             var genericArgs = this.method.GetGenericArguments();
@@ -459,6 +460,39 @@
         public bool IsGetType()
         {
             return this.method?.Name == "GetType" && this.method.DeclaringType == typeof (object);
+        }
+
+        public string GetSignatureString()
+        {
+            if (this.method != null)
+            {
+                return GetSignatureString(this.method as MethodInfo);
+            }
+
+            var args = string.Join(",", this.inputTypes.Select(GetSignatureString));
+            return $"{GetSignatureString(this.returnType)} X({args})";
+        }
+
+        private static string GetSignatureString(MethodInfo method)
+        {
+            var args = string.Join(",", method.GetParameters().Select(p => GetSignatureString(p.ParameterType)));
+            return $"{GetSignatureString(method.ReturnType)} {method.Name}({args})";
+        }
+
+        private static string GetSignatureString(Type type)
+        {
+            if (type.IsGenericParameter)
+            {
+                return "T";
+            }
+
+            if (!type.IsGenericType)
+            {
+                return type.ToString();
+            }
+
+            var args = string.Join(",", type.GetGenericArguments().Select(GetSignatureString));
+            return type.Namespace + "." + type.Name + "[" + args + "]";
         }
     }
 }

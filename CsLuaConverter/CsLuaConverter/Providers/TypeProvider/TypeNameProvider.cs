@@ -74,6 +74,14 @@
             this.LoadType(typeof(Func<, , , , , , , , , , , , , >));
             this.LoadType(typeof(Func<, , , , , , , , , , , , , , >));
             this.LoadType(typeof(Func<, , , , , , , , , , , , , , , >));
+            this.LoadType(typeof(Tuple<>));
+            this.LoadType(typeof(Tuple<,>));
+            this.LoadType(typeof(Tuple<,,>));
+            this.LoadType(typeof(Tuple<,,,>));
+            this.LoadType(typeof(Tuple<,,,,>));
+            this.LoadType(typeof(Tuple<,,,,,>));
+            this.LoadType(typeof(Tuple<,,,,,,>));
+            this.LoadType(typeof(Tuple<,,,,,,,>));
             this.LoadType(typeof(Exception));
             this.LoadType(typeof(NotImplementedException)); 
             this.LoadType(typeof(ArgumentOutOfRangeException));

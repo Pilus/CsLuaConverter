@@ -24,7 +24,28 @@
 
             var appliedParameters = parameters.Skip(1).Select(p => ApplyGenerics(p.ParameterType, generics)).ToArray();
 
-            return new MethodKnowledge(true, ApplyGenerics(this.methodInfo.ReturnType, generics), this.methodInfo.GetGenericArguments().Skip(1).ToArray(), appliedParameters);
+            var typeGenericArgumentsNum = this.GetGenericsFromExtensionType().Length;
+            var name = this.methodInfo.Name;
+            return new MethodKnowledge(true, ApplyGenerics(this.methodInfo.ReturnType, generics), this.methodInfo.GetGenericArguments().Skip(typeGenericArgumentsNum).ToArray(), appliedParameters);
+        }
+
+        private Type[] GetGenericsFromExtensionType()
+        {
+            return GetGenerics(this.methodInfo.GetParameters().First().ParameterType);
+        }
+
+        private static Type[] GetGenerics(Type type)
+        {
+            if (type.IsGenericParameter)
+            {
+                return new[] { type };
+            }
+            else if (!type.IsGenericType)
+            {
+                return new Type[] { };
+            }
+
+            return type.GetGenericArguments().SelectMany(GetGenerics).ToArray();
         }
 
         private Type GetType(Dictionary<string, Type> generics)

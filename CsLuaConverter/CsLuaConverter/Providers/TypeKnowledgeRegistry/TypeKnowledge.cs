@@ -62,32 +62,51 @@
             return base.GetHashCode();
         }
 
-        public IKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)
+        private static Type[] GetImplementedTypes(Type type)
         {
-            var type = this.type;
-
-            if (type.IsGenericParameter)
+            if (type.IsInterface)
             {
-                if (providers.GenericsRegistry.IsGeneric(type.Name))
-                {
-                    type = providers.GenericsRegistry.GetType(type.Name);
-                }
+                return new[] { type };
             }
 
-            var members =
-                GetMembers(type, this.restrictToStatic, str)
-                    .GroupBy(m => m.GetHashCode())
-                    .Select(g => g.First())
-                    .ToArray();
-            var extensions = providers.TypeProvider.GetExtensionMethods(type, str);
-            var membersIncludingExtensions = new []{ members, extensions}.SelectMany(v => v).ToArray();
+            var types = new List<Type>();
+            types.Add(type);
+
+            types.AddRange(type.GetInterfaces().SelectMany(GetImplementedTypes));
+
+            return types.Distinct().ToArray();
+        }
+
+        public IKnowledge[] GetTypeKnowledgeForSubElement(string str, IProviders providers)
+        {
+            var membersIncludingExtensions = new List<IKnowledge>();
+            var types = GetImplementedTypes(this.type);
+
+            foreach (var typeObj in types)
+            {
+                var type = typeObj;
+
+                if (type.IsGenericParameter)
+                {
+                    if (providers.GenericsRegistry.IsGeneric(type.Name))
+                    {
+                        type = providers.GenericsRegistry.GetType(type.Name);
+                    }
+                }
+
+                var members = GetMembers(type, this.restrictToStatic, str);
+                membersIncludingExtensions.AddRange(members);
+                var extensions = providers.TypeProvider.GetExtensionMethods(type, str);
+                membersIncludingExtensions.AddRange(extensions);
+            }
             
             if (!membersIncludingExtensions.Any())
             {
                 throw new Exception($"Member {str} not found on element {this.type.Name}.");
             }
 
-            return membersIncludingExtensions;
+            //return membersIncludingExtensions.GroupBy(m => m.ToString()).Select(g => g.First()).ToArray();
+            return membersIncludingExtensions.ToArray();
         }
 
         public MethodKnowledge[] GetConstructors()

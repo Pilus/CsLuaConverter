@@ -33,6 +33,9 @@
 end,
 [1] = function(interactionElement, generics, staticValues)
     local implements = {
+        System.Collections.IList.__typeof,
+        System.Collections.ICollection.__typeof,
+        System.Collections.IEnumerable.__typeof,
         System.Collections.Generic.IList[generics].__typeof,
         System.Collections.Generic.ICollection[generics].__typeof,
         System.Collections.Generic.IEnumerable[generics].__typeof,

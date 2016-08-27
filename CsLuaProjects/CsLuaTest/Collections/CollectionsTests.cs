@@ -17,6 +17,7 @@
             this.Tests["TestSelect"] = TestSelect;
             this.Tests["TestUnion"] = TestUnion;
             this.Tests["TestOrderBy"] = TestOrderBy;
+            this.Tests["TestOfLinqOfType"] = TestOfLinqOfType;
         }
 
         private static void TestListInterfaces()
@@ -229,7 +230,16 @@
             Assert(13, ordered[3].Number);
         }
 
+        public static void TestOfLinqOfType()
+        {
+            var mixedCollection = new object[] { 1, 2, "c", true, "e", 6};
 
+            var ints = mixedCollection.OfType<int>().ToArray();
+            Assert(3, ints.Length);
+
+            var strings = mixedCollection.OfType<string>().ToArray();
+            Assert(2, strings.Length);
+        }
 
         private static float ToFloat(int value)
         {

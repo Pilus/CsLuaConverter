@@ -48,8 +48,10 @@
                 this.FilterOnArgTypes,
                 this.FilterOnBestScore,
                 this.FilterOnSimpleLambdaReturnType,
+                this.FilterByUniqueSignature,
                 this.FilterPrioitizeNonExtensions,
                 this.FilterPrioitizeNonParams,
+                this.FilterPrioitizeNonGenerics,
             };
 
             foreach (var step in steps)
@@ -238,6 +240,16 @@
         private void FilterDistinctTypes(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
         {
             possibleMethods.FilterDistinctTypes();
+        }
+
+        private void FilterPrioitizeNonGenerics(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        {
+            possibleMethods.FilterPrioitizeNonGenerics();
+        }
+
+        private void FilterByUniqueSignature(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
+        {
+            possibleMethods.FilterByUniqueSignature();
         }
 
         private static bool IsArgumentVisitorALambda(IVisitor visitor)

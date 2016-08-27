@@ -1263,3 +1263,29 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
         },
     };
 end);
+
+
+_M.RE("System.Collections.IEnumerable", 0, function()
+    return {
+        { -- T OfType<T>()
+            name = "OfType",
+            numMethodGenerics = 1,
+            generics = _M.MG({['TResult'] = 1});
+            signatureHash = 0,
+            func = function(source, methodGenericsMapping, methodGenerics)
+                local type = methodGenerics[1];
+
+                local enumerator = (source % _M.DOT).GetEnumerator();
+                return System.Linq.Iterator[{type}]._C_0_16704(function(_, prevKey)
+                    while (true) do
+                        local key, value = enumerator(_, prevKey);
+                        if (key == nil) or (type %_M.DOT).IsInstanceOfType(value) == true then
+                            return key, value;
+                        end
+                        prevKey = key;
+                    end
+                end);
+            end,
+        },
+    }
+end);
