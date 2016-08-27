@@ -282,6 +282,10 @@
             return new TypeKnowledge(this.ApplyMethodGenerics(this.returnType));
         }
 
+        public Type[] GetGenericTypes()
+        {
+            return this.genericsTypes ?? this.method.GetGenericArguments();
+        }
 
         private Type ApplyMethodGenerics(Type type)
         {

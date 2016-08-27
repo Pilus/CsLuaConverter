@@ -4,6 +4,9 @@
     using System.Linq;
     using System.Reflection;
     using CodeTree;
+
+    using CsLuaConverter.Providers.GenericsRegistry;
+
     using Lists;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
@@ -71,7 +74,23 @@
 
                 textWriter.AppendTextWriter(argumentListWriter);
 
-                providers.Context.CurrentType = method.GetReturnType();
+                if (providers.Context.PossibleMethods.MethodGenerics != null)
+                {
+                    var genericObjs = method.GetGenericTypes();
+                    for (int index = 0; index < providers.Context.PossibleMethods.MethodGenerics.Length; index++)
+                    {
+                        var generic = providers.Context.PossibleMethods.MethodGenerics[index];
+                        var genericObj = genericObjs[index];
+
+                        providers.GenericsRegistry.SetGenerics(
+                            genericObj.Name,
+                            GenericScope.Invocation,
+                            genericObj,
+                            generic.GetTypeObject());
+                    }
+                }
+                providers.Context.CurrentType = method.GetReturnType().ResolveGenerics(providers);
+                providers.GenericsRegistry.ClearScope(GenericScope.Invocation);
             }
             else
             {
