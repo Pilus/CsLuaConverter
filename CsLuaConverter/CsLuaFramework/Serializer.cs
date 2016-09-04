@@ -18,8 +18,8 @@
 
         public NativeLuaTable Serialize<T>(T graph) where T : class
         {
-            var t = new NativeLuaTable();
             var type = graph.GetType();
+            var t = new NativeLuaTable();
             t["type"] = type.GetFullNameWithGenerics();
 
             var inheritanceOrder = GetTypeInheritanceOrder(type);
@@ -75,7 +75,8 @@
 
         private object SerializeValue(object value)
         {
-            if (NonSerializedTypes.Contains(value.GetType()))
+            var type = value.GetType();
+            if (NonSerializedTypes.Contains(type) || type.IsEnum)
             {
                 return value;
             }
