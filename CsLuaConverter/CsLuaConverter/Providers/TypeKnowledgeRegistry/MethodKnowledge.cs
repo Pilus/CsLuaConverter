@@ -470,7 +470,17 @@
         {
             if (this.method != null)
             {
-                return GetSignatureString(this.method as MethodInfo);
+                if (this.method is MethodInfo)
+                {
+                    return GetSignatureString(this.method as MethodInfo);
+                }
+
+                if (this.method is ConstructorInfo)
+                {
+                    return GetSignatureString(this.method as ConstructorInfo);
+                }
+
+                throw new NotImplementedException();
             }
 
             var args = string.Join(",", this.inputTypes.Select(GetSignatureString));
@@ -481,6 +491,12 @@
         {
             var args = string.Join(",", method.GetParameters().Select(p => GetSignatureString(p.ParameterType)));
             return $"{GetSignatureString(method.ReturnType)} {method.Name}({args})";
+        }
+
+        private static string GetSignatureString(ConstructorInfo cstor)
+        {
+            var args = string.Join(",", cstor.GetParameters().Select(p => GetSignatureString(p.ParameterType)));
+            return $"{GetSignatureString(cstor.DeclaringType)} {cstor.Name}({args})";
         }
 
         private static string GetSignatureString(Type type)

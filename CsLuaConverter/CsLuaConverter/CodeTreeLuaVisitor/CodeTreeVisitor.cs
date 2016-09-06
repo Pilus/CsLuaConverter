@@ -42,14 +42,14 @@
                         i < (previousNamespace.Length - (nameSpace.Length - nonCommonNamespace.Length));
                         i++)
                     {
-                        textWriter.Indent--;
-                        textWriter.WriteLine("},");
+                        //textWriter.Indent--;
+                        //textWriter.WriteLine("},");
                     }
 
                     foreach (var subNamespace in nonCommonNamespace)
                     {
-                        textWriter.WriteLine($"{subNamespace} = {{");
-                        textWriter.Indent++;
+                        //textWriter.WriteLine($"{subNamespace} = {{");
+                        //textWriter.Indent++;
                     }
 
                     this.VisitFilesWithSameElementName(groupedVisitors, textWriter);
@@ -60,12 +60,12 @@
 
                     for (var i = 0; i < (nameSpace.Length - 1); i++)
                     {
-                        textWriter.Indent--;
-                        textWriter.WriteLine("},");
+                        //textWriter.Indent--;
+                        //textWriter.WriteLine("},");
                     }
 
-                    textWriter.Indent--;
-                    textWriter.WriteLine("}");
+                    //textWriter.Indent--;
+                    //textWriter.WriteLine("}");
                 }
 
                 // Write footer
@@ -140,8 +140,10 @@
 
         private void VisitFilesWithSameElementName(CompilationUnitVisitor[] visitors, IIndentedTextWriterWrapper textWriter)
         {
-            var name = visitors.First().GetElementName();
-            textWriter.WriteLine($"{name} = _M.NE({{");
+            var first = visitors.First();
+            var name = first.GetElementName();
+            var fullNamespace = string.Join(".", first.GetNamespaceName());
+            textWriter.WriteLine($"_M.ATN('{fullNamespace}','{name}', _M.NE({{");
             textWriter.Indent++;
 
             var visitorsByNumGenerics = new Dictionary<int, List<CompilationUnitVisitor>>();
@@ -168,7 +170,7 @@
             }
 
             textWriter.Indent--;
-            textWriter.WriteLine("}),");
+            textWriter.WriteLine("}));");
         }
 
         private void VisitFilesWithSameElementNameAndNumGenerics(CompilationUnitVisitor[] visitors, IIndentedTextWriterWrapper textWriter, int numOfGenerics)
