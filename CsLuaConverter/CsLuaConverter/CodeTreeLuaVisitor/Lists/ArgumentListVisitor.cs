@@ -215,7 +215,7 @@
 
         private void FilterOnBestScore(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)
         {
-            possibleMethods.FilterByBestScore(argVisitings.Select(av => av?.Item2).ToArray());
+            possibleMethods.FilterByBestScore(argVisitings.Select(av => av?.Item2).ToArray(), providers);
         }
 
         private void FilterOnNumberOfArgsInLambda(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)

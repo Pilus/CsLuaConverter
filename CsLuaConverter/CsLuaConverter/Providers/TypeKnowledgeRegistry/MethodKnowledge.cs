@@ -343,7 +343,7 @@
             return this.inputTypes.Select(t => new TypeKnowledge(t)).ToArray();
         }
 
-        public int? GetScore(Type[] types)
+        public int? GetScore(Type[] types, IProviders providers)
         {
             var isParams = this.IsParams();
             var parameters = this.GetInputParameterTypes();
@@ -369,6 +369,18 @@
                 else
                 {
                     parScore = ScoreForHowWellOtherTypeFits(parameter, type);
+                    if (parameter.IsGenericParameter)
+                    {
+                        var resolvedScore = ScoreForHowWellOtherTypeFits(providers.GenericsRegistry.GetType(parameter.Name), type);
+                        if (parScore == null)
+                        {
+                            parScore = resolvedScore;
+                        }
+                        else if (resolvedScore != null)
+                        {
+                            parScore = Math.Min(parScore.Value, resolvedScore.Value);
+                        }
+                    }
                 }
 
                 if (parScore == null)
@@ -387,7 +399,7 @@
         {
             if (type.IsGenericParameter)
             {
-                return 1;
+                return type.Name == otherType.Name ? 0 : 1;
             }
 
             if (otherType == typeof (Nullable))

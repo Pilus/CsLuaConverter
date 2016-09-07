@@ -92,11 +92,11 @@
             this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
         }
 
-        public void FilterByBestScore(TypeKnowledge[] typeKnowledges)
+        public void FilterByBestScore(TypeKnowledge[] typeKnowledges, IProviders providers)
         {
             var methodsBefore = this.methods;
             var types = typeKnowledges.Select(tk => tk?.GetTypeObject()).ToArray();
-            this.methods = this.methods.GroupBy(m => m.GetScore(types) ?? int.MaxValue).OrderBy(g => g.Key).First().ToArray();
+            this.methods = this.methods.GroupBy(m => m.GetScore(types, providers) ?? int.MaxValue).OrderBy(g => g.Key).First().ToArray();
             this.ThrowIfAllMethodsAreFilteredAway(methodsBefore);
         }
 
