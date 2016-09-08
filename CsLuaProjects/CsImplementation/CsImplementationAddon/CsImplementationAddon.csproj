@@ -44,6 +44,12 @@
     <Compile Include="AddOn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SystemZZZ\SystemZZZ.csproj">
+      <Project>{b9d22c3a-1c29-418a-8b85-4e752fcf482f}</Project>
+      <Name>SystemZZZ</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

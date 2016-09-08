@@ -1,64 +1,54 @@
 ﻿namespace SystemZZZ
 {
-    public class ArgumentException
+    using System;
+
+    public class ArgumentException : SystemException
     {
-        /*
-        private String m_paramName;
+        private string m_paramName;
  
         // Creates a new ArgumentException with its message
         // string set to the empty string. 
         public ArgumentException() 
-            : base(Environment.GetResourceString("Arg_ArgumentException")) {
-            SetErrorCode(__HResults.COR_E_ARGUMENT); 
+            : base("Value does not fall within the expected range.") {
         }
 
         // Creates a new ArgumentException with its message
         // string set to message. 
         //
-        public ArgumentException(String message) 
+        public ArgumentException(string message) 
             : base(message) { 
-            SetErrorCode(__HResults.COR_E_ARGUMENT);
         } 
 
-        public ArgumentException(String message, Exception innerException)
+        public ArgumentException(string message, Exception innerException)
             : base(message, innerException) {
-            SetErrorCode(__HResults.COR_E_ARGUMENT); 
         }
  
-        public ArgumentException(String message, String paramName, Exception innerException) 
+        public ArgumentException(string message, string paramName, Exception innerException) 
             : base(message, innerException) {
-            m_paramName = paramName; 
-            SetErrorCode(__HResults.COR_E_ARGUMENT);
+            m_paramName = paramName;
         }
 
-        public ArgumentException (String message, String paramName) 
+        public ArgumentException (string message, string paramName) 
 
             : base (message) { 
-            m_paramName = paramName; 
-            SetErrorCode(__HResults.COR_E_ARGUMENT);
+            m_paramName = paramName;
         } 
-
-        [System.Security.SecuritySafeCritical]  // auto-generated
-        protected ArgumentException(SerializationInfo info, StreamingContext context) : base(info, context) {
-            m_paramName = info.GetString("ParamName"); 
-        }
  
-        public override String Message 
+        public override string Message 
         {
             get { 
-                String s = base.Message;
-                if (!String.IsNullOrEmpty(m_paramName)) {
-                    String resourceString = Environment.GetRuntimeResourceString("Arg_ParamName_Name", m_paramName);
-                    return s + Environment.NewLine + resourceString; 
+                string s = base.Message;
+                if (!string.IsNullOrEmpty(this.m_paramName)) {
+                    string resourcestring = "Parameter name: " + this.m_paramName;
+                    return s + Environment.NewLine + resourcestring; 
                 }
                 else 
                     return s; 
             }
         } 
 
-        public virtual String ParamName {
+        public virtual string ParamName {
             get { return m_paramName; }
-        } 
-         */
+        }
     }
 }
