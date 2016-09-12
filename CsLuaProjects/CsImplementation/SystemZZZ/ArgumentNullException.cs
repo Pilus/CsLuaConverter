@@ -4,7 +4,7 @@ namespace SystemZZZ
 {
     using System;
 
-    public class ArgumentNullException : System.ArgumentException
+    public class ArgumentNullException : ArgumentException
     {
         public ArgumentNullException() : base("Value cannot be null.")
         {

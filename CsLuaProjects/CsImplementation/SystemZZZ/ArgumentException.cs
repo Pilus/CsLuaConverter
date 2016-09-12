@@ -40,7 +40,7 @@
                 string s = base.Message;
                 if (!string.IsNullOrEmpty(this.m_paramName)) {
                     string resourcestring = "Parameter name: " + this.m_paramName;
-                    return s + Environment.NewLine + resourcestring; 
+                    return s + "\n" + resourcestring; 
                 }
                 else 
                     return s; 

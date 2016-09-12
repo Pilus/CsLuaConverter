@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B9D22C3A-1C29-418A-8B85-4E752FCF482F}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{32D382EB-4A64-4BAA-9B64-9C8EED9A0DE3}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SystemZZZ</RootNamespace>
-    <AssemblyName>SystemZZZ</AssemblyName>
+    <RootNamespace>TypeListGenerator</RootNamespace>
+    <AssemblyName>TypeListGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -30,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsLuaFramework">
-      <HintPath>..\..\CsLuaConverter\CsLuaFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,21 +43,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArgumentException.cs" />
-    <Compile Include="ArgumentNullException.cs" />
-    <Compile Include="Environment.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AfterBuild.ps1" />
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SystemZZZ\SystemZZZ.csproj">
+      <Project>{b9d22c3a-1c29-418a-8b85-4e752fcf482f}</Project>
+      <Name>SystemZZZ</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
-  </Target>-->
-  <Target Name="AfterBuild">
-    <Exec Command="powershell.exe .\AfterBuild.ps1 $(SolutionDir)" />
   </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>
