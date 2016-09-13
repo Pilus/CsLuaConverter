@@ -6,6 +6,9 @@
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
+    using CsLuaConverter.Providers.TypeProvider.TypeCollections;
+
     using CsLuaFramework;
     using CsLuaFramework.Wrapping;
     using Microsoft.CodeAnalysis;
@@ -29,116 +32,16 @@
             new NativeTypeResult("void", typeof(void)),
         };
 
-        public TypeNameProvider(Solution solution)
+        public TypeNameProvider(IEnumerable<BaseTypeCollection> typeCollections)
         {
             this.rootNamespace = new LoadedNamespace(null);
-            this.LoadSystemTypes();
-            this.LoadAssembly(Assembly.Load("Lua"));
-            this.LoadAssembly(Assembly.Load("CsLuaFramework"));
-            this.LoadSolution(solution);
-        }
 
-        private void LoadSystemTypes()
-        {
-            this.LoadType(typeof(Type));
-            this.LoadType(typeof(Action));
-            this.LoadType(typeof(Action<>));
-            this.LoadType(typeof(Action<, >));
-            this.LoadType(typeof(Action<, , >));
-            this.LoadType(typeof(Action<, , , >));
-            this.LoadType(typeof(Action<, , , , >));
-            this.LoadType(typeof(Action<, , , , , >));
-            this.LoadType(typeof(Action<, , , , , , >));
-            this.LoadType(typeof(Action<, , , , , , , >));
-            this.LoadType(typeof(Action<, , , , , , , , >));
-            this.LoadType(typeof(Action<, , , , , , , , , >));
-            this.LoadType(typeof(Action<, , , , , , , , , , >));
-            this.LoadType(typeof(Action<, , , , , , , , , , , >));
-            this.LoadType(typeof(Action<, , , , , , , , , , , , >));
-            this.LoadType(typeof(Action<, , , , , , , , , , , , , >));
-            this.LoadType(typeof(Action<, , , , , , , , , , , , , , >));
-            this.LoadType(typeof(Action<, , , , , , , , , , , , , , , >));
-            this.LoadType(typeof(Func<>));
-            this.LoadType(typeof(Func<, >));
-            this.LoadType(typeof(Func<, , >));
-            this.LoadType(typeof(Func<, , , >));
-            this.LoadType(typeof(Func<, , , , >));
-            this.LoadType(typeof(Func<, , , , , >));
-            this.LoadType(typeof(Func<, , , , , , >));
-            this.LoadType(typeof(Func<, , , , , , , >));
-            this.LoadType(typeof(Func<, , , , , , , , >));
-            this.LoadType(typeof(Func<, , , , , , , , , >));
-            this.LoadType(typeof(Func<, , , , , , , , , , >));
-            this.LoadType(typeof(Func<, , , , , , , , , , , >));
-            this.LoadType(typeof(Func<, , , , , , , , , , , , >));
-            this.LoadType(typeof(Func<, , , , , , , , , , , , , >));
-            this.LoadType(typeof(Func<, , , , , , , , , , , , , , >));
-            this.LoadType(typeof(Func<, , , , , , , , , , , , , , , >));
-            this.LoadType(typeof(Tuple<>));
-            this.LoadType(typeof(Tuple<,>));
-            this.LoadType(typeof(Tuple<,,>));
-            this.LoadType(typeof(Tuple<,,,>));
-            this.LoadType(typeof(Tuple<,,,,>));
-            this.LoadType(typeof(Tuple<,,,,,>));
-            this.LoadType(typeof(Tuple<,,,,,,>));
-            this.LoadType(typeof(Tuple<,,,,,,,>));
-            this.LoadType(typeof(Exception));
-            this.LoadType(typeof(NotImplementedException)); 
-            this.LoadType(typeof(ArgumentOutOfRangeException));
-            this.LoadType(typeof(Enum));
-            this.LoadType(typeof(ICsLuaAddOn));
-            this.LoadType(typeof(IDictionary));
-            this.LoadType(typeof(IDictionary<, >));
-            this.LoadType(typeof(Dictionary<,>)); 
-            this.LoadType(typeof(KeyValuePair<, >));
-            this.LoadType(typeof(IReadOnlyDictionary<, >));
-            this.LoadType(typeof(IList));
-            this.LoadType(typeof(IList<>));
-            this.LoadType(typeof(ICollection));
-            this.LoadType(typeof(ICollection<>));
-            this.LoadType(typeof(IEnumerable));
-            this.LoadType(typeof(IEnumerable<>));
-            this.LoadType(typeof(IReadOnlyList<>));
-            this.LoadType(typeof(IReadOnlyCollection<>));
-            this.LoadType(typeof(List<>));
-            this.LoadType(typeof(Enumerable));
-            this.LoadType(typeof(Array));
-            this.LoadType(typeof(IMultipleValues<>));
-            this.LoadType(typeof(IMultipleValues<, >));
-            this.LoadType(typeof(IMultipleValues<, , >));
-            this.LoadType(typeof(IMultipleValues<, , , >));
-            this.LoadType(typeof(IMultipleValues<, , , , >));
-            this.LoadType(typeof(IMultipleValues<, , , , , >));
-            this.LoadType(typeof(IMultipleValues<, , , , , , >));
-            this.LoadType(typeof(IMultipleValues<, , , , , , , >));
-            this.LoadType(typeof(IMultipleValues<, , , , , , , , >));
-            this.LoadType(typeof(IMultipleValues<, , , , , , , , , >));
-            this.LoadType(typeof(IMultipleValues<, , , , , , , , , , >));
-            this.LoadType(typeof(IMultipleValues<, , , , , , , , , , , >));
-            this.LoadType(typeof(Enumerable));
-            this.LoadType(typeof(Activator));
-            this.LoadType(typeof(Guid));
-        }
-
-        private void LoadSolution(Solution solution)
-        {
-            foreach (var project in solution.Projects)
+            foreach (var typeCollection in typeCollections)
             {
-                try {
-                    this.LoadAssembly(Assembly.LoadFrom(project.OutputFilePath));
-                }
-                catch (FileNotFoundException)
+                foreach (var type in typeCollection)
                 {
-                    throw new ConverterException(string.Format("Could not find the file {0}. Please build or rebuild the {1} project.", project.OutputFilePath, project.Name));
+                    this.LoadType(type);
                 }
-            }
-        }
-
-        private void LoadAssembly(Assembly assembly)
-        {
-            foreach(var type in assembly.GetTypes().Where(t => !t.Name.StartsWith("<")))
-            {
-                this.LoadType(type);
             }
         }
 

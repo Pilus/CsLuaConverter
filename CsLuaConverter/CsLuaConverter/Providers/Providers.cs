@@ -1,6 +1,10 @@
 ﻿
 namespace CsLuaConverter.Providers
 {
+    using System.Collections.Generic;
+
+    using CsLuaConverter.Providers.TypeProvider.TypeCollections;
+
     using GenericsRegistry;
     using Microsoft.CodeAnalysis;
     using NameProvider;
@@ -16,9 +20,9 @@ namespace CsLuaConverter.Providers
         private readonly IContext context;
         private readonly IPartialElementState partialElementState;
 
-        public Providers(Solution solution)
+        public Providers(IEnumerable<BaseTypeCollection> typeCollections)
         {
-            this.typeProvider = new TypeNameProvider(solution);
+            this.typeProvider = new TypeNameProvider(typeCollections);
             this.genericsRegistry = new GenericsRegistry.GenericsRegistry();
             this.nameProvider = new NameProvider.NameProvider(this.typeProvider);
             this.context = new TypeKnowledgeRegistry.Context();

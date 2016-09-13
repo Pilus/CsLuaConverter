@@ -265,6 +265,11 @@
     <Compile Include="Providers\TypeProvider\LoadedType.cs" />
     <Compile Include="Providers\TypeProvider\NativeTypeResult.cs" />
     <Compile Include="Providers\TypeProvider\ScopeElement.cs" />
+    <Compile Include="Providers\TypeProvider\TypeCollections\AssemblyTypeCollection.cs" />
+    <Compile Include="Providers\TypeProvider\TypeCollections\BaseTypeCollection.cs" />
+    <Compile Include="Providers\TypeProvider\TypeCollections\ManuallyImplementedSystemTypeTypeCollection.cs" />
+    <Compile Include="Providers\TypeProvider\TypeCollections\SolutionTypeCollection.cs" />
+    <Compile Include="Providers\TypeProvider\TypeCollections\TypesFileTypeCollection.cs" />
     <Compile Include="Providers\TypeProvider\TypeNameProvider.cs" />
     <Compile Include="Providers\TypeProvider\TypeResult.cs" />
     <Compile Include="AddOnConstruction\ResourceFile.cs" />
