@@ -9,8 +9,12 @@ if ( $LASTEXITCODE -ne 0)
 {
     exit $LASTEXITCODE;
 }
+$systemImplementation = Get-Content "$outDir\CsImplementationAddOn\SystemZZZ.lua";
+$systemImplementation = $systemImplementation -replace "ZZZ", "";
+Set-Content -Path "$solutionDir\..\..\CsLuaConverter\CsLuaConverter\Lua\System\SystemImplementation.lua" -Value $systemImplementation;
 
-& $typeListGenerator "$outDir\Types.txt"
+
+& $typeListGenerator "$solutionDir\..\..\CsLuaConverter\CsLuaConverter\Lua\System\SystemImplementation.types"
 if ( $LASTEXITCODE -ne 0)
 {
     write-host "Error generating type list";
