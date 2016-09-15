@@ -14,7 +14,7 @@ $systemImplementation = $systemImplementation -replace "ZZZ", "";
 Set-Content -Path "$solutionDir\..\..\CsLuaConverter\CsLuaConverter\Lua\System\SystemImplementation.lua" -Value $systemImplementation;
 
 
-& $typeListGenerator "$solutionDir\..\..\CsLuaConverter\CsLuaConverter\Lua\System\SystemImplementation.types"
+& $typeListGenerator "$solutionDir\..\..\CsLuaConverter\CsLuaConverter\SystemImplementation.types"
 if ( $LASTEXITCODE -ne 0)
 {
     write-host "Error generating type list";

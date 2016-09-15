@@ -337,7 +337,9 @@
     <None Include="Lua\System\String.lua" />
     <None Include="Lua\System\Object.lua" />
     <None Include="Lua\System\SystemImplementation.lua" />
-    <None Include="Lua\System\SystemImplementation.types" />
+    <None Include="SystemImplementation.types">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Lua\System\Type.lua" />
     <None Include="Lua\System\aa.System.lua" />
   </ItemGroup>
