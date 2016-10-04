@@ -74,6 +74,7 @@
 
                 textWriter.AppendTextWriter(argumentListWriter);
 
+                /*
                 if (providers.Context.PossibleMethods.MethodGenerics != null)
                 {
                     var genericObjs = method.GetGenericTypes();
@@ -88,8 +89,11 @@
                             genericObj,
                             generic.GetTypeObject());
                     }
-                }
-                providers.Context.CurrentType = method.GetReturnType().ResolveGenerics(providers);
+                } */
+
+                //method.genericsTypes.ToList()
+
+                providers.Context.CurrentType = method.GetReturnType(providers.Context.PossibleMethods.MethodGenerics).ResolveGenerics(providers);
                 providers.GenericsRegistry.ClearScope(GenericScope.Invocation);
             }
             else
@@ -111,7 +115,7 @@
                 textWriter.Write(" % _M.DOT)");
                 this.argumentList.Visit(textWriter, providers);
 
-                providers.Context.CurrentType = method.GetReturnType();
+                providers.Context.CurrentType = method.GetReturnType(providers.Context.PossibleMethods.MethodGenerics);
             }
 
             providers.Context.PossibleMethods = originalMethods;

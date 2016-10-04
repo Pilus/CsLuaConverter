@@ -85,7 +85,11 @@
         {
             if (this.method == null)
             {
-                //throw new Exception("Could not apply generics to non methodInfo based MethodKnowledge.");
+                for (var index = 0; index < this.genericsTypes.Length; index++)
+                {
+                    this.methodGenericMapping[this.genericsTypes[index]] = generics[index];
+                }
+
                 return;
             }
 
@@ -268,7 +272,7 @@
             return this.GetInputParameterTypes().Select(p => new TypeKnowledge(this.ApplyMethodGenerics(p))).ToArray();
         }
 
-        public TypeKnowledge GetReturnType()
+        public TypeKnowledge GetReturnType(TypeKnowledge[] methodGenerics)
         {
             
             if (this.method != null)
