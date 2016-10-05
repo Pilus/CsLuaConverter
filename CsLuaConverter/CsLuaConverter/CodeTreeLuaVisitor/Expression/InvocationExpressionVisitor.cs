@@ -8,6 +8,10 @@
     using CsLuaConverter.Providers.GenericsRegistry;
 
     using Lists;
+
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Providers;
     using Providers.TypeKnowledgeRegistry;
 
@@ -23,8 +27,19 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            
+            var node = (this.Branch.SyntaxNode as InvocationExpressionSyntax).Expression;
+            var methodSymbolInfo = (IMethodSymbol)providers.Context.SemanticModel.GetSymbolInfo(node).Symbol;
+
+            methodSymbolInfo.Parameters.Select(p => p.Type).ToArray().WriteSignature(textWriter, providers);
+
+            if (true)
+            {
+                return;
+            }
+
+
             var originalMethods = providers.Context.PossibleMethods;
+
             providers.Context.PossibleMethods = null;
 
             var targetWriter = textWriter.CreateTextWriterAtSameIndent();

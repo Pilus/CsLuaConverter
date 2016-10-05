@@ -3,6 +3,8 @@
     using System.Linq;
     using CodeTree;
     using Filters;
+
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
 
@@ -10,8 +12,12 @@
     {
         private NamespaceDeclarationVisitor namespaceVisitor;
         private UsingDirectiveVisitor[] usings;
+
+        private SemanticModel semanticModel;
+
         public CompilationUnitVisitor(CodeTreeBranch branch) : base(branch)
         {
+            this.semanticModel = branch.SemanticModel;
             TryActionAndWrapException(() =>
             {
                 this.namespaceVisitor =
@@ -24,6 +30,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            providers.Context.SemanticModel = this.semanticModel;
             TryActionAndWrapException(() =>
             {
                 providers.TypeProvider.ClearNamespaces();

@@ -64,7 +64,11 @@
         private static CodeTreeBranch GetCodeTree(Document document)
         {
             SyntaxNode syntaxTreeRoot = GetSyntaxTreeRoot(document);
-            return new CodeTreeBranch(syntaxTreeRoot, document.FilePath);
+
+            SemanticModel semanticModel = document.GetSemanticModelAsync().Result;
+
+
+            return new CodeTreeBranch(syntaxTreeRoot, document.FilePath, semanticModel);
         }
 
         

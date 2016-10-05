@@ -12,14 +12,20 @@
         public CodeTreeNode[] Nodes;
         public string DocumentName;
 
-        public CodeTreeBranch(SyntaxNode node, string documentName)
+        public SyntaxNode SyntaxNode;
+
+        public SemanticModel SemanticModel { get; }
+
+        public CodeTreeBranch(SyntaxNode node, string documentName, SemanticModel semanticModel)
         {
+            this.SyntaxNode = node;
             this.Kind = node.GetKind();
             this.Nodes = this.GetNodes(node);
             this.DocumentName = documentName;
+            this.SemanticModel = semanticModel;
         }
 
-        public CodeTreeBranch(SyntaxNode node) : this(node, null)
+        public CodeTreeBranch(SyntaxNode node) : this(node, null, null)
         {
             
         }
