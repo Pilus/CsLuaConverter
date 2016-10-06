@@ -3,6 +3,8 @@
     using System.Linq;
     using CodeTree;
     using Lists;
+
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
@@ -51,9 +53,10 @@
 
         public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var type = providers.TypeProvider.LookupType(new[] {this.name}, this.argumentListVisitor.GetNumElements());
-            textWriter.Write(type.FullNameWithoutGenerics);
-            this.WriteGenericTypes(textWriter, providers);
+            var type = (INamedTypeSymbol)providers.Context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+            //var type = providers.TypeProvider.LookupType(new[] {this.name}, this.argumentListVisitor.GetNumElements());
+            
+            this.WriteAsReference(textWriter, type);
         }
 
         public override TypeKnowledge GetType(IProviders providers)
@@ -68,6 +71,31 @@
             textWriter.Write("[");
             this.argumentListVisitor.Visit(textWriter, providers);
             textWriter.Write("]");
+        }
+
+        public void WriteAsReference(IIndentedTextWriterWrapper textWriter, INamedTypeSymbol type)
+        {
+            textWriter.Write(type.ContainingNamespace + "." + type.Name);
+
+            if (type.TypeArguments.Length > 0)
+            {
+                textWriter.Write("[{");
+                var first = true;
+                foreach (var typeArgument in type.TypeArguments)
+                {
+                    if (!first)
+                    {
+                        textWriter.Write(",");
+                    }
+
+                    WriteAsReference(textWriter, typeArgument as INamedTypeSymbol);
+
+                    first = false;
+                }
+                textWriter.Write("}]");
+            }
+
+            textWriter.Write(".__typeof");
         }
     }
 }
