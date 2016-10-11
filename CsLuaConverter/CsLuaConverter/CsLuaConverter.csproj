@@ -229,6 +229,7 @@
     <Compile Include="CodeTreeLuaVisitor\IVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\NamespaceDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Name\QualifiedNameVisitor.cs" />
+    <Compile Include="Namespace.cs" />
     <Compile Include="Providers\PartialElement\IPartialElementState.cs" />
     <Compile Include="Providers\PartialElement\PartialElementState.cs" />
     <Compile Include="CodeTreeLuaVisitor\UsingDirectiveVisitor.cs" />

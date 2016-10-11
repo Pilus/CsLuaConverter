@@ -22,16 +22,17 @@
             this.codeTreeVisitor = new CodeTreeVisitor(providers);
         }
 
-        public AnalyzedProjectInfo AnalyzeProject(ProjectInfo projectInfo)
+        public IEnumerable<Namespace> AnalyzeProject(ProjectInfo projectInfo)
         {
-            return new AnalyzedProjectInfo()
+            if (!projectInfo.IsCsLua())
             {
-                Info = projectInfo,
-                Namespaces = projectInfo.IsCsLua() ? this.GetNamespaces(projectInfo.Project) : null,
-            };
+                return null;
+            }
+
+            return this.GetNamespaces(projectInfo.Project);
         }
 
-        private Dictionary<string, Action<IIndentedTextWriterWrapper>> GetNamespaces(Project project)
+        private IEnumerable<Namespace> GetNamespaces(Project project)
         {
             if (Debugger.IsAttached)
             {
@@ -49,7 +50,7 @@
             }
         }
 
-        private Dictionary<string, Action<IIndentedTextWriterWrapper>> GetNamespacesFromProject(Project project)
+        private IEnumerable<Namespace> GetNamespacesFromProject(Project project)
         {
             IEnumerable<Document> docs = project.Documents
                 .Where(doc => doc.Folders.FirstOrDefault() != "Properties"

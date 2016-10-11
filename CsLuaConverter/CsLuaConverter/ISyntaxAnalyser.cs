@@ -1,9 +1,11 @@
 ﻿namespace CsLuaConverter
 {
+    using System.Collections.Generic;
+
     using ProjectAnalysis;
 
     internal interface ISyntaxAnalyser
     {
-        AnalyzedProjectInfo AnalyzeProject(ProjectInfo projectInfo);
+        IEnumerable<Namespace> AnalyzeProject(ProjectInfo projectInfo);
     }
 }

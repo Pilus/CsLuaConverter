@@ -68,6 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CsLuaTestConversionTests.cs" />
     <Compile Include="CoverageTests.cs" />
+    <Compile Include="GeneratedLuaMatchingTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CsLuaConverter\CsLuaConverter.csproj">

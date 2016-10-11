@@ -16,14 +16,16 @@
             this.providers = providers;
         }
 
-        public Dictionary<string, Action<IIndentedTextWriterWrapper>> CreateNamespaceBasedVisitorActions(CodeTreeBranch[] treeRoots)
+        public IEnumerable<Namespace> CreateNamespaceBasedVisitorActions(CodeTreeBranch[] treeRoots)
         {
             BaseVisitor.LockVisitorCreation = false;
             treeRoots = treeRoots.SelectMany(SeperateCodeElements).ToArray();
             var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree)).ToArray();
             BaseVisitor.LockVisitorCreation = true;
 
-            return visitors.GroupBy(v => v.GetTopNamespace()).ToDictionary(g => g.Key, g => new Action<IIndentedTextWriterWrapper>((textWriter) =>
+            return visitors.GroupBy(v => v.GetTopNamespace()).Select(g => new Namespace() {
+                Name = g.Key,
+                WritingAction = new Action<IIndentedTextWriterWrapper>((textWriter) =>
             {
                 var fileGroups = g.GroupBy(v => string.Join(".", v.GetNamespaceName()) + ".__" + v.GetElementName());
                 var ordered = fileGroups.OrderBy(fg => fg.Key).ToArray();
@@ -73,7 +75,7 @@
                 {
                     compilationUnitVisitor.WriteFooter(textWriter, this.providers);
                 }
-            }));
+            })});
         }
 
         private static CodeTreeBranch[] SeperateCodeElements(CodeTreeBranch tree)

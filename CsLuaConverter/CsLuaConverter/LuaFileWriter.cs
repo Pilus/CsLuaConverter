@@ -14,7 +14,7 @@
 
         private const string CsLuaFileHeader = "-- This file have generated from a C# namespace.";
 
-        public static IList<CodeFile> GetLuaFiles(Dictionary<string, Action<IIndentedTextWriterWrapper>> nameSpaces, string name, bool requiresCsLuaMetaHeader, string projectPath)
+        public static IList<CodeFile> GetLuaFiles(IEnumerable<Namespace> nameSpaces, string name, bool requiresCsLuaMetaHeader, string projectPath)
         {
             var files = new List<CodeFile>();
 
@@ -32,13 +32,13 @@
 
             if (nameSpaces != null)
             {
-                foreach (var nameSpacePair in nameSpaces)
+                foreach (var nameSpace in nameSpaces)
                 {
                     var textWriter = new StringWriter();
-                    nameSpacePair.Value(new IndentedTextWriterWrapper(textWriter));
+                    nameSpace.WritingAction(new IndentedTextWriterWrapper(textWriter));
                     files.Add(new CodeFile
                     {
-                        FileName = nameSpacePair.Key + ".lua",
+                        FileName = nameSpace.Name + ".lua",
                         Content = textWriter.ToString(),
                         Header = CsLuaFileHeader
                     });
