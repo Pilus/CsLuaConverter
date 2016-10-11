@@ -8,6 +8,7 @@
     using System.Reflection;
     using System.Threading.Tasks;
 
+    using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.Providers.TypeProvider.TypeCollections;
 
     using Microsoft.CodeAnalysis;
@@ -61,7 +62,7 @@
 
             var providers = new Providers.Providers(typeCollections);
 
-            ISyntaxAnalyser analyzer = new Analyzer(providers);
+            ISyntaxAnalyser analyzer = new Analyzer(new CodeTreeVisitor(providers));
 
             var solutionHandler = new SolutionHandler(analyzer);
             var addOns = solutionHandler.GenerateAddOnsFromSolution(solution);

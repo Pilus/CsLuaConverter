@@ -17,12 +17,12 @@
     {
         private readonly CodeTreeVisitor codeTreeVisitor;
 
-        public Analyzer(IProviders providers)
+        public Analyzer(CodeTreeVisitor codeTreeVisitor)
         {
-            this.codeTreeVisitor = new CodeTreeVisitor(providers);
+            this.codeTreeVisitor = codeTreeVisitor;
         }
 
-        public IEnumerable<Namespace> AnalyzeProject(ProjectInfo projectInfo)
+        public IEnumerable<Namespace> GetNamespaces(ProjectInfo projectInfo)
         {
             if (!projectInfo.IsCsLua())
             {
@@ -32,7 +32,7 @@
             return this.GetNamespaces(projectInfo.Project);
         }
 
-        private IEnumerable<Namespace> GetNamespaces(Project project)
+        public IEnumerable<Namespace> GetNamespaces(Project project)
         {
             if (Debugger.IsAttached)
             {

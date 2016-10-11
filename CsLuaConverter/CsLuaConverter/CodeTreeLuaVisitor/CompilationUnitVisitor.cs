@@ -33,7 +33,7 @@
             providers.Context.SemanticModel = this.semanticModel;
             TryActionAndWrapException(() =>
             {
-                providers.TypeProvider.ClearNamespaces();
+                //providers.TypeProvider.ClearNamespaces();
 
                 this.usings.VisitAll(textWriter, providers);
                 this.namespaceVisitor.Visit(textWriter, providers);

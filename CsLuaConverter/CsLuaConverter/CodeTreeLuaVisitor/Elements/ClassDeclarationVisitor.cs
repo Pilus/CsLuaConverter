@@ -20,7 +20,7 @@
     {
         private string name;
         private TypeParameterListVisitor genericsVisitor;
-        private List<ScopeElement> originalScope;
+        //private List<ScopeElement> originalScope;
         private BaseListVisitor baseListVisitor;
         private FieldDeclarationVisitor[] fieldVisitors;
         private PropertyDeclarationVisitor[] propertyVisitors;
@@ -116,13 +116,14 @@
         {
             if (providers.PartialElementState.IsFirst)
             {
-                
+                /*
                 this.originalScope = providers.NameProvider.CloneScope();
                 providers.NameProvider.AddAllInheritedMembersToScope(this.name);
 
                 var classTypeResult = providers.TypeProvider.LookupType(this.name);
                 providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(classTypeResult.TypeObject)));
                 providers.NameProvider.AddToScope(new ScopeElement("base", new TypeKnowledge(classTypeResult.BaseType.TypeObject)));
+                */
 
                 textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", this.GetNumOfGenerics());
                 textWriter.Indent++;
@@ -362,7 +363,7 @@
 
             if (providers.PartialElementState.IsFirst)
             {
-                providers.NameProvider.SetScope(this.originalScope);
+                //providers.NameProvider.SetScope(this.originalScope);
             }
         }
 

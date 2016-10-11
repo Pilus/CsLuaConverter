@@ -24,7 +24,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            providers.TypeProvider.SetCurrentNamespace(this.nameVisitor.GetName());
+            //providers.TypeProvider.SetCurrentNamespace(this.nameVisitor.GetName());
 
             this.usingVisitors.VisitAll(textWriter, providers);
 

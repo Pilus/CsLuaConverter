@@ -28,7 +28,7 @@
                     new AnalyzedProjectInfo()
                         {
                             Info = project,
-                            Namespaces = this.syntaxAnalyzer.AnalyzeProject(project).ToArray()
+                            Namespaces = this.syntaxAnalyzer.GetNamespaces(project).ToArray()
                         }).ToList();
 
             ReferenceAnalyzer.PopulateAndAnalyseReferences(analyzedProjects);

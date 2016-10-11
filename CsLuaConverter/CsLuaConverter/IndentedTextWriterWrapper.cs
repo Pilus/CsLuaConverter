@@ -12,6 +12,11 @@
             this.writer = new IndentedTextWriter(innerWriter);
         }
 
+        public IndentedTextWriterWrapper(TextWriter innerWriter)
+        {
+            this.writer = new IndentedTextWriter(innerWriter);
+        }
+
         public int Indent
         {
             get { return this.writer.Indent; }
