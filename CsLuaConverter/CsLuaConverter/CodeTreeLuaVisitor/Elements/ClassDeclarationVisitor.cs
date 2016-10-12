@@ -5,12 +5,15 @@
     using Attribute;
     using CodeTree;
     using Constraint;
+    using CsLuaConverter.CodeTreeLuaVisitor.Extensions;
     using CsLuaFramework;
     using Expression;
     using Filters;
     using Lists;
     using Member;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers;
     using Providers.GenericsRegistry;
     using Providers.TypeProvider;
@@ -154,11 +157,11 @@
 
         private void WriteTypeGeneration(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var typeObject = providers.TypeProvider.LookupType(this.name);
+            var symbol = providers.Context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as ClassDeclarationSyntax) as INamedTypeSymbol;
             textWriter.Write(
                 "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Class', ",
-                typeObject.Name, typeObject.Namespace, this.genericsVisitor?.GetNumElements() ?? 0);
-            new TypeKnowledge(typeObject.TypeObject).WriteSignature(textWriter, providers);
+                symbol.Name, symbol.ContainingNamespace.GetFullNamespace(), symbol.TypeArguments.Count());
+            //new TypeKnowledge(null).WriteSignature(textWriter, providers);
             textWriter.WriteLine(");");
         }
 

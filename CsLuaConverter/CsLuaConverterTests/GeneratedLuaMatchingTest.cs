@@ -11,10 +11,7 @@ namespace CsLuaConverterTests
     using CsLuaConverter.Providers.PartialElement;
     using CsLuaConverter.Providers.TypeKnowledgeRegistry;
 
-    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.MSBuild;
-
-    using Moq;
 
     [TestClass]
     public class GeneratedLuaMatchingTest
