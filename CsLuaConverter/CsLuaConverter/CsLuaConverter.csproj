@@ -230,6 +230,11 @@
     <Compile Include="CodeTreeLuaVisitor\IVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\NamespaceDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Name\QualifiedNameVisitor.cs" />
+    <Compile Include="MethodSignature\IGenericTypeRefenceWriter.cs" />
+    <Compile Include="MethodSignature\ISemanticAdaptor.cs" />
+    <Compile Include="MethodSignature\SignatureComponent.cs" />
+    <Compile Include="MethodSignature\SignatureComposer.cs" />
+    <Compile Include="MethodSignature\SignatureWriter.cs" />
     <Compile Include="Namespace.cs" />
     <Compile Include="Providers\PartialElement\IPartialElementState.cs" />
     <Compile Include="Providers\PartialElement\PartialElementState.cs" />
