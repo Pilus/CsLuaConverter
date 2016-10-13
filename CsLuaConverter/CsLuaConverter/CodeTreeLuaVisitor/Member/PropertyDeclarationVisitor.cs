@@ -64,7 +64,7 @@
                 return;
             }
 
-            var symbol = providers.Context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as PropertyDeclarationSyntax);
+            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as PropertyDeclarationSyntax);
 
             textWriter.Write($"{this.name} = _M.DV(");
             providers.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);

@@ -23,8 +23,6 @@
             }
 
             textWriter.Write(txt);
-
-            providers.Context.CurrentType = new TypeKnowledge(typeof(string));
         }
     }
 }

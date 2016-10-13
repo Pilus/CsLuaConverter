@@ -30,7 +30,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            providers.Context.SemanticModel = this.semanticModel;
+            providers.SemanticModel = this.semanticModel;
             TryActionAndWrapException(() =>
             {
                 //providers.TypeProvider.ClearNamespaces();

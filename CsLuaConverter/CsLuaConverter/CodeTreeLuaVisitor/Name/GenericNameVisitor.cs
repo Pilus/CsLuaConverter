@@ -53,7 +53,7 @@
 
         public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var type = (INamedTypeSymbol)providers.Context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+            var type = (INamedTypeSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
             //var type = providers.TypeProvider.LookupType(new[] {this.name}, this.argumentListVisitor.GetNumElements());
             
             this.WriteAsReference(textWriter, type);

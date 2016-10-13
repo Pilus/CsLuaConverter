@@ -87,5 +87,7 @@ namespace CsLuaConverter.Providers
         public ITypeReferenceWriter<ITypeSymbol> TypeReferenceWriter { get; }
 
         public ISemanticAdaptor<ITypeSymbol> SemanticAdaptor { get; }
+
+        public SemanticModel SemanticModel { get; set; }
     }
 }

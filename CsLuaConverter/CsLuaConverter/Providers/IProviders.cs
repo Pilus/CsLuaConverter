@@ -19,5 +19,6 @@ namespace CsLuaConverter.Providers
         SignatureWriter<ITypeSymbol> SignatureWriter { get; }
         ITypeReferenceWriter<ITypeSymbol> TypeReferenceWriter { get; }
         ISemanticAdaptor<ITypeSymbol> SemanticAdaptor { get; }
+        SemanticModel SemanticModel { get; set; }
     }
 }

@@ -83,7 +83,7 @@
         {
             if (this.symbol == null)
             {
-                this.symbol = providers.Context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as ClassDeclarationSyntax);
+                this.symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as ClassDeclarationSyntax);
             }
 
             TryActionAndWrapException(() =>

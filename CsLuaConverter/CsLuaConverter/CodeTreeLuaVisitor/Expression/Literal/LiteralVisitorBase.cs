@@ -19,7 +19,6 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write(this.text);
-            providers.Context.CurrentType = this.resultingTypeKnowledge;
         }
     }
 }

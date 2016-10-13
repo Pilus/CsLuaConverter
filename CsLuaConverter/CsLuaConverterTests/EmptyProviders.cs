@@ -29,5 +29,7 @@
         public ITypeReferenceWriter<ITypeSymbol> TypeReferenceWriter { get; set; }
 
         public ISemanticAdaptor<ITypeSymbol> SemanticAdaptor { get; set; }
+
+        public SemanticModel SemanticModel { get; set; }
     }
 }

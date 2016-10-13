@@ -28,7 +28,7 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var node = (this.Branch.SyntaxNode as InvocationExpressionSyntax).Expression;
-            var methodSymbolInfo = (IMethodSymbol)providers.Context.SemanticModel.GetSymbolInfo(node).Symbol;
+            var methodSymbolInfo = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(node).Symbol;
 
             methodSymbolInfo.Parameters.Select(p => p.Type).ToArray().WriteSignature(textWriter, providers);
 

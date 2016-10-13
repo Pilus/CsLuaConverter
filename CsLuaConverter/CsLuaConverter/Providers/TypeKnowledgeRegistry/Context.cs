@@ -8,7 +8,5 @@
         public TypeKnowledge ExpectedType { get; set; }
         public PossibleMethods PossibleMethods { get; set; }
         public string[] NamespaceReference { get; set; }
-
-        public SemanticModel SemanticModel { get; set; }
     }
 }
