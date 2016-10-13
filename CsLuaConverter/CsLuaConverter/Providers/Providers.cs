@@ -2,7 +2,7 @@
 namespace CsLuaConverter.Providers
 {
     using System.Collections.Generic;
-
+    using CsLuaConverter.MethodSignature;
     using CsLuaConverter.Providers.TypeProvider.TypeCollections;
 
     using GenericsRegistry;
@@ -79,5 +79,7 @@ namespace CsLuaConverter.Providers
                 return this.partialElementState;
             }
         }
+
+        public SignatureWriter<INamedTypeSymbol> SignatureWriter { get; }
     }
 }

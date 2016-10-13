@@ -1,11 +1,14 @@
 ﻿namespace CsLuaConverterTests
 {
+    using System;
+    using CsLuaConverter.MethodSignature;
     using CsLuaConverter.Providers;
     using CsLuaConverter.Providers.GenericsRegistry;
     using CsLuaConverter.Providers.NameProvider;
     using CsLuaConverter.Providers.PartialElement;
     using CsLuaConverter.Providers.TypeKnowledgeRegistry;
     using CsLuaConverter.Providers.TypeProvider;
+    using Microsoft.CodeAnalysis;
 
     public class EmptyProviders : IProviders
     {
@@ -18,5 +21,7 @@
         public IContext Context { get; set; }
 
         public IPartialElementState PartialElementState { get; set; }
+
+        public SignatureWriter<INamedTypeSymbol> SignatureWriter { get; }
     }
 }

@@ -1,6 +1,8 @@
 namespace CsLuaConverter.Providers
 {
+    using CsLuaConverter.MethodSignature;
     using GenericsRegistry;
+    using Microsoft.CodeAnalysis;
     using NameProvider;
     using PartialElement;
     using TypeKnowledgeRegistry;
@@ -13,5 +15,6 @@ namespace CsLuaConverter.Providers
         IGenericsRegistry GenericsRegistry { get; }
         IContext Context { get; }
         IPartialElementState PartialElementState { get; }
+        SignatureWriter<INamedTypeSymbol> SignatureWriter { get; }
     }
 }

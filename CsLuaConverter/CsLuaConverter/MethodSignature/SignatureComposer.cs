@@ -20,8 +20,16 @@
             for (var i = 0; i < inputTypes.Length; i++)
             {
                 var inputType = inputTypes[i];
-                AddSignatureComponents(Primes[i], inputType, components);
+                this.AddSignatureComponents(Primes[i], inputType, components);
             }
+
+            return components.ToArray();
+        }
+
+        public SignatureComponent[] GetSignatureComponents(T type)
+        {
+            var components = new List<SignatureComponent>();
+            this.AddSignatureComponents(1, type, components);
 
             return components.ToArray();
         }
@@ -30,7 +38,7 @@
         {
             if (this.semanticAdaptor.IsArray(type))
             {
-                AddSignatureComponents(coefficient * 3, this.semanticAdaptor.GetArrayGeneric(type), components);
+                this.AddSignatureComponents(coefficient * 3, this.semanticAdaptor.GetArrayGeneric(type), components);
                 return;
             }
 
@@ -51,7 +59,7 @@
 
                 for (var i = 0; i < generics.Length; i++)
                 {
-                    AddSignatureComponents(subCoefficient * Primes[i], generics[i], components);
+                    this.AddSignatureComponents(subCoefficient * Primes[i], generics[i], components);
                 }
 
                 return;
