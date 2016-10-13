@@ -8,12 +8,12 @@
     {
         private readonly SignatureComposer<T> signatureComposer;
 
-        private readonly IGenericTypeRefenceWriter genericWriter;
+        private readonly ITypeReferenceWriter<T> typeReferenceWriter;
 
-        public SignatureWriter(SignatureComposer<T> signatureComposer, IGenericTypeRefenceWriter genericWriter)
+        public SignatureWriter(SignatureComposer<T> signatureComposer, ITypeReferenceWriter<T> typeReferenceWriter)
         {
             this.signatureComposer = signatureComposer;
-            this.genericWriter = genericWriter;
+            this.typeReferenceWriter = typeReferenceWriter;
         }
 
         public bool WriteSignature(T[] types, IIndentedTextWriterWrapper textWriter)
@@ -30,10 +30,10 @@
             return this.WriteSignatureFromComponents(components, textWriter);
         }
 
-        private bool WriteSignatureFromComponents(SignatureComponent[] components, IIndentedTextWriterWrapper textWriter)
+        private bool WriteSignatureFromComponents(SignatureComponent<T>[] components, IIndentedTextWriterWrapper textWriter)
         {
-            var nonGenericHash = components.Where(c => c.GenericReference == null).Sum(c => (long)c.Coefficient * (long)c.SignatureHash);
-            var genericComponents = components.Where(c => c.GenericReference != null).ToArray();
+            var nonGenericHash = components.Where(c => c.GenericType == null).Sum(c => (long)c.Coefficient * (long)c.SignatureHash);
+            var genericComponents = components.Where(c => c.GenericType != null).ToArray();
 
             if (nonGenericHash > 0 || !genericComponents.Any())
             {
@@ -54,7 +54,7 @@
                 }
 
                 textWriter.Write($"({component.Coefficient}*");
-                this.genericWriter.WriteGenericTypeReference(component.GenericReference, textWriter);
+                this.typeReferenceWriter.WriteInteractionElementReference(component.GenericType, textWriter);
                 textWriter.Write(".signatureHash)");
             }
 

@@ -1,6 +1,6 @@
 ﻿namespace CsLuaConverter.MethodSignature
 {
-    public class SignatureComponent
+    public class SignatureComponent<T>
     {
         public SignatureComponent(int coefficient, int hash)
         {
@@ -8,14 +8,14 @@
             this.SignatureHash = hash;
         }
 
-        public SignatureComponent(int coefficient, string genericRef)
+        public SignatureComponent(int coefficient, T genericType)
         {
             this.Coefficient = coefficient;
-            this.GenericReference = genericRef;
+            this.GenericType = genericType;
         }
 
         public int Coefficient;
         public int SignatureHash;
-        public string GenericReference;
+        public T GenericType;
     }
 }

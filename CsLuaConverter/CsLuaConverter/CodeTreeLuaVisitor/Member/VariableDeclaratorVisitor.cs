@@ -2,7 +2,11 @@
 {
     using System.Linq;
     using CodeTree;
+
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Providers;
     using Type;
 
@@ -45,8 +49,9 @@
             }
             else
             {
+                var symbol = (IFieldSymbol)providers.Context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as VariableDeclaratorSyntax);
                 textWriter.Write(" = _M.DV(");
-                typeVisitor.WriteAsType(textWriter, providers);
+                providers.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
                 textWriter.WriteLine("),");
             }
         }

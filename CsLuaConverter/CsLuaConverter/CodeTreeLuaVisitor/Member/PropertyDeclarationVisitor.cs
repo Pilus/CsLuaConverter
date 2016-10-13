@@ -6,6 +6,8 @@
     using CodeTree;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Providers;
     using Type;
 
@@ -62,8 +64,10 @@
                 return;
             }
 
+            var symbol = providers.Context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as PropertyDeclarationSyntax);
+
             textWriter.Write($"{this.name} = _M.DV(");
-            this.type.WriteAsType(textWriter, providers);
+            providers.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
             textWriter.WriteLine("),");
         }
 

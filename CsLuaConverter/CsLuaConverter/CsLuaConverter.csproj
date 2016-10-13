@@ -120,12 +120,12 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\UnaryPlusExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Extensions\NamespaceSymbolExtensions.cs" />
-    <Compile Include="CodeTreeLuaVisitor\GenericTypeRefenceWriter.cs" />
+    <Compile Include="CodeTreeLuaVisitor\TypeReferenceWriter.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\BaseConstructorInitializerVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\EnumMemberDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\IndexerDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\ThisConstructorInitializerVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\NamedTypeSymbolSemanticAdaptor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\TypeSymbolSemanticAdaptor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\BreakStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\LiteralVisitorBase.cs" />
@@ -232,7 +232,7 @@
     <Compile Include="CodeTreeLuaVisitor\IVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\NamespaceDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Name\QualifiedNameVisitor.cs" />
-    <Compile Include="MethodSignature\IGenericTypeRefenceWriter.cs" />
+    <Compile Include="MethodSignature\ITypeReferenceWriter.cs" />
     <Compile Include="MethodSignature\ISemanticAdaptor.cs" />
     <Compile Include="MethodSignature\SignatureComponent.cs" />
     <Compile Include="MethodSignature\SignatureComposer.cs" />

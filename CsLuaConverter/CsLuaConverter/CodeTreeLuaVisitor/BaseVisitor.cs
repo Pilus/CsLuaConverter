@@ -23,11 +23,6 @@
 
         public abstract void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers);
 
-        public ISymbol GetSymbol(IProviders providers)
-        {
-            return providers.Context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
-        }
-
         [DebuggerNonUserCode]
         protected static bool IsKind(CodeTreeNode node, SyntaxKind kind)
         {

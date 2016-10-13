@@ -2,6 +2,8 @@
 namespace CsLuaConverter.Providers
 {
     using System.Collections.Generic;
+
+    using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.MethodSignature;
     using CsLuaConverter.Providers.TypeProvider.TypeCollections;
 
@@ -81,5 +83,9 @@ namespace CsLuaConverter.Providers
         }
 
         public SignatureWriter<ITypeSymbol> SignatureWriter { get; }
+
+        public ITypeReferenceWriter<ITypeSymbol> TypeReferenceWriter { get; }
+
+        public ISemanticAdaptor<ITypeSymbol> SemanticAdaptor { get; }
     }
 }

@@ -1,6 +1,8 @@
 ﻿namespace CsLuaConverterTests
 {
     using System;
+
+    using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.MethodSignature;
     using CsLuaConverter.Providers;
     using CsLuaConverter.Providers.GenericsRegistry;
@@ -23,5 +25,9 @@
         public IPartialElementState PartialElementState { get; set; }
 
         public SignatureWriter<ITypeSymbol> SignatureWriter { get; set; }
+
+        public ITypeReferenceWriter<ITypeSymbol> TypeReferenceWriter { get; set; }
+
+        public ISemanticAdaptor<ITypeSymbol> SemanticAdaptor { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 namespace CsLuaConverter.Providers
 {
+    using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.MethodSignature;
     using GenericsRegistry;
     using Microsoft.CodeAnalysis;
@@ -16,5 +17,7 @@ namespace CsLuaConverter.Providers
         IContext Context { get; }
         IPartialElementState PartialElementState { get; }
         SignatureWriter<ITypeSymbol> SignatureWriter { get; }
+        ITypeReferenceWriter<ITypeSymbol> TypeReferenceWriter { get; }
+        ISemanticAdaptor<ITypeSymbol> SemanticAdaptor { get; }
     }
 }

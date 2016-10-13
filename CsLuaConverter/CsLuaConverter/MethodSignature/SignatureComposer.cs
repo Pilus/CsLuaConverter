@@ -14,9 +14,9 @@
             this.semanticAdaptor = semanticAdaptor;
         }
 
-        public SignatureComponent[] GetSignatureComponents(T[] inputTypes)
+        public SignatureComponent<T>[] GetSignatureComponents(T[] inputTypes)
         {
-            var components = new List<SignatureComponent>();
+            var components = new List<SignatureComponent<T>>();
             for (var i = 0; i < inputTypes.Length; i++)
             {
                 var inputType = inputTypes[i];
@@ -26,15 +26,15 @@
             return components.ToArray();
         }
 
-        public SignatureComponent[] GetSignatureComponents(T type)
+        public SignatureComponent<T>[] GetSignatureComponents(T type)
         {
-            var components = new List<SignatureComponent>();
+            var components = new List<SignatureComponent<T>>();
             this.AddSignatureComponents(1, type, components);
 
             return components.ToArray();
         }
 
-        private void AddSignatureComponents(int coefficient, T type, List<SignatureComponent> components)
+        private void AddSignatureComponents(int coefficient, T type, List<SignatureComponent<T>> components)
         {
             if (this.semanticAdaptor.IsArray(type))
             {
@@ -45,7 +45,7 @@
             if (this.semanticAdaptor.IsGenericType(type))
             {
                 // TODO: Give a static value (1) if it is a method generic.
-                components.Add(new SignatureComponent(coefficient, this.semanticAdaptor.GetName(type)));
+                components.Add(new SignatureComponent<T>(coefficient, type));
 
                 return;
             }
@@ -65,7 +65,7 @@
                 return;
             }
 
-            components.Add(new SignatureComponent(coefficient, GetSignatureHash(this.semanticAdaptor.GetName(type))));
+            components.Add(new SignatureComponent<T>(coefficient, GetSignatureHash(this.semanticAdaptor.GetName(type))));
         }
 
         private static int GetSignatureHash(string name)

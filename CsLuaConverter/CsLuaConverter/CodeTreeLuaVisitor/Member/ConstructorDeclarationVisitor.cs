@@ -36,7 +36,7 @@
             textWriter.WriteLine("_M.IM(members, '', {");
             textWriter.Indent++;
 
-            var scope = providers.NameProvider.CloneScope();
+            //var scope = providers.NameProvider.CloneScope();
 
             //textWriter.Write("types = {");
             //this.parameterList.WriteAsTypes(textWriter, providers);
@@ -76,7 +76,7 @@
 
             textWriter.WriteLine("end,");
 
-            providers.NameProvider.SetScope(scope);
+            //providers.NameProvider.SetScope(scope);
 
             textWriter.Indent--;
             textWriter.WriteLine("});");

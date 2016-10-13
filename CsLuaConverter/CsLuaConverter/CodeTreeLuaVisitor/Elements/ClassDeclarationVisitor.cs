@@ -33,6 +33,8 @@
         private MethodDeclarationVisitor[] methodVisitors;
         private TypeParameterConstraintClauseVisitor constraintClauseVisitor;
 
+        private INamedTypeSymbol symbol;
+
         public ClassDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.CreateVisitors();
@@ -79,6 +81,11 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            if (this.symbol == null)
+            {
+                this.symbol = providers.Context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as ClassDeclarationSyntax);
+            }
+
             TryActionAndWrapException(() =>
             {
                 switch ((ClassState) (providers.PartialElementState.CurrentState ?? 0))
@@ -157,11 +164,13 @@
 
         private void WriteTypeGeneration(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var symbol = providers.Context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as ClassDeclarationSyntax) as INamedTypeSymbol;
+            var adaptor = providers.SemanticAdaptor;
             textWriter.Write(
                 "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Class', ",
-                symbol.Name, symbol.ContainingNamespace.GetFullNamespace(), symbol.TypeArguments.Count());
-            providers.SignatureWriter.WriteSignature(symbol, textWriter);
+                adaptor.GetName(this.symbol),
+                adaptor.GetFullNamespace(this.symbol),
+                adaptor.GetGenerics(this.symbol).Length);
+            providers.SignatureWriter.WriteSignature(this.symbol, textWriter);
             textWriter.WriteLine(");");
         }
 
@@ -169,20 +178,28 @@
         {
             textWriter.Write("local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = ");
 
-            if (this.baseListVisitor?.WriteInteractiveObjectRefOfFirstTypeIfClass(textWriter, providers) != true)
-            {
-                textWriter.Write("System.Object");
-            }
-            
+            providers.TypeReferenceWriter.WriteInteractionElementReference(this.symbol.BaseType, textWriter);
+
             textWriter.WriteLine(".__meta(staticValues);");
         }
 
         private void WriteTypePopulation(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            if (this.baseListVisitor != null)
+            foreach (var interfaceSymbol in this.symbol.Interfaces)
+            {
+                if (providers.SemanticAdaptor.IsInterface(interfaceSymbol)
+                    && providers.SemanticAdaptor.GetName(interfaceSymbol) != nameof(ICsLuaAddOn))
+                {
+                    textWriter.Write("table.insert(implements, ");
+                    providers.TypeReferenceWriter.WriteTypeReference(interfaceSymbol, textWriter);
+                    textWriter.WriteLine(");");
+                }
+            }
+
+            /*if (this.baseListVisitor != null)
             {
                 this.baseListVisitor.WriteInterfaceImplements(textWriter, providers, "table.insert(implements, {0});", new []{typeof(ICsLuaAddOn)});
-            }
+            }*/
 
             textWriter.WriteLine("typeObject.baseType = baseTypeObject;");
             textWriter.WriteLine("typeObject.level = baseTypeObject.level + 1;");
@@ -288,7 +305,7 @@
                 textWriter.WriteLine("local members = _M.RTEF(getBaseMembers);");
             }
 
-            var scope = providers.NameProvider.CloneScope();
+            //var scope = providers.NameProvider.CloneScope();
             //var classTypeResult = providers.TypeProvider.LookupType(this.name);
             //providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(classTypeResult.TypeObject)));
             //providers.NameProvider.AddToScope(new ScopeElement("base", new TypeKnowledge(classTypeResult.TypeObject.BaseType)));
@@ -310,7 +327,7 @@
             this.indexerVisitors.VisitAll(textWriter, providers);
             this.methodVisitors.VisitAll(textWriter, providers);
 
-            providers.NameProvider.SetScope(scope);
+            //providers.NameProvider.SetScope(scope);
 
             if (providers.PartialElementState.IsLast)
             {

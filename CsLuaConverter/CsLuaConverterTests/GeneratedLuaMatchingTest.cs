@@ -34,7 +34,9 @@ namespace CsLuaConverterTests
             var providers = new EmptyProviders();
             providers.PartialElementState = new PartialElementState();
             providers.Context = new Context(); // TODO: Move the semantic knowledge out of context so it can be tested that none of the content in context is still needed.
-            providers.SignatureWriter = new SignatureWriter<ITypeSymbol>(new SignatureComposer<ITypeSymbol>(new NamedTypeSymbolSemanticAdaptor()), new GenericTypeRefenceWriter());
+            providers.SemanticAdaptor = new TypeSymbolSemanticAdaptor();
+            providers.TypeReferenceWriter = new TypeReferenceWriter<ITypeSymbol>(providers.SemanticAdaptor);
+            providers.SignatureWriter = new SignatureWriter<ITypeSymbol>(new SignatureComposer<ITypeSymbol>(providers.SemanticAdaptor), providers.TypeReferenceWriter);
             var analyzer = new Analyzer(new CodeTreeVisitor(providers));
 
             var namespaces = analyzer.GetNamespaces(project).ToArray();

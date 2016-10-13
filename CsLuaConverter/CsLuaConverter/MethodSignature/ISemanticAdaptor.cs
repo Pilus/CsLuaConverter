@@ -2,14 +2,22 @@
 {
     public interface ISemanticAdaptor<T>
     {
-        string GetName(T semanticModel);
+        string GetFullName(T symbol);
 
-        bool IsGenericType(T semanticModel);
+        string GetName(T symbol);
 
-        T[] GetGenerics(T semanticModel);
+        string GetFullNamespace(T symbol);
 
-        bool IsArray(T semanticModel);
+        bool HasTypeGenerics(T symbol);
 
-        T GetArrayGeneric(T semanticModel);
+        bool IsGenericType(T symbol);
+
+        T[] GetGenerics(T symbol);
+
+        bool IsArray(T symbol);
+
+        T GetArrayGeneric(T symbol);
+
+        bool IsInterface(T symbol);
     }
 }
