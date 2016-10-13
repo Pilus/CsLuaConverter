@@ -15,6 +15,6 @@ namespace CsLuaConverter.Providers
         IGenericsRegistry GenericsRegistry { get; }
         IContext Context { get; }
         IPartialElementState PartialElementState { get; }
-        SignatureWriter<INamedTypeSymbol> SignatureWriter { get; }
+        SignatureWriter<ITypeSymbol> SignatureWriter { get; }
     }
 }

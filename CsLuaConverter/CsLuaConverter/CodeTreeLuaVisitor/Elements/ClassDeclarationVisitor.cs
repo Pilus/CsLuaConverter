@@ -161,7 +161,7 @@
             textWriter.Write(
                 "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Class', ",
                 symbol.Name, symbol.ContainingNamespace.GetFullNamespace(), symbol.TypeArguments.Count());
-            //new TypeKnowledge(null).WriteSignature(textWriter, providers);
+            providers.SignatureWriter.WriteSignature(symbol, textWriter);
             textWriter.WriteLine(");");
         }
 

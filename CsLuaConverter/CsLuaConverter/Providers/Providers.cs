@@ -80,6 +80,6 @@ namespace CsLuaConverter.Providers
             }
         }
 
-        public SignatureWriter<INamedTypeSymbol> SignatureWriter { get; }
+        public SignatureWriter<ITypeSymbol> SignatureWriter { get; }
     }
 }

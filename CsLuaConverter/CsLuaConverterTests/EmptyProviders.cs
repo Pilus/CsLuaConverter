@@ -22,6 +22,6 @@
 
         public IPartialElementState PartialElementState { get; set; }
 
-        public SignatureWriter<INamedTypeSymbol> SignatureWriter { get; }
+        public SignatureWriter<ITypeSymbol> SignatureWriter { get; set; }
     }
 }
