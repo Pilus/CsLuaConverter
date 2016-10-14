@@ -16,13 +16,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var type = providers.Context.CurrentType;
-            providers.Context.CurrentType = null;
             textWriter.Write("[");
             this.argument.Visit(textWriter, providers);
             textWriter.Write("]");
-
-            providers.Context.CurrentType = type.GetValueType();
         }
     }
 }

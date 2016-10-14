@@ -29,26 +29,12 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var scope = providers.NameProvider.CloneScope();
-
             textWriter.Write("for _,{0} in (", this.iteratorName);
             this.enumerator.Visit(textWriter, providers);
             textWriter.WriteLine("%_M.DOT).GetEnumerator() do");
 
-            var iteratorTypeKnowledge = this.iteratorType.GetType(providers);
-
-            if (iteratorTypeKnowledge == null)
-            {
-                iteratorTypeKnowledge = providers.Context.CurrentType.GetEnumeratorType();
-            }
-
-            providers.NameProvider.AddToScope(new ScopeElement(this.iteratorName, iteratorTypeKnowledge));
-
-            
             this.block.Visit(textWriter, providers);
             textWriter.WriteLine("end");
-
-            providers.NameProvider.SetScope(scope);
         }
     }
 }

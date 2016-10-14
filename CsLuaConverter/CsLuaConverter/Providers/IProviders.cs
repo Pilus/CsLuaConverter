@@ -20,5 +20,6 @@ namespace CsLuaConverter.Providers
         ITypeReferenceWriter<ITypeSymbol> TypeReferenceWriter { get; }
         ISemanticAdaptor<ITypeSymbol> SemanticAdaptor { get; }
         SemanticModel SemanticModel { get; set; }
+        INamedTypeSymbol CurrentClass { get; set; }
     }
 }

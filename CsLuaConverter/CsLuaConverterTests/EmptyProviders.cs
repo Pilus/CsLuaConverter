@@ -31,5 +31,7 @@
         public ISemanticAdaptor<ITypeSymbol> SemanticAdaptor { get; set; }
 
         public SemanticModel SemanticModel { get; set; }
+
+        public INamedTypeSymbol CurrentClass { get; set; }
     }
 }

@@ -89,5 +89,7 @@ namespace CsLuaConverter.Providers
         public ISemanticAdaptor<ITypeSymbol> SemanticAdaptor { get; }
 
         public SemanticModel SemanticModel { get; set; }
+
+        public INamedTypeSymbol CurrentClass { get; set; }
     }
 }

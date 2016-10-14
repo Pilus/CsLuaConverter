@@ -8,18 +8,5 @@
         {
             
         }
-
-        public override string Message
-        {
-            get
-            {
-                var msg = base.Message;
-                if (this.InnerException != null)
-                {
-                    msg += "\n" + this.InnerException.Message;
-                }
-                return msg;
-            }
-        }
     }
 }

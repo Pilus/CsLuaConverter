@@ -89,7 +89,7 @@ namespace CsLuaConverterTests
                 scope = 'Public',
                 func = function(element)
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
-                    (element% _M.DOT_LVL(typeObject.Level)).Tests = System.Collections.Generic.Dictionary[{System.String.__typeof, System.Action.__typeof}]._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Tests = System.Collections.Generic.Dictionary[{System.String.__typeof, System.Action.__typeof}]._C_0_0();
                 end,
             });
             _M.IM(members, 'Name', {
@@ -143,10 +143,10 @@ namespace CsLuaConverterTests
                 numMethodGenerics = 0,
                 signatureHash = 104846,
                 func = function(element, lineWriter)
-                    ((lineWriter% _M.DOT).WriteLine_M_0_8736 % _M.DOT)((element % _M.DOT_LVL(typeObject.Level)).Name);
-                    (lineWriter% _M.DOT).indent = (lineWriter% _M.DOT).indent + 1;
-                    for _,testName in (((element% _M.DOT_LVL(typeObject.Level)).Tests% _M.DOT).Keys%_M.DOT).GetEnumerator() do
-                        local test = ((element% _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[testName];
+                    ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)((element % _M.DOT_LVL(typeObject.Level)).Name);
+                    (lineWriter % _M.DOT).indent = (lineWriter % _M.DOT).indent + 1;
+                    for _,testName in (((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT).Keys%_M.DOT).GetEnumerator() do
+                        local test = ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[testName];
                         if ((element % _M.DOT_LVL(typeObject.Level)).ContinueOnError) then
                             _M.Try(
                                 function()
@@ -160,19 +160,19 @@ namespace CsLuaConverterTests
                                         type = CsLuaTest.TestIgnoredException.__typeof,
                                         func = function(ex)
                                             (element % _M.DOT_LVL(typeObject.Level)).IgnoreCount = (element % _M.DOT_LVL(typeObject.Level)).IgnoreCount + 1;
-                                            ((lineWriter% _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName  +_M.Add+  "" Ignored"");
+                                            ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName  +_M.Add+  "" Ignored"");
                                         end,
                                     },
                                     {
                                         type = System.Exception.__typeof,
                                         func = function(ex)
                                             (element % _M.DOT_LVL(typeObject.Level)).FailCount = (element % _M.DOT_LVL(typeObject.Level)).FailCount + 1;
-                                            ((lineWriter% _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName  +_M.Add+  "" Failed"");
-                                            (lineWriter% _M.DOT).indent = (lineWriter% _M.DOT).indent + 1;
-                                            for _,errorLine in ((((ex% _M.DOT).Message% _M.DOT).Split_M_0_18252 % _M.DOT)('\n')%_M.DOT).GetEnumerator() do
-                                                ((lineWriter% _M.DOT).WriteLine_M_0_8736 % _M.DOT)(errorLine);
+                                            ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName  +_M.Add+  "" Failed"");
+                                            (lineWriter % _M.DOT).indent = (lineWriter % _M.DOT).indent + 1;
+                                            for _,errorLine in ((((ex % _M.DOT).Message % _M.DOT).Split_M_0_18252 % _M.DOT)('\n')%_M.DOT).GetEnumerator() do
+                                                ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(errorLine);
                                             end
-                                            (lineWriter% _M.DOT).indent = (lineWriter% _M.DOT).indent - 1;
+                                            (lineWriter % _M.DOT).indent = (lineWriter % _M.DOT).indent - 1;
                                         end,
                                     },
                                 },

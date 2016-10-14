@@ -2,6 +2,10 @@
 {
     using System.Linq;
     using CodeTree;
+
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
+
     using Providers;
     using Providers.GenericsRegistry;
     using Providers.TypeKnowledgeRegistry;
@@ -18,6 +22,16 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            var symbol = providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+
+            var previousToken = this.Branch.SyntaxNode.GetFirstToken().GetPreviousToken();
+            var previousPreviousToken = previousToken.GetPreviousToken();
+
+            if (symbol.Kind != SymbolKind.Parameter && symbol.Kind != SymbolKind.Local && (!previousToken.IsKind(SyntaxKind.DotToken) || previousPreviousToken.IsKind(SyntaxKind.ThisKeyword) || previousPreviousToken.IsKind(SyntaxKind.BaseKeyword)))
+            {
+                textWriter.Write("(element % _M.DOT_LVL(typeObject.Level)).");
+            }
+            
             textWriter.Write(this.text);
 
             /*

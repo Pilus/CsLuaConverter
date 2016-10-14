@@ -84,6 +84,7 @@
             if (this.symbol == null)
             {
                 this.symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as ClassDeclarationSyntax);
+                providers.CurrentClass = this.symbol;
             }
 
             TryActionAndWrapException(() =>
@@ -378,7 +379,7 @@
                 textWriter.WriteLine("return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;");
                 textWriter.Indent--;
                 textWriter.WriteLine("end,");
-                providers.GenericsRegistry.ClearScope(GenericScope.Class);
+                providers.CurrentClass = null;
             }
 
             if (providers.PartialElementState.IsFirst)
