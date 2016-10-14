@@ -18,6 +18,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            textWriter.Write(this.text);
+
+            /*
             var currentType = providers.Context.CurrentType;
 
             if (providers.Context.NamespaceReference != null)
@@ -73,7 +76,7 @@
             }
 
             // It is a namespace.
-            providers.Context.NamespaceReference = new[] { this.text };
+            providers.Context.NamespaceReference = new[] { this.text }; */
         }
 
         public new void WriteAsType(IIndentedTextWriterWrapper textWriter, IProviders providers)

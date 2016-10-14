@@ -11,6 +11,7 @@
     using Filters;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers;
     using Providers.GenericsRegistry;
     using Type;
@@ -76,8 +77,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var definingType = providers.NameProvider.GetScopeElement("this").Type.GetTypeObject();
-            var genericObjects = GetAllMembers(definingType, this.name).SelectMany(m => m.GetGenericArguments()).ToList();
+            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as MethodDeclarationSyntax);
+            //var definingType = providers.NameProvider.GetScopeElement("this").Type.GetTypeObject();
+            //var genericObjects = GetAllMembers(definingType, this.name).SelectMany(m => m.GetGenericArguments()).ToList();
 
             if (this.methodGenerics != null)
             {
@@ -85,15 +87,6 @@
                 this.methodGenerics.Visit(textWriter, providers);
                 textWriter.WriteLine("};");
                 textWriter.WriteLine("local methodGenerics = _M.MG(methodGenericsMapping);");
-
-                foreach (var genericName in this.methodGenerics.GetNames())
-                {
-                    providers.GenericsRegistry.SetGenerics(
-                        genericName, 
-                        GenericScope.MethodDeclaration, 
-                        genericObjects.First(t => t.Name == genericName), 
-                        this.genericsConstraint?.GetConstrainedType(providers, genericName).GetTypeObject() ?? typeof(object));
-                }
             }
 
             textWriter.WriteLine("_M.IM(members, '{0}', {{", this.name);
@@ -102,10 +95,10 @@
             textWriter.WriteLine("level = typeObject.Level,");
             textWriter.WriteLine("memberType = 'Method',");
             textWriter.WriteLine("scope = '{0}',", this.scope);
-            textWriter.WriteLine("static = {0},", this.isStatic.ToString().ToLower());
-            textWriter.WriteLine("numMethodGenerics = {0},", this.methodGenerics?.GetNumElements() ?? 0);
+            textWriter.WriteLine("static = {0},", symbol.IsStatic.ToString().ToLower());
+            textWriter.WriteLine("numMethodGenerics = {0},", symbol.TypeArguments.Length);
             textWriter.Write("signatureHash = ");
-            this.parameters.GetTypes(providers).WriteSignature(textWriter, providers);
+            providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
             textWriter.WriteLine(",");
 
 
@@ -114,13 +107,13 @@
                 textWriter.WriteLine("override = true,");
             }
 
-            if (this.parameters.GetTypes(providers).LastOrDefault()?.IsParams == true)
+            if (symbol.Parameters.LastOrDefault()?.IsParams == true)
             {
                 textWriter.WriteLine("isParams = true,");
             }
 
             
-            if (this.returnTypeVisitor != null && (this.returnTypeVisitor as PredefinedTypeVisitor)?.IsVoid() != true)
+            if (!symbol.ReturnsVoid)
             {
                 textWriter.Write("returnType = ");
                 this.returnTypeVisitor.WriteAsType(textWriter, providers);
@@ -136,20 +129,6 @@
                 textWriter.WriteLine("generics = methodGenericsMapping,");
             }
 
-            if (this.methodGenerics != null)
-            {
-                providers.GenericsRegistry.ClearScope(GenericScope.MethodDeclaration);
-
-                foreach (var genericName in this.methodGenerics.GetNames())
-                {
-                    providers.GenericsRegistry.SetGenerics(
-                        genericName,
-                        GenericScope.Method,
-                        genericObjects.First(t => t.Name == genericName),
-                        this.genericsConstraint?.GetConstrainedType(providers, genericName).GetTypeObject() ?? typeof(object));
-                }
-            }
-
             if (this.block != null)
             { 
                 textWriter.Write("func = function(element");
@@ -159,14 +138,12 @@
                     textWriter.Write(", methodGenericsMapping, methodGenerics");
                 }
 
-                var scope = providers.NameProvider.CloneScope();
-
                 this.parameters.FirstElementPrefix = ", ";
                 this.parameters.Visit(textWriter, providers);
 
                 textWriter.WriteLine(")");
 
-                if (this.parameters.GetTypes(providers).LastOrDefault()?.IsParams == true)
+                if (symbol.Parameters.LastOrDefault()?.IsParams == true)
                 {
                     textWriter.Indent++;
                     this.WriteParamVariableInit(textWriter, providers);
@@ -175,11 +152,7 @@
 
                 this.block.Visit(textWriter, providers);
                 textWriter.WriteLine("end");
-
-                providers.NameProvider.SetScope(scope);
             }
-
-            providers.GenericsRegistry.ClearScope(GenericScope.Method);
 
             textWriter.Indent--;
             textWriter.WriteLine("});");

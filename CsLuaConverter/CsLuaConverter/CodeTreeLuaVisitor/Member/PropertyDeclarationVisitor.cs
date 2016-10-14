@@ -41,6 +41,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as PropertyDeclarationSyntax);
+
             textWriter.WriteLine("_M.IM(members, '{0}',{{", this.name);
             textWriter.Indent++;
             textWriter.WriteLine("level = typeObject.Level,");
@@ -48,10 +50,10 @@
             textWriter.WriteLine("scope = '{0}',", this.scope);
             textWriter.WriteLine("static = {0},", this.isStatic.ToString().ToLower());
             textWriter.Write("returnType = ");
-            this.type.WriteAsType(textWriter, providers);
+            providers.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
             textWriter.WriteLine(";");
 
-            providers.Context.CurrentType = this.type.GetType(providers);
+            //providers.Context.CurrentType = this.type.GetType(providers);
             this.accessorList.Visit(textWriter, providers);
             textWriter.Indent--;
             textWriter.WriteLine("});");

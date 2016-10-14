@@ -26,31 +26,11 @@
                 textWriter.Write(this.FirstElementPrefix);
             }
 
-            var expectedTypeGenerics = providers.Context.ExpectedType?.GetGenerics();
             for (var index = 0; index < this.parameters.Length; index++)
             {
                 var visitor = this.parameters[index];
-
-                if (expectedTypeGenerics != null)
-                {
-                    providers.Context.ExpectedType = expectedTypeGenerics[index];
-                }
 
                 visitor.Visit(textWriter, providers);
-
-                if (index != this.parameters.Length - 1)
-                {
-                    textWriter.Write(", ");
-                }
-            }
-        }
-
-        public void WriteAsTypes(IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            for (var index = 0; index < this.parameters.Length; index++)
-            {
-                var visitor = this.parameters[index];
-                visitor.WriteAsTypes(textWriter, providers);
 
                 if (index != this.parameters.Length - 1)
                 {

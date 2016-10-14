@@ -33,21 +33,20 @@
                 return;
             }
 
-            providers.Context.CurrentType = null;
+            //var innerWriter = textWriter.CreateTextWriterAtSameIndent();
 
-            var innerWriter = textWriter.CreateTextWriterAtSameIndent();
+            textWriter.Write("(");
+            this.targetVisitor.Visit(textWriter, providers);
 
-            this.targetVisitor.Visit(innerWriter, providers);
+            //if (providers.Context.NamespaceReference == null)
+            //{
+                
+            //
 
-            if (providers.Context.NamespaceReference == null)
-            {
-                textWriter.Write("(");
-            }
+            //textWriter.AppendTextWriter(innerWriter);
 
-            textWriter.AppendTextWriter(innerWriter);
-
-            if (providers.Context.NamespaceReference == null)
-            { 
+            //if (providers.Context.NamespaceReference == null)
+            //{ 
                 textWriter.Write("% _M.DOT");
 
                 if (this.targetVisitor is BaseExpressionVisitor)
@@ -60,7 +59,7 @@
                 }
 
                 textWriter.Write(").");
-            }
+            //}
 
             this.indexVisitor.Visit(textWriter, providers);
         }

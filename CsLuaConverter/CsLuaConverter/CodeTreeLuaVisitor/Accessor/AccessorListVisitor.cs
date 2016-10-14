@@ -20,9 +20,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var propertyType = providers.Context.CurrentType;
+            //var propertyType = providers.Context.CurrentType;
             this.getVisitor?.Visit(textWriter, providers);
-            providers.Context.CurrentType = propertyType;
+            //providers.Context.CurrentType = propertyType;
             this.setVisitor?.Visit(textWriter, providers);
         }
 

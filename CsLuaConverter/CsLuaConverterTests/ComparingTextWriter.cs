@@ -50,14 +50,15 @@
 
         private void ValidateString(string actualString)
         {
-            var expectedString = this.comparingLines[this.currentLine].Substring(this.currentOffset, actualString.Length);
+            var expectedString = this.comparingLines[this.currentLine].Substring(this.currentOffset,
+                System.Math.Min(actualString.Length, this.comparingLines[this.currentLine].Length - this.currentOffset));
 
             if (expectedString == actualString)
             {
                 return;
             }
 
-            throw new Exception($"String missmatch. Expected '{expectedString}', got '{actualString}'.");
+            throw new Exception($"String missmatch. Line {this.currentLine} Expected '{expectedString}', got '{actualString}'.");
         }
     }
 }

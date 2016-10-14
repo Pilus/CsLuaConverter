@@ -85,7 +85,7 @@
                 {
                     if (!first)
                     {
-                        textWriter.Write(",");
+                        textWriter.Write(", ");
                     }
 
                     WriteAsReference(textWriter, typeArgument as INamedTypeSymbol);

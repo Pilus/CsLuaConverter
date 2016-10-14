@@ -27,17 +27,15 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var node = (this.Branch.SyntaxNode as InvocationExpressionSyntax).Expression;
-            var methodSymbolInfo = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(node).Symbol;
+            var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as InvocationExpressionSyntax).Symbol;
+            textWriter.Write("(");
+            this.target.Visit(textWriter, providers);
+            textWriter.Write("_M_{0}_", symbol.TypeArguments.Length);
+            providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
+            textWriter.Write(" % _M.DOT)");
 
-            methodSymbolInfo.Parameters.Select(p => p.Type).ToArray().WriteSignature(textWriter, providers);
-
-            if (true)
-            {
-                return;
-            }
-
-
+            this.argumentList.Visit(textWriter, providers);
+            /*
             var originalMethods = providers.Context.PossibleMethods;
 
             providers.Context.PossibleMethods = null;
@@ -89,22 +87,7 @@
 
                 textWriter.AppendTextWriter(argumentListWriter);
 
-                /*
-                if (providers.Context.PossibleMethods.MethodGenerics != null)
-                {
-                    var genericObjs = method.GetGenericTypes();
-                    for (int index = 0; index < providers.Context.PossibleMethods.MethodGenerics.Length; index++)
-                    {
-                        var generic = providers.Context.PossibleMethods.MethodGenerics[index];
-                        var genericObj = genericObjs[index];
-
-                        providers.GenericsRegistry.SetGenerics(
-                            genericObj.Name,
-                            GenericScope.Invocation,
-                            genericObj,
-                            generic.GetTypeObject());
-                    }
-                } */
+               
 
                 //method.genericsTypes.ToList()
 
@@ -134,6 +117,7 @@
             }
 
             providers.Context.PossibleMethods = originalMethods;
+            */
         }
 
         private static string[] SplitByLastDot(string str)

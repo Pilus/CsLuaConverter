@@ -34,13 +34,6 @@
             return WriteSignature(components, textWriter, providers);
         }
 
-        [Obsolete("Use new Signature system")]
-        public static bool WriteSignature(this ITypeSymbol[] inputTypes, IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            var components = GetSignatureComponents(inputTypes, providers);
-            return WriteSignature(components, textWriter, providers);
-        }
-
         private static bool WriteSignature(SignatureComponent[] components, IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             
@@ -117,18 +110,6 @@
             return list.ToArray();
         }
 
-        private static SignatureComponent[] GetSignatureComponents(ITypeSymbol[] inputTypes, IProviders providers)
-        {
-            var list = new List<SignatureComponent>();
-            for (var i = 0; i < inputTypes.Length; i++)
-            {
-                var inputType = inputTypes[i];
-                AddSignatureComponents(Primes[i], inputType, list, providers);
-            }
-
-            return list.ToArray();
-        }
-
         private static SignatureComponent[] GetSignatureComponents(TypeKnowledge type, IProviders providers)
         {
             var list = new List<SignatureComponent>();
@@ -168,11 +149,6 @@
             {
                 components.Add(new SignatureComponent(coefficient, GetSignatureHash(type)));
             }
-        }
-
-        private static void AddSignatureComponents(int coefficient, ITypeSymbol type, List<SignatureComponent> components, IProviders providers)
-        {
-            components.Add(new SignatureComponent(coefficient, GetSignatureHash(type.Name)));
         }
 
         private class SignatureComponent

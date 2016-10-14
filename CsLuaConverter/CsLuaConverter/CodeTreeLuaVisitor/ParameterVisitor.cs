@@ -38,9 +38,6 @@
             {
                 textWriter.Write(this.name);
             }
-
-            providers.NameProvider.AddToScope(new ScopeElement(this.name, this.type?.GetType(providers) ?? providers.Context.CurrentType ?? providers.Context.ExpectedType));
-            providers.Context.CurrentType = null;
         }
 
         public void WriteAsTypes(IIndentedTextWriterWrapper textWriter, IProviders providers)

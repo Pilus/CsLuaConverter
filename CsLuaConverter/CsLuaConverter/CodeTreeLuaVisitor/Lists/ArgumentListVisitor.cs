@@ -32,6 +32,20 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            textWriter.Write("(");
+
+            for (var index = 0; index < this.argumentVisitors.Length; index++)
+            {
+                this.argumentVisitors[index].Visit(textWriter, providers);
+
+                if (index < this.argumentVisitors.Length - 1)
+                {
+                    textWriter.Write(", ");
+                }
+            }
+            textWriter.Write(")");
+
+            /*
             var possibleMethods = providers.Context.PossibleMethods;
             var argVisitings = new Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[this.argumentVisitors.Length];
 
@@ -120,7 +134,7 @@
             textWriter.Write(")");
 
             providers.Context.ExpectedType = null;
-            providers.Context.PossibleMethods = possibleMethods;
+            providers.Context.PossibleMethods = possibleMethods; */
         }
 
         private void FilterOnNumberOfArgs(Tuple<IIndentedTextWriterWrapper, TypeKnowledge>[] argVisitings, PossibleMethods possibleMethods, IProviders providers)

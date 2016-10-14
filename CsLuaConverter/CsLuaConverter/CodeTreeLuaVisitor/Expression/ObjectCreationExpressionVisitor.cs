@@ -2,7 +2,9 @@
 {
     using CodeTree;
     using Lists;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
     using Type;
@@ -37,15 +39,28 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo((ObjectCreationExpressionSyntax)this.Branch.SyntaxNode).Symbol;
             textWriter.Write(this.initializer != null ? "(" : "");
 
-            this.objectTypeVisitor.WriteAsReference(textWriter, providers);
-            var type = this.objectTypeVisitor.GetType(providers);
-            textWriter.Write("._C_0_");
+            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
+
+            /*var objectType =
+                ((Microsoft.CodeAnalysis.CSharp.Symbols.ConstructedNamedTypeSymbol)
+                    ((Microsoft.CodeAnalysis.CSharp.Symbols.SubstitutedMethodSymbol) symbol).ContainingSymbol)
+                    .ConstructedFrom; */
+
+            textWriter.Write($"._C_{symbol.TypeArguments.Length}_");
+
+            textWriter.Write("0()"); // TODO: Write correct signature when having arguments and visit arguments
+
+            /*
+            //this.objectTypeVisitor.WriteAsReference(textWriter, providers);
+            //var type = this.objectTypeVisitor.GetType(providers);
+
 
             if (this.constructorArgumentsVisitor != null)
             { 
-                providers.Context.PossibleMethods = new PossibleMethods(type.GetConstructors());
+                //providers.Context.PossibleMethods = new PossibleMethods(type.GetConstructors());
 
                 var cstorArgsWriter = textWriter.CreateTextWriterAtSameIndent();
                 this.constructorArgumentsVisitor.Visit(cstorArgsWriter, providers);
@@ -67,12 +82,13 @@
             if (this.initializer != null)
             {
                 textWriter.Write(" % _M.DOT)");
-                providers.Context.CurrentType = type;
+                //providers.Context.CurrentType = type;
                 this.initializer.Visit(textWriter, providers);
             }
             
 
-            providers.Context.CurrentType = type;
+            //providers.Context.CurrentType = type;
+            */
         }
     }
 }
