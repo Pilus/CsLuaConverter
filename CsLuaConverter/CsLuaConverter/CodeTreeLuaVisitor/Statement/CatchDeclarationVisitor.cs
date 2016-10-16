@@ -3,7 +3,11 @@
     using System.Linq;
     using CodeTree;
     using Filters;
+
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Providers;
     using Providers.TypeProvider;
     using Type;
@@ -28,14 +32,10 @@
         {
             if (this.type != null)
             {
+                var symbol = (ITypeSymbol)providers.SemanticModel.GetSymbolInfo(((CatchDeclarationSyntax)this.Branch.SyntaxNode).Type).Symbol;
                 textWriter.Write("type = ");
-                this.type.WriteAsType(textWriter, providers);
+                providers.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
                 textWriter.WriteLine(",");
-            }
-
-            if (this.variableName != null)
-            {
-                providers.NameProvider.AddToScope(new ScopeElement(this.variableName, this.type.GetType(providers)));
             }
 
             textWriter.WriteLine("func = function({0})", this.variableName ?? string.Empty);

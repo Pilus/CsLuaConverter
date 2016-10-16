@@ -49,7 +49,7 @@
 
         public ITypeSymbol GetArrayGeneric(ITypeSymbol symbol)
         {
-            throw new System.NotImplementedException();
+            return ((IArrayTypeSymbol)symbol).ElementType;
         }
 
         public bool IsInterface(ITypeSymbol symbol)

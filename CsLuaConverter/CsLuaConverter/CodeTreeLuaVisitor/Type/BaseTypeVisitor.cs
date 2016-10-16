@@ -1,6 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Type
 {
     using CodeTree;
+
+    using Microsoft.CodeAnalysis;
+
     using Providers;
     using Providers.TypeKnowledgeRegistry;
 
@@ -10,6 +13,8 @@
         {
         }
 
+
+        
 
         public virtual void WriteAsType(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {

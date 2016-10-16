@@ -145,15 +145,15 @@ namespace CsLuaConverterTests
                 func = function(element, lineWriter)
                     ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)((element % _M.DOT_LVL(typeObject.Level)).Name);
                     (lineWriter % _M.DOT).indent = (lineWriter % _M.DOT).indent + 1;
-                    for _,testName in (((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT).Keys%_M.DOT).GetEnumerator() do
+                    for _,testName in (((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT).Keys % _M.DOT).GetEnumerator() do
                         local test = ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[testName];
                         if ((element % _M.DOT_LVL(typeObject.Level)).ContinueOnError) then
                             _M.Try(
                                 function()
                                     (element % _M.DOT_LVL(typeObject.Level)).TestCount = (element % _M.DOT_LVL(typeObject.Level)).TestCount + 1;
-                                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput % _M.DOT)();
+                                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
                                     (test % _M.DOT)();
-                                    ((lineWriter% _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName  +_M.Add+  "" Success"");
+                                    ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName  +_M.Add+  "" Success"");
                                 end,
                                 {
                                     {
@@ -169,7 +169,7 @@ namespace CsLuaConverterTests
                                             (element % _M.DOT_LVL(typeObject.Level)).FailCount = (element % _M.DOT_LVL(typeObject.Level)).FailCount + 1;
                                             ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName  +_M.Add+  "" Failed"");
                                             (lineWriter % _M.DOT).indent = (lineWriter % _M.DOT).indent + 1;
-                                            for _,errorLine in ((((ex % _M.DOT).Message % _M.DOT).Split_M_0_18252 % _M.DOT)('\n')%_M.DOT).GetEnumerator() do
+                                            for _,errorLine in ((((ex % _M.DOT).Message % _M.DOT).Split_M_0_10374 % _M.DOT)('\n') % _M.DOT).GetEnumerator() do
                                                 ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(errorLine);
                                             end
                                             (lineWriter % _M.DOT).indent = (lineWriter % _M.DOT).indent - 1;
@@ -180,12 +180,12 @@ namespace CsLuaConverterTests
                             );
                         else
                             (element % _M.DOT_LVL(typeObject.Level)).TestCount = (element % _M.DOT_LVL(typeObject.Level)).TestCount + 1;
-                            ((lineWriter% _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName);
+                            ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName);
                             ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput % _M.DOT)();
                             (test % _M.DOT)();
                         end
                     end
-                    (lineWriter% _M.DOT).indent = (lineWriter% _M.DOT).indent - 1;
+                    (lineWriter % _M.DOT).indent = (lineWriter % _M.DOT).indent - 1;
                 end
             });
             _M.IM(members, 'ResetOutput', {
@@ -207,10 +207,10 @@ namespace CsLuaConverterTests
                 numMethodGenerics = 0,
                 signatureHash = 21430,
                 func = function(element, expectedValueObj, actualValueObj)
-                    local expectedValue = ((Lua.Strings% _M.DOT).tostring_M_0_8572 % _M.DOT)(expectedValueObj);
-                    local actualValue = ((Lua.Strings% _M.DOT).tostring_M_0_8572 % _M.DOT)(actualValueObj);
+                    local expectedValue = ((Lua.Strings % _M.DOT).tostring_M_0_8572 % _M.DOT)(expectedValueObj);
+                    local actualValue = ((Lua.Strings % _M.DOT).tostring_M_0_8572 % _M.DOT)(actualValueObj);
                     if (expectedValue ~= actualValue) then
-                        _M.Throw(System.Exception._C_0_8736(((Lua.Strings% _M.DOT).format_M_0_70110 % _M.DOT)(""Incorrect value. Expected: '{0}' got: '{1}'."", expectedValue, actualValue)));
+                        _M.Throw(System.Exception._C_0_8736(((Lua.Strings % _M.DOT).format_M_0_70110 % _M.DOT)(""Incorrect value. Expected: '{0}' got: '{1}'."", expectedValue, actualValue)));
                     end
                 end
             });

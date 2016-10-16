@@ -31,7 +31,7 @@
         {
             textWriter.Write("for _,{0} in (", this.iteratorName);
             this.enumerator.Visit(textWriter, providers);
-            textWriter.WriteLine("%_M.DOT).GetEnumerator() do");
+            textWriter.WriteLine(" % _M.DOT).GetEnumerator() do");
 
             this.block.Visit(textWriter, providers);
             textWriter.WriteLine("end");

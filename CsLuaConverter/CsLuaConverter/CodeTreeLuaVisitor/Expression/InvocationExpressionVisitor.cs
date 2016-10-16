@@ -30,8 +30,13 @@
             var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as InvocationExpressionSyntax).Symbol;
             textWriter.Write("(");
             this.target.Visit(textWriter, providers);
-            textWriter.Write("_M_{0}_", symbol.TypeArguments.Length);
-            providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
+
+            if (symbol.MethodKind != MethodKind.DelegateInvoke)
+            { 
+                textWriter.Write("_M_{0}_", symbol.TypeArguments.Length);
+                providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
+            }
+
             textWriter.Write(" % _M.DOT)");
 
             this.argumentList.Visit(textWriter, providers);

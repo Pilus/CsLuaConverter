@@ -23,16 +23,10 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            providers.Context.CurrentType = null;
             this.lhsVisitor.Visit(textWriter, providers);
-            var lhsType = providers.Context.CurrentType;
 
             textWriter.Write($" {this.token} ");
-            providers.Context.CurrentType = null;
             this.rhsVisitor.Visit(textWriter, providers);
-            var rhsType = providers.Context.CurrentType;
-
-            providers.Context.CurrentType = this.resultingType ?? DetermineResultingType(lhsType, rhsType);
         }
 
         private static TypeKnowledge DetermineResultingType(TypeKnowledge a, TypeKnowledge b)

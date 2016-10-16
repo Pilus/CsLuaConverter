@@ -24,8 +24,6 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var scope = providers.NameProvider.CloneScope();
-
             textWriter.WriteLine("{");
             textWriter.Indent++;
 
@@ -38,15 +36,12 @@
                 textWriter.WriteLine("func = function()");
             }
 
-            providers.Context.CurrentType = null;
             this.block.Visit(textWriter, providers);
             
             textWriter.WriteLine("end,");
             
             textWriter.Indent--;
             textWriter.WriteLine("},");
-
-            providers.NameProvider.SetScope(scope);
         }
     }
 }

@@ -18,7 +18,7 @@
 
         protected BaseVisitor(CodeTreeBranch branch)
         {
-            this.Branch = branch;
+            Branch = branch;
         }
 
         public abstract void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers);

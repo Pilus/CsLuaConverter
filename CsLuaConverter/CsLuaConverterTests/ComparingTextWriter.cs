@@ -5,6 +5,7 @@
 
     public class ComparingTextWriter : TextWriter
     {
+        private StringWriter innerWriter;
         private int currentLine;
         private int currentOffset;
         private string[] comparingLines;
@@ -14,18 +15,26 @@
             this.comparingLines = stringToCompare.Split('\n');
             this.currentLine = 0;
             this.currentOffset = 0;
+            this.innerWriter = new StringWriter();
         }
 
         public override System.Text.Encoding Encoding { get; }
 
         public override void Write(string str)
         {
+            this.innerWriter.Write(str);
             this.Compare(str, false);
         }
 
         public override void WriteLine(string str)
         {
+            this.innerWriter.WriteLine(str);
             this.Compare(str, true);
+        }
+
+        public override string ToString()
+        {
+            return this.innerWriter.ToString();
         }
 
         private void Compare(string str, bool newLineAtEnd)
