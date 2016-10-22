@@ -181,7 +181,7 @@ namespace CsLuaConverterTests
                         else
                             (element % _M.DOT_LVL(typeObject.Level)).TestCount = (element % _M.DOT_LVL(typeObject.Level)).TestCount + 1;
                             ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName);
-                            ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput % _M.DOT)();
+                            ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
                             (test % _M.DOT)();
                         end
                     end
@@ -210,7 +210,7 @@ namespace CsLuaConverterTests
                     local expectedValue = ((Lua.Strings % _M.DOT).tostring_M_0_8572 % _M.DOT)(expectedValueObj);
                     local actualValue = ((Lua.Strings % _M.DOT).tostring_M_0_8572 % _M.DOT)(actualValueObj);
                     if (expectedValue ~= actualValue) then
-                        _M.Throw(System.Exception._C_0_8736(((Lua.Strings % _M.DOT).format_M_0_70110 % _M.DOT)(""Incorrect value. Expected: '{0}' got: '{1}'."", expectedValue, actualValue)));
+                        _M.Throw(System.Exception._C_0_8736(((Lua.Strings % _M.DOT).format_M_0_47310 % _M.DOT)(""Incorrect value. Expected: '{0}' got: '{1}'."", expectedValue, actualValue)));
                     end
                 end
             });

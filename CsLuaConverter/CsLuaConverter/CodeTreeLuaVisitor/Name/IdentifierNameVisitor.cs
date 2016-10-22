@@ -27,12 +27,28 @@
             var previousToken = this.Branch.SyntaxNode.GetFirstToken().GetPreviousToken();
             var previousPreviousToken = previousToken.GetPreviousToken();
 
-            if (symbol.Kind != SymbolKind.Parameter && symbol.Kind != SymbolKind.Local && (!previousToken.IsKind(SyntaxKind.DotToken) || previousPreviousToken.IsKind(SyntaxKind.ThisKeyword) || previousPreviousToken.IsKind(SyntaxKind.BaseKeyword)))
+            var identifierHasThisOrBaseReference = 
+                !previousToken.IsKind(SyntaxKind.DotToken) ||
+                previousPreviousToken.IsKind(SyntaxKind.ThisKeyword) || 
+                previousPreviousToken.IsKind(SyntaxKind.BaseKeyword);
+
+            var identifierIsReferencingOnThis = (symbol.Kind == SymbolKind.Property || symbol.Kind == SymbolKind.Field
+                                                 || symbol.Kind == SymbolKind.Method);
+
+            if (identifierIsReferencingOnThis && identifierHasThisOrBaseReference)
             {
                 textWriter.Write("(element % _M.DOT_LVL(typeObject.Level)).");
             }
+
+            if (symbol.Kind == SymbolKind.NamedType)
+            {
+                providers.TypeReferenceWriter.WriteInteractionElementReference((ITypeSymbol)symbol, textWriter);
+            }
+            else
+            {
+                textWriter.Write(this.text);
+            }
             
-            textWriter.Write(this.text);
 
             /*
             var currentType = providers.Context.CurrentType;

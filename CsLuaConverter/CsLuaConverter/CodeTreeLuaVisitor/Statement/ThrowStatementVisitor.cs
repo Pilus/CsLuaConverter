@@ -19,7 +19,6 @@
             textWriter.Write("_M.Throw(");
             this.inner.Visit(textWriter, providers);
             textWriter.WriteLine(");");
-            providers.Context.CurrentType = null;
         }
     }
 }

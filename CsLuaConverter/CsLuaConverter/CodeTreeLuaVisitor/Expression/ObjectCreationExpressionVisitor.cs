@@ -1,5 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
+    using System.Linq;
+
     using CodeTree;
     using Lists;
     using Microsoft.CodeAnalysis;
@@ -51,7 +53,8 @@
 
             textWriter.Write($"._C_{symbol.TypeArguments.Length}_");
 
-            textWriter.Write("0()"); // TODO: Write correct signature when having arguments and visit arguments
+            providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
+            this.constructorArgumentsVisitor.Visit(textWriter, providers);
 
             /*
             //this.objectTypeVisitor.WriteAsReference(textWriter, providers);
