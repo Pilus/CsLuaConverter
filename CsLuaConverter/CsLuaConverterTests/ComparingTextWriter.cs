@@ -32,6 +32,13 @@
             this.Compare(str, true);
         }
 
+        public override void WriteLine()
+        {
+            this.innerWriter.WriteLine();
+            this.currentLine++;
+            this.currentOffset = 0;
+        }
+
         public override string ToString()
         {
             return this.innerWriter.ToString();
@@ -67,7 +74,7 @@
                 return;
             }
 
-            throw new Exception($"String missmatch. Line {this.currentLine} Expected '{expectedString}', got '{actualString}'.");
+            throw new Exception($"String missmatch. Line {this.currentLine}, char {this.currentOffset}. Expected '{expectedString}', Got '{actualString}'.");
         }
     }
 }

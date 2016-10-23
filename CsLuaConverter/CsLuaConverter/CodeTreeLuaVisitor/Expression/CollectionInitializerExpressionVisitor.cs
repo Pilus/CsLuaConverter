@@ -21,11 +21,9 @@
             textWriter.WriteLine(".__Initialize({");
             textWriter.Indent++;
 
-            providers.Context.CurrentType = null;
             this.innerVisitors.VisitAll(textWriter, providers, () =>
             {
                 textWriter.WriteLine(",");
-                providers.Context.CurrentType = null;
             });
             textWriter.Indent--;
             textWriter.WriteLine();

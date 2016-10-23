@@ -56,6 +56,12 @@
             providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
             this.constructorArgumentsVisitor.Visit(textWriter, providers);
 
+            if (this.initializer != null)
+            {
+                textWriter.Write(" % _M.DOT)");
+                this.initializer.Visit(textWriter, providers);
+            }
+
             /*
             //this.objectTypeVisitor.WriteAsReference(textWriter, providers);
             //var type = this.objectTypeVisitor.GetType(providers);

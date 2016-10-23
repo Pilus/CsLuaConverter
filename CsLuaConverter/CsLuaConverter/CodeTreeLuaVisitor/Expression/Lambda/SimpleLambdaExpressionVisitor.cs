@@ -9,6 +9,9 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
     using System;
     using System.IO;
 
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     public class SimpleLambdaExpressionVisitor : BaseVisitor, ILambdaVisitor
     {
         private readonly ParameterVisitor parameter;
@@ -23,6 +26,32 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            var symbol = providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as SimpleLambdaExpressionSyntax).Symbol;
+            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol as ITypeSymbol, textWriter);
+            textWriter.Write("._C_0_16704"); // Lua.Function as argument
+            textWriter.Write("(function(");
+            this.parameter.Visit(textWriter, providers);
+            textWriter.Write(")");
+
+            if (this.body is BlockVisitor)
+            {
+                textWriter.WriteLine("");
+                this.body.Visit(textWriter, providers);
+            }
+            else
+            {
+                if (!(this.body is SimpleAssignmentExpressionVisitor))
+                {
+                    textWriter.Write(" return ");
+                }
+
+                this.body.Visit(textWriter, providers);
+                textWriter.Write(" ");
+            }
+
+            textWriter.Write("end)");
+
+            /*
             var delegateType = providers.Context.ExpectedType;
 
             var bodyWriter = textWriter.CreateTextWriterAtSameIndent();
@@ -39,7 +68,7 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
             textWriter.Write("._C_0_16704"); // Lua.Function as argument
             textWriter.AppendTextWriter(bodyWriter);
 
-            providers.Context.CurrentType = delegateType;
+            providers.Context.CurrentType = delegateType; */
         }
 
         private void VisitParametersAndBody(IIndentedTextWriterWrapper textWriter, IProviders providers, TypeKnowledge delegateType)
