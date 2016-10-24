@@ -26,8 +26,8 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var symbol = providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as SimpleLambdaExpressionSyntax).Symbol;
-            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol as ITypeSymbol, textWriter);
+            var symbol = this.GetSymbolForParentUsingTheLambda(providers);
+            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
             textWriter.Write("._C_0_16704"); // Lua.Function as argument
             textWriter.Write("(function(");
             this.parameter.Visit(textWriter, providers);
@@ -69,6 +69,29 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
             textWriter.AppendTextWriter(bodyWriter);
 
             providers.Context.CurrentType = delegateType; */
+        }
+
+        private ITypeSymbol GetSymbolForParentUsingTheLambda(IProviders providers)
+        {
+            if (this.Branch.SyntaxNode.Parent.Parent is ArgumentListSyntax)
+            {
+                var argListSyntax = this.Branch.SyntaxNode.Parent.Parent;
+
+                if (argListSyntax.Parent is InvocationExpressionSyntax)
+                {
+                    var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo((InvocationExpressionSyntax) argListSyntax.Parent).Symbol;
+                    var argNum = argListSyntax.ChildNodes().ToList().IndexOf(this.Branch.SyntaxNode.Parent);
+                    return symbol.Parameters[argNum].Type;
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private void VisitParametersAndBody(IIndentedTextWriterWrapper textWriter, IProviders providers, TypeKnowledge delegateType)
