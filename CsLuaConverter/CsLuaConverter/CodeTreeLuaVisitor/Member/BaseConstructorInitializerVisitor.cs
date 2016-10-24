@@ -1,9 +1,15 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Member
 {
+    using System.Linq;
+
     using CodeTree;
     using Expression;
     using Lists;
+
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Providers;
     using Providers.TypeKnowledgeRegistry;
 
@@ -20,25 +26,11 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var baseType = providers.NameProvider.GetScopeElement("base");
-            providers.Context.PossibleMethods = new PossibleMethods(baseType.Type.GetConstructors());
-
-            var argumentWriter = textWriter.CreateTextWriterAtSameIndent();
-
-            this.argumentList.Visit(argumentWriter, providers);
-
-            var cstor = providers.Context.PossibleMethods.GetOnlyRemainingMethodOrThrow();
-
+            var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as ConstructorInitializerSyntax).Symbol;
             textWriter.Write("(element % _M.DOT_LVL(typeObject.Level - 1))._C_0_");
-
-            cstor.WriteSignature(textWriter, providers);
-
-            textWriter.AppendTextWriter(argumentWriter);
-
+            providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
+            this.argumentList.Visit(textWriter, providers);
             textWriter.WriteLine(";");
-            providers.Context.CurrentType = null;
         }
-
-        
     }
 }

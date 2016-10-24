@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
+    using System;
     using System.Linq;
 
     using CodeTree;
@@ -8,7 +9,6 @@
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
     using Type;
 
     public class ObjectCreationExpressionVisitor : BaseVisitor
@@ -41,15 +41,24 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo((ObjectCreationExpressionSyntax)this.Branch.SyntaxNode).Symbol;
+            var node = (ObjectCreationExpressionSyntax)this.Branch.SyntaxNode;
+            var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(node).Symbol;
+
             textWriter.Write(this.initializer != null ? "(" : "");
 
-            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
 
-            /*var objectType =
-                ((Microsoft.CodeAnalysis.CSharp.Symbols.ConstructedNamedTypeSymbol)
-                    ((Microsoft.CodeAnalysis.CSharp.Symbols.SubstitutedMethodSymbol) symbol).ContainingSymbol)
-                    .ConstructedFrom; */
+            if (symbol == null)
+            {
+                var namedTypeSymbol = (INamedTypeSymbol)providers.SemanticModel.GetSymbolInfo(node.Type).Symbol;
+                providers.TypeReferenceWriter.WriteInteractionElementReference(namedTypeSymbol, textWriter);
+                textWriter.Write("._C_0_");
+
+                throw new NotImplementedException();
+            }
+
+            
+
+            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
 
             textWriter.Write($"._C_{symbol.TypeArguments.Length}_");
 

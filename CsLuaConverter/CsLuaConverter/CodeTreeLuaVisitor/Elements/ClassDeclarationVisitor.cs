@@ -127,15 +127,6 @@
         {
             if (providers.PartialElementState.IsFirst)
             {
-                /*
-                this.originalScope = providers.NameProvider.CloneScope();
-                providers.NameProvider.AddAllInheritedMembersToScope(this.name);
-
-                var classTypeResult = providers.TypeProvider.LookupType(this.name);
-                providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(classTypeResult.TypeObject)));
-                providers.NameProvider.AddToScope(new ScopeElement("base", new TypeKnowledge(classTypeResult.BaseType.TypeObject)));
-                */
-
                 textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", this.GetNumOfGenerics());
                 textWriter.Indent++;
 

@@ -286,8 +286,8 @@ _M.ATN('CsLuaTest','CsLuaTest', _M.NE({
                         CsLuaTest.ActionsFunctions.ActionsFunctionsTests._C_0_0()
                     });
                     ((tests % _M.DOT).ForEach_M_0_239752368 % _M.DOT)(System.Action[{CsLuaTest.ITestSuite.__typeof}]._C_0_16704(function(test) return ((test % _M.DOT).PerformTests_M_0_104846 % _M.DOT)(CsLuaTest.IndentedLineWriter._C_0_0()) end));
-                    ((Lua.Core % _M.DOT).print_M_0_40916 % _M.DOT)(""CsLua test completed."");
-                    ((Lua.Core % _M.DOT).print_M_0_40916 % _M.DOT)((CsLuaTest.BaseTest % _M.DOT).TestCount, ""tests run."", (CsLuaTest.BaseTest % _M.DOT).FailCount, ""failed."", (CsLuaTest.BaseTest % _M.DOT).TestCount - (CsLuaTest.BaseTest % _M.DOT).FailCount - (CsLuaTest.BaseTest % _M.DOT).IgnoreCount, ""succeded. "", (CsLuaTest.BaseTest % _M.DOT).IgnoreCount, ""ignored."");
+                    ((Lua.Core % _M.DOT).print_M_0_25716 % _M.DOT)(""CsLua test completed."");
+                    ((Lua.Core % _M.DOT).print_M_0_25716 % _M.DOT)((CsLuaTest.BaseTest % _M.DOT).TestCount, ""tests run."", (CsLuaTest.BaseTest % _M.DOT).FailCount, ""failed."", (CsLuaTest.BaseTest % _M.DOT).TestCount - (CsLuaTest.BaseTest % _M.DOT).FailCount - (CsLuaTest.BaseTest % _M.DOT).IgnoreCount, ""succeded. "", (CsLuaTest.BaseTest % _M.DOT).IgnoreCount, ""ignored."");
                 end
             });
             return members;
@@ -352,13 +352,198 @@ _M.ATN('CsLuaTest','IndentedLineWriter', _M.NE({
                 numMethodGenerics = 0,
                 signatureHash = 8736,
                 func = function(element, line)
-                    ((Lua.Core % _M.DOT).print_M_0_40916 % _M.DOT)(((Lua.Strings % _M.DOT).strrep_M_0_14625 % _M.DOT)((element % _M.DOT_LVL(typeObject.Level)).indentChar, (element % _M.DOT_LVL(typeObject.Level)).indent)  +_M.Add+  line);
+                    ((Lua.Core % _M.DOT).print_M_0_25716 % _M.DOT)(((Lua.Strings % _M.DOT).strrep_M_0_14625 % _M.DOT)((element % _M.DOT_LVL(typeObject.Level)).indentChar, (element % _M.DOT_LVL(typeObject.Level)).indent)  +_M.Add+  line);
                 end
             });
             return members;
         end
         return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
     end,
-});";
+}));
+_M.ATN('CsLuaTest','ITestSuite', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('ITestSuite','CsLuaTest', nil, 0, generics, nil, interactionElement, 'Interface',13644);
+        local implements = {
+        };
+        typeObject.implements = implements;
+        local getMembers = function()
+            local members = {};
+            _M.GAM(members, implements);
+            _M.IM(members, 'PerformTests', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = false,
+                numMethodGenerics = 0,
+                signatureHash = 104846,
+            });
+            return members;
+        end
+        return 'Interface', typeObject, getMembers, nil, nil, nil, nil, attributes;
+    end,
+}));
+_M.ATN('CsLuaTest','TestIgnoredException', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('TestIgnoredException','CsLuaTest', nil, 0, generics, nil, interactionElement, 'Class', 67539);
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = System.Exception.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                scope = 'Public',
+                func = function(element)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_8736(""Test ignored."");
+                end,
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
+}));
+_M.ATN('CsLuaTest.ActionsFunctions','ActionsFunctionsTests', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('ActionsFunctionsTests','CsLuaTest.ActionsFunctions', nil, 0, generics, nil, interactionElement, 'Class', 76716);
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = CsLuaTest.BaseTest.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                scope = 'Public',
+                func = function(element)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Name = ""Actions and Functions"";
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestActionGenericsFromConstructed""] = (element % _M.DOT_LVL(typeObject.Level)).TestActionGenericsFromConstructed;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""OtherTests""] = (element % _M.DOT_LVL(typeObject.Level)).OtherTests;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestMethodsCastToActionAndFunction""] = (element % _M.DOT_LVL(typeObject.Level)).TestMethodsCastToActionAndFunction;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestActionWithAssignment""] = (element % _M.DOT_LVL(typeObject.Level)).TestActionWithAssignment;
+                end,
+            });
+            _M.IM(members, 'TestActionGenericsFromConstructed', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local invokedValue = 0;
+                    local action = System.Action[{System.Int32.__typeof}]._C_0_34493836(System.Action[{System.Int32.__typeof, }]._C_0_16704(function(i)
+                        invokedValue = i;
+                    end));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(true, System.Action[{System.Int32.__typeof}].__is(action));
+                    ((action % _M.DOT).Invoke_M_0_3926 % _M.DOT)(43);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(43, invokedValue);
+                    (action % _M.DOT)(10);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(10, invokedValue);
+                end
+            });
+            _M.IM(members, 'OtherTests', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local r1 = ((CsLuaTest.ActionsFunctions.StaticClass % _M.DOT).ExpectFunc_M_0_59060040 % _M.DOT)(System.Func[{System.Int32.__typeof, System.String.__typeof, }]._C_0_16704(function(v) return ((v % _M.DOT).ToString_M_0_0 % _M.DOT)() end));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""int"", r1);
+                    local r2 = ((CsLuaTest.ActionsFunctions.StaticClass % _M.DOT).ExpectFunc_M_0_75172368 % _M.DOT)(System.Func[{System.Object.__typeof, System.String.__typeof, }]._C_0_16704(function(v) return ((v % _M.DOT).ToString_M_0_0 % _M.DOT)() end));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""obj"", r2);
+                    local r3 = ((CsLuaTest.ActionsFunctions.StaticClass % _M.DOT).ExpectFunc_M_0_74961534 % _M.DOT)(System.Func[{System.Single.__typeof, System.String.__typeof, }]._C_0_16704(function(v) return ((v % _M.DOT).ToString_M_0_0 % _M.DOT)() end), true);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""float"", r3);
+                end
+            });
+            _M.IM(members, 'TestActionWithAssignment', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local value = 0;
+                    ((CsLuaTest.ActionsFunctions.StaticClass % _M.DOT).ExpectAction_M_0_34493836 % _M.DOT)(System.Action[{System.Int32.__typeof, }]._C_0_16704(function(v)value = v end));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(43, value);
+                end
+            });
+            _M.IM(members, 'TestMethodsCastToActionAndFunction', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    _M.Throw(CsLuaTest.TestIgnoredException._C_0_0());
+                    local mc = CsLuaTest.ActionsFunctions.ClassWithMethods._C_0_0();
+                    local action1 = (mc % _M.DOT).MethodWithNoReturn;
+                    local action1Type = ((action1 % _M.DOT).GetType % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(System.Action[{System.Int32.__typeof}].__typeof, action1Type);
+                    local func1 = (mc % _M.DOT).MethodWithReturn;
+                    local func1Type = ((func1 % _M.DOT).GetType % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(System.Func[{System.Int32.__typeof, System.String.__typeof}].__typeof, func1Type);
+                    local value1 = (func1 % _M.DOT)(43);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""43"", value1);
+                    local genericMethod = (mc % _M.DOT).MethodWithReturnAndGeneric;
+                    local genericFuncType = ((genericMethod % _M.DOT).GetType % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(System.Func[{System.Double.__typeof, System.String.__typeof}].__typeof, genericFuncType);
+                    local valueGeneric = (genericMethod % _M.DOT)(43.03);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""43.03"", valueGeneric);
+                    local action2 = (CsLuaTest.ActionsFunctions.ClassWithMethods % _M.DOT).StaticMethodWithNoReturn;
+                    local action2Type = ((action2 % _M.DOT).GetType % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(System.Action[{System.Int32.__typeof}].__typeof, action2Type);
+                    local func2 = (CsLuaTest.ActionsFunctions.ClassWithMethods % _M.DOT).StaticMethodWithReturn;
+                    local func2Type = ((func2 % _M.DOT).GetType % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(System.Func[{System.Int32.__typeof, System.String.__typeof}].__typeof, func2Type);
+                    local value2 = (func2 % _M.DOT)(43);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""43"", value2);
+                end
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
+}));";
     }
 }

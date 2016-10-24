@@ -66,6 +66,11 @@
 
         private void ValidateString(string actualString)
         {
+            if (this.currentLine >= this.comparingLines.Length)
+            {
+                throw new Exception($"End of comparing string at line {this.comparingLines.Length}.");
+            }
+
             var expectedString = this.comparingLines[this.currentLine].Substring(this.currentOffset,
                 System.Math.Min(actualString.Length, this.comparingLines[this.currentLine].Length - this.currentOffset));
 

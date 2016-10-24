@@ -7,6 +7,8 @@
     using Filters;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Providers;
     using Providers.GenericsRegistry;
     using Providers.TypeKnowledgeRegistry;
@@ -75,17 +77,15 @@
             textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", this.GetNumOfGenerics());
             textWriter.Indent++;
 
-            this.RegisterGenerics(providers);
             this.WriteGenericsMapping(textWriter, providers);
 
-            var typeObject = providers.TypeProvider.LookupType(this.name);
-
-            providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(typeObject.TypeObject)));
+            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as InterfaceDeclarationSyntax);
+            var adaptor = providers.SemanticAdaptor;
 
             textWriter.Write(
                 "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Interface',",
-                typeObject.Name, typeObject.Namespace, this.GetNumOfGenerics());
-            new TypeKnowledge(typeObject.TypeObject).WriteSignature(textWriter, providers);
+                adaptor.GetName(symbol), adaptor.GetFullNamespace(symbol), this.GetNumOfGenerics());
+            providers.SignatureWriter.WriteSignature(symbol, textWriter);
             textWriter.WriteLine(");");
 
             this.WriteImplements(textWriter, providers);
@@ -100,8 +100,6 @@
 
             textWriter.Indent--;
             textWriter.WriteLine("end,");
-
-            providers.GenericsRegistry.ClearScope(GenericScope.Class);
         }
 
         private void RegisterGenerics(IProviders providers)
@@ -167,11 +165,7 @@
                 textWriter.WriteLine("_M.GAM(members, implements);");
             }
 
-            var scope = providers.NameProvider.CloneScope();
-
             this.members.VisitAll(textWriter, providers);
-
-            providers.NameProvider.SetScope(scope);
 
             if (providers.PartialElementState.IsLast)
             {
