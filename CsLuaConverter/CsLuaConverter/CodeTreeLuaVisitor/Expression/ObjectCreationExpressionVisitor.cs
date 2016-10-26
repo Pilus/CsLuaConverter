@@ -47,22 +47,24 @@
             textWriter.Write(this.initializer != null ? "(" : "");
 
 
-            if (symbol == null)
+            ITypeSymbol[] parameterTypes = null;
+            if (symbol != null)
             {
+                providers.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
+                parameterTypes = symbol.Parameters.Select(p => p.Type).ToArray();
+            }
+            else
+            {
+                // Special case for missing symble. Roslyn issue 3825. https://github.com/dotnet/roslyn/issues/3825
                 var namedTypeSymbol = (INamedTypeSymbol)providers.SemanticModel.GetSymbolInfo(node.Type).Symbol;
                 providers.TypeReferenceWriter.WriteInteractionElementReference(namedTypeSymbol, textWriter);
-                textWriter.Write("._C_0_");
 
-                throw new NotImplementedException();
+                parameterTypes = namedTypeSymbol.Constructors.Single().Parameters.Select(p => p.Type).ToArray();
             }
 
-            
+            textWriter.Write("._C_0_");
 
-            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
-
-            textWriter.Write($"._C_{symbol.TypeArguments.Length}_");
-
-            providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
+            providers.SignatureWriter.WriteSignature(parameterTypes, textWriter);
             this.constructorArgumentsVisitor.Visit(textWriter, providers);
 
             if (this.initializer != null)
