@@ -59,7 +59,12 @@
                 var namedTypeSymbol = (INamedTypeSymbol)providers.SemanticModel.GetSymbolInfo(node.Type).Symbol;
                 providers.TypeReferenceWriter.WriteInteractionElementReference(namedTypeSymbol, textWriter);
 
-                parameterTypes = namedTypeSymbol.Constructors.Single().Parameters.Select(p => p.Type).ToArray();
+                if (namedTypeSymbol.TypeKind != TypeKind.Delegate)
+                {
+                    throw new Exception($"Could not guess constructor for {namedTypeSymbol}.");
+                }
+
+                parameterTypes = new ITypeSymbol[] { namedTypeSymbol };
             }
 
             textWriter.Write("._C_0_");

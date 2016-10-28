@@ -76,12 +76,32 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
             if (this.Branch.SyntaxNode.Parent.Parent is ArgumentListSyntax)
             {
                 var argListSyntax = this.Branch.SyntaxNode.Parent.Parent;
+                var argNum = argListSyntax.ChildNodes().ToList().IndexOf(this.Branch.SyntaxNode.Parent);
 
                 if (argListSyntax.Parent is InvocationExpressionSyntax)
                 {
                     var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo((InvocationExpressionSyntax) argListSyntax.Parent).Symbol;
-                    var argNum = argListSyntax.ChildNodes().ToList().IndexOf(this.Branch.SyntaxNode.Parent);
                     return symbol.Parameters[argNum].Type;
+                }
+                else if (argListSyntax.Parent is ObjectCreationExpressionSyntax)
+                {
+                    var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(argListSyntax.Parent).Symbol;
+
+                    if (symbol != null)
+                    {
+                        throw new NotImplementedException();
+                        // Note: not verified code path
+                        return symbol.Parameters[argNum].Type;
+                    }
+
+                    var namedTypeSymbol = (INamedTypeSymbol)providers.SemanticModel.GetSymbolInfo((argListSyntax.Parent as ObjectCreationExpressionSyntax).Type).Symbol;
+
+                    if (namedTypeSymbol.TypeKind == TypeKind.Delegate)
+                    {
+                        return namedTypeSymbol;
+                    }
+
+                    throw new Exception($"Could not guess constructor for {namedTypeSymbol}.");
                 }
                 else
                 {

@@ -468,14 +468,14 @@ _M.ATN('CsLuaTest.ActionsFunctions','ActionsFunctionsTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local invokedValue = 0;
-                    local action = System.Action[{System.Int32.__typeof}]._C_0_34493836(System.Action[{System.Int32.__typeof, }]._C_0_16704(function(i)
+                    local action = System.Action[{System.Int32.__typeof}]._C_0_34493836(System.Action[{System.Int32.__typeof}]._C_0_16704(function(i)
                         invokedValue = i;
                     end));
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(true, System.Action[{System.Int32.__typeof}].__is(action));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Action[{System.Int32.__typeof}].__is(action));
                     ((action % _M.DOT).Invoke_M_0_3926 % _M.DOT)(43);
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(43, invokedValue);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(43, invokedValue);
                     (action % _M.DOT)(10);
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(10, invokedValue);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(10, invokedValue);
                 end
             });
             _M.IM(members, 'OtherTests', {
@@ -486,11 +486,11 @@ _M.ATN('CsLuaTest.ActionsFunctions','ActionsFunctionsTests', _M.NE({
                 numMethodGenerics = 0,
                 signatureHash = 0,
                 func = function(element)
-                    local r1 = ((CsLuaTest.ActionsFunctions.StaticClass % _M.DOT).ExpectFunc_M_0_59060040 % _M.DOT)(System.Func[{System.Int32.__typeof, System.String.__typeof, }]._C_0_16704(function(v) return ((v % _M.DOT).ToString_M_0_0 % _M.DOT)() end));
+                    local r1 = ((CsLuaTest.ActionsFunctions.StaticClass % _M.DOT).ExpectFunc_M_0_59060040 % _M.DOT)(System.Func[{System.Int32.__typeof, System.String.__typeof}]._C_0_16704(function(v) return ((v % _M.DOT).ToString_M_0_0 % _M.DOT)() end));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""int"", r1);
-                    local r2 = ((CsLuaTest.ActionsFunctions.StaticClass % _M.DOT).ExpectFunc_M_0_75172368 % _M.DOT)(System.Func[{System.Object.__typeof, System.String.__typeof, }]._C_0_16704(function(v) return ((v % _M.DOT).ToString_M_0_0 % _M.DOT)() end));
+                    local r2 = ((CsLuaTest.ActionsFunctions.StaticClass % _M.DOT).ExpectFunc_M_0_75172368 % _M.DOT)(System.Func[{System.Object.__typeof, System.String.__typeof}]._C_0_16704(function(v) return ((v % _M.DOT).ToString_M_0_0 % _M.DOT)() end));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""obj"", r2);
-                    local r3 = ((CsLuaTest.ActionsFunctions.StaticClass % _M.DOT).ExpectFunc_M_0_74961534 % _M.DOT)(System.Func[{System.Single.__typeof, System.String.__typeof, }]._C_0_16704(function(v) return ((v % _M.DOT).ToString_M_0_0 % _M.DOT)() end), true);
+                    local r3 = ((CsLuaTest.ActionsFunctions.StaticClass % _M.DOT).ExpectFunc_M_0_74961534 % _M.DOT)(System.Func[{System.Single.__typeof, System.String.__typeof}]._C_0_16704(function(v) return ((v % _M.DOT).ToString_M_0_0 % _M.DOT)() end), true);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""float"", r3);
                 end
             });
