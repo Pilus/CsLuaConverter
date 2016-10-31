@@ -32,7 +32,7 @@
             this.target.Visit(textWriter, providers);
 
             if (symbol.MethodKind != MethodKind.DelegateInvoke)
-            { 
+            {
                 textWriter.Write("_M_{0}_", symbol.TypeArguments.Length);
                 providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
             }

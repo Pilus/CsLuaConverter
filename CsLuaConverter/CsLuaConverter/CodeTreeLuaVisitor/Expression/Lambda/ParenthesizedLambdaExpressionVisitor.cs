@@ -2,6 +2,7 @@
 {
     using CodeTree;
     using Lists;
+    using Microsoft.CodeAnalysis;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
     using Microsoft.CodeAnalysis.CSharp;
@@ -20,6 +21,15 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
+            textWriter.Write("._C_0_16704"); // Lua.Function as argument
+            textWriter.Write("(function(");
+            this.parameters.Visit(textWriter, providers);
+            textWriter.Write(")");
+            throw new System.NotImplementedException();
+
+            /*
             var delegateType = providers.Context.ExpectedType;
 
             if (delegateType != null)
@@ -42,7 +52,7 @@
                 textWriter.AppendTextWriter(bodyWriter);
             }
             
-            providers.Context.CurrentType = delegateType;
+            providers.Context.CurrentType = delegateType; */
         }
 
         private void VisitParametersAndBody(IIndentedTextWriterWrapper textWriter, IProviders providers)

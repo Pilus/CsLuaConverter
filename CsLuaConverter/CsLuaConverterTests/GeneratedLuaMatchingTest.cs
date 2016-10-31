@@ -472,7 +472,7 @@ _M.ATN('CsLuaTest.ActionsFunctions','ActionsFunctionsTests', _M.NE({
                         invokedValue = i;
                     end));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Action[{System.Int32.__typeof}].__is(action));
-                    ((action % _M.DOT).Invoke_M_0_3926 % _M.DOT)(43);
+                    ((action % _M.DOT).Invoke % _M.DOT)(43);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(43, invokedValue);
                     (action % _M.DOT)(10);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(10, invokedValue);
