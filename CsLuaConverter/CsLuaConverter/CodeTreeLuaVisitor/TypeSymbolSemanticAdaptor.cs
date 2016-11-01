@@ -37,6 +37,11 @@
             return symbol.Kind == SymbolKind.TypeParameter;
         }
 
+        public bool IsMethodGeneric(ITypeSymbol symbol)
+        {
+            return (symbol as ITypeParameterSymbol)?.TypeParameterKind == TypeParameterKind.Method;
+        }
+
         public ITypeSymbol[] GetGenerics(ITypeSymbol symbol)
         {
             return ((INamedTypeSymbol)symbol).TypeArguments.ToArray();

@@ -21,7 +21,11 @@
             
             if (this.semanticAdaptor.IsGenericType(type))
             {
-                // TODO: Write correctly for method generics
+                if (this.semanticAdaptor.IsMethodGeneric(type))
+                {
+                    textWriter.Write("methodGenerics[methodGenericsMapping['{0}']]", this.semanticAdaptor.GetName(type));
+                    return;
+                }
                 textWriter.Write("generics[genericsMapping['{0}']]", this.semanticAdaptor.GetName(type));
                 return;
             }
@@ -31,18 +35,7 @@
             if (this.semanticAdaptor.HasTypeGenerics(type))
             {
                 var generics = this.semanticAdaptor.GetGenerics(type);
-                textWriter.Write("[{");
-                for (var i = 0; i < generics.Length; i++)
-                {
-                    if (i > 0)
-                    {
-                        textWriter.Write(", ");
-                    }
-
-                    this.WriteTypeReference(generics[i], textWriter);
-                }
-
-                textWriter.Write("}]");
+                this.WriteTypeReferences(generics, textWriter);
             }
         }
 
@@ -50,6 +43,22 @@
         {
             this.WriteInteractionElementReference(type, textWriter);
             textWriter.Write(".__typeof");
+        }
+
+        public void WriteTypeReferences(T[] types, IIndentedTextWriterWrapper textWriter)
+        {
+            textWriter.Write("[{");
+            for (var i = 0; i < types.Length; i++)
+            {
+                if (i > 0)
+                {
+                    textWriter.Write(", ");
+                }
+
+                this.WriteTypeReference(types[i], textWriter);
+            }
+
+            textWriter.Write("}]");
         }
     }
 }

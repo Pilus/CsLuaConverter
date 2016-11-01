@@ -116,7 +116,7 @@
             if (!symbol.ReturnsVoid)
             {
                 textWriter.Write("returnType = ");
-                this.returnTypeVisitor.WriteAsType(textWriter, providers);
+                providers.TypeReferenceWriter.WriteTypeReference(symbol.ReturnType, textWriter);
                 textWriter.WriteLine(",");
             }
             /*

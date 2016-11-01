@@ -37,6 +37,11 @@
                 providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
             }
 
+            if (symbol.TypeArguments.Any())
+            {
+                providers.TypeReferenceWriter.WriteTypeReferences(symbol.TypeArguments.ToArray(), textWriter);
+            }
+
             textWriter.Write(" % _M.DOT)");
 
             this.argumentList.Visit(textWriter, providers);

@@ -23,11 +23,14 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            textWriter.Write("return ");
-            providers.Context.CurrentType = null;
-            this.innerVisitor?.Visit(textWriter, providers);
+            textWriter.Write("return");
+            if (this.innerVisitor != null)
+            {
+                textWriter.Write(" ");
+                this.innerVisitor.Visit(textWriter, providers);
+            }
+            
             textWriter.WriteLine(";");
-            providers.Context.CurrentType = null;
         }
     }
 }

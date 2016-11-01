@@ -12,6 +12,8 @@
 
         bool IsGenericType(T symbol);
 
+        bool IsMethodGeneric(T symbol);
+
         T[] GetGenerics(T symbol);
 
         bool IsArray(T symbol);

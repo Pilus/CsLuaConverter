@@ -44,8 +44,14 @@
 
             if (this.semanticAdaptor.IsGenericType(type))
             {
-                // TODO: Give a static value (1) if it is a method generic.
-                components.Add(new SignatureComponent<T>(coefficient, type));
+                if (this.semanticAdaptor.IsMethodGeneric(type))
+                {
+                    components.Add(new SignatureComponent<T>(coefficient, 1));
+                }
+                else
+                {
+                    components.Add(new SignatureComponent<T>(coefficient, type));
+                }
 
                 return;
             }

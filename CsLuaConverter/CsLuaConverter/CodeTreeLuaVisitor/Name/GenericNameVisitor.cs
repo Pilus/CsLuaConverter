@@ -24,6 +24,12 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            textWriter.Write(this.name);
+            /*textWriter.Write("[");
+            this.argumentListVisitor.Visit(textWriter, providers);
+            textWriter.Write("]"); */
+
+            /*
             var current = providers.Context.CurrentType;
 
             if (current == null)
@@ -43,7 +49,7 @@
                 textWriter.Write(this.name);
                 providers.Context.PossibleMethods.WriteMethodGenerics = ((tw) => this.WriteGenericTypes(tw, providers));
                 providers.Context.PossibleMethods.MethodGenerics = this.argumentListVisitor.GetTypes(providers);
-            }
+            } */
         }
 
         public string[] GetName()

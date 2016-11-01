@@ -598,6 +598,504 @@ _M.ATN('CsLuaTest.ActionsFunctions','ActionsFunctionsTests', _M.NE({
         end
         return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
     end,
+}));
+_M.ATN('CsLuaTest.ActionsFunctions','ClassWithMethods', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('ClassWithMethods','CsLuaTest.ActionsFunctions', nil, 0, generics, nil, interactionElement, 'Class', 40013);
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = System.Object.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                scope = 'Public',
+                func = function(element)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                end,
+            });
+            _M.IM(members, 'MethodWithNoReturn', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = false,
+                numMethodGenerics = 0,
+                signatureHash = 3926,
+                func = function(element, value)
+                end
+            });
+            _M.IM(members, 'MethodWithReturn', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = false,
+                numMethodGenerics = 0,
+                signatureHash = 3926,
+                returnType = System.String.__typeof,
+                func = function(element, value)
+                    return ((value % _M.DOT).ToString_M_0_0 % _M.DOT)();
+                end
+            });
+            local methodGenericsMapping = {['T'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'MethodWithReturnAndGeneric', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = false,
+                numMethodGenerics = 1,
+                signatureHash = 2,
+                returnType = System.String.__typeof,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, value)
+                    return ((value % _M.DOT).ToString_M_0_0 % _M.DOT)();
+                end
+            });
+            _M.IM(members, 'StaticMethodWithNoReturn', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 3926,
+                func = function(element, value)
+                end
+            });
+            _M.IM(members, 'StaticMethodWithReturn', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 3926,
+                returnType = System.String.__typeof,
+                func = function(element, value)
+                    return ((value % _M.DOT).ToString_M_0_0 % _M.DOT)();
+                end
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
+}));
+_M.ATN('CsLuaTest.ActionsFunctions','StaticClass', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('StaticClass','CsLuaTest.ActionsFunctions', nil, 0, generics, nil, interactionElement, 'Class', 16575);
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = System.Object.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                scope = 'Public',
+                func = function(element)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                end,
+            });
+            _M.IM(members, 'ExpectFunc', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 75172368,
+                returnType = System.String.__typeof,
+                func = function(element, f)
+                    return ""obj"";
+                end
+            });
+            _M.IM(members, 'ExpectFunc', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 59060040,
+                returnType = System.String.__typeof,
+                func = function(element, f)
+                    return ""int"";
+                end
+            });
+            _M.IM(members, 'ExpectFunc', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 74961534,
+                returnType = System.String.__typeof,
+                func = function(element, f, extra)
+                    return ""float"";
+                end
+            });
+            local methodGenericsMapping = {['T'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ReturnInput', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 2,
+                returnType = methodGenerics[methodGenericsMapping['T']].__typeof,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, input)
+                    return input;
+                end
+            });
+            _M.IM(members, 'ExpectAction', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 34493836,
+                func = function(element, a)
+                    (a % _M.DOT)(43);
+                end
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
+}));
+_M.ATN('CsLuaTest.ActivatorImplementation','ActivatorTests', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('ActivatorTests','CsLuaTest.ActivatorImplementation', nil, 0, generics, nil, interactionElement, 'Class', 30527);
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = CsLuaTest.BaseTest.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                scope = 'Public',
+                func = function(element)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Name = ""Activator"";
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestCreateInstance""] = (element % _M.DOT_LVL(typeObject.Level)).TestCreateInstance;
+                end,
+            });
+            _M.IM(members, 'TestCreateInstance', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local type = CsLuaTest.ActivatorImplementation.Class1.__typeof;
+                    local value1 = ((System.Activator % _M.DOT).CreateInstance_M_0_3596 % _M.DOT)(type);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, CsLuaTest.ActivatorImplementation.Class1.__is(value1));
+                    local value2 = ((System.Activator % _M.DOT).CreateInstance_M_1_0[{CsLuaTest.ActivatorImplementation.Class1.__typeof}] % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, CsLuaTest.ActivatorImplementation.Class1.__is(value2));
+                end
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
+}));
+_M.ATN('CsLuaTest.ActivatorImplementation','Class1', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('Class1','CsLuaTest.ActivatorImplementation', nil, 0, generics, nil, interactionElement, 'Class', 3650);
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = System.Object.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                scope = 'Public',
+                func = function(element)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                end,
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
+}));
+_M.ATN('CsLuaTest.AmbigousMethods','AmbigousMethodsTests', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('AmbigousMethodsTests','CsLuaTest.AmbigousMethods', nil, 0, generics, nil, interactionElement, 'Class', 68195);
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = CsLuaTest.BaseTest.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                scope = 'Public',
+                func = function(element)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Name = ""AmbigousMethods"";
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestAmbiguousMethodWith1Arg""] = (element % _M.DOT_LVL(typeObject.Level)).TestAmbiguousMethodWith1Arg;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestAmbiguousMethodWith1ArgAndObject""] = (element % _M.DOT_LVL(typeObject.Level)).TestAmbiguousMethodWith1ArgAndObject;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestAmbiguousMethodWith1ArgAndClass""] = (element % _M.DOT_LVL(typeObject.Level)).TestAmbiguousMethodWith1ArgAndClass;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestAmbiguousMethodWithInterface""] = (element % _M.DOT_LVL(typeObject.Level)).TestAmbiguousMethodWithInterface;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestAmbiguousMethodWithInterfaceAndTwoArgs""] = (element % _M.DOT_LVL(typeObject.Level)).TestAmbiguousMethodWithInterfaceAndTwoArgs;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestAmbiguousMethodWithInheritance""] = (element % _M.DOT_LVL(typeObject.Level)).TestAmbiguousMethodWithInheritance;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestNullPickingCorrectMethods""] = (element % _M.DOT_LVL(typeObject.Level)).TestNullPickingCorrectMethods;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestAmbigousMethodsWithEnum""] = (element % _M.DOT_LVL(typeObject.Level)).TestAmbigousMethodsWithEnum;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestAmbigousMethodsWithGenerics""] = (element % _M.DOT_LVL(typeObject.Level)).TestAmbigousMethodsWithGenerics;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestNumberMethod""] = (element % _M.DOT_LVL(typeObject.Level)).TestNumberMethod;
+                end,
+            });
+            _M.IM(members, 'TestAmbiguousMethodWith1Arg', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local theClass = CsLuaTest.AmbigousMethods.ClassWithAmbigousMethods._C_0_0();
+                    ((theClass % _M.DOT).OneArg_M_0_3926 % _M.DOT)(0);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""OneArg_Int"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
+                    ((theClass % _M.DOT).OneArg_M_0_8736 % _M.DOT)(""Test"");
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""OneArg_String"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                end
+            });
+            _M.IM(members, 'TestAmbiguousMethodWith1ArgAndObject', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local theClass = CsLuaTest.AmbigousMethods.ClassWithAmbigousMethods._C_0_0();
+                    ((theClass % _M.DOT).OneArgWithObj_M_0_3926 % _M.DOT)(0);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""OneArgWithObj_Int"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
+                    ((theClass % _M.DOT).OneArgWithObj_M_0_8572 % _M.DOT)(""Test"");
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""OneArgWithObj_Object"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                end
+            });
+            _M.IM(members, 'TestAmbiguousMethodWith1ArgAndClass', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local theClass = CsLuaTest.AmbigousMethods.ClassWithAmbigousMethods._C_0_0();
+                    ((theClass % _M.DOT).OneArgWithClass_M_0_3926 % _M.DOT)(0);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""OneArgWithClass_Int"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
+                    ((theClass % _M.DOT).OneArgWithClass_M_0_7716 % _M.DOT)(CsLuaTest.AmbigousMethods.ClassA._C_0_0());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""OneArgWithClass_ClassA"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                end
+            });
+            _M.IM(members, 'TestAmbiguousMethodWithInterface', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local theClass = CsLuaTest.AmbigousMethods.ClassWithAmbigousMethods._C_0_0();
+                    ((theClass % _M.DOT).OneArgWithInterface_M_0_24220 % _M.DOT)(CsLuaTest.AmbigousMethods.ClassB1._C_0_0());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""OneArgWithInterface_InterfaceB"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
+                    ((theClass % _M.DOT).OneArgWithInterface_M_0_9442 % _M.DOT)(CsLuaTest.AmbigousMethods.ClassB2._C_0_0());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""OneArgWithInterface_ClassB2"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                end
+            });
+            _M.IM(members, 'TestAmbiguousMethodWithInterfaceAndTwoArgs', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local theClass = CsLuaTest.AmbigousMethods.ClassWithAmbigousMethods._C_0_0();
+                    ((theClass % _M.DOT).TwoArgsWithInterface_M_0_38383 % _M.DOT)(CsLuaTest.AmbigousMethods.ClassB1._C_0_0(), CsLuaTest.AmbigousMethods.ClassB2._C_0_0());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""OneArgWithInterface_InterfaceBClassB2"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                end
+            });
+            _M.IM(members, 'TestAmbiguousMethodWithInheritance', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local theClass = CsLuaTest.AmbigousMethods.ClassC2._C_0_0();
+                    ((theClass % _M.DOT).Method_M_0_8736 % _M.DOT)(""x"");
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Method_string"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
+                    ((theClass % _M.DOT).Method_M_0_3926 % _M.DOT)(10);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Method_int"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
+                    ((theClass % _M.DOT).Method_M_0_12036 % _M.DOT)(true);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Method_bool"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                end
+            });
+            _M.IM(members, 'TestNullPickingCorrectMethods', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local theClass = CsLuaTest.AmbigousMethods.ClassWithAmbigousMethods._C_0_0();
+                    ((theClass % _M.DOT).NullPicking1_M_0_24220 % _M.DOT)(nil);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""NullPicking1_InterfaceB"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                end
+            });
+            _M.IM(members, 'TestAmbigousMethodsWithEnum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local theClass = CsLuaTest.AmbigousMethods.ClassWithEnumMethod._C_0_0();
+                    ((theClass % _M.DOT).EnumMethod_M_0_5062 % _M.DOT)((CsLuaTest.AmbigousMethods.EnumA % _M.DOT).Value1);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""MethodEnumA"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
+                    ((theClass % _M.DOT).EnumMethod_M_0_5084 % _M.DOT)((CsLuaTest.AmbigousMethods.EnumB % _M.DOT).Something);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""MethodEnumB"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                end
+            });
+            _M.IM(members, 'TestAmbigousMethodsWithGenerics', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local theClass = CsLuaTest.AmbigousMethods.ClassWithAmbigousMethods._C_0_0();
+                    ((theClass % _M.DOT).GenericPicking_M_0_1102377240 % _M.DOT)(CsLuaTest.AmbigousMethods.ClassWithGenerics[{System.Boolean.__typeof}]._C_0_0());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""GenericPicking_bool"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
+                    ((theClass % _M.DOT).GenericPicking_M_0_359582340 % _M.DOT)(CsLuaTest.AmbigousMethods.ClassWithGenerics[{System.Int32.__typeof}]._C_0_0());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""GenericPicking_int"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                end
+            });
+            _M.IM(members, 'TestNumberMethod', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local theClass = CsLuaTest.AmbigousMethods.ClassWithAmbigousMethods._C_0_0();
+                    ((theClass % _M.DOT).GenericPickingNumber_M_0_8482 % _M.DOT)(4);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""GenericPickingNumber_double"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
+                    ((theClass % _M.DOT).GenericPickingNumber_M_0_8482 % _M.DOT)(4.5);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""GenericPickingNumber_double"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                end
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
 }));";
+
+
     }
 }
