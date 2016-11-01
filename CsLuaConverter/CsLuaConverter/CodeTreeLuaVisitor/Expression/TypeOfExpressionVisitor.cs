@@ -1,7 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using System;
+    using System.Linq;
     using CodeTree;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
@@ -20,8 +22,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            this.typeVisitor.WriteAsType(textWriter, providers);
-            providers.Context.CurrentType = new TypeKnowledge(typeof(Type));
+            var symbol = (ITypeSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode.ChildNodes().Single()).Symbol;
+            providers.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
         }
     }
 }

@@ -2,8 +2,8 @@
 {
     public interface ITypeReferenceWriter<T>
     {
-        void WriteInteractionElementReference(T genericType, IIndentedTextWriterWrapper writer);
+        void WriteInteractionElementReference(T typeSymbol, IIndentedTextWriterWrapper writer);
 
-        void WriteTypeReference(T genericType, IIndentedTextWriterWrapper writer);
+        void WriteTypeReference(T typeSymbol, IIndentedTextWriterWrapper writer);
     }
 }
