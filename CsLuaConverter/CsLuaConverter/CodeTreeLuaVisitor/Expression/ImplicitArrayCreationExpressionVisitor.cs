@@ -5,7 +5,7 @@
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-
+    using Microsoft.CodeAnalysis;
     public class ImplicitArrayCreationExpressionVisitor : BaseVisitor
     {
         private readonly ArrayInitializerExpressionVisitor creationExpression;
@@ -16,16 +16,11 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-
-            var creationWriter = textWriter.CreateTextWriterAtSameIndent();
-            this.creationExpression.Visit(creationWriter, providers);
-
-            var arrayType = providers.Context.CurrentType;
-
             textWriter.Write("(");
-            arrayType.WriteAsReference(textWriter, providers);
+            var symbol = providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode);
+            /// arrayType.WriteAsReference(textWriter, providers);
             textWriter.Write("._C_0_0()%_M.DOT)");
-            textWriter.AppendTextWriter(creationWriter);
+            this.creationExpression.Visit(textWriter, providers);
         }
     }
 }

@@ -36,9 +36,7 @@
                 return;
             }
 
-            var currentType = providers.Context.CurrentType;
             this.initializer.Visit(textWriter, providers);
-            providers.Context.CurrentType = currentType;
         }
     }
 }

@@ -130,7 +130,7 @@
                 textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", this.GetNumOfGenerics());
                 textWriter.Indent++;
 
-                this.RegisterGenerics(providers);
+                //this.RegisterGenerics(providers);
                 this.WriteGenericsMapping(textWriter, providers);
                 this.WriteTypeGeneration(textWriter, providers);
                 this.WriteBaseInheritance(textWriter, providers);

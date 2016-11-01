@@ -6,6 +6,8 @@
     using Filters;
     using Member;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Providers;
     using Providers.TypeKnowledgeRegistry;
 
@@ -35,9 +37,12 @@
             textWriter.Indent--;
             textWriter.WriteLine("");
 
-            var type = providers.TypeProvider.LookupType(this.name);
-            textWriter.Write($"}},'{this.name}','{type.Namespace}',");
-            new TypeKnowledge(type.TypeObject).WriteSignature(textWriter, providers);
+            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as EnumDeclarationSyntax);
+            var namespaceName = providers.SemanticAdaptor.GetFullNamespace(symbol);
+            var name = providers.SemanticAdaptor.GetName(symbol);
+
+            textWriter.Write($"}},'{name}','{namespaceName}',");
+            providers.SignatureWriter.WriteSignature(symbol, textWriter);
             textWriter.WriteLine("),");
         }
 

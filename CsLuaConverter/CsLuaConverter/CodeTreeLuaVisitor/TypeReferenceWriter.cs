@@ -16,7 +16,10 @@
         {
             if (this.semanticAdaptor.IsArray(type))
             {
-                throw new NotImplementedException();
+                textWriter.Write("System.Array[{");
+                this.WriteTypeReference(this.semanticAdaptor.GetArrayGeneric(type), textWriter);
+                textWriter.Write("}]");
+                return;
             }
             
             if (this.semanticAdaptor.IsGenericType(type))
@@ -42,7 +45,10 @@
         public void WriteTypeReference(T type, IIndentedTextWriterWrapper textWriter)
         {
             this.WriteInteractionElementReference(type, textWriter);
-            textWriter.Write(".__typeof");
+            if (!this.semanticAdaptor.IsGenericType(type))
+            {
+                textWriter.Write(".__typeof");
+            }
         }
 
         public void WriteTypeReferences(T[] types, IIndentedTextWriterWrapper textWriter)

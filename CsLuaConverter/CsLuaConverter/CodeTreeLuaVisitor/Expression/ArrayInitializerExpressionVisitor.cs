@@ -33,24 +33,11 @@
                 textWriter.Write("[0] = ");
             }
 
-            var initializingType = providers.Context.CurrentType;
-
-            providers.Context.CurrentType = null;
             this.elementVisitors.VisitAll(textWriter, providers, () =>
             {
                 textWriter.Write(", ");
-                providers.Context.CurrentType = null;
             });
             textWriter.Write("})");
-
-            providers.Context.CurrentType = initializingType ?? providers.Context.CurrentType;
-
-            if (providers.Context.CurrentType.IsArray())
-            {
-                return;
-            }
-
-            providers.Context.CurrentType = providers.Context.CurrentType.GetAsArrayType();
         }
     }
 }
