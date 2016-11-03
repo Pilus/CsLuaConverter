@@ -6,7 +6,7 @@
     <ProjectGuid>{E1D96749-5BF9-4B04-81A1-9D4B3B1F6BF4}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AssemblyName>CsLuaConverter</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <SolutionDir Condition="'$(SolutionDir)' == '' OR '$(SolutionDir)' == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <OutputPath>Binaries\$(Configuration)\</OutputPath>
@@ -25,29 +25,53 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup Label="File References">
     <Reference Include="Microsoft.Build" />
     <Reference Include="Microsoft.CodeAnalysis">
-      <HintPath>.\Microsoft.CodeAnalysis.dll</HintPath>
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.1.3.2\lib\net45\Microsoft.CodeAnalysis.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp">
-      <HintPath>.\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.1.3.2\lib\net45\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces">
-      <HintPath>.\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.Workspaces.1.3.2\lib\net45\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.Workspaces">
-      <HintPath>.\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.3.2\lib\net45\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces.Desktop, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.3.2\lib\net45\Microsoft.CodeAnalysis.Workspaces.Desktop.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Collections.Immutable">
-      <HintPath>.\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Convention, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Hosting, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Runtime, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Linq" />
-    <Reference Include="System.Reflection.Metadata">
-      <HintPath>.\System.Reflection.Metadata.dll</HintPath>
-    </Reference>
     <Reference Include="System.XML" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -114,6 +138,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\LogicalOrExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\ModuloExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\RightShiftExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\ConditionalAccessExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ConditionalExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\ILambdaVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\SimpleLambdaExpressionVisitor.cs" />
@@ -295,6 +320,7 @@
     <Compile Include="WrappingException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="CopyLuaToOutput.ps1" />
     <None Include="Lua\Meta\Add.lua" />
     <None Include="Lua\Meta\AddToNamespace.lua" />
@@ -347,6 +373,7 @@
     <None Include="Lua\System\String.lua" />
     <None Include="Lua\System\Object.lua" />
     <None Include="Lua\System\SystemImplementation.lua" />
+    <None Include="packages.config" />
     <None Include="SystemImplementation.types">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -374,7 +401,10 @@
   <ItemGroup>
     <None Include="Lua\Meta\Extensions.lua" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+  </ItemGroup>
   <ImportGroup Label="Targets">
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

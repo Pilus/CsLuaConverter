@@ -49,7 +49,7 @@
 
         public bool IsArray(ITypeSymbol symbol)
         {
-            return symbol.TypeKind == TypeKind.ArrayType;
+            return symbol.TypeKind == TypeKind.Array;
         }
 
         public ITypeSymbol GetArrayGeneric(ITypeSymbol symbol)
