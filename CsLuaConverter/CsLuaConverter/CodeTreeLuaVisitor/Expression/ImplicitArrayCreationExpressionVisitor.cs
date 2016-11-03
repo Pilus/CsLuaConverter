@@ -17,9 +17,8 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("(");
-            var symbol = providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode);
-            /// arrayType.WriteAsReference(textWriter, providers);
-            textWriter.Write("._C_0_0()%_M.DOT)");
+            textWriter.Write("System.Array[{System.Object.__typeof}]"); // Writing every implicit array as object[], since the symbol is not available.
+            textWriter.Write("._C_0_0() % _M.DOT)");
             this.creationExpression.Visit(textWriter, providers);
         }
     }
