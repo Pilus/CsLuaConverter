@@ -5,6 +5,7 @@
 
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     using Providers;
     using Providers.GenericsRegistry;
@@ -24,18 +25,22 @@
         {
             var symbol = providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
 
+            var classNode = GetClassDeclarionSyntax(this.Branch.SyntaxNode);
+            var classSymbol = (ITypeSymbol)providers.SemanticModel.GetDeclaredSymbol(classNode);
+
             var previousToken = this.Branch.SyntaxNode.GetFirstToken().GetPreviousToken();
             var previousPreviousToken = previousToken.GetPreviousToken();
 
             var identifierHasThisOrBaseReference = 
-                !previousToken.IsKind(SyntaxKind.DotToken) ||
+                previousToken.IsKind(SyntaxKind.DotToken) && (
                 previousPreviousToken.IsKind(SyntaxKind.ThisKeyword) || 
-                previousPreviousToken.IsKind(SyntaxKind.BaseKeyword);
+                previousPreviousToken.IsKind(SyntaxKind.BaseKeyword));
 
-            var identifierIsReferencingOnThis = (symbol.Kind == SymbolKind.Property || symbol.Kind == SymbolKind.Field
-                                                 || symbol.Kind == SymbolKind.Method);
+            var identifierIsReferencingOnThis = 
+                (symbol.Kind == SymbolKind.Property || symbol.Kind == SymbolKind.Field || symbol.Kind == SymbolKind.Method) &&
+                IsDeclaringTypeThisOrBase(GetDeclaringSymbol(symbol), classSymbol);
 
-            if (identifierIsReferencingOnThis && identifierHasThisOrBaseReference)
+            if (identifierIsReferencingOnThis || identifierHasThisOrBaseReference)
             {
                 textWriter.Write("(element % _M.DOT_LVL(typeObject.Level)).");
             }
@@ -107,6 +112,36 @@
 
             // It is a namespace.
             providers.Context.NamespaceReference = new[] { this.text }; */
+        }
+
+        private static SyntaxNode GetClassDeclarionSyntax(SyntaxNode node)
+        {
+            if (node is ClassDeclarationSyntax)
+            {
+                return node;
+            }
+
+            return GetClassDeclarionSyntax(node.Parent);
+        }
+
+        private static bool IsDeclaringTypeThisOrBase(ITypeSymbol declaredType, ITypeSymbol thisSymbol)
+        {
+            if (Equals(thisSymbol, declaredType))
+            {
+                return true;
+            }
+
+            if (thisSymbol.BaseType == null)
+            {
+                return false;
+            }
+
+            return IsDeclaringTypeThisOrBase(declaredType, thisSymbol.BaseType);
+        }
+
+        private static ITypeSymbol GetDeclaringSymbol(ISymbol symbol)
+        {
+            throw new System.NotImplementedException();
         }
 
         public new void WriteAsType(IIndentedTextWriterWrapper textWriter, IProviders providers)
