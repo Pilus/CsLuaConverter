@@ -41,9 +41,6 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-
-            
-
             textWriter.WriteLine("_M.IM(members,'#',{");
             textWriter.Indent++;
             textWriter.WriteLine("level = typeObject.Level,");
@@ -52,15 +49,9 @@
 
             if (!this.accessorList.IsAutoProperty())
             {
-                var scope = providers.NameProvider.CloneScope();
-
                 var indexerParameter = this.indexerParameter.GetName();
                 this.accessorList.SetAdditionalParameters("," + indexerParameter, "," + indexerParameter);
-                providers.NameProvider.AddToScope(new ScopeElement(indexerParameter,
-                    providers.Context.CurrentType));
                 this.accessorList.Visit(textWriter, providers);
-
-                providers.NameProvider.SetScope(scope);
             }
             else
             {

@@ -42,7 +42,14 @@
 
             if ((!isFollowingDot || identifierHasThisOrBaseReference) && isPropertyFieldOrMethod && IsDeclaringTypeThisOrBase(symbol.ContainingType, classSymbol))
             {
-                textWriter.Write("(element % _M.DOT_LVL(typeObject.Level)).");
+                if (previousPreviousToken.IsKind(SyntaxKind.BaseKeyword))
+                {
+                    textWriter.Write("(element % _M.DOT_LVL(typeObject.Level - 1, true)).");
+                }
+                else
+                {
+                    textWriter.Write("(element % _M.DOT_LVL(typeObject.Level)).");
+                }
             }
 
             if (symbol.Kind == SymbolKind.NamedType)

@@ -30,12 +30,9 @@
                 return;
             }
 
-            var scope = providers.NameProvider.CloneScope();
-            providers.NameProvider.AddToScope(new ScopeElement("value", providers.Context.CurrentType));
             textWriter.WriteLine($"set = function(element{this.AdditionalParameters} , value)");
             this.block.Visit(textWriter, providers);
             textWriter.WriteLine("end,");
-            providers.NameProvider.SetScope(scope);
         }
     
         public bool IsAutoProperty()

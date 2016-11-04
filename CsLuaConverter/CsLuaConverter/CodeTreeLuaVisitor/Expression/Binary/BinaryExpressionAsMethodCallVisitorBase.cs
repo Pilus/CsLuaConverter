@@ -21,17 +21,11 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write($"{this.methodName}(");
-            providers.Context.CurrentType = null;
             this.lhsVisitor.Visit(textWriter, providers);
-            var lhsType = providers.Context.CurrentType;
 
             textWriter.Write(", ");
-            providers.Context.CurrentType = null;
             this.rhsVisitor.Visit(textWriter, providers);
-
             textWriter.Write(")");
-
-            providers.Context.CurrentType = lhsType;
         }
     }
 }
