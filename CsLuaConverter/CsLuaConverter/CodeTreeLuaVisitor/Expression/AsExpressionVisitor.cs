@@ -19,12 +19,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            //this.type.WriteAsReference(textWriter, providers);
-            //textWriter.Write(".__as(");
-            providers.Context.CurrentType = null;
             this.target.Visit(textWriter, providers);
-            //textWriter.Write(")");
-            providers.Context.CurrentType = this.type.GetType(providers);
         }
     }
 }

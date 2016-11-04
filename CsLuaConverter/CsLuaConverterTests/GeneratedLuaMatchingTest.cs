@@ -2079,8 +2079,352 @@ _M.ATN('CsLuaTest.Arrays','ClassWithPredefinedArray', _M.NE({
         end
         return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
     end,
+}));
+_M.ATN('CsLuaTest.Collections','ClassWithProperties', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('ClassWithProperties','CsLuaTest.Collections', nil, 0, generics, nil, interactionElement, 'Class', 60988);
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = System.Object.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+                Number = _M.DV(System.Int32.__typeof),
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+            if not(values.Number == nil) then element[typeObject.Level].Number = values.Number; end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                scope = 'Public',
+                func = function(element)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                end,
+            });
+            _M.IM(members, 'Number', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = false,
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
+}));
+_M.ATN('CsLuaTest.Collections','CollectionsTests', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('CollectionsTests','CsLuaTest.Collections', nil, 0, generics, nil, interactionElement, 'Class', 41177);
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = CsLuaTest.BaseTest.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                scope = 'Public',
+                func = function(element)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Name = ""Collections"";
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestListInterfaces""] = (element % _M.DOT_LVL(typeObject.Level)).TestListInterfaces;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestListImplementation""] = (element % _M.DOT_LVL(typeObject.Level)).TestListImplementation;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestDictionaryInterfaces""] = (element % _M.DOT_LVL(typeObject.Level)).TestDictionaryInterfaces;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestCountAndAny""] = (element % _M.DOT_LVL(typeObject.Level)).TestCountAndAny;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestSelect""] = (element % _M.DOT_LVL(typeObject.Level)).TestSelect;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestUnion""] = (element % _M.DOT_LVL(typeObject.Level)).TestUnion;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestOrderBy""] = (element % _M.DOT_LVL(typeObject.Level)).TestOrderBy;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestOfLinqOfType""] = (element % _M.DOT_LVL(typeObject.Level)).TestOfLinqOfType;
+                end,
+            });
+            _M.IM(members, 'TestListInterfaces', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local list = System.Collections.Generic.List[{System.Int32.__typeof}]._C_0_0();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.IList.__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.Generic.IList[{System.Int32.__typeof}].__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.ICollection.__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.Generic.ICollection[{System.Int32.__typeof}].__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.IEnumerable.__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.Generic.IEnumerable[{System.Int32.__typeof}].__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.Generic.IReadOnlyList[{System.Int32.__typeof}].__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.Generic.IReadOnlyCollection[{System.Int32.__typeof}].__is(list));
+                end
+            });
+            _M.IM(members, 'TestListImplementation', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local list = System.Collections.Generic.List[{System.Int32.__typeof}]._C_0_0();
+                    local iList = list;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(0, (list % _M.DOT).Capacity);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(0, (list % _M.DOT).Count);
+                    ((list % _M.DOT).Add_M_0_3926 % _M.DOT)(43);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(4, (list % _M.DOT).Capacity);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(1, (list % _M.DOT).Count);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(false, (iList % _M.DOT).IsFixedSize);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(false, (iList % _M.DOT).IsReadOnly);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(false, (iList % _M.DOT).IsSynchronized);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(false, (iList % _M.DOT).SyncRoot == nil);
+                    ((list % _M.DOT).Add_M_0_3926 % _M.DOT)(5);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(2, ((iList % _M.DOT).Add_M_0_8572 % _M.DOT)(50));
+                    ((list % _M.DOT).Add_M_0_3926 % _M.DOT)(75);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(4, (list % _M.DOT).Count);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(43, (list % _M.DOT)[0]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(5, (list % _M.DOT)[1]);
+                    (list % _M.DOT)[1] = 6;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(6, (list % _M.DOT)[1]);
+                    _M.Try(
+                        function()
+                            local x = (list % _M.DOT)[-1];
+                            _M.Throw(System.Exception._C_0_8736(""Expected IndexOutOfRangeException""));
+                        end,
+                        {
+                            {
+                                type = System.ArgumentOutOfRangeException.__typeof,
+                                func = function(ex)
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Index was out of range. Must be non-negative and less than the size of the collection.\r\nParameter name: index"", (ex % _M.DOT).Message);
+                                end,
+                            },
+                        },
+                        nil
+                    );
+                    _M.Try(
+                        function()
+                            (list % _M.DOT)[4] = 10;
+                            _M.Throw(System.Exception._C_0_8736(""Expected IndexOutOfRangeException""));
+                        end,
+                        {
+                            {
+                                type = System.ArgumentOutOfRangeException.__typeof,
+                                func = function(ex)
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Index was out of range. Must be non-negative and less than the size of the collection.\r\nParameter name: index"", (ex % _M.DOT).Message);
+                                end,
+                            },
+                        },
+                        nil
+                    );
+                    local verificationList = System.Collections.Generic.List[{System.Int32.__typeof}]._C_0_0();
+                    for _,item in (list % _M.DOT).GetEnumerator() do
+                        ((verificationList % _M.DOT).Add_M_0_3926 % _M.DOT)(item);
+                    end
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)((list % _M.DOT).Count, (verificationList % _M.DOT).Count);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)((list % _M.DOT)[0], (verificationList % _M.DOT)[0]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)((list % _M.DOT)[1], (verificationList % _M.DOT)[1]);
+                    local list2 = System.Collections.Generic.List[{System.Int32.__typeof}]._C_0_129809264((System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 7, 9, 13}));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(3, (list2 % _M.DOT).Count);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(7, (list2 % _M.DOT)[0]);
+                    ((list2 % _M.DOT).AddRange_M_0_129809264 % _M.DOT)((System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 21, 28}));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(5, (list2 % _M.DOT).Count);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(21, (list2 % _M.DOT)[3]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(28, (list2 % _M.DOT)[4]);
+                    ((list2 % _M.DOT).Clear_M_0_0 % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(0, (list2 % _M.DOT).Count);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, ((list % _M.DOT).Contains_M_0_3926 % _M.DOT)(6));
+                    ((list % _M.DOT).Add_M_0_3926 % _M.DOT)(6);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(6, ((list % _M.DOT).Find_M_0_81071900 % _M.DOT)(System.Predicate[{System.Int32.__typeof}]._C_0_16704(function(i) return i == 6 end)));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(1, ((list % _M.DOT).FindIndex_M_0_81071900 % _M.DOT)(System.Predicate[{System.Int32.__typeof}]._C_0_16704(function(i) return i == 6 end)));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(6, ((list % _M.DOT).FindLast_M_0_81071900 % _M.DOT)(System.Predicate[{System.Int32.__typeof}]._C_0_16704(function(i) return i == 6 end)));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(4, ((list % _M.DOT).FindLastIndex_M_0_81071900 % _M.DOT)(System.Predicate[{System.Int32.__typeof}]._C_0_16704(function(i) return i == 6 end)));
+                    local all = ((list % _M.DOT).FindAll_M_0_81071900 % _M.DOT)(System.Predicate[{System.Int32.__typeof}]._C_0_16704(function(i) return i == 6 end));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(2, (all % _M.DOT).Count);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(6, (all % _M.DOT)[0]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(6, (all % _M.DOT)[1]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(1, ((list % _M.DOT).IndexOf_M_0_3926 % _M.DOT)(6));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(-1, ((list % _M.DOT).IndexOf_M_0_3926 % _M.DOT)(500));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(4, ((list % _M.DOT).LastIndexOf_M_0_3926 % _M.DOT)(6));
+                    ((list % _M.DOT).Insert_M_0_9815 % _M.DOT)(1, 24);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(6, (list % _M.DOT).Count);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(24, (list % _M.DOT)[1]);
+                    local res = ((list % _M.DOT).GetRange_M_0_9815 % _M.DOT)(1, 2);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(2, (res % _M.DOT).Count);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(24, (res % _M.DOT)[0]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(6, (res % _M.DOT)[1]);
+                    ((list % _M.DOT).InsertRange_M_0_194717822 % _M.DOT)(1, (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 110, 120}));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(8, (list % _M.DOT).Count);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(110, (list % _M.DOT)[1]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(120, (list % _M.DOT)[2]);
+                    ((list % _M.DOT).RemoveRange_M_0_9815 % _M.DOT)(2, 2);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(6, (list % _M.DOT).Count);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(110, (list % _M.DOT)[1]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(6, (list % _M.DOT)[2]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(50, (list % _M.DOT)[3]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, ((list % _M.DOT).Remove_M_0_3926 % _M.DOT)(50));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(false, ((list % _M.DOT).Remove_M_0_3926 % _M.DOT)(50));
+                end
+            });
+            _M.IM(members, 'TestDictionaryInterfaces', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local list = System.Collections.Generic.Dictionary[{System.Int32.__typeof, System.String.__typeof}]._C_0_0();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.IDictionary.__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.Generic.IDictionary[{System.Int32.__typeof, System.String.__typeof}].__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.ICollection.__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.Generic.ICollection[{System.Collections.Generic.KeyValuePair[{System.Int32.__typeof, System.String.__typeof}].__typeof}].__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.IEnumerable.__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.Generic.IEnumerable[{System.Collections.Generic.KeyValuePair[{System.Int32.__typeof, System.String.__typeof}].__typeof}].__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.Generic.IReadOnlyDictionary[{System.Int32.__typeof, System.String.__typeof}].__is(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.Generic.IReadOnlyCollection[{System.Collections.Generic.KeyValuePair[{System.Int32.__typeof, System.String.__typeof}].__typeof}].__is(list));
+                end
+            });
+            _M.IM(members, 'TestCountAndAny', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, ((a % _M.DOT).Any_M_1_0[{System.Int32.__typeof}] % _M.DOT)());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(6, ((a % _M.DOT).Count_M_1_0[{System.Int32.__typeof}] % _M.DOT)());
+                    local list = System.Collections.Generic.List[{System.String.__typeof}]._C_0_0();
+                    ((list % _M.DOT).Add_M_0_8736 % _M.DOT)(""a"");
+                    ((list % _M.DOT).Add_M_0_8736 % _M.DOT)(""b"");
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, ((list % _M.DOT).Any_M_1_0[{System.String.__typeof}] % _M.DOT)());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(2, ((list % _M.DOT).Count_M_1_0[{System.String.__typeof}] % _M.DOT)());
+                    local enumerable = ((a % _M.DOT).Where_M_1_76226640[{System.Int32.__typeof}] % _M.DOT)(System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(e) return e > 10 and e < 50 end));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(2, ((enumerable % _M.DOT).Count_M_1_0[{System.Int32.__typeof}] % _M.DOT)());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(2, ((enumerable % _M.DOT).Count_M_1_0[{System.Int32.__typeof}] % _M.DOT)());
+                    local enumerable2 = ((list % _M.DOT).Where_M_1_92907720[{System.String.__typeof}] % _M.DOT)(System.Func[{System.String.__typeof, System.Boolean.__typeof}]._C_0_16704(function(e) return (e % _M.DOT).Length == 1 end));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(2, ((enumerable2 % _M.DOT).Count_M_1_0[{System.String.__typeof}] % _M.DOT)());
+                    ((list % _M.DOT).Add_M_0_8736 % _M.DOT)(""c"");
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(3, ((enumerable2 % _M.DOT).Count_M_1_0[{System.String.__typeof}] % _M.DOT)());
+                end
+            });
+            _M.IM(members, 'TestSelect', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
+                    local l1 = ((((a % _M.DOT).Select_M_2_59060040[{System.Int32.__typeof, System.String.__typeof}] % _M.DOT)(System.Func[{System.Int32.__typeof, System.String.__typeof}]._C_0_16704(function(v) return ((v % _M.DOT).ToString_M_0_0 % _M.DOT)() end)) % _M.DOT).ToList_M_1_0[{System.String.__typeof}] % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.Generic.List[{System.String.__typeof}].__is(l1));
+                    local l2 = ((((a % _M.DOT).Select_M_2_57863580[{System.Int32.__typeof, System.Single.__typeof}] % _M.DOT)((element % _M.DOT_LVL(typeObject.Level)).ToFloat) % _M.DOT).ToList_M_1_0[{System.Single.__typeof}] % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, System.Collections.Generic.List[{System.Single.__typeof}].__is(l2));
+                end
+            });
+            _M.IM(members, 'TestUnion', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 1, 3, 5, 7});
+                    local b = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 3, 9, 11, 7});
+                    local result = ((((a % _M.DOT).Union_M_1_129809264[{System.Int32.__typeof}] % _M.DOT)(b) % _M.DOT).ToArray_M_1_0[{System.Int32.__typeof}] % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(6, (result % _M.DOT).Length);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(1, (result % _M.DOT)[0]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(3, (result % _M.DOT)[1]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(5, (result % _M.DOT)[2]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(7, (result % _M.DOT)[3]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(9, (result % _M.DOT)[4]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(11, (result % _M.DOT)[5]);
+                end
+            });
+            _M.IM(members, 'TestOrderBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local input = (System.Array[{CsLuaTest.Collections.ClassWithProperties.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = (CsLuaTest.Collections.ClassWithProperties._C_0_0() % _M.DOT).__Initialize({Number = 13}), (CsLuaTest.Collections.ClassWithProperties._C_0_0() % _M.DOT).__Initialize({Number = 7}), (CsLuaTest.Collections.ClassWithProperties._C_0_0() % _M.DOT).__Initialize({Number = 9}), (CsLuaTest.Collections.ClassWithProperties._C_0_0() % _M.DOT).__Initialize({Number = 5})});
+                    local ordered = ((((input % _M.DOT).OrderBy_M_2_443435820[{CsLuaTest.Collections.ClassWithProperties.__typeof, System.Int32.__typeof}] % _M.DOT)(System.Func[{CsLuaTest.Collections.ClassWithProperties.__typeof, System.Int32.__typeof}]._C_0_16704(function(v) return (v % _M.DOT).Number end)) % _M.DOT).ToArray_M_1_0[{CsLuaTest.Collections.ClassWithProperties.__typeof}] % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(5, ((ordered % _M.DOT)[0] % _M.DOT).Number);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(7, ((ordered % _M.DOT)[1] % _M.DOT).Number);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(9, ((ordered % _M.DOT)[2] % _M.DOT).Number);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(13, ((ordered % _M.DOT)[3] % _M.DOT).Number);
+                end
+            });
+            _M.IM(members, 'TestOfLinqOfType', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local mixedCollection = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 1, 2, ""c"", true, ""e"", 6});
+                    local ints = ((((mixedCollection % _M.DOT).OfType_M_1_0[{System.Int32.__typeof}] % _M.DOT)() % _M.DOT).ToArray_M_1_0[{System.Int32.__typeof}] % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(3, (ints % _M.DOT).Length);
+                    local strings = ((((mixedCollection % _M.DOT).OfType_M_1_0[{System.String.__typeof}] % _M.DOT)() % _M.DOT).ToArray_M_1_0[{System.String.__typeof}] % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(2, (strings % _M.DOT).Length);
+                end
+            });
+            _M.IM(members, 'ToFloat', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 3926,
+                returnType = System.Single.__typeof,
+                func = function(element, value)
+                    return value;
+                end
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
 }));";
 
-
+/*
+_M.ATN('CsLuaTest.Collections','ClassWithProperties', _M.NE({
+    
+}))
+    */
     }
 }
