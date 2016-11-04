@@ -2419,12 +2419,307 @@ _M.ATN('CsLuaTest.Collections','CollectionsTests', _M.NE({
         end
         return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
     end,
+}));
+_M.ATN('CsLuaTest.Constructors','Class1', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('Class1','CsLuaTest.Constructors', nil, 0, generics, nil, interactionElement, 'Class', 3650);
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = System.Object.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+                Value = _M.DV(System.String.__typeof),
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+            if not(values.Value == nil) then element[typeObject.Level].Value = values.Value; end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                scope = 'Public',
+                func = function(element)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Value = ""null"";
+                end,
+            });
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 8736,
+                scope = 'Public',
+                func = function(element, val)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Value = ""str""  +_M.Add+  val;
+                end,
+            });
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 3926,
+                scope = 'Public',
+                func = function(element, val)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Value = ""int""  +_M.Add+  val;
+                end,
+            });
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 8572,
+                scope = 'Public',
+                func = function(element, val)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Value = ""object""  +_M.Add+  val;
+                end,
+            });
+            _M.IM(members, 'Value', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = false,
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
+}));
+_M.ATN('CsLuaTest.Constructors','Class2', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('Class2','CsLuaTest.Constructors', nil, 0, generics, nil, interactionElement, 'Class', 3663);
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = System.Object.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+                Result = _M.DV(System.String.__typeof),
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+            if not(values.Result == nil) then element[typeObject.Level].Result = values.Result; end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 8736,
+                scope = 'Public',
+                func = function(element, s1)
+                    (element % _M.DOT_LVL(typeObject.Level))._C_0_21840(""this1"", ""this2"");
+                    (element % _M.DOT_LVL(typeObject.Level)).Result = (element % _M.DOT_LVL(typeObject.Level)).Result +_M.Add+ s1;
+                end,
+            });
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 21840,
+                scope = 'Public',
+                func = function(element, s1, s2)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Result = (element % _M.DOT_LVL(typeObject.Level)).Result +_M.Add+ s1  +_M.Add+  s2;
+                end,
+            });
+            _M.IM(members, 'Result', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = false,
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
+}));
+_M.ATN('CsLuaTest.Constructors','Class3', _M.NE({
+    [1] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {['T'] = 1};
+        local typeObject = System.Type('Class3','CsLuaTest.Constructors', nil, 1, generics, nil, interactionElement, 'Class', (7352*generics[genericsMapping['T']].signatureHash));
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = System.Object.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+                Str = _M.DV(System.String.__typeof),
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+            if not(values.Str == nil) then element[typeObject.Level].Str = values.Str; end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = (2*generics[genericsMapping['T']].signatureHash),
+                scope = 'Public',
+                func = function(element, value)
+                    (element % _M.DOT_LVL(typeObject.Level))['_C_0_'..(13104+(2*generics[genericsMapping['T']].signatureHash))](value, ""abc"");
+                end,
+            });
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 13104+(2*generics[genericsMapping['T']].signatureHash),
+                scope = 'Public',
+                func = function(element, value, additional)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Str = additional;
+                end,
+            });
+            _M.IM(members, 'Str', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = false,
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
+}));
+_M.ATN('CsLuaTest.Constructors','ConstructorsTests', _M.NE({
+    [0] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {};
+        local typeObject = System.Type('ConstructorsTests','CsLuaTest.Constructors', nil, 0, generics, nil, interactionElement, 'Class', 48251);
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = CsLuaTest.BaseTest.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                scope = 'Public',
+                func = function(element)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Name = ""Constructors"";
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestConstructorWithNoArgs""] = (element % _M.DOT_LVL(typeObject.Level)).TestConstructorWithNoArgs;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestConstructorWithAmbArgs""] = (element % _M.DOT_LVL(typeObject.Level)).TestConstructorWithAmbArgs;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestConstructorCallingOtherConstructor""] = (element % _M.DOT_LVL(typeObject.Level)).TestConstructorCallingOtherConstructor;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestConstructorCallingOtherConstructorWithGenericInSignatureHash""] = (element % _M.DOT_LVL(typeObject.Level)).TestConstructorCallingOtherConstructorWithGenericInSignatureHash;
+                end,
+            });
+            _M.IM(members, 'TestConstructorWithNoArgs', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local c = CsLuaTest.Constructors.Class1._C_0_0();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""null"", (c % _M.DOT).Value);
+                end
+            });
+            _M.IM(members, 'TestConstructorWithAmbArgs', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local c1 = CsLuaTest.Constructors.Class1._C_0_8736(""Test"");
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""strTest"", (c1 % _M.DOT).Value);
+                    local c2 = CsLuaTest.Constructors.Class1._C_0_3926(43);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""int43"", (c2 % _M.DOT).Value);
+                    local c3 = CsLuaTest.Constructors.Class1._C_0_8572(43.7);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""object43.7"", (c3 % _M.DOT).Value);
+                end
+            });
+            _M.IM(members, 'TestConstructorCallingOtherConstructor', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local c = CsLuaTest.Constructors.Class2._C_0_8736(""abc"");
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""this1this2abc"", (c % _M.DOT).Result);
+                end
+            });
+            _M.IM(members, 'TestConstructorCallingOtherConstructorWithGenericInSignatureHash', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local c = CsLuaTest.Constructors.Class3[{System.Int32.__typeof}]._C_0_3926(43);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""abc"", (c % _M.DOT).Str);
+                end
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
 }));";
 
 /*
-_M.ATN('CsLuaTest.Collections','ClassWithProperties', _M.NE({
+_M.ATN('CsLuaTest.Constructors','zzzzzz', _M.NE({
     
-}))
+}));
     */
     }
 }

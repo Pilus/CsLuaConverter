@@ -1,8 +1,10 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Member
 {
+    using System.Linq;
     using CodeTree;
     using Expression;
     using Lists;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
@@ -20,19 +22,12 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var thisType = providers.NameProvider.GetScopeElement("this");
-            providers.Context.PossibleMethods = new PossibleMethods(thisType.Type.GetConstructors());
-
-            var argumentWriter = textWriter.CreateTextWriterAtSameIndent();
-
-            this.argumentList.Visit(argumentWriter, providers);
-
-            var cstor = providers.Context.PossibleMethods.GetOnlyRemainingMethodOrThrow();
-
+            var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+            
             textWriter.Write("(element % _M.DOT_LVL(typeObject.Level))");
 
             var signatureWriter = textWriter.CreateTextWriterAtSameIndent();
-            var hasGenericComponents = cstor.WriteSignature(signatureWriter, providers);
+            var hasGenericComponents = providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), signatureWriter);
 
             if (hasGenericComponents)
             {
@@ -46,10 +41,9 @@
                 textWriter.AppendTextWriter(signatureWriter);
             }
 
-            textWriter.AppendTextWriter(argumentWriter);
+            this.argumentList.Visit(textWriter, providers);
 
             textWriter.WriteLine(";");
-            providers.Context.CurrentType = null;
         }
     }
 }

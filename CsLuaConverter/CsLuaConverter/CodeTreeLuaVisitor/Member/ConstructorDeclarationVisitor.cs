@@ -6,7 +6,9 @@
     using Expression;
     using Filters;
     using Lists;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers;
 
     public class ConstructorDeclarationVisitor : BaseVisitor
@@ -33,6 +35,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as ConstructorDeclarationSyntax);
+
             textWriter.WriteLine("_M.IM(members, '', {");
             textWriter.Indent++;
 
@@ -47,7 +51,8 @@
             textWriter.WriteLine("static = true,");
             textWriter.WriteLine("numMethodGenerics = 0,");
             textWriter.Write("signatureHash = ");
-            this.parameterList.GetTypes(providers).WriteSignature(textWriter, providers);
+            providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
+            //this.parameterList.GetTypes(providers).WriteSignature(textWriter, providers);
             textWriter.WriteLine(",");
             textWriter.WriteLine("scope = '{0}',", this.scope);
 
@@ -75,9 +80,7 @@
             this.block.Visit(textWriter, providers);
 
             textWriter.WriteLine("end,");
-
-            //providers.NameProvider.SetScope(scope);
-
+            
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }
