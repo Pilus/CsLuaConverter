@@ -28,7 +28,6 @@
             else
             {
                 textWriter.Write("._C_0_2112(");
-                providers.Context.CurrentType = null;
                 this.rankVisitor.Visit(textWriter, providers);
                 textWriter.Write(")");
             }

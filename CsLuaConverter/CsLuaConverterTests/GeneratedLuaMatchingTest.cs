@@ -1832,11 +1832,11 @@ _M.ATN('CsLuaTest.Arrays','ArraysTests', _M.NE({
                     local a4 = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = true, 1, ""ok""});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""object"", ((arrayClass % _M.DOT).TypeDependent_M_0_25716 % _M.DOT)(a4));
                     local a5 = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = (CsLuaTest.Arrays.AClass[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({Value = 4}), (CsLuaTest.Arrays.AClass[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({Value = 6})});
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Aint"", ((arrayClass % _M.DOT).TypeDependent_M_0_101534980 % _M.DOT)(a5));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Aint"", ((arrayClass % _M.DOT).TypeDependent_M_0_101526360 % _M.DOT)(a5));
                     local a6 = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = CsLuaTest.Arrays.AClass[{System.String.__typeof}]._C_0_0()});
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Astring"", ((arrayClass % _M.DOT).TypeDependent_M_0_225921580 % _M.DOT)(a6));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Astring"", ((arrayClass % _M.DOT).TypeDependent_M_0_225912960 % _M.DOT)(a6));
                     local a7 = (System.Array[{CsLuaTest.Arrays.AClass[{System.String.__typeof}].__typeof}]._C_0_0() % _M.DOT).__Initialize({});
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Astring"", ((arrayClass % _M.DOT).TypeDependent_M_0_225921580 % _M.DOT)(a7));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Astring"", ((arrayClass % _M.DOT).TypeDependent_M_0_225912960 % _M.DOT)(a7));
                 end
             });
             _M.IM(members, 'ArraysAsMethodArgument', {
@@ -1848,7 +1848,7 @@ _M.ATN('CsLuaTest.Arrays','ArraysTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local arrayClass = CsLuaTest.Arrays.ClassWithArrays._C_0_0();
-                    local array = (System.Array[{System.String.__typeof, }]._C_0_0()%_M.DOT).__Initialize({[0] = ""abc"", ""def""});
+                    local array = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = ""abc"", ""def""});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(2, ((arrayClass % _M.DOT).GetLengthOfStringArray_M_0_26208 % _M.DOT)(array));
                 end
             });
@@ -1935,7 +1935,7 @@ _M.ATN('CsLuaTest.Arrays','ClassWithArrays', _M.NE({
                 scope = 'Public',
                 static = false,
                 numMethodGenerics = 0,
-                signatureHash = 40916,
+                signatureHash = 25716,
                 returnType = System.String.__typeof,
                 func = function(element, args)
                     return ""object"";
@@ -1959,7 +1959,7 @@ _M.ATN('CsLuaTest.Arrays','ClassWithArrays', _M.NE({
                 scope = 'Public',
                 static = false,
                 numMethodGenerics = 0,
-                signatureHash = 21232,
+                signatureHash = 11778,
                 returnType = System.String.__typeof,
                 func = function(element, args)
                     return ""int"";
@@ -1971,7 +1971,7 @@ _M.ATN('CsLuaTest.Arrays','ClassWithArrays', _M.NE({
                 scope = 'Public',
                 static = false,
                 numMethodGenerics = 0,
-                signatureHash = 21576,
+                signatureHash = 12036,
                 returnType = System.String.__typeof,
                 func = function(element, args)
                     return ""long"";
@@ -1983,7 +1983,7 @@ _M.ATN('CsLuaTest.Arrays','ClassWithArrays', _M.NE({
                 scope = 'Public',
                 static = false,
                 numMethodGenerics = 0,
-                signatureHash = 40556,
+                signatureHash = 25446,
                 returnType = System.String.__typeof,
                 func = function(element, args)
                     return ""double"";
@@ -1995,7 +1995,7 @@ _M.ATN('CsLuaTest.Arrays','ClassWithArrays', _M.NE({
                 scope = 'Public',
                 static = false,
                 numMethodGenerics = 0,
-                signatureHash = 101534980,
+                signatureHash = 101526360,
                 returnType = System.String.__typeof,
                 func = function(element, args)
                     return ""Aint"";
@@ -2007,7 +2007,7 @@ _M.ATN('CsLuaTest.Arrays','ClassWithArrays', _M.NE({
                 scope = 'Public',
                 static = false,
                 numMethodGenerics = 0,
-                signatureHash = 225921580,
+                signatureHash = 225912960,
                 returnType = System.String.__typeof,
                 func = function(element, args)
                     return ""Astring"";
@@ -2079,8 +2079,7 @@ _M.ATN('CsLuaTest.Arrays','ClassWithPredefinedArray', _M.NE({
         end
         return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
     end,
-}));
-_M.ATN('CsLuaTest.Arrays','AClass', _M.NE({";
+}));";
 
 
     }
