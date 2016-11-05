@@ -79,7 +79,7 @@
                 return;
             }
 
-            throw new Exception($"String missmatch. Line {this.currentLine}, char {this.currentOffset}. Expected '{expectedString}', Got '{actualString}'.");
+            throw new Exception($"String missmatch. Line {this.currentLine}, char {this.currentOffset}. \nExpected '{expectedString}', \nGot          '{actualString}'.");
         }
     }
 }

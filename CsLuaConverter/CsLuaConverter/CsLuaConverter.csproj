@@ -142,6 +142,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\ConditionalExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\ILambdaVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\SimpleLambdaExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\MemberBindingExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\MethodSignatureExtensions.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\UnaryPlusExpressionVisitor.cs" />

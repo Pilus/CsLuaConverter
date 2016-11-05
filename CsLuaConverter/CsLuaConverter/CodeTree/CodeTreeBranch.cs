@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTree
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
@@ -18,6 +19,11 @@
 
         public CodeTreeBranch(SyntaxNode node, string documentName, SemanticModel semanticModel)
         {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
             this.SyntaxNode = node;
             this.Kind = node.GetKind();
             this.Nodes = this.GetNodes(node);
@@ -32,6 +38,11 @@
 
         public CodeTreeBranch(SyntaxKind kind, CodeTreeNode[] nodes, string documentName)
         {
+            if (documentName == null)
+            {
+                throw new ArgumentNullException(nameof(documentName));
+            }
+
             this.Kind = kind;
             this.Nodes = nodes;
             this.DocumentName = documentName;

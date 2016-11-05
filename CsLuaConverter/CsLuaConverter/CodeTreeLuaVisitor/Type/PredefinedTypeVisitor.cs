@@ -2,9 +2,10 @@
 {
     using System.Linq;
     using CodeTree;
+
     using Providers;
     using Providers.TypeKnowledgeRegistry;
-
+    using Microsoft.CodeAnalysis;
     public class PredefinedTypeVisitor : BaseTypeVisitor
     {
         private readonly string text;
@@ -16,9 +17,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var type = providers.TypeProvider.LookupType(this.text);
-            textWriter.Write(type.FullNameWithoutGenerics);
-            providers.Context.CurrentType = new TypeKnowledge(type.TypeObject, true);
+            var symbol = (ITypeSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
         }
 
         public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
