@@ -57,19 +57,19 @@
                               && !doc.FilePath.EndsWith("AssemblyAttributes.cs")
                 );
 
-            var codeTrees = docs.Select(GetCodeTree).ToArray();
+            var codeTreesWithSemanticModels = docs.Select(
+                doc => new Tuple<CodeTreeBranch, SemanticModel>(
+                           GetCodeTree(doc),
+                           doc.GetSemanticModelAsync().Result)).ToArray();
 
-            return this.codeTreeVisitor.CreateNamespaceBasedVisitorActions(codeTrees);
+            return this.codeTreeVisitor.CreateNamespaceBasedVisitorActions(codeTreesWithSemanticModels);
         }
 
         private static CodeTreeBranch GetCodeTree(Document document)
         {
             SyntaxNode syntaxTreeRoot = GetSyntaxTreeRoot(document);
 
-            SemanticModel semanticModel = document.GetSemanticModelAsync().Result;
-
-
-            return new CodeTreeBranch(syntaxTreeRoot, document.FilePath, semanticModel);
+            return new CodeTreeBranch(syntaxTreeRoot, document.FilePath);
         }
 
         

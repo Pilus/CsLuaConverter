@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
+
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
 
@@ -16,11 +18,11 @@
             this.providers = providers;
         }
 
-        public IEnumerable<Namespace> CreateNamespaceBasedVisitorActions(CodeTreeBranch[] treeRoots)
+        public IEnumerable<Namespace> CreateNamespaceBasedVisitorActions(Tuple<CodeTreeBranch, SemanticModel>[] treeRoots)
         {
             BaseVisitor.LockVisitorCreation = false;
             treeRoots = treeRoots.SelectMany(SeperateCodeElements).ToArray();
-            var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree)).ToArray();
+            var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree.Item1, tree.Item2)).ToArray();
             BaseVisitor.LockVisitorCreation = true;
 
             return visitors.GroupBy(v => v.GetTopNamespace()).Select(g => new Namespace() {
@@ -78,22 +80,22 @@
             })});
         }
 
-        private static CodeTreeBranch[] SeperateCodeElements(CodeTreeBranch tree)
+        private static Tuple<CodeTreeBranch, SemanticModel>[] SeperateCodeElements(Tuple<CodeTreeBranch, SemanticModel> pair)
         {
-            var numElements = CountNumOfElements(tree);
+            var numElements = CountNumOfElements(pair.Item1);
 
             if (numElements < 2)
             {
-                return new []{ tree };
+                return new []{ pair };
             }
 
-            var newTrees = new List<CodeTreeBranch>();
+            var newTrees = new List<Tuple<CodeTreeBranch, SemanticModel>>();
 
             for (var i = 0; i < numElements; i++)
             {
-                var clone = (CodeTreeBranch)tree.Clone();
+                var clone = (CodeTreeBranch)pair.Item1.Clone();
                 FilterElements(clone, i);
-                newTrees.Add(clone);
+                newTrees.Add(new Tuple<CodeTreeBranch, SemanticModel>(clone, pair.Item2));
             }
 
             return newTrees.ToArray();

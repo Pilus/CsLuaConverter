@@ -4153,7 +4153,7 @@ _M.ATN('CsLuaTest.General','Partial', _M.NE({
         return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
     end,
 }));
-_M.ATN('CsLuaTest.General.SubNamespace.SubSubNamespace','zzzzzz', _M.NE({
+_M.ATN('CsLuaTest.General.SubNamespace.SubSubNamespace','ClassInSubSubNamespace', _M.NE({
     [0] = function(interactionElement, generics, staticValues)
         local genericsMapping = {};
         local typeObject = System.Type('ClassInSubSubNamespace','CsLuaTest.General.SubNamespace.SubSubNamespace', nil, 0, generics, nil, interactionElement, 'Class', 80123);

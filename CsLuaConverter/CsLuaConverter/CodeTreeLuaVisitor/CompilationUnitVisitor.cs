@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
+    using System;
     using System.Linq;
     using CodeTree;
     using Filters;
@@ -15,9 +16,9 @@
 
         private SemanticModel semanticModel;
 
-        public CompilationUnitVisitor(CodeTreeBranch branch) : base(branch)
+        public CompilationUnitVisitor(CodeTreeBranch branch, SemanticModel semanticModel) : base(branch)
         {
-            this.semanticModel = branch.SemanticModel;
+            this.semanticModel = semanticModel;
             TryActionAndWrapException(() =>
             {
                 this.namespaceVisitor =
@@ -30,14 +31,15 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            providers.SemanticModel = this.semanticModel;
-            TryActionAndWrapException(() =>
-            {
-                //providers.TypeProvider.ClearNamespaces();
+            TryActionAndWrapException(
+                () =>
+                    {
+                        providers.SemanticModel = this.semanticModel;
 
-                this.usings.VisitAll(textWriter, providers);
-                this.namespaceVisitor.Visit(textWriter, providers);
-            }, $"In document {this.Branch.DocumentName}");
+                        this.usings.VisitAll(textWriter, providers);
+                        this.namespaceVisitor.Visit(textWriter, providers);
+                    },
+                $"In document {this.Branch.DocumentName}");
         }
 
         public void WriteFooter(IIndentedTextWriterWrapper textWriter, IProviders providers)

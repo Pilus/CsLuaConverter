@@ -50,6 +50,7 @@
 
         private void ConvertSolution(Solution solution, string wowPath)
         {
+            /*
             var typeCollections = new List<BaseTypeCollection>
             {
                 new ManuallyImplementedSystemTypeTypeCollection(), 
@@ -58,11 +59,11 @@
                 new SolutionTypeCollection(solution), 
             };
 
-            typeCollections.AddRange(TypesFileTypeCollection.LoadFromCurrentDir());
+            typeCollections.AddRange(TypesFileTypeCollection.LoadFromCurrentDir()); */
 
-            var providers = new Providers.Providers(typeCollections);
+            var treeVisitor = new CodeTreeVisitor(new Providers.Providers());
 
-            ISyntaxAnalyser analyzer = new Analyzer(new CodeTreeVisitor(providers));
+            ISyntaxAnalyser analyzer = new Analyzer(treeVisitor);
 
             var solutionHandler = new SolutionHandler(analyzer);
             var addOns = solutionHandler.GenerateAddOnsFromSolution(solution);

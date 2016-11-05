@@ -15,9 +15,7 @@
 
         public SyntaxNode SyntaxNode;
 
-        public SemanticModel SemanticModel { get; }
-
-        public CodeTreeBranch(SyntaxNode node, string documentName, SemanticModel semanticModel = null)
+        public CodeTreeBranch(SyntaxNode node, string documentName)
         {
             if (node == null)
             {
@@ -28,7 +26,6 @@
             this.Kind = node.GetKind();
             this.Nodes = this.GetNodes(node);
             this.DocumentName = documentName;
-            this.SemanticModel = semanticModel;
         }
 
         public CodeTreeBranch(SyntaxNode node, string documentName, CodeTreeNode[] nodes)
