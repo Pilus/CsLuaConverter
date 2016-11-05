@@ -17,7 +17,7 @@
 
         public SemanticModel SemanticModel { get; }
 
-        public CodeTreeBranch(SyntaxNode node, string documentName, SemanticModel semanticModel)
+        public CodeTreeBranch(SyntaxNode node, string documentName, SemanticModel semanticModel = null)
         {
             if (node == null)
             {
@@ -31,19 +31,15 @@
             this.SemanticModel = semanticModel;
         }
 
-        public CodeTreeBranch(SyntaxNode node) : this(node, null, null)
+        public CodeTreeBranch(SyntaxNode node, string documentName, CodeTreeNode[] nodes)
         {
-            
-        }
-
-        public CodeTreeBranch(SyntaxKind kind, CodeTreeNode[] nodes, string documentName)
-        {
-            if (documentName == null)
+            if (node == null)
             {
-                throw new ArgumentNullException(nameof(documentName));
+                throw new ArgumentNullException(nameof(node));
             }
 
-            this.Kind = kind;
+            this.SyntaxNode = node;
+            this.Kind = node.GetKind();
             this.Nodes = nodes;
             this.DocumentName = documentName;
         }
@@ -51,7 +47,7 @@
         public override CodeTreeNode Clone()
         {
             var clonedNodes = this.Nodes.Select(n => n.Clone()).ToArray();
-            return new CodeTreeBranch(this.Kind, clonedNodes, this.DocumentName);
+            return new CodeTreeBranch(this.SyntaxNode, this.DocumentName, clonedNodes);
         }
 
         private CodeTreeNode[] GetNodes(SyntaxNode node)
@@ -69,7 +65,7 @@
                 else
                 {
                     var subNode = token.GetChildOfAnchestor(node);
-                    nodes.Add(new CodeTreeBranch(subNode));
+                    nodes.Add(new CodeTreeBranch(subNode, this.DocumentName));
                     token = subNode.GetLastToken();
                 }
 

@@ -35,7 +35,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as ConstructorDeclarationSyntax);
+            var syntax = (ConstructorDeclarationSyntax)this.Branch.SyntaxNode;
+            var symbol = providers.SemanticModel.GetDeclaredSymbol(syntax);
 
             textWriter.WriteLine("_M.IM(members, '', {");
             textWriter.Indent++;
