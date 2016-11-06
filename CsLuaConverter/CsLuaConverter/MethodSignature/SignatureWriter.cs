@@ -6,26 +6,26 @@
 
     public class SignatureWriter<T>
     {
-        private readonly SignatureComposer<T> signatureComposer;
+        public readonly SignatureComposer<T> SignatureComposer;
 
         private readonly ITypeReferenceWriter<T> typeReferenceWriter;
 
         public SignatureWriter(SignatureComposer<T> signatureComposer, ITypeReferenceWriter<T> typeReferenceWriter)
         {
-            this.signatureComposer = signatureComposer;
+            this.SignatureComposer = signatureComposer;
             this.typeReferenceWriter = typeReferenceWriter;
         }
 
         public bool WriteSignature(T[] types, IIndentedTextWriterWrapper textWriter)
         {
-            var components = this.signatureComposer.GetSignatureComponents(types);
+            var components = this.SignatureComposer.GetSignatureComponents(types);
 
             return this.WriteSignatureFromComponents(components, textWriter);
         }
 
         public bool WriteSignature(T type, IIndentedTextWriterWrapper textWriter)
         {
-            var components = this.signatureComposer.GetSignatureComponents(type);
+            var components = this.SignatureComposer.GetSignatureComponents(type);
 
             return this.WriteSignatureFromComponents(components, textWriter);
         }

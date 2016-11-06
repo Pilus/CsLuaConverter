@@ -4215,7 +4215,7 @@ _M.ATN('CsLuaTest.General.SubNamespace.SubSubNamespace','ClassInSubSubNamespace'
         return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
     end,
 }));
-_M.ATN('CsLuaTest.Generics','ClassUsingGenericsInMethods', _M.NE({
+_M.ATN('CsLuaTest.Generics','ClassA', _M.NE({
     [0] = function(interactionElement, generics, staticValues)
         local genericsMapping = {};
         local typeObject = System.Type('ClassA','CsLuaTest.Generics', nil, 0, generics, nil, interactionElement, 'Class', 3858);
@@ -4275,10 +4275,10 @@ _M.ATN('CsLuaTest.Generics','ClassUsingGenericsInMethods', _M.NE({
         return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
     end,
 }));
-_M.ATN('CsLuaTest.Generics','zzzzzz', _M.NE({
-    1] = function(interactionElement, generics, staticValues)
+_M.ATN('CsLuaTest.Generics','ClassUsingGenericsInMethods', _M.NE({
+    [1] = function(interactionElement, generics, staticValues)
         local genericsMapping = {['T'] = 1};
-        local typeObject = System.Type('ClassWithGenericConstructor','CsLuaTest.Generics', nil, 1, generics, nil, interactionElement, 'Class', (270940*generics[genericsMapping['T']].signatureHash));
+        local typeObject = System.Type('ClassUsingGenericsInMethods','CsLuaTest.Generics', nil, 1, generics, nil, interactionElement, 'Class', (260104*generics[genericsMapping['T']].signatureHash));
         local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = System.Object.__meta(staticValues);
         typeObject.baseType = baseTypeObject;
         typeObject.level = baseTypeObject.level + 1;
@@ -4287,6 +4287,7 @@ _M.ATN('CsLuaTest.Generics','zzzzzz', _M.NE({
             local element = baseElementGenerator();
             element.type = typeObject;
             element[typeObject.Level] = {
+                inner = _M.DV(CsLuaTest.Generics.MethodsWithGeneric[{generics[genericsMapping['T']], System.Int32.__typeof}].__typeof),
             };
             return element;
         end
@@ -4294,6 +4295,7 @@ _M.ATN('CsLuaTest.Generics','zzzzzz', _M.NE({
         };
         local initialize = function(element, values)
             if baseInitialize then baseInitialize(element, values); end
+            if not(values.inner == nil) then element[typeObject.Level].inner = values.inner; end
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
@@ -4302,24 +4304,91 @@ _M.ATN('CsLuaTest.Generics','zzzzzz', _M.NE({
                 memberType = 'Cstor',
                 static = true,
                 numMethodGenerics = 0,
-                signatureHash = (2*generics[genericsMapping['T']].signatureHash),
+                signatureHash = 0,
                 scope = 'Public',
-                func = function(element, x)
+                func = function(element)
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
-                    (CsLuaTest.Generics.GenericsTests % _M.DOT).Output = ""GenericConstructorT"";
+                    (element % _M.DOT_LVL(typeObject.Level)).inner = CsLuaTest.Generics.MethodsWithGeneric[{generics[genericsMapping['T']], System.Int32.__typeof}]._C_0_0();
                 end,
             });
-            _M.IM(members, '', {
+            _M.IM(members, 'inner', {
                 level = typeObject.Level,
-                memberType = 'Cstor',
-                static = true,
-                numMethodGenerics = 0,
-                signatureHash = 3926,
+                memberType = 'Field',
+                scope = 'Private',
+                static = false,
+            });
+            _M.IM(members, 'UseClassGenericAsMethodGeneric', {
+                level = typeObject.Level,
+                memberType = 'Method',
                 scope = 'Public',
-                func = function(element, x)
-                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
-                    (CsLuaTest.Generics.GenericsTests % _M.DOT).Output = ""GenericConstructorint"";
-                end,
+                static = false,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                returnType = System.Boolean.__typeof,
+                func = function(element)
+                    local list = System.Collections.Generic.List[{generics[genericsMapping['T']]}]._C_0_0();
+                    local returnValue = (((element % _M.DOT_LVL(typeObject.Level)).inner % _M.DOT).GenericReturnType_M_1_8572[{System.Collections.Generic.List[{generics[genericsMapping['T']]}].__typeof}] % _M.DOT)(list);
+                    return list == returnValue;
+                end
+            });
+            local methodGenericsMapping = {['T3'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'UseMethodGenericAsMethodGeneric', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = false,
+                numMethodGenerics = 1,
+                signatureHash = 2,
+                returnType = System.Boolean.__typeof,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, value)
+                    local list = (System.Collections.Generic.List[{methodGenerics[methodGenericsMapping['T3']]}]._C_0_0() % _M.DOT).__Initialize({
+                        value
+                    });
+                    local returnValue = (((element % _M.DOT_LVL(typeObject.Level)).inner % _M.DOT).GenericReturnType_M_1_8572[{System.Collections.Generic.List[{methodGenerics[methodGenericsMapping['T3']]}].__typeof}] % _M.DOT)(list);
+                    return list == returnValue;
+                end
+            });
+            _M.IM(members, 'UseClassGenericInLambda', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = false,
+                numMethodGenerics = 0,
+                signatureHash = (2*generics[genericsMapping['T']].signatureHash)+(3*generics[genericsMapping['T']].signatureHash),
+                returnType = System.Boolean.__typeof,
+                func = function(element, correctValue, falseValue)
+                    local value = ((element % _M.DOT_LVL(typeObject.Level))['MethodWithGenericAndLambda_M_1_'..(13615368[{generics[genericsMapping['T']]}] % _M.DOT)(System.Func[{System.Int32.__typeof, generics[genericsMapping['T']], }]._C_0_16704(function(i) return i == 43 and correctValue or falseValue end));
+                    return ((value % _M.DOT).Equals_M_0_8572 % _M.DOT)(correctValue);
+                end
+            });
+            local methodGenericsMapping = {['T3'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'MethodWithGenericAndLambda', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = false,
+                numMethodGenerics = 1,
+                signatureHash = 13625772,
+                returnType = methodGenerics[methodGenericsMapping['T3']],
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, selector)
+                    return (selector % _M.DOT)(43);
+                end
+            });
+            _M.IM(members, 'InvokingAmbMethodDependingOnClassGeneric', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = false,
+                numMethodGenerics = 0,
+                signatureHash = (2*generics[genericsMapping['T']].signatureHash),
+                func = function(element, obj)
+                    (((element % _M.DOT_LVL(typeObject.Level)).inner % _M.DOT)['AmbGenericMethod_M_0_'..((2*generics[genericsMapping['T']].signatureHash))] % _M.DOT)(obj);
+                    (((element % _M.DOT_LVL(typeObject.Level)).inner % _M.DOT).AmbGenericMethod_M_0_3926 % _M.DOT)(43);
+                end
             });
             return members;
         end
@@ -4435,6 +4504,57 @@ _M.ATN('CsLuaTest.Generics','ClassWithGenericElements', _M.NE({
                 scope = 'Public',
                 static = false,
                 returnType = generics[genericsMapping['T']];
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
+}));
+_M.ATN('CsLuaTest.Generics','ClassWithGenericConstructor', _M.NE({
+    1] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {['T'] = 1};
+        local typeObject = System.Type('ClassWithGenericConstructor','CsLuaTest.Generics', nil, 1, generics, nil, interactionElement, 'Class', (270940*generics[genericsMapping['T']].signatureHash));
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = System.Object.__meta(staticValues);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = (2*generics[genericsMapping['T']].signatureHash),
+                scope = 'Public',
+                func = function(element, x)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (CsLuaTest.Generics.GenericsTests % _M.DOT).Output = ""GenericConstructorT"";
+                end,
+            });
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 3926,
+                scope = 'Public',
+                func = function(element, x)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (CsLuaTest.Generics.GenericsTests % _M.DOT).Output = ""GenericConstructorint"";
+                end,
             });
             return members;
         end

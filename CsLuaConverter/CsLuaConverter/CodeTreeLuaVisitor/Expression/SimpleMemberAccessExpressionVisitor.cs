@@ -1,7 +1,12 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
+    using System.Linq;
     using CodeTree;
+
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Name;
     using Providers;
 
@@ -33,8 +38,6 @@
                 return;
             }
 
-            //var innerWriter = textWriter.CreateTextWriterAtSameIndent();
-
             if (!(this.targetVisitor is ThisExpressionVisitor || this.targetVisitor is BaseExpressionVisitor))
             { 
                 textWriter.Write("(");
@@ -43,31 +46,6 @@
             }
 
             this.indexVisitor.Visit(textWriter, providers);
-
-            //if (providers.Context.NamespaceReference == null)
-            //{
-
-            //
-
-            //textWriter.AppendTextWriter(innerWriter);
-
-            //if (providers.Context.NamespaceReference == null)
-            //{ 
-            /*textWriter.Write("% _M.DOT");
-
-            if (this.targetVisitor is BaseExpressionVisitor)
-            {
-                textWriter.Write("_LVL(typeObject.Level - 1, true)");
-            }
-            else if (this.targetVisitor is ThisExpressionVisitor)
-            {
-                textWriter.Write("_LVL(typeObject.Level)");
-            }
-
-            textWriter.Write(")."); */
-            //}
-
-
         }
     }
 }
