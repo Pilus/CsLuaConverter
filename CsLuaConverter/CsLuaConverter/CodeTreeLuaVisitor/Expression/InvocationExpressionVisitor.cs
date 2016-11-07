@@ -33,9 +33,27 @@
             if (symbol.MethodKind != MethodKind.DelegateInvoke)
             {
                 var signatureTextWriter = textWriter.CreateTextWriterAtSameIndent();
-                var signatureHasGenerics = providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), signatureTextWriter);
+                var signatureHasGenerics = providers.SignatureWriter.WriteSignature(symbol.ConstructedFrom.Parameters.Select(p => p.Type).ToArray(), signatureTextWriter);
 
-                this.target.Visit(textWriter, providers);
+                if (signatureHasGenerics)
+                {
+                    var targetVisitor = textWriter.CreateTextWriterAtSameIndent();
+                    this.target.Visit(targetVisitor, providers);
+
+                    var expectedEnd = $".{symbol.Name}.";
+                    if (targetVisitor.ToString().EndsWith(expectedEnd))
+                    {
+                        throw new Exception($"Expect index visitor to end with '{expectedEnd}'. Got '{targetVisitor}'");
+                    }
+
+                    var targetString = targetVisitor.ToString();
+                    textWriter.Write(targetString.Remove(targetString.Length - expectedEnd.Length + 1));
+                    textWriter.Write($"['{symbol.Name}");
+                }
+                else
+                {
+                    this.target.Visit(textWriter, providers);
+                }
 
                 textWriter.Write("_M_{0}_", symbol.TypeArguments.Length);
 
