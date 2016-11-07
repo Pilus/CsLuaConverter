@@ -43,15 +43,10 @@
             this.condition.Visit(textWriter, providers);
 
             textWriter.Write(" and ");
-            providers.Context.CurrentType = null;
             this.trueStatement.Visit(textWriter, providers);
-            var valueType1 = providers.Context.CurrentType;
 
             textWriter.Write(" or ");
-            providers.Context.CurrentType = null;
             this.falseStatement.Visit(textWriter, providers);
-
-            providers.Context.CurrentType = providers.Context.CurrentType ?? valueType1;
         }
     }
 }
