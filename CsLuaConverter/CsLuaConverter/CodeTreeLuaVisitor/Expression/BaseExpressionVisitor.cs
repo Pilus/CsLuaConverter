@@ -12,7 +12,6 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write("element");
-            providers.Context.CurrentType = providers.NameProvider.GetScopeElement("base").Type;
         }
     }
 }

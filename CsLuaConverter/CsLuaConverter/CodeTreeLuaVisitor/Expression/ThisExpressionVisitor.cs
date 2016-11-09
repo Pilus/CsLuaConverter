@@ -1,6 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp;
     using Providers;
 
     public class ThisExpressionVisitor : BaseVisitor
@@ -11,8 +13,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            //textWriter.Write("element");
-            //providers.Context.CurrentType = providers.NameProvider.GetScopeElement("this").Type;
+            textWriter.Write("element");
         }
     }
 }

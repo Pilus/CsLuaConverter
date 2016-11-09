@@ -2,10 +2,12 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.CodeTreeLuaVisitor.Expression;
     using Lists;
 
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers;
     using Providers.TypeKnowledgeRegistry;
     using Type;
@@ -24,32 +26,17 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            textWriter.Write(this.name);
-            /*textWriter.Write("[");
-            this.argumentListVisitor.Visit(textWriter, providers);
-            textWriter.Write("]"); */
-
-            /*
-            var current = providers.Context.CurrentType;
-
-            if (current == null)
+            var hasInvocationExpressionParent = this.Branch.SyntaxNode.Ancestors().OfType<InvocationExpressionSyntax>().Any();
+            if (hasInvocationExpressionParent)
             {
-                // TODO: Handle case where this.name refers to a method on the current element.
-
-                var type = providers.TypeProvider.LookupType(this.name);
-                textWriter.Write(type.FullNameWithoutGenerics);
-
-                this.WriteGenericTypes(textWriter, providers);
-                providers.Context.CurrentType = this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
-            }
-            else
-            {
-                providers.Context.PossibleMethods = new PossibleMethods(current.GetTypeKnowledgeForSubElement(this.name, providers).OfType<MethodKnowledge>().ToArray());
-                providers.Context.PossibleMethods.FilterOnNumberOfGenerics(this.argumentListVisitor.GetNumElements());
                 textWriter.Write(this.name);
-                providers.Context.PossibleMethods.WriteMethodGenerics = ((tw) => this.WriteGenericTypes(tw, providers));
-                providers.Context.PossibleMethods.MethodGenerics = this.argumentListVisitor.GetTypes(providers);
-            } */
+                return;
+            }
+
+            textWriter.Write(this.name);
+            textWriter.Write("[");
+            this.argumentListVisitor.Visit(textWriter, providers);
+            textWriter.Write("]");
         }
 
         public string[] GetName()

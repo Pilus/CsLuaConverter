@@ -4670,10 +4670,10 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                 func = function(element)
                     local theClass = CsLuaTest.Generics.MethodsWithGeneric[{System.Int32.__typeof, System.String.__typeof}]._C_0_0();
                     ((theClass % _M.DOT).AmbGenericMethod_M_0_3926 % _M.DOT)(1);
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""GenericMethodT1"", (element % _M.DOT_LVL(typeObject.Level)).Output);
-                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput % _M.DOT)();
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""GenericMethodT1"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
                     ((theClass % _M.DOT).AmbGenericMethod_M_0_8736 % _M.DOT)(""x"");
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""GenericMethodT2"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""GenericMethodT2"", (element % _M.DOT_LVL(typeObject.Level)).Output);
                 end
             });
             _M.IM(members, 'TestGenericConstructor', {
@@ -4685,7 +4685,7 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local theClass = CsLuaTest.Generics.ClassWithGenericConstructor[{System.String.__typeof}]._C_0_8736(""ok"");
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""GenericConstructorT"", (element % _M.DOT_LVL(typeObject.Level)).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""GenericConstructorT"", (element % _M.DOT_LVL(typeObject.Level)).Output);
                 end
             });
             _M.IM(members, 'TestGenericVariable', {
@@ -4697,9 +4697,9 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local theClass = CsLuaTest.Generics.ClassWithGenericElements[{System.Int32.__typeof}]._C_0_0();
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(0, (theClass % _M.DOT).Variable);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(0, (theClass % _M.DOT).Variable);
                     (theClass % _M.DOT).Variable = 43;
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(43, (theClass % _M.DOT).Variable);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(43, (theClass % _M.DOT).Variable);
                 end
             });
             _M.IM(members, 'TestGenericProperty', {
@@ -4711,9 +4711,9 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local theClass = CsLuaTest.Generics.ClassWithGenericElements[{System.Int32.__typeof}]._C_0_0();
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(0, (theClass % _M.DOT).Property);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(0, (theClass % _M.DOT).Property);
                     (theClass % _M.DOT).Property = 43;
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(43, (theClass % _M.DOT).Property);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(43, (theClass % _M.DOT).Property);
                 end
             });
             _M.IM(members, 'TestGenericReturnArg', {
@@ -4726,9 +4726,9 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                 func = function(element)
                     local theClass = CsLuaTest.Generics.MethodsWithGeneric[{System.Int32.__typeof, System.Int32.__typeof}]._C_0_0();
                     local value1 = ((theClass % _M.DOT).GenericReturnType_M_1_8572[{System.Boolean.__typeof}] % _M.DOT)(true);
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(true, value1);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, value1);
                     local value2 = ((theClass % _M.DOT).GenericReturnType_M_1_8572[{System.String.__typeof}] % _M.DOT)(""test"");
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""test"", value2);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""test"", value2);
                 end
             });
             _M.IM(members, 'TestGenericReturnSpecificForMethod', {
@@ -4741,16 +4741,16 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                 func = function(element)
                     local theClass = CsLuaTest.Generics.MethodsWithGeneric[{System.Int32.__typeof, System.Int32.__typeof}]._C_0_0();
                     local value1 = ((theClass % _M.DOT).GenericAtMethod_M_1_2[{System.String.__typeof}] % _M.DOT)(""test"");
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""test"", value1);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""test"", value1);
                     local value2 = ((theClass % _M.DOT).GenericAtMethod_M_1_2[{System.String.__typeof}] % _M.DOT)(""test2"");
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""test2"", value2);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""test2"", value2);
                     local value3 = ((theClass % _M.DOT).GenericAtMethod_M_1_2[{System.Boolean.__typeof}] % _M.DOT)(true);
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""True"", value3);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""True"", value3);
                     local value4 = ((theClass % _M.DOT).GenericAtMethod_M_1_2[{CsLuaTest.Generics.ClassA.__typeof}] % _M.DOT)(CsLuaTest.Generics.ClassA._C_0_8736(""test4""));
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""test4"", value4);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""test4"", value4);
                     local obj = CsLuaTest.Generics.ClassA._C_0_8736(""test5"");
                     local value5 = ((theClass % _M.DOT).GenericAtMethod_M_1_2[{CsLuaTest.Generics.ClassA.__typeof}] % _M.DOT)(obj);
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""test5"", value5);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""test5"", value5);
                 end
             });
             _M.IM(members, 'TestGenericsInAmbMethods', {
@@ -4762,10 +4762,10 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local theClass = CsLuaTest.Generics.MethodsWithGeneric[{System.Int32.__typeof, System.Int32.__typeof}]._C_0_0();
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""XYA"", ((theClass % _M.DOT).GenericAtAmbMethod_M_2_5[{System.String.__typeof, System.String.__typeof}] % _M.DOT)(""X"", ""Y""));
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""XYB"", ((theClass % _M.DOT).GenericAtAmbMethod_M_1_13106[{System.String.__typeof}] % _M.DOT)(""X"", ""Y""));
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""XYB"", ((theClass % _M.DOT).GenericAtAmbMethod_M_1_13106[{System.String.__typeof}] % _M.DOT)(""X"", ""Y""));
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""X1A"", ((theClass % _M.DOT).GenericAtAmbMethod_M_2_5[{System.String.__typeof, System.Int32.__typeof}] % _M.DOT)(""X"", 1));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""XYA"", ((theClass % _M.DOT).GenericAtAmbMethod_M_2_5[{System.String.__typeof, System.String.__typeof}] % _M.DOT)(""X"", ""Y""));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""XYB"", ((theClass % _M.DOT).GenericAtAmbMethod_M_1_13106[{System.String.__typeof}] % _M.DOT)(""X"", ""Y""));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""XYB"", ((theClass % _M.DOT).GenericAtAmbMethod_M_1_13106[{System.String.__typeof}] % _M.DOT)(""X"", ""Y""));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""X1A"", ((theClass % _M.DOT).GenericAtAmbMethod_M_2_5[{System.String.__typeof, System.Int32.__typeof}] % _M.DOT)(""X"", 1));
                 end
             });
             _M.IM(members, 'TestGenericsInStaticMethods', {
@@ -4776,9 +4776,9 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                 numMethodGenerics = 0,
                 signatureHash = 0,
                 func = function(element)
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""String"", ((CsLuaTest.Generics.MethodsWithGeneric[{System.Int32.__typeof, System.Int32.__typeof}] % _M.DOT).StaticMethodWithGenerics_M_1_2[{System.String.__typeof}] % _M.DOT)(""X""));
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""String"", ((CsLuaTest.Generics.MethodsWithGeneric[{System.Int32.__typeof, System.Int32.__typeof}] % _M.DOT).StaticMethodWithGenerics_M_1_2[{System.String.__typeof}] % _M.DOT)(""X""));
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""Int32"", ((CsLuaTest.Generics.MethodsWithGeneric[{System.Int32.__typeof, System.Int32.__typeof}] % _M.DOT).StaticMethodWithGenerics_M_1_2[{System.Int32.__typeof}] % _M.DOT)(43));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""String"", ((CsLuaTest.Generics.MethodsWithGeneric[{System.Int32.__typeof, System.Int32.__typeof}] % _M.DOT).StaticMethodWithGenerics_M_1_2[{System.String.__typeof}] % _M.DOT)(""X""));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""String"", ((CsLuaTest.Generics.MethodsWithGeneric[{System.Int32.__typeof, System.Int32.__typeof}] % _M.DOT).StaticMethodWithGenerics_M_1_2[{System.String.__typeof}] % _M.DOT)(""X""));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Int32"", ((CsLuaTest.Generics.MethodsWithGeneric[{System.Int32.__typeof, System.Int32.__typeof}] % _M.DOT).StaticMethodWithGenerics_M_1_2[{System.Int32.__typeof}] % _M.DOT)(43));
                 end
             });
             _M.IM(members, 'TestGenericStatic', {
@@ -4794,11 +4794,11 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                     (CsLuaTest.Generics.ClassWithGenericElements[{System.Boolean.__typeof}] % _M.DOT).StaticT = true;
                     (CsLuaTest.Generics.ClassWithGenericElements[{System.Boolean.__typeof}] % _M.DOT).StaticString = ""Y"";
                     (CsLuaTest.Generics.ClassWithGenericElements % _M.DOT).StaticString = ""Z"";
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(2, (CsLuaTest.Generics.ClassWithGenericElements[{System.Int32.__typeof}] % _M.DOT).StaticT);
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""X"", (CsLuaTest.Generics.ClassWithGenericElements[{System.Int32.__typeof}] % _M.DOT).StaticString);
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(true, (CsLuaTest.Generics.ClassWithGenericElements[{System.Boolean.__typeof}] % _M.DOT).StaticT);
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""Y"", (CsLuaTest.Generics.ClassWithGenericElements[{System.Boolean.__typeof}] % _M.DOT).StaticString);
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""Z"", (CsLuaTest.Generics.ClassWithGenericElements % _M.DOT).StaticString);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(2, (CsLuaTest.Generics.ClassWithGenericElements[{System.Int32.__typeof}] % _M.DOT).StaticT);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""X"", (CsLuaTest.Generics.ClassWithGenericElements[{System.Int32.__typeof}] % _M.DOT).StaticString);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, (CsLuaTest.Generics.ClassWithGenericElements[{System.Boolean.__typeof}] % _M.DOT).StaticT);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Y"", (CsLuaTest.Generics.ClassWithGenericElements[{System.Boolean.__typeof}] % _M.DOT).StaticString);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Z"", (CsLuaTest.Generics.ClassWithGenericElements % _M.DOT).StaticString);
                 end
             });
             _M.IM(members, 'TestSelfRefInInterface', {
@@ -4811,8 +4811,8 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                 func = function(element)
                     local c1 = CsLuaTest.Generics.ClassWithSelfInGenericInterface._C_0_0();
                     local c2 = CsLuaTest.Generics.ClassWithSelfInGenericInterface._C_0_0();
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(true, ((c1 % _M.DOT).Method_M_0_347748 % _M.DOT)(c1));
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(false, ((c1 % _M.DOT).Method_M_0_347748 % _M.DOT)(c2));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, ((c1 % _M.DOT).Method_M_0_347748 % _M.DOT)(c1));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(false, ((c1 % _M.DOT).Method_M_0_347748 % _M.DOT)(c2));
                 end
             });
             _M.IM(members, 'TestMethodGenericAsGenericInInputObject', {
@@ -4826,8 +4826,8 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                     local theClass = CsLuaTest.Generics.MethodsWithGeneric[{System.Int32.__typeof, System.Int32.__typeof}]._C_0_0();
                     local a = ((theClass % _M.DOT).MethodWithGenericAsObjectGenericInArg_M_1_6936[{System.Int32.__typeof}] % _M.DOT)((System.Func[{System.Int32.__typeof, }]._C_0_16704(function() return 3 end)));
                     local b = ((theClass % _M.DOT).MethodWithGenericAsObjectGenericInArg_M_1_6936[{System.String.__typeof}] % _M.DOT)((System.Func[{System.String.__typeof, }]._C_0_16704(function() return ""x"" end)));
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(3, a);
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""x"", b);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(3, a);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""x"", b);
                 end
             });
             _M.IM(members, 'TestPassOfGenericsToGenericMethod', {
@@ -4839,8 +4839,8 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local theClass = CsLuaTest.Generics.ClassUsingGenericsInMethods[{System.Int32.__typeof}]._C_0_0();
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(true, ((theClass % _M.DOT).UseClassGenericAsMethodGeneric_M_0_0 % _M.DOT)());
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(true, ((theClass % _M.DOT).UseMethodGenericAsMethodGeneric_M_1_2[{System.Int32.__typeof}] % _M.DOT)(3));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, ((theClass % _M.DOT).UseClassGenericAsMethodGeneric_M_0_0 % _M.DOT)());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, ((theClass % _M.DOT).UseMethodGenericAsMethodGeneric_M_1_2[{System.Int32.__typeof}] % _M.DOT)(3));
                 end
             });
             _M.IM(members, 'TestPassofGenericsToGenericMethodThroughLambda', {
@@ -4852,7 +4852,7 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local theClass = CsLuaTest.Generics.ClassUsingGenericsInMethods[{System.String.__typeof}]._C_0_0();
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(true, ((theClass % _M.DOT).UseClassGenericInLambda_M_0_21840 % _M.DOT)(""correct"", ""incorrect""));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(true, ((theClass % _M.DOT).UseClassGenericInLambda_M_0_21840 % _M.DOT)(""correct"", ""incorrect""));
                 end
             });
             _M.IM(members, 'TestInvokingAmbMethodDependingOnClassGeneric', {
@@ -4865,7 +4865,7 @@ _M.ATN('CsLuaTest.Generics','GenericsTests', _M.NE({
                 func = function(element)
                     local theClass = CsLuaTest.Generics.ClassUsingGenericsInMethods[{System.Boolean.__typeof}]._C_0_0();
                     ((theClass % _M.DOT).InvokingAmbMethodDependingOnClassGeneric_M_0_12036 % _M.DOT)(true);
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert % _M.DOT)(""GenericMethodT1GenericMethodT2"", (CsLuaTest.BaseTest % _M.DOT).Output);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""GenericMethodT1GenericMethodT2"", (CsLuaTest.BaseTest % _M.DOT).Output);
                 end
             });
             return members;
