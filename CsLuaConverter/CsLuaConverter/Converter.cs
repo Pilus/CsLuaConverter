@@ -61,7 +61,9 @@
 
             typeCollections.AddRange(TypesFileTypeCollection.LoadFromCurrentDir()); */
 
-            var treeVisitor = new CodeTreeVisitor(new Providers.Providers());
+            var providers = new Providers.Providers();
+
+            var treeVisitor = new CodeTreeVisitor(providers);
 
             ISyntaxAnalyser analyzer = new Analyzer(treeVisitor);
 

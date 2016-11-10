@@ -386,9 +386,8 @@
                 return;
             }
             
-            var type = providers.TypeProvider.LookupType(this.name);
             textWriter.Write("(");
-            textWriter.Write(type.FullNameWithoutGenerics);
+            textWriter.Write(providers.SemanticAdaptor.GetFullName(this.symbol));
             textWriter.WriteLine("._C_0_0() % _M.DOT).Execute();");
         }
 

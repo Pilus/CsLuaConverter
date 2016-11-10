@@ -73,10 +73,12 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
 
         private ITypeSymbol GetSymbolForParentUsingTheLambda(IProviders providers)
         {
-            if (this.Branch.SyntaxNode.Parent.Parent is ArgumentListSyntax)
+            var argListSyntax = this.Branch.SyntaxNode.Ancestors().OfType<ArgumentListSyntax>().First();
+
+            if (argListSyntax != null)
             {
-                var argListSyntax = this.Branch.SyntaxNode.Parent.Parent;
-                var argNum = argListSyntax.ChildNodes().ToList().IndexOf(this.Branch.SyntaxNode.Parent);
+                var argument = this.Branch.SyntaxNode.Ancestors().OfType<ArgumentSyntax>().First();
+                var argNum = argListSyntax.ChildNodes().ToList().IndexOf(argument);
 
                 if (argListSyntax.Parent is InvocationExpressionSyntax)
                 {

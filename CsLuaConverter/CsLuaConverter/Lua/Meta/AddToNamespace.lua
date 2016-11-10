@@ -1,6 +1,6 @@
 ﻿
 _M.ATN = function(fullNamespace, name, element)
-    local namespace = string.split(".", fullNamespace);
+    local namespace = {string.split(".", fullNamespace)};
     local t = _G;
 
     for _,v in ipairs(namespace) do
@@ -10,4 +10,6 @@ _M.ATN = function(fullNamespace, name, element)
 
         t = t[v];
     end
+
+    t[name] = element;
 end

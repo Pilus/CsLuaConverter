@@ -17,6 +17,7 @@
 
     public class InvocationExpressionVisitor : BaseVisitor
     {
+        private static readonly string[] namespacesWithNoAmbigiousMethods = new [] {"Lua"};
         private readonly BaseVisitor target;
         private readonly ArgumentListVisitor argumentList;
         public InvocationExpressionVisitor(CodeTreeBranch branch) : base(branch)
@@ -38,7 +39,7 @@
                 if (signatureHasGenerics)
                 {
                     var targetVisitor = textWriter.CreateTextWriterAtSameIndent();
-                    this.target.Visit(targetVisitor, providers);
+                    this.VisitTarget(targetVisitor, providers, symbol);
 
                     var expectedEnd = $".{symbol.Name}.";
                     if (targetVisitor.ToString().EndsWith(expectedEnd))
@@ -52,21 +53,25 @@
                 }
                 else
                 {
-                    this.target.Visit(textWriter, providers);
+                    this.VisitTarget(textWriter, providers, symbol);
                 }
 
-                textWriter.Write("_M_{0}_", symbol.TypeArguments.Length);
+                var fullNamespace = providers.SemanticAdaptor.GetFullNamespace(symbol.ContainingType);
+                if (!namespacesWithNoAmbigiousMethods.Contains(fullNamespace))
+                { 
+                    textWriter.Write("_M_{0}_", symbol.TypeArguments.Length);
 
-                if (signatureHasGenerics)
-                {
-                    textWriter.Write("'..(");
-                }
+                    if (signatureHasGenerics)
+                    {
+                        textWriter.Write("'..(");
+                    }
 
-                textWriter.AppendTextWriter(signatureTextWriter);
+                    textWriter.AppendTextWriter(signatureTextWriter);
 
-                if (signatureHasGenerics)
-                {
-                    textWriter.Write(")]");
+                    if (signatureHasGenerics)
+                    {
+                        textWriter.Write(")]");
+                    }
                 }
             }
             else
@@ -82,6 +87,20 @@
             textWriter.Write(" % _M.DOT)");
 
             this.argumentList.Visit(textWriter, providers);
+        }
+
+        private void VisitTarget(IIndentedTextWriterWrapper textWriter, IProviders providers, IMethodSymbol symbol)
+        {
+            /*
+            if (symbol.IsStatic)
+            {
+                providers.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
+                textWriter.Write(".");
+                textWriter.Write(symbol.Name);
+                return;
+            } */
+
+            this.target.Visit(textWriter, providers);
         }
     }
 }

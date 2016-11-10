@@ -6,6 +6,8 @@
     using CodeTree;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Providers;
     using Providers.TypeProvider;
     using Type;
@@ -47,16 +49,18 @@
             textWriter.WriteLine("memberType = 'Indexer',");
             textWriter.WriteLine($"scope = '{this.scope}',");
 
+            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as IndexerDeclarationSyntax);
+
             if (!this.accessorList.IsAutoProperty())
             {
-                var indexerParameter = this.indexerParameter.GetName();
+                var indexerParameter = symbol.Parameters.Single().Name;
                 this.accessorList.SetAdditionalParameters("," + indexerParameter, "," + indexerParameter);
                 this.accessorList.Visit(textWriter, providers);
             }
             else
             {
                 textWriter.Write("returnType = ");
-                this.indexerParameter.WriteAsTypes(textWriter, providers);
+                providers.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
                 textWriter.WriteLine(",");
             }
 

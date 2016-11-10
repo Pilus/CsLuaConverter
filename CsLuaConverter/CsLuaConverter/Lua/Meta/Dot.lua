@@ -67,7 +67,7 @@ _M.DOT_LVL = function(level, explicitLevel)
             end
 
             local typeObject = GetType(obj, index);
-            if (index == "GetType") then
+            if (index == "GetType" or index == "GetType_M_0_0") then
                 return function() return typeObject; end
             end
 

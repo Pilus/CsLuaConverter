@@ -20,7 +20,6 @@
         {
             textWriter.Write("switchValue == ");
             this.innerVisitor.Visit(textWriter, providers);
-            providers.Context.CurrentType = new TypeKnowledge(typeof (bool));
         }
     }
 }

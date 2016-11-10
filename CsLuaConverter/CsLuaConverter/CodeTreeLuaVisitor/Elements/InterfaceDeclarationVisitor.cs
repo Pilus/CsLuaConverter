@@ -1,6 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Elements
 {
     using System.Linq;
+    using System.Reflection.PortableExecutable;
+
     using Attribute;
     using CodeTree;
     using Expression;
@@ -143,7 +145,13 @@
             textWriter.WriteLine("local implements = {");
             textWriter.Indent++;
 
-            this.baseList?.WriteInterfaceImplements(textWriter, providers, "{0}, ", null);
+            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as InterfaceDeclarationSyntax);
+
+            foreach (var interfaceType in symbol.Interfaces)
+            {
+                providers.TypeReferenceWriter.WriteTypeReference(interfaceType, textWriter);
+                textWriter.WriteLine(",");
+            }
 
             textWriter.Indent--;
             textWriter.WriteLine("};");

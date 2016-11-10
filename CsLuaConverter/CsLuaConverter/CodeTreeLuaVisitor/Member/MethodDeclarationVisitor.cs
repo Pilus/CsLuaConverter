@@ -7,13 +7,13 @@
     using Attribute;
     using CodeTree;
     using Constraint;
-    using Expression;
     using Filters;
     using Lists;
+
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers;
-    using Providers.GenericsRegistry;
     using Type;
 
     public class MethodDeclarationVisitor : BaseVisitor
@@ -146,7 +146,7 @@
                 if (symbol.Parameters.LastOrDefault()?.IsParams == true)
                 {
                     textWriter.Indent++;
-                    this.WriteParamVariableInit(textWriter, providers);
+                    this.WriteParamVariableInit(textWriter, providers, symbol);
                     textWriter.Indent--;
                 }
 
@@ -158,14 +158,13 @@
             textWriter.WriteLine("});");
         }
 
-        public void WriteParamVariableInit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteParamVariableInit(IIndentedTextWriterWrapper textWriter, IProviders providers, IMethodSymbol symbol)
         {
-            var names = this.parameters.GetNames();
-            var types = this.parameters.GetTypes(providers);
+            var parameter = symbol.Parameters.Last();
             textWriter.Write("local ");
-            textWriter.Write(names.Last());
+            textWriter.Write(parameter.Name);
             textWriter.Write(" = (");
-            types.Last().WriteAsReference(textWriter, providers);
+            providers.TypeReferenceWriter.WriteInteractionElementReference(parameter.Type, textWriter);
             textWriter.WriteLine("._C_0_0() % _M.DOT).__Initialize({[0] = firstParam, ...});");
         }
     }

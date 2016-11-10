@@ -34,10 +34,10 @@ namespace CsLuaConverter.Providers
 
         public Providers()
         {
-            this.typeProvider = null;
-            this.genericsRegistry = new GenericsRegistry.GenericsRegistry();
-            this.nameProvider = new NameProvider.NameProvider(this.typeProvider);
-            this.context = new TypeKnowledgeRegistry.Context();
+            this.partialElementState = new PartialElementState();
+            this.SemanticAdaptor = new TypeSymbolSemanticAdaptor();
+            this.TypeReferenceWriter = new TypeReferenceWriter<ITypeSymbol>(this.SemanticAdaptor);
+            this.SignatureWriter = new SignatureWriter<ITypeSymbol>(new SignatureComposer<ITypeSymbol>(this.SemanticAdaptor), this.TypeReferenceWriter);
             this.partialElementState = new PartialElementState();
             TypeKnowledge.Providers = this;
         }

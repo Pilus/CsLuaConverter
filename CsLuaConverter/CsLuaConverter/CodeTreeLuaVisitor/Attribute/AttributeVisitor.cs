@@ -4,6 +4,8 @@
     using CodeTree;
     using CsLuaFramework.Attributes;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Name;
     using Providers;
 
@@ -18,16 +20,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var name = this.name.GetName().Single();
-
-            if (!name.EndsWith("Attribute"))
-            {
-                name += "Attribute";
-            }
-
-            var type = providers.TypeProvider.LookupType(name);
-            textWriter.Write(type.FullNameWithoutGenerics);
-            textWriter.Write(".__typeof");
+            var symbol = providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as AttributeSyntax).Symbol;
+            providers.TypeReferenceWriter.WriteTypeReference(symbol.ContainingType, textWriter);
         }
 
         public bool IsCsLuaAddOnAttribute()
