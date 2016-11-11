@@ -6,7 +6,7 @@
 
     public class GreaterThanExpressionVisitor : BinaryExpressionVisitorBase
     {
-        public GreaterThanExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.GreaterThanToken, ">", new TypeKnowledge(typeof(bool)))
+        public GreaterThanExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.GreaterThanToken, ">")
         {
         }
     }

@@ -6,7 +6,7 @@
     using Providers;
     using Providers.TypeKnowledgeRegistry;
     using Microsoft.CodeAnalysis;
-    public class PredefinedTypeVisitor : BaseTypeVisitor
+    public class PredefinedTypeVisitor : BaseVisitor
     {
         private readonly string text;
 
@@ -19,28 +19,6 @@
         {
             var symbol = (ITypeSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
             providers.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
-        }
-
-        public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            if (this.IsVoid())
-            {
-                throw new VisitorException("Can not write void type as refrence.");
-            }
-
-            var type = providers.TypeProvider.LookupType(this.text);
-            textWriter.Write(type.FullNameWithoutGenerics);
-        }
-
-        public override TypeKnowledge GetType(IProviders providers)
-        {
-            if (this.IsVoid())
-            {
-                return null;
-            }
-
-            var type = providers.TypeProvider.LookupType(this.text);
-            return new TypeKnowledge(type.TypeObject);
         }
 
         public bool IsVoid()

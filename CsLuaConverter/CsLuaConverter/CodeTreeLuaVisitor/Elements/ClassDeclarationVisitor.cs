@@ -5,7 +5,6 @@
     using Attribute;
     using CodeTree;
     using Constraint;
-    using CsLuaConverter.CodeTreeLuaVisitor.Extensions;
     using CsLuaFramework;
     using Expression;
     using Filters;
@@ -399,36 +398,6 @@
         public int GetNumOfGenerics()
         {
             return this.genericsVisitor?.GetNumElements() ?? 0;
-        }
-
-        private void RegisterGenerics(IProviders providers)
-        {
-            if (this.genericsVisitor == null)
-            {
-                return;
-            }
-
-            var classTypeResult = providers.TypeProvider.LookupType(this.name);
-            var generics = classTypeResult.TypeObject.GetGenericArguments();
-
-            foreach (var genericName in this.genericsVisitor.GetNames())
-            {
-                providers.GenericsRegistry.SetGenerics(
-                    genericName, 
-                    GenericScope.Class, 
-                    generics.Single(t => t.Name == genericName), 
-                    typeof(object));
-            }
-
-            foreach (var genericName in this.genericsVisitor.GetNames())
-            {
-                var type = this.constraintClauseVisitor?.GetConstrainedType(providers, genericName)?.GetTypeObject();
-
-                if (type != null)
-                {
-                    providers.GenericsRegistry.SetTypeForGeneric(genericName, type);
-                }
-            }
         }
     }
 }

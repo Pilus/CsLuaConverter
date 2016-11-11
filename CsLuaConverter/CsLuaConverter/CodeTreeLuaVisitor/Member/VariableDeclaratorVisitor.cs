@@ -38,7 +38,7 @@
             return this.name;
         }
 
-        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IProviders providers, ITypeVisitor typeVisitor)
+        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write(this.name);
 

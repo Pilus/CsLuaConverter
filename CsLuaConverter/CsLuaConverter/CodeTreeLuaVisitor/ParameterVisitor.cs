@@ -10,7 +10,7 @@
     public class ParameterVisitor : BaseVisitor
     {
         private readonly bool isParams;
-        private readonly ITypeVisitor type;
+        private readonly IVisitor type;
         private readonly string name;
 
         public ParameterVisitor(CodeTreeBranch branch) : base(branch)
@@ -20,7 +20,7 @@
 
             if (!this.Branch.Nodes[i].Kind.Equals(SyntaxKind.IdentifierToken))
             {
-                this.type = (ITypeVisitor)this.CreateVisitor(i);
+                this.type = this.CreateVisitor(i);
                 i++;
             }
 
@@ -38,35 +38,6 @@
             {
                 textWriter.Write(this.name);
             }
-        }
-
-        public void WriteAsTypes(IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            if (this.isParams)
-            {
-                this.type.GetType(providers).GetArrayGeneric().WriteAsType(textWriter, providers);
-            }
-            else
-            {
-                this.type.WriteAsType(textWriter, providers);
-            }
-        }
-
-        public TypeKnowledge GetType(IProviders providers)
-        {
-            var tk = this.type?.GetType(providers);
-
-            if (tk != null)
-            {
-                tk.IsParams = this.isParams;
-            }
-            
-            return tk;
-        }
-
-        public string GetName()
-        {
-            return this.name;
         }
     }
 }

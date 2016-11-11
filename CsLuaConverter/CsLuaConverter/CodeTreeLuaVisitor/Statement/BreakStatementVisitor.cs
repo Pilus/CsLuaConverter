@@ -12,7 +12,6 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.WriteLine("break;");
-            providers.Context.CurrentType = null;
         }
     }
 }

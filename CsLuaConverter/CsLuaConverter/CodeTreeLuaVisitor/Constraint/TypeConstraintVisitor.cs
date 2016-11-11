@@ -9,21 +9,16 @@
 
     public class TypeConstraintVisitor : BaseVisitor, IConstraint
     {
-        private readonly ITypeVisitor typeVisitor;
+        private readonly IVisitor typeVisitor;
 
         public TypeConstraintVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.typeVisitor = (ITypeVisitor) this.CreateVisitor(0);
+            this.typeVisitor = this.CreateVisitor(0);
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             throw new System.NotImplementedException();
-        }
-
-        public TypeKnowledge GetConstrainedType(IProviders providers)
-        {
-            return this.typeVisitor.GetType(providers);
         }
     }
 }

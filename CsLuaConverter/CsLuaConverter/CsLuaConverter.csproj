@@ -148,10 +148,8 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\ILambdaVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\SimpleLambdaExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\MemberBindingExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\MethodSignatureExtensions.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\UnaryPlusExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Extensions\NamespaceSymbolExtensions.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeReferenceWriter.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\BaseConstructorInitializerVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\EnumMemberDeclarationVisitor.cs" />
@@ -238,11 +236,8 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\SimpleMemberAccessExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\Switch\SwitchStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\TryStatementVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\TypeKnowledgeExtensions.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeParameterVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\ArrayTypeVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Type\BaseTypeVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Type\ITypeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\PredefinedTypeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\VariableDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\VariableDeclaratorVisitor.cs" />
@@ -293,11 +288,8 @@
     <Compile Include="Providers\ProviderException.cs" />
     <Compile Include="Providers\Providers.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\IKnowledge.cs" />
-    <Compile Include="Providers\TypeKnowledgeRegistry\IContext.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\MethodKnowledge.cs" />
-    <Compile Include="Providers\TypeKnowledgeRegistry\PossibleMethods.cs" />
     <Compile Include="Providers\TypeKnowledgeRegistry\TypeKnowledge.cs" />
-    <Compile Include="Providers\TypeKnowledgeRegistry\Context.cs" />
     <Compile Include="Providers\TypeProvider\ActionFuncTypes.cs" />
     <Compile Include="Providers\TypeProvider\ExtensionMethod.cs" />
     <Compile Include="Providers\TypeProvider\ITypeProvider.cs" />

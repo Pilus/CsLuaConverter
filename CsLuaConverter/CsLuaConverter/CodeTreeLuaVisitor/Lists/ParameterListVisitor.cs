@@ -38,20 +38,5 @@
                 }
             }
         }
-
-        public TypeKnowledge[] GetTypes(IProviders providers)
-        {
-            return this.parameters.Select(p => p.GetType(providers)).ToArray();
-        }
-
-        public string[] GetNames()
-        {
-            return this.parameters.Select(p => p.GetName()).ToArray();
-        }
-
-        public int GetNumParameters()
-        {
-            return this.parameters.Length;
-        }
     }
 }

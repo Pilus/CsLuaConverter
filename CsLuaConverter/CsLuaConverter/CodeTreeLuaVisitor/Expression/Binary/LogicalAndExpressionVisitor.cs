@@ -6,7 +6,7 @@
 
     public class LogicalAndExpressionVisitor : BinaryExpressionVisitorBase
     {
-        public LogicalAndExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.AmpersandAmpersandToken, "and", new TypeKnowledge(typeof(bool)))
+        public LogicalAndExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.AmpersandAmpersandToken, "and")
         {
         }
     }

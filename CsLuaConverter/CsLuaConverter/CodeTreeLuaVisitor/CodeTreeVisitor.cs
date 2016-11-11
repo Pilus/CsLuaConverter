@@ -32,44 +32,11 @@
                 var fileGroups = g.GroupBy(v => string.Join(".", v.GetNamespaceName()) + ".__" + v.GetElementName());
                 var ordered = fileGroups.OrderBy(fg => fg.Key).ToArray();
                 
-                var previousNamespace = new string[] { };
-
                 for (var index = 0; index < ordered.Length; index++)
                 {
                     var groupedVisitors = ordered[index].ToArray();
 
-                    var nameSpace = groupedVisitors.First().GetNamespaceName();
-                    var nonCommonNamespace = RemoveCommonStartSequence(nameSpace, previousNamespace);
-
-                    // Reset back to the common root with the previous namespace.
-                    for (var i = 0;
-                        i < (previousNamespace.Length - (nameSpace.Length - nonCommonNamespace.Length));
-                        i++)
-                    {
-                        //textWriter.Indent--;
-                        //textWriter.WriteLine("},");
-                    }
-
-                    foreach (var subNamespace in nonCommonNamespace)
-                    {
-                        //textWriter.WriteLine($"{subNamespace} = {{");
-                        //textWriter.Indent++;
-                    }
-
                     this.VisitFilesWithSameElementName(groupedVisitors, textWriter);
-
-                    previousNamespace = nameSpace;
-
-                    if (index != ordered.Length - 1) continue;
-
-                    for (var i = 0; i < (nameSpace.Length - 1); i++)
-                    {
-                        //textWriter.Indent--;
-                        //textWriter.WriteLine("},");
-                    }
-
-                    //textWriter.Indent--;
-                    //textWriter.WriteLine("}");
                 }
 
                 // Write footer

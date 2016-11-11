@@ -20,8 +20,6 @@
 
         public IGenericsRegistry GenericsRegistry { get; set; }
 
-        public IContext Context { get; set; }
-
         public IPartialElementState PartialElementState { get; set; }
 
         public SignatureWriter<ITypeSymbol> SignatureWriter { get; set; }

@@ -12,7 +12,7 @@
     using Providers.TypeKnowledgeRegistry;
     using Type;
 
-    public class IdentifierNameVisitor : BaseTypeVisitor, INameVisitor
+    public class IdentifierNameVisitor : BaseVisitor
     {
         private readonly string text;
 
@@ -85,65 +85,6 @@
             }
 
             return IsDeclaringTypeThisOrBase(declaredType, thisSymbol.BaseType);
-        }
-        /*
-        private static ITypeSymbol GetDeclaringSymbol(ISymbol symbol)
-        {
-            var propertySymbol = symbol as IPropertySymbol;
-            var fieldSymbol = symbol as IFieldSymbol;
-            var methodSymbol = symbol as IMethodSymbol;
-            return 
-                symbol?.ContainingType ?? 
-                fieldSymbol?.ContainingType ??
-                methodSymbol?.ContainingType;
-        }*/
-
-        public new void WriteAsType(IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            this.WriteAsReference(textWriter, providers);
-
-            if (!providers.GenericsRegistry.IsGeneric(this.text))
-            {
-                textWriter.Write(".__typeof");
-            }
-        }
-
-        public override TypeKnowledge GetType(IProviders providers)
-        {
-            if (providers.GenericsRegistry.IsGeneric(this.text))
-            {
-                var genericType = providers.GenericsRegistry.GetGenericTypeObject(this.text);
-                return new TypeKnowledge(genericType); // TODO: use other type if there are a generic 
-            }
-
-            if (this.text == "var")
-            {
-                return null;
-            }
-
-            var type = providers.TypeProvider.LookupType(this.text);
-            return type != null ? new TypeKnowledge(type.TypeObject) : null;
-        }
-
-        public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            if (providers.GenericsRegistry.IsGeneric(this.text))
-            {
-                var scope = providers.GenericsRegistry.GetGenericScope(this.text);
-                if (scope.Equals(GenericScope.Class))
-                {
-                    textWriter.Write("generics[genericsMapping['{0}']]", this.text);
-                }
-                else
-                {
-                    textWriter.Write("methodGenerics[methodGenericsMapping['{0}']]", this.text);
-                }
-
-                return;
-            }
-
-            var type = providers.TypeProvider.LookupType(this.text);
-            textWriter.Write(type.FullNameWithoutGenerics);
         }
 
         public string[] GetName()

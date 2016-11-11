@@ -100,7 +100,6 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CodeGenerationUtil.cs" />
     <Compile Include="ComparingTextWriter.cs" />
     <Compile Include="EmptyProviders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

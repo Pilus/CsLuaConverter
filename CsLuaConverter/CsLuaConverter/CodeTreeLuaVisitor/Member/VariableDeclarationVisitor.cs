@@ -8,11 +8,9 @@
 
     public class VariableDeclarationVisitor : BaseVisitor
     {
-        private readonly ITypeVisitor typeVisitor;
         private readonly VariableDeclaratorVisitor declaratorVisitor;
         public VariableDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.typeVisitor = (ITypeVisitor)this.CreateVisitor(0);
             this.ExpectKind(1, SyntaxKind.VariableDeclarator);
             this.declaratorVisitor = (VariableDeclaratorVisitor)this.CreateVisitor(1);
         }
@@ -30,7 +28,7 @@
 
         public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            this.declaratorVisitor.WriteDefaultValue(textWriter, providers, this.typeVisitor);
+            this.declaratorVisitor.WriteDefaultValue(textWriter, providers);
         }
 
         public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IProviders providers)

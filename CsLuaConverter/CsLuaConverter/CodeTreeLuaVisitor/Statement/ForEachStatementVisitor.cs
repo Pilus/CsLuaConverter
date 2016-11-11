@@ -8,7 +8,7 @@
 
     public class ForEachStatementVisitor : BaseVisitor
     {
-        private readonly ITypeVisitor iteratorType;
+        private readonly IVisitor iteratorType;
         private readonly string iteratorName;
         private readonly IVisitor enumerator;
         private readonly BlockVisitor block;
@@ -17,7 +17,7 @@
         {
             this.ExpectKind(0, SyntaxKind.ForEachKeyword);
             this.ExpectKind(1, SyntaxKind.OpenParenToken);
-            this.iteratorType = (ITypeVisitor) this.CreateVisitor(2);
+            this.iteratorType = this.CreateVisitor(2);
             this.ExpectKind(3, SyntaxKind.IdentifierToken);
             this.iteratorName = ((CodeTreeLeaf) this.Branch.Nodes[3]).Text;
             this.ExpectKind(4, SyntaxKind.InKeyword);

@@ -6,7 +6,7 @@
 
     public class EqualsExpressionVisitor : BinaryExpressionVisitorBase
     {
-        public EqualsExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.EqualsEqualsToken, null, new TypeKnowledge(typeof(bool)))
+        public EqualsExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.EqualsEqualsToken, null)
         {
         }
     }

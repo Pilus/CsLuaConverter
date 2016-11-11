@@ -6,7 +6,7 @@
 
     public class NotEqualsExpressionVisitor : BinaryExpressionVisitorBase
     {
-        public NotEqualsExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.ExclamationEqualsToken, "~=", new TypeKnowledge(typeof(bool)))
+        public NotEqualsExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.ExclamationEqualsToken, "~=")
         {
         }
     }

@@ -6,7 +6,7 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Binary
 
     public class LogicalOrExpressionVisitor : BinaryExpressionVisitorBase
     {
-        public LogicalOrExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.BarBarToken, "or", new TypeKnowledge(typeof(bool)))
+        public LogicalOrExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.BarBarToken, "or")
         {
         }
     }

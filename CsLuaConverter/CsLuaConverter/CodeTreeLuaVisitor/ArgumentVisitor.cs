@@ -18,26 +18,5 @@
         {
             this.inner.Visit(textWriter, providers);
         }
-
-        public bool IsArgumentVisitorALambda()
-        {
-            return this.inner is ILambdaVisitor;
-        }
-
-        public bool IsArgumentVisitorParenLambda()
-        {
-            return this.inner is ParenthesizedLambdaExpressionVisitor;
-        }
-
-        public TypeKnowledge GetReturnTypeOfSimpleLambdaVisitor(IProviders providers, TypeKnowledge inputType)
-        {
-            return (this.inner as SimpleLambdaExpressionVisitor)?.GetReturnType(providers, inputType);
-        }
-
-        public int? GetInputArgCountOfLambda()
-        {
-            var lambda = this.inner as ILambdaVisitor;
-            return lambda?.GetNumParameters();
-        }
     }
 }

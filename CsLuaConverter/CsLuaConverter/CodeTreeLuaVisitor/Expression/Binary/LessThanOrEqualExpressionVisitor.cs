@@ -6,7 +6,7 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Binary
 
     public class LessThanOrEqualExpressionVisitor : BinaryExpressionVisitorBase
     {
-        public LessThanOrEqualExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.LessThanEqualsToken, "<=", new TypeKnowledge(typeof(bool)))
+        public LessThanOrEqualExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.LessThanEqualsToken, "<=")
         {
         }
     }

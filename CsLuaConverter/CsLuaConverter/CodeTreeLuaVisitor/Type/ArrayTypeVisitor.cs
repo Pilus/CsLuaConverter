@@ -10,15 +10,12 @@
     using Providers;
     using Providers.TypeKnowledgeRegistry;
 
-    public class ArrayTypeVisitor : BaseTypeVisitor
+    public class ArrayTypeVisitor : BaseVisitor
     {
-        private readonly ITypeVisitor type;
-
         private readonly ArrayRankSpecifierVisitor arrayRank;
         public ArrayTypeVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.ExpectKind(1, SyntaxKind.ArrayRankSpecifier);
-            this.type = (ITypeVisitor) this.CreateVisitor(0);
             this.arrayRank = (ArrayRankSpecifierVisitor)this.CreateVisitor(1);
         }
 
@@ -29,18 +26,6 @@
             providers.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
             textWriter.Write("}]");
             this.arrayRank.Visit(textWriter, providers);
-        }
-
-        public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            textWriter.Write("System.Array[{");
-            this.type.WriteAsType(textWriter, providers);
-            textWriter.Write("}]"); 
-        }
-
-        public override TypeKnowledge GetType(IProviders providers)
-        {
-            return this.type.GetType(providers).GetAsArrayType();
         }
     }
 }

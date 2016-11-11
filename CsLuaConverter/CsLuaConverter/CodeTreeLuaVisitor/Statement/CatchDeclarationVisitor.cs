@@ -14,13 +14,13 @@
 
     public class CatchDeclarationVisitor : BaseVisitor
     {
-        private readonly ITypeVisitor type;
+        private readonly IVisitor type;
         private readonly string variableName;
         public CatchDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
             var visitors =
                 this.CreateVisitors(new KindRangeFilter(SyntaxKind.OpenParenToken, SyntaxKind.CloseParenToken));
-            this.type = (ITypeVisitor) visitors.SingleOrDefault();
+            this.type = visitors.SingleOrDefault();
             this.variableName =
                 branch.Nodes
                     .OfType<CodeTreeLeaf>()

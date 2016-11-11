@@ -16,7 +16,6 @@
         private readonly string name;
         private readonly Scope scope;
         private readonly bool isStatic;
-        private readonly ITypeVisitor type;
         private readonly AccessorListVisitor accessorList;
 
         public PropertyDeclarationVisitor(CodeTreeBranch branch) : base(branch)
@@ -30,8 +29,6 @@
             this.scope = scopeValue != null ? (Scope)Enum.Parse(typeof(Scope), scopeValue, true) : Scope.Public;
 
             this.isStatic = accessorNodes.Any(n => n.Kind.Equals(SyntaxKind.StaticKeyword));
-
-            this.type = (ITypeVisitor) this.CreateVisitor(totalNodes - 3);
 
             this.ExpectKind(totalNodes - 2, SyntaxKind.IdentifierToken);
             this.name = ((CodeTreeLeaf) this.Branch.Nodes[totalNodes - 2]).Text;

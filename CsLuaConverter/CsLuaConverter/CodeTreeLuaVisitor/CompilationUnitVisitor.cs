@@ -14,7 +14,7 @@
         private NamespaceDeclarationVisitor namespaceVisitor;
         private UsingDirectiveVisitor[] usings;
 
-        private SemanticModel semanticModel;
+        private readonly SemanticModel semanticModel;
 
         public CompilationUnitVisitor(CodeTreeBranch branch, SemanticModel semanticModel) : base(branch)
         {

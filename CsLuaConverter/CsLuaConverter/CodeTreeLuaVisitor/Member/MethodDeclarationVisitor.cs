@@ -19,7 +19,6 @@
     public class MethodDeclarationVisitor : BaseVisitor
     {
         private readonly string name;
-        private readonly ITypeVisitor returnTypeVisitor;
         private readonly TypeParameterListVisitor methodGenerics;
         private readonly Scope scope;
         private readonly bool isStatic;
@@ -40,7 +39,6 @@
 
             var accessorAndTypeFilter = new KindRangeFilter(branch.Nodes[offset].Kind, SyntaxKind.IdentifierToken);
             var accessorAndType = accessorAndTypeFilter.Filter(this.Branch.Nodes).ToArray();
-            this.returnTypeVisitor = (ITypeVisitor) this.CreateVisitor(offset + accessorAndType.Length - 1);
             this.methodGenerics =
                 (TypeParameterListVisitor) this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameterList)).SingleOrDefault();
             this.name =

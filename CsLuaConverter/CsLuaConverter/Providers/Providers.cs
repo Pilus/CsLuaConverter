@@ -19,7 +19,6 @@ namespace CsLuaConverter.Providers
         private readonly IGenericsRegistry genericsRegistry;
         private readonly ITypeProvider typeProvider;
         private readonly INameProvider nameProvider;
-        private readonly IContext context;
         private readonly IPartialElementState partialElementState;
 
         public Providers(IEnumerable<BaseTypeCollection> typeCollections)
@@ -27,7 +26,6 @@ namespace CsLuaConverter.Providers
             this.typeProvider = new TypeNameProvider(typeCollections);
             this.genericsRegistry = new GenericsRegistry.GenericsRegistry();
             this.nameProvider = new NameProvider.NameProvider(this.typeProvider);
-            this.context = new TypeKnowledgeRegistry.Context();
             this.partialElementState = new PartialElementState();
             TypeKnowledge.Providers = this;
         }
@@ -63,14 +61,6 @@ namespace CsLuaConverter.Providers
             get
             {
                 return this.typeProvider;
-            }
-        }
-
-        public IContext Context
-        {
-            get
-            {
-                return this.context;
             }
         }
 

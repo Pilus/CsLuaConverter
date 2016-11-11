@@ -15,7 +15,6 @@
     public class IndexerDeclarationVisitor : BaseVisitor
     {
         private readonly Scope scope;
-        private readonly ITypeVisitor type;
         private readonly ParameterVisitor indexerParameter;
         private readonly AccessorListVisitor accessorList;
 
@@ -28,8 +27,6 @@
                 ((CodeTreeLeaf)(new KindFilter(SyntaxKind.PrivateKeyword, SyntaxKind.PublicKeyword,
                     SyntaxKind.ProtectedKeyword, SyntaxKind.InternalKeyword).Filter(accessorNodes)).SingleOrDefault())?.Text;
             this.scope = scopeValue != null ? (Scope)Enum.Parse(typeof(Scope), scopeValue, true) : Scope.Public;
-
-            this.type = (ITypeVisitor)this.CreateVisitor(totalNodes - 4);
 
             this.ExpectKind(totalNodes - 3, SyntaxKind.ThisKeyword);
 

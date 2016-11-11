@@ -6,7 +6,7 @@
 
     public class LessThanExpressionVisitor : BinaryExpressionVisitorBase
     {
-        public LessThanExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.LessThanToken, "<", new TypeKnowledge(typeof(bool)))
+        public LessThanExpressionVisitor(CodeTreeBranch branch) : base(branch, SyntaxKind.LessThanToken, "<")
         {
         }
     }
