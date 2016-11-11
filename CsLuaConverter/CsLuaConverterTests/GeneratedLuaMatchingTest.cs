@@ -97,8 +97,7 @@ namespace CsLuaConverterTests
 
 
 
-    private const string CsLuaCompiled = @"-- This file have generated from a C# namespace.
-_M.ATN('CsLuaTest','BaseTest', _M.NE({
+    private const string CsLuaCompiled = @"_M.ATN('CsLuaTest','BaseTest', _M.NE({
     [0] = function(interactionElement, generics, staticValues)
         local genericsMapping = {};
         local typeObject = System.Type('BaseTest','CsLuaTest', nil, 0, generics, nil, interactionElement, 'Class', 8101);

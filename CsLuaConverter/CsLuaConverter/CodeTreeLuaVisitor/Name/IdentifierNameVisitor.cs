@@ -12,7 +12,7 @@
     using Providers.TypeKnowledgeRegistry;
     using Type;
 
-    public class IdentifierNameVisitor : BaseVisitor
+    public class IdentifierNameVisitor : BaseVisitor, INameVisitor
     {
         private readonly string text;
 
