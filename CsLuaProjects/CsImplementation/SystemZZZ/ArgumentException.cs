@@ -29,7 +29,6 @@
         }
 
         public ArgumentException (string message, string paramName) 
-
             : base (message) { 
             m_paramName = paramName;
         } 

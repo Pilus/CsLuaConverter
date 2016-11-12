@@ -71,7 +71,7 @@
     <Compile Include="Arrays\ArraysTests.cs" />
     <Compile Include="Arrays\ClassWithArrays.cs" />
     <Compile Include="Arrays\ClassWithPredefinedArray.cs" />
-    <Compile Include="Collections\ClassWithProperties.cs" />
+    <Compile Include="Linq\ClassWithProperties.cs" />
     <Compile Include="Collections\CollectionsTests.cs" />
     <Compile Include="Constructors\Class1.cs" />
     <Compile Include="Constructors\Class2.cs" />
@@ -92,6 +92,7 @@
     <Compile Include="Inheritance\Inheriter.cs" />
     <Compile Include="Interfaces\ClassWithMethod.cs" />
     <Compile Include="Interfaces\InterfaceWithMethod.cs" />
+    <Compile Include="Linq\LinqTests.cs" />
     <Compile Include="Namespaces\Class1.cs" />
     <Compile Include="Namespaces\NamespacesTests.cs" />
     <Compile Include="Statements\ClassWithSwitch.cs" />

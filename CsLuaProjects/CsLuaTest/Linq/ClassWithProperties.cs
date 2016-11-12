@@ -1,4 +1,4 @@
-﻿namespace CsLuaTest.Collections
+﻿namespace CsLuaTest.Linq
 {
     public class ClassWithProperties
     {

@@ -1,5 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
+    using System.Linq;
+
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
@@ -16,16 +18,7 @@
         public ParameterVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.isParams = this.Branch.Nodes[0].Kind.Equals(SyntaxKind.ParamsKeyword);
-            var i = this.isParams ? 1 : 0;
-
-            if (!this.Branch.Nodes[i].Kind.Equals(SyntaxKind.IdentifierToken))
-            {
-                this.type = this.CreateVisitor(i);
-                i++;
-            }
-
-            this.ExpectKind(i, SyntaxKind.IdentifierToken);
-            this.name = ((CodeTreeLeaf) this.Branch.Nodes[i]).Text;
+            this.name = branch.Nodes.OfType<CodeTreeLeaf>().Skip(this.isParams ? 1 : 0).First().Text;
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
