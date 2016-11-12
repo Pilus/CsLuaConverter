@@ -6,6 +6,8 @@
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
     using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     public class ImplicitArrayCreationExpressionVisitor : BaseVisitor
     {
         private readonly ArrayInitializerExpressionVisitor creationExpression;
@@ -16,8 +18,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
+            var typeInfo = providers.SemanticModel.GetTypeInfo(this.Branch.SyntaxNode);
             textWriter.Write("(");
-            textWriter.Write("System.Array[{System.Object.__typeof}]"); // Writing every implicit array as object[], since the symbol is not available.
+            providers.TypeReferenceWriter.WriteInteractionElementReference(typeInfo.Type, textWriter);
             textWriter.Write("._C_0_0() % _M.DOT)");
             this.creationExpression.Visit(textWriter, providers);
         }

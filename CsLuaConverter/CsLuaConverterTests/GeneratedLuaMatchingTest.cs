@@ -1823,17 +1823,17 @@ _M.ATN('CsLuaTest.Arrays','ArraysTests', _M.NE({
                     local a1 = (System.Array[{System.String.__typeof}]._C_0_0() % _M.DOT).__Initialize({});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""string"", ((arrayClass % _M.DOT).TypeDependent_M_0_26208 % _M.DOT)(a1));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(0, (a1 % _M.DOT).Length);
-                    local a2 = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = ""abc"", ""def""});
+                    local a2 = (System.Array[{System.String.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = ""abc"", ""def""});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""string"", ((arrayClass % _M.DOT).TypeDependent_M_0_26208 % _M.DOT)(a2));
-                    local a3 = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 1, 3});
+                    local a3 = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 1, 3});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""int"", ((arrayClass % _M.DOT).TypeDependent_M_0_11778 % _M.DOT)(a3));
-                    local a3b = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 1.1, 3.2});
+                    local a3b = (System.Array[{System.Double.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 1.1, 3.2});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""double"", ((arrayClass % _M.DOT).TypeDependent_M_0_25446 % _M.DOT)(a3b));
                     local a4 = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = true, 1, ""ok""});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""object"", ((arrayClass % _M.DOT).TypeDependent_M_0_25716 % _M.DOT)(a4));
-                    local a5 = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = (CsLuaTest.Arrays.AClass[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({Value = 4}), (CsLuaTest.Arrays.AClass[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({Value = 6})});
+                    local a5 = (System.Array[{CsLuaTest.Arrays.AClass[{System.Int32.__typeof}].__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = (CsLuaTest.Arrays.AClass[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({Value = 4}), (CsLuaTest.Arrays.AClass[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({Value = 6})});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Aint"", ((arrayClass % _M.DOT).TypeDependent_M_0_101526360 % _M.DOT)(a5));
-                    local a6 = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = CsLuaTest.Arrays.AClass[{System.String.__typeof}]._C_0_0()});
+                    local a6 = (System.Array[{CsLuaTest.Arrays.AClass[{System.String.__typeof}].__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = CsLuaTest.Arrays.AClass[{System.String.__typeof}]._C_0_0()});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Astring"", ((arrayClass % _M.DOT).TypeDependent_M_0_225912960 % _M.DOT)(a6));
                     local a7 = (System.Array[{CsLuaTest.Arrays.AClass[{System.String.__typeof}].__typeof}]._C_0_0() % _M.DOT).__Initialize({});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(""Astring"", ((arrayClass % _M.DOT).TypeDependent_M_0_225912960 % _M.DOT)(a7));
@@ -1848,7 +1848,7 @@ _M.ATN('CsLuaTest.Arrays','ArraysTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local arrayClass = CsLuaTest.Arrays.ClassWithArrays._C_0_0();
-                    local array = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = ""abc"", ""def""});
+                    local array = (System.Array[{System.String.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = ""abc"", ""def""});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(2, ((arrayClass % _M.DOT).GetLengthOfStringArray_M_0_26208 % _M.DOT)(array));
                 end
             });
@@ -2251,10 +2251,10 @@ _M.ATN('CsLuaTest.Collections','CollectionsTests', _M.NE({
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)((list % _M.DOT).Count, (verificationList % _M.DOT).Count);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)((list % _M.DOT)[0], (verificationList % _M.DOT)[0]);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)((list % _M.DOT)[1], (verificationList % _M.DOT)[1]);
-                    local list2 = System.Collections.Generic.List[{System.Int32.__typeof}]._C_0_129809264((System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 7, 9, 13}));
+                    local list2 = System.Collections.Generic.List[{System.Int32.__typeof}]._C_0_129809264((System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 7, 9, 13}));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(3, (list2 % _M.DOT).Count);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(7, (list2 % _M.DOT)[0]);
-                    ((list2 % _M.DOT).AddRange_M_0_129809264 % _M.DOT)((System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 21, 28}));
+                    ((list2 % _M.DOT).AddRange_M_0_129809264 % _M.DOT)((System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 21, 28}));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(5, (list2 % _M.DOT).Count);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(21, (list2 % _M.DOT)[3]);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(28, (list2 % _M.DOT)[4]);
@@ -2280,7 +2280,7 @@ _M.ATN('CsLuaTest.Collections','CollectionsTests', _M.NE({
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(2, (res % _M.DOT).Count);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(24, (res % _M.DOT)[0]);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(6, (res % _M.DOT)[1]);
-                    ((list % _M.DOT).InsertRange_M_0_194717822 % _M.DOT)(1, (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 110, 120}));
+                    ((list % _M.DOT).InsertRange_M_0_194717822 % _M.DOT)(1, (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 110, 120}));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(8, (list % _M.DOT).Count);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(110, (list % _M.DOT)[1]);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_21430 % _M.DOT)(120, (list % _M.DOT)[2]);
@@ -6893,7 +6893,7 @@ _M.ATN('CsLuaTest.Serialization','ClassWithSubObject', _M.NE({
             local element = baseElementGenerator();
             element.type = typeObject;
             element[typeObject.Level] = {
-                AnArray = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = ""1"", ""2""}),
+                AnArray = (System.Array[{System.String.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = ""1"", ""2""}),
                 AClass = CsLuaTest.Serialization.ClassWithNativeObjects._C_0_0(),
             };
             return element;
