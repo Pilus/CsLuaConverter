@@ -50,25 +50,6 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
             }
 
             textWriter.Write("end)");
-
-            /*
-            var delegateType = providers.Context.ExpectedType;
-
-            var bodyWriter = textWriter.CreateTextWriterAtSameIndent();
-            this.VisitParametersAndBody(bodyWriter, providers, delegateType);
-
-            var returnType = providers.Context.CurrentType;
-            var inputTypes = new[] {this.parameter.GetType(providers)};
-
-            var generics = new[] { this.parameter.GetType(providers), returnType};
-
-            delegateType = delegateType?.ApplyMissingGenerics(generics) ?? TypeKnowledge.ConstructLambdaType(inputTypes, returnType);
-
-            delegateType.WriteAsReference(textWriter, providers);
-            textWriter.Write("._C_0_16704"); // Lua.Function as argument
-            textWriter.AppendTextWriter(bodyWriter);
-
-            providers.Context.CurrentType = delegateType; */
         }
 
         private ITypeSymbol GetSymbolForParentUsingTheLambda(IProviders providers)

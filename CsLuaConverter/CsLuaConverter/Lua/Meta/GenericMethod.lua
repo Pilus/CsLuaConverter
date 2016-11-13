@@ -51,7 +51,7 @@ local GenericMethod = function(member, elementOrStaticValues, name)
                 end
 
                 if not(member.returnType == nil) then
-                    table.insert(actionGenerics, 1, member.returnType)
+                    table.insert(actionGenerics, 1, member.returnType())
                     return System.Func[actionGenerics].__typeof;
                 end
 

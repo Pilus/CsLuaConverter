@@ -113,9 +113,9 @@
             
             if (!symbol.ReturnsVoid)
             {
-                textWriter.Write("returnType = ");
+                textWriter.Write("returnType = function() return ");
                 providers.TypeReferenceWriter.WriteTypeReference(symbol.ReturnType, textWriter);
-                textWriter.WriteLine(",");
+                textWriter.WriteLine(" end,");
             }
             /*
             textWriter.Write("types = {");
