@@ -24,8 +24,6 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            //providers.TypeProvider.SetCurrentNamespace(this.nameVisitor.GetName());
-
             this.usingVisitors.VisitAll(textWriter, providers);
 
             var state = providers.PartialElementState;
@@ -61,6 +59,13 @@
                     elementVisitor.Visit(textWriter, providers);
                 }
             }
+        }
+
+        public void WriteExtensions(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        {
+            this.elementVisitors.OfType<ClassDeclarationVisitor>()
+                .ToList()
+                .ForEach(e => e.WriteExtensionMethods(textWriter, providers));
         }
 
         private void CreateNameVisitor()

@@ -296,11 +296,6 @@
                 textWriter.WriteLine("local members = _M.RTEF(getBaseMembers);");
             }
 
-            //var scope = providers.NameProvider.CloneScope();
-            //var classTypeResult = providers.TypeProvider.LookupType(this.name);
-            //providers.NameProvider.AddToScope(new ScopeElement("this", new TypeKnowledge(classTypeResult.TypeObject)));
-            //providers.NameProvider.AddToScope(new ScopeElement("base", new TypeKnowledge(classTypeResult.TypeObject.BaseType)));
-
             this.constructorVisitors.VisitAll(textWriter, providers);
             if (providers.PartialElementState.DefinedConstructorWritten == false && this.constructorVisitors.Any())
             {
@@ -318,8 +313,6 @@
             this.indexerVisitors.VisitAll(textWriter, providers);
             this.methodVisitors.VisitAll(textWriter, providers);
 
-            //providers.NameProvider.SetScope(scope);
-
             if (providers.PartialElementState.IsLast)
             {
                 textWriter.WriteLine("return members;");
@@ -327,40 +320,6 @@
                 textWriter.WriteLine("end");
             }
         }
-        /*
-        private void WriteConstructors(IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            if (providers.PartialElementState.IsFirst)
-            {
-                textWriter.WriteLine("local constructors = {");
-                textWriter.Indent++;
-            }
-
-            if (providers.PartialElementState.IsFirst && this.constructorVisitors.Length == 0)
-            {
-                textWriter.WriteLine("{");
-                textWriter.Indent++;
-
-                textWriter.WriteLine("types = {},");
-                textWriter.WriteLine("func = function(element) _M.AM(baseConstructors, {}, 'Base constructor').func(element); end,");
-
-                textWriter.Indent--;
-                textWriter.WriteLine("}");
-            }
-            else
-            {
-                foreach (var constructor in this.constructorVisitors)
-                {
-                    constructor.Visit(textWriter, providers);
-                }
-            }
-
-            if (providers.PartialElementState.IsLast)
-            {
-                textWriter.Indent--;
-                textWriter.WriteLine("};");
-            }
-        } */
 
         private void WriteClose(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
@@ -370,11 +329,6 @@
                 textWriter.Indent--;
                 textWriter.WriteLine("end,");
                 providers.CurrentClass = null;
-            }
-
-            if (providers.PartialElementState.IsFirst)
-            {
-                //providers.NameProvider.SetScope(this.originalScope);
             }
         }
 
@@ -388,6 +342,29 @@
             textWriter.Write("(");
             textWriter.Write(providers.SemanticAdaptor.GetFullName(this.symbol));
             textWriter.WriteLine("._C_0_0() % _M.DOT).Execute();");
+        }
+
+        public void WriteExtensionMethods(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        {
+            var methodsWithSameExtensionTypes =
+                this.methodVisitors.GroupBy(m => m.GetExtensionTypeSymbol(providers)).Where(t => t.Key != null).ToArray();
+
+            if (!methodsWithSameExtensionTypes.Any())
+            {
+                return;
+            }
+
+            foreach (var methodsWithSameExtensionType in methodsWithSameExtensionTypes)
+            {
+                var extensionType = methodsWithSameExtensionType.Key;
+                textWriter.Write("_M.RE('");
+                textWriter.Write(providers.SemanticAdaptor.GetFullName(extensionType));
+                textWriter.Write("', ");
+                //textWriter.Write(extensionType.typeArg);
+                //method.WriteAsExtensionMethod(extensionWriter, providers);
+            }
+
+            textWriter.WriteLine("");
         }
 
         public string GetName()

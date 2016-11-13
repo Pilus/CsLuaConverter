@@ -47,6 +47,11 @@
             this.namespaceVisitor.WriteFooter(textWriter, providers);
         }
 
+        public void WriteExtensions(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        {
+            this.namespaceVisitor.WriteExtensions(textWriter, providers);
+        }
+
         public string[] GetNamespaceName()
         {
             return this.namespaceVisitor.GetNamespaceName();

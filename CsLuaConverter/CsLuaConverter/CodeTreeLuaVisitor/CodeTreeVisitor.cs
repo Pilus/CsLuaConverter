@@ -142,6 +142,11 @@
 
             textWriter.Indent--;
             textWriter.WriteLine("}));");
+
+            foreach (var visitor in visitors)
+            {
+                visitor.WriteExtensions(textWriter, this.providers);
+            }
         }
 
         private void VisitFilesWithSameElementNameAndNumGenerics(CompilationUnitVisitor[] visitors, IIndentedTextWriterWrapper textWriter, int numOfGenerics)
