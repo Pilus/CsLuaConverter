@@ -43,7 +43,7 @@ System.Exception = _M.NE({[0] = function(interactionElement, generics, staticVal
         signatureHash = 8736,
         scope = 'Public',
         func = function(element, msg)
-            (element %_M.DOT).Message = msg;
+            (element % _M.DOT_LVL(typeObject.Level)).Message = msg;
         end,
     });
 

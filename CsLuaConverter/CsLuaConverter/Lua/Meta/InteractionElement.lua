@@ -86,7 +86,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
         return key;
     end
 
-    local getMembers = function(key, level, staticOnly, extensions, explicitLevel)
+    local getMembers = function(key, level, staticOnly, extensions, explicitLevel, getOrSetFilter)
         if not(cachedMembers) then
             cachedMembers = _M.RTEF(memberProvider);
         end
@@ -108,6 +108,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             return (not(staticOnly) or static) and
                 (indexType == nil or memberType == memberTypeTranslation[indexType]) and
                 (numGenerics == nil or numGenerics == member.numMethodGenerics) and
+                (getOrSetFilter == nil or not(member.memberType == "Property") or (getOrSetFilter == "get" and member.get) or (getOrSetFilter == "set" and member.set)) and
                 (hash == nil or hash == member.signatureHash) and
                 (
                     (levelProvided and (explicitLevel) and memberLevel == level) or
@@ -236,7 +237,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
             return function(values) initialize(self, values); return self; end
         end
 
-        local fittingMembers = filterOverrides(getMembers(key, level, false, nil, explicitLevel), level or typeObject.level);
+        local fittingMembers = filterOverrides(getMembers(key, level, false, nil, explicitLevel, "get"), level or typeObject.level);
 
         if #(fittingMembers) == 0 then
             fittingMembers = getFittingExtensions(key);
@@ -302,7 +303,7 @@ local InteractionElement = function(metaProvider, generics, selfObj)
     end;
 
     local newIndex = function(self, key, value, level, explicitLevel)
-        local fittingMembers = getMembers(key, level, false, nil, explicitLevel);
+        local fittingMembers = getMembers(key, level, false, nil, explicitLevel, "set");
 
         if #(fittingMembers) == 0 then
             fittingMembers = getMembers("#", level, false, nil, explicitLevel); -- Look up indexers

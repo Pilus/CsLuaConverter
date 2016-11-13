@@ -22,14 +22,13 @@
             try
             {
                 Enumerable.Where<int>(null, (v) => false);
+                throw new Exception("Expected to throw exception. No exception thrown.");
             }
             catch (Exception ex)
             {
-                //Assert(true, ex is ArgumentNullException, "Expected ArgumentNullException, got " + ex.GetType().Name);
-                Assert("Parameter name: source\nValue cannot be null.", ex.Message);
+                Assert(true, ex is ArgumentNullException, "Expected ArgumentNullException, got " + ex.GetType().Name);
+                Assert("Value cannot be null.\nParameter name: source", ex.Message);
             }
-
-            throw new Exception("Expected to throw exception. To exception thrown.");
         }
 
         private static void TestCountAndAny()

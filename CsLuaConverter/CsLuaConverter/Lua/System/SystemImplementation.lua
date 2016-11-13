@@ -342,7 +342,7 @@ _M.ATN('System.Collections','IEnumerable', _M.NE({
                 static = false,
                 numMethodGenerics = 0,
                 signatureHash = 0,
-                returnType = System.Collections.IEnumerator.__typeof,
+                returnType = function() return System.Collections.IEnumerator.__typeof end,
             });
             return members;
         end
@@ -373,7 +373,7 @@ _M.ATN('System.Collections','IEnumerator', _M.NE({
                 static = false,
                 numMethodGenerics = 0,
                 signatureHash = 0,
-                returnType = System.Boolean.__typeof,
+                returnType = function() return System.Boolean.__typeof end,
             });
             _M.IM(members, 'Reset', {
                 level = typeObject.Level,
@@ -406,7 +406,7 @@ _M.ATN('System.Collections.Generic','IEnumerable', _M.NE({
                 static = false,
                 numMethodGenerics = 0,
                 signatureHash = 0,
-                returnType = System.Collections.Generic.IEnumerator[{generics[genericsMapping['T']]}].__typeof,
+                returnType = function() return System.Collections.Generic.IEnumerator[{generics[genericsMapping['T']]}].__typeof end,
             });
             return members;
         end
@@ -479,7 +479,7 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 static = true,
                 numMethodGenerics = 1,
                 signatureHash = 93993440,
-                returnType = System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, this, predicate)
                     if (source == nil) then
@@ -536,7 +536,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 8572,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element, p0)
                     return System.ArgumentException._C_0_8736(((element % _M.DOT_LVL(typeObject.Level)).F_M_0_47310 % _M.DOT)("Parameter {0} has too many elements", p0));
                 end
@@ -548,7 +548,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 8572,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element, p0)
                     return System.ArgumentException._C_0_8736(((element % _M.DOT_LVL(typeObject.Level)).F_M_0_47310 % _M.DOT)("{0} is not IEnumerable<>;", p0));
                 end
@@ -560,7 +560,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 8572,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element, p0)
                     return System.ArgumentException._C_0_8736(((element % _M.DOT_LVL(typeObject.Level)).F_M_0_47310 % _M.DOT)("{0} is not a sequence", p0));
                 end
@@ -572,7 +572,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 8572,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element, p0)
                     return System.ArgumentException._C_0_8736(((element % _M.DOT_LVL(typeObject.Level)).F_M_0_47310 % _M.DOT)("Argument {0} is not valid", p0));
                 end
@@ -584,7 +584,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 0,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element)
                     return System.ArgumentException._C_0_8736("The two sequences have incompatible element types");
                 end
@@ -596,7 +596,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 8572,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element, p0)
                     return System.ArgumentException._C_0_8736(((element % _M.DOT_LVL(typeObject.Level)).F_M_0_47310 % _M.DOT)("Argument {0} is not a LambdaExpression", p0));
                 end
@@ -608,7 +608,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 0,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element)
                     return System.InvalidOperationException._C_0_8736("Sequence contains more than one element");
                 end
@@ -620,7 +620,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 0,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element)
                     return System.InvalidOperationException._C_0_8736("Sequence contains more than one matching element");
                 end
@@ -632,7 +632,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 8572,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element, p0)
                     return System.InvalidOperationException._C_0_8736(((element % _M.DOT_LVL(typeObject.Level)).F_M_0_47310 % _M.DOT)("There is no method '{0}' on class System.Linq.Enumerable that matches the specified arguments", p0));
                 end
@@ -644,7 +644,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 0,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element)
                     return System.InvalidOperationException._C_0_8736("Sequence contains no elements");
                 end
@@ -656,7 +656,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 0,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element)
                     return System.InvalidOperationException._C_0_8736("Sequence contains no matching element");
                 end
@@ -668,7 +668,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 21430,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element, p0, p1)
                     return System.InvalidOperationException._C_0_8736(((element % _M.DOT_LVL(typeObject.Level)).F_M_0_47310 % _M.DOT)("There is no method '{0}' on type '{1}' that matches the specified arguments", p0, p1));
                 end
@@ -680,7 +680,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 21430,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element, p0, p1)
                     return System.InvalidOperationException._C_0_8736(((element % _M.DOT_LVL(typeObject.Level)).F_M_0_47310 % _M.DOT)("There is no method '{0}' on type '{1}' that matches the specified arguments", p0, p1));
                 end
@@ -692,7 +692,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 8572,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element, p0)
                     return System.InvalidOperationException._C_0_8736(((element % _M.DOT_LVL(typeObject.Level)).F_M_0_47310 % _M.DOT)("There is no method '{0}' on class System.Linq.Queryable that matches the specified arguments", p0));
                 end
@@ -704,7 +704,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 8736,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element, paramName)
                     return System.ArgumentNullException._C_0_8736(paramName);
                 end
@@ -716,7 +716,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 8736,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element, paramName)
                     return System.ArgumentOutOfRangeException._C_0_8736(paramName);
                 end
@@ -728,7 +728,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 0,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element)
                     return System.NotImplementedException._C_0_0();
                 end
@@ -740,7 +740,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 static = true,
                 numMethodGenerics = 0,
                 signatureHash = 0,
-                returnType = System.Exception.__typeof,
+                returnType = function() return System.Exception.__typeof end,
                 func = function(element)
                     return System.NotSupportedException._C_0_0();
                 end
@@ -753,7 +753,7 @@ _M.ATN('System.Linq','Error', _M.NE({
                 numMethodGenerics = 0,
                 signatureHash = 47310,
                 isParams = true,
-                returnType = System.String.__typeof,
+                returnType = function() return System.String.__typeof end,
                 func = function(element, str, firstParam, ...)
                     local args = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = firstParam, ...});
                     return ((System.String % _M.DOT).Format_M_0_47310 % _M.DOT)(str, args);
