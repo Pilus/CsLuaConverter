@@ -18,7 +18,7 @@
         public ParameterVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.isParams = this.Branch.Nodes[0].Kind.Equals(SyntaxKind.ParamsKeyword);
-            this.name = branch.Nodes.OfType<CodeTreeLeaf>().Skip(this.isParams ? 1 : 0).First().Text;
+            this.name = branch.Nodes.OfType<CodeTreeLeaf>().Last().Text;
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)

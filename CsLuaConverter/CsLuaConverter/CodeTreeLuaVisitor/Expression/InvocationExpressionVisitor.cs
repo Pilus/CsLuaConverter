@@ -108,7 +108,7 @@
             textWriter.Write("(({0} % _M.DOT).", providers.SemanticAdaptor.GetFullName(symbol.ContainingType));
 
             var signatureTextWriter = textWriter.CreateTextWriterAtSameIndent();
-            var signatureHasGenerics = providers.SignatureWriter.WriteSignature(symbol.ConstructedFrom.Parameters.Select(p => p.Type).ToArray(), signatureTextWriter);
+            var signatureHasGenerics = providers.SignatureWriter.WriteSignature(symbol.ReducedFrom.Parameters.Select(p => p.Type).ToArray(), signatureTextWriter);
 
             if (signatureHasGenerics)
             {
