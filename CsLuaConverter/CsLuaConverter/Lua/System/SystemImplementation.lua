@@ -525,6 +525,96 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     return array;
                 end
             });
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Any', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return System.Boolean.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    for _,value in (source % _M.DOT).GetEnumerator() do
+                        return true;
+                    end
+                    return false;
+                end
+            });
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Count', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return System.Int32.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    local count = 0;
+                    for _,value in (source % _M.DOT).GetEnumerator() do
+                        count = count + 1;
+                    end
+                    return count;
+                end
+            });
+            local methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Select', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 92138,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    if (selector == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("selector"));
+                    end
+                    
+            local enumerator = (source % _M.DOT).GetEnumerator();
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+                local key, value = enumerator(_, prevKey);
+                if (key == nil) then
+                    return nil;
+                end
+                return key, (selector %_M.DOT)(value);
+            end); 
+                end
+            });
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ToList', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return System.Collections.Generic.List[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    return System.Collections.Generic.List[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_66128(source);
+                end
+            });
             return members;
         end
         return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;

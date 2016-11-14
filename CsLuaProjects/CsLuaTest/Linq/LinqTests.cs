@@ -13,8 +13,8 @@
             this.Tests["WhereWithNoPredicateThrows"] = WhereWithNoPredicateThrows;
             this.Tests["WhereReturnsExpectedCollection"] = WhereReturnsExpectedCollection;
             
-            //this.Tests["TestCountAndAny"] = TestCountAndAny;
-            //this.Tests["TestSelect"] = TestSelect;
+            this.Tests["TestCountAndAny"] = TestCountAndAny;
+            this.Tests["TestSelect"] = TestSelect;
             //this.Tests["TestUnion"] = TestUnion;
             //this.Tests["TestOrderBy"] = TestOrderBy;
             //this.Tests["TestOfLinqOfType"] = TestOfLinqOfType;
