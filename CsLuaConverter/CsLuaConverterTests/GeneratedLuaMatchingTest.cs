@@ -5587,7 +5587,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                         function()
                             local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
                             local predicate = nil;
-                            ((a % _M.DOT).Where_M_1_62618208[{System.Int32.__typeof}] % _M.DOT)(predicate);
+                            ((System.Linq.Enumerable % _M.DOT).Where_M_1_62618208[{System.Int32.__typeof}] % _M.DOT)(a, predicate);
                             _M.Throw(System.Exception._C_0_8736(""Expected to throw exception. No exception thrown.""));
                         end,
                         {
@@ -5612,7 +5612,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
-                    local res = ((((a % _M.DOT).Where_M_1_62618208[{System.Int32.__typeof}] % _M.DOT)(System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v) return v > 10 and v < 40 end)) % _M.DOT).ToArray_M_1_0[{System.Int32.__typeof}] % _M.DOT)();
+                    local res = ((System.Linq.Enumerable % _M.DOT).ToArray_M_1_0[{System.Int32.__typeof}] % _M.DOT)(((System.Linq.Enumerable % _M.DOT).Where_M_1_62618208[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v) return v > 10 and v < 40 end)));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, (res % _M.DOT).Length);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(16, (res % _M.DOT)[0]);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(32, (res % _M.DOT)[1]);

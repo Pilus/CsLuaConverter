@@ -28,7 +28,15 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
-            var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as InvocationExpressionSyntax).Symbol;
+            var syntax = (InvocationExpressionSyntax)this.Branch.SyntaxNode;
+            var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(syntax).Symbol;
+
+            if (symbol.IsExtensionMethod && symbol.MethodKind == MethodKind.ReducedExtension)
+            {
+                this.WriteAsExtensionMethodCall(textWriter, providers, symbol);
+                return;
+            }
+
             textWriter.Write("(");
 
             if (symbol.MethodKind != MethodKind.DelegateInvoke)
@@ -91,16 +99,58 @@
 
         private void VisitTarget(IIndentedTextWriterWrapper textWriter, IProviders providers, IMethodSymbol symbol)
         {
-            /*
-            if (symbol.IsStatic)
-            {
-                providers.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
-                textWriter.Write(".");
-                textWriter.Write(symbol.Name);
-                return;
-            } */
-
             this.target.Visit(textWriter, providers);
+        }
+
+        private void WriteAsExtensionMethodCall(IIndentedTextWriterWrapper textWriter, IProviders providers,
+            IMethodSymbol symbol)
+        {
+            textWriter.Write("(({0} % _M.DOT).", providers.SemanticAdaptor.GetFullName(symbol.ContainingType));
+
+            var signatureTextWriter = textWriter.CreateTextWriterAtSameIndent();
+            var signatureHasGenerics = providers.SignatureWriter.WriteSignature(symbol.ConstructedFrom.Parameters.Select(p => p.Type).ToArray(), signatureTextWriter);
+
+            if (signatureHasGenerics)
+            {
+                textWriter.Write("['");
+            }
+            
+            textWriter.Write("{0}_M_{1}_", symbol.Name, symbol.TypeArguments.Length);
+
+            if (signatureHasGenerics)
+            {
+                textWriter.Write("'..(");
+            }
+
+            textWriter.AppendTextWriter(signatureTextWriter);
+
+            if (signatureHasGenerics)
+            {
+                textWriter.Write(")]");
+            }
+
+            if (symbol.TypeArguments.Any())
+            {
+                providers.TypeReferenceWriter.WriteTypeReferences(symbol.TypeArguments.ToArray(), textWriter);
+            }
+
+            textWriter.Write(" % _M.DOT)");
+
+            var argWriter = textWriter.CreateTextWriterAtSameIndent();
+            this.argumentList.Visit(argWriter, providers);
+
+            var targetWriter = textWriter.CreateTextWriterAtSameIndent();
+            this.VisitTarget(targetWriter, providers, symbol);
+            var targetStr = targetWriter.ToString();
+            textWriter.Write(targetStr.Substring(0, targetStr.LastIndexOf(" % _M.DOT)")));
+
+            var argStr = argWriter.ToString();
+            if (argStr.Length > 2)
+            {
+                textWriter.Write(", ");
+            }
+            
+            textWriter.Write(argStr.Substring(1)); // Skip the opening (
         }
     }
 }

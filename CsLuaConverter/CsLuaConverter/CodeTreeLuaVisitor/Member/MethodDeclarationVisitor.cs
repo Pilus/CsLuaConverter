@@ -65,10 +65,10 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as MethodDeclarationSyntax);
-            if (symbol.IsExtensionMethod)
+            /*if (symbol.IsExtensionMethod)
             {
                 return;
-            }
+            }*/
 
             this.WriteMethodGenericsMapping(textWriter, providers);
             this.WriteMethodMember(textWriter, providers, symbol);
