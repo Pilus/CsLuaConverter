@@ -11,7 +11,7 @@
             this.Name = "Linq";
             this.Tests["WhereWithNoSourceThrows"] = WhereWithNoSourceThrows;
             this.Tests["WhereWithNoPredicateThrows"] = WhereWithNoPredicateThrows;
-            //this.Tests["WhereReturnsExpectedCollection"] = WhereReturnsExpectedCollection;
+            this.Tests["WhereReturnsExpectedCollection"] = WhereReturnsExpectedCollection;
             
             //this.Tests["TestCountAndAny"] = TestCountAndAny;
             //this.Tests["TestSelect"] = TestSelect;
@@ -45,7 +45,7 @@
             }
             catch (Exception ex)
             {
-                //Assert(true, ex is ArgumentNullException, "Expected ArgumentNullException, got " + ex.GetType().Name);
+                Assert(true, ex is ArgumentNullException, "Expected ArgumentNullException, got " + ex.GetType().Name);
                 Assert("Value cannot be null.\nParameter name: predicate", ex.Message);
             }
         }
