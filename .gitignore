@@ -69,3 +69,13 @@
 /CsLuaProjects/CsImplementation/TypeListGenerator/bin/Debug
 /CsLuaProjects/CsImplementation/TypeListGenerator/obj/Debug
 /CsLuaConverter/packages
+/CsLuaConverter/CsLuaConverter/Binaries/Release
+/CsLuaConverter/CsLuaConverter/obj/Release
+/CsLuaConverter/CsLuaConverterTests/bin/Release
+/CsLuaConverter/CsLuaConverterTests/obj/Release
+/CsLuaConverter/CsLuaFramework/obj/Release
+/CsLuaConverter/Lua/obj/Release
+/CsLuaProjects/CsLuaTest/bin/Release
+/CsLuaProjects/CsLuaTest/obj/Release
+/CsLuaProjects/CsLuaTestRunner/bin/Release
+/CsLuaProjects/CsLuaTestRunner/obj/Release

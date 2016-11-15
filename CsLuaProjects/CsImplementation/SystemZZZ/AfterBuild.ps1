@@ -1,9 +1,11 @@
 ﻿
+
 $solutionDir = $args;
-$csLuaConverter = "$solutionDir\..\CsLuaConverter\CsLuaConverter.exe";
+$csLuaConverter = "$solutionDir..\CsLuaConverter\CsLuaConverter.exe";
 $outDir = "$solutionDir\Out"
 $typeListGenerator = "$solutionDir\TypeListGenerator\bin\Debug\TypeListGenerator.exe";
 
+Write-host "Running cs lua converter at $csLuaConverter"
 & $csLuaConverter "$solutionDir\CsImplementation.sln" $outDir
 if ( $LASTEXITCODE -ne 0)
 {
