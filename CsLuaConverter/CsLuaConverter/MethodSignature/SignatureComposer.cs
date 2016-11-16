@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.MethodSignature
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -14,31 +15,31 @@
             this.semanticAdaptor = semanticAdaptor;
         }
 
-        public SignatureComponent<T>[] GetSignatureComponents(T[] inputTypes)
+        public SignatureComponent<T>[] GetSignatureComponents(T[] inputTypes, IDictionary<T, T> appliedClassGenerics)
         {
             var components = new List<SignatureComponent<T>>();
             for (var i = 0; i < inputTypes.Length; i++)
             {
                 var inputType = inputTypes[i];
-                this.AddSignatureComponents(Primes[i], inputType, components);
+                this.AddSignatureComponents(Primes[i], inputType, components, appliedClassGenerics);
             }
 
             return components.ToArray();
         }
 
-        public SignatureComponent<T>[] GetSignatureComponents(T type)
+        public SignatureComponent<T>[] GetSignatureComponents(T type, IDictionary<T, T> appliedClassGenerics)
         {
             var components = new List<SignatureComponent<T>>();
-            this.AddSignatureComponents(1, type, components);
+            this.AddSignatureComponents(1, type, components, appliedClassGenerics);
 
             return components.ToArray();
         }
 
-        private void AddSignatureComponents(int coefficient, T type, List<SignatureComponent<T>> components)
+        private void AddSignatureComponents(int coefficient, T type, List<SignatureComponent<T>> components, IDictionary<T, T> appliedClassGenerics)
         {
             if (this.semanticAdaptor.IsArray(type))
             {
-                this.AddSignatureComponents(coefficient * 3, this.semanticAdaptor.GetArrayGeneric(type), components);
+                this.AddSignatureComponents(coefficient * 3, this.semanticAdaptor.GetArrayGeneric(type), components, appliedClassGenerics);
                 return;
             }
 
@@ -50,7 +51,18 @@
                 }
                 else
                 {
-                    components.Add(new SignatureComponent<T>(coefficient, type));
+                    if (appliedClassGenerics == null)
+                    {
+                        components.Add(new SignatureComponent<T>(coefficient, type));
+                    }
+                    else if (appliedClassGenerics.ContainsKey(type))
+                    {
+                        this.AddSignatureComponents(coefficient, appliedClassGenerics[type], components, appliedClassGenerics);
+                    }
+                    else
+                    {
+                        throw new Exception($"Class generic in signature not found in provided applied class generics {type}.");
+                    }
                 }
 
                 return;
@@ -65,7 +77,7 @@
 
                 for (var i = 0; i < generics.Length; i++)
                 {
-                    this.AddSignatureComponents(subCoefficient * Primes[i], generics[i], components);
+                    this.AddSignatureComponents(subCoefficient * Primes[i], generics[i], components, appliedClassGenerics);
                 }
 
                 return;

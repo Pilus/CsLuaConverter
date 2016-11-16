@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using CodeTree;
@@ -46,10 +47,12 @@
 
 
             ITypeSymbol[] parameterTypes = null;
+            IDictionary<ITypeSymbol, ITypeSymbol> appliedClassGenerics = null;
             if (symbol != null)
             {
                 providers.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
-                parameterTypes = symbol.Parameters.Select(p => p.Type).ToArray();
+                parameterTypes = symbol.OriginalDefinition.Parameters.Select(p => p.Type).ToArray();
+                appliedClassGenerics = GetAppliedClassGenerics(symbol);
             }
             else
             {
@@ -67,7 +70,7 @@
 
             textWriter.Write("._C_0_");
 
-            providers.SignatureWriter.WriteSignature(parameterTypes, textWriter);
+            providers.SignatureWriter.WriteSignature(parameterTypes, textWriter, appliedClassGenerics);
             this.constructorArgumentsVisitor.Visit(textWriter, providers);
 
             if (this.initializer != null)
@@ -75,6 +78,13 @@
                 textWriter.Write(" % _M.DOT)");
                 this.initializer.Visit(textWriter, providers);
             }
+        }
+
+        private static IDictionary<ITypeSymbol, ITypeSymbol> GetAppliedClassGenerics(IMethodSymbol symbol)
+        {
+            //(symbol.ContainingSymbol as INamedTypeSymbol).TypeArguments
+            //    (symbol.ContainingSymbol as INamedTypeSymbol).TypeParameters;
+            throw new NotImplementedException();
         }
     }
 }
