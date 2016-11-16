@@ -82,6 +82,7 @@
 
         private static IDictionary<ITypeSymbol, ITypeSymbol> GetAppliedClassGenerics(IMethodSymbol symbol)
         {
+            // TODO: Move to semantic adaptor or similar.
             //(symbol.ContainingSymbol as INamedTypeSymbol).TypeArguments
             //    (symbol.ContainingSymbol as INamedTypeSymbol).TypeParameters;
             throw new NotImplementedException();
