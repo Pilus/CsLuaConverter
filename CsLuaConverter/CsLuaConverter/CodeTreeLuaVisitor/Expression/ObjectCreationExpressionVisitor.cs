@@ -52,7 +52,7 @@
             {
                 providers.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
                 parameterTypes = symbol.OriginalDefinition.Parameters.Select(p => p.Type).ToArray();
-                appliedClassGenerics = GetAppliedClassGenerics(symbol);
+                appliedClassGenerics = ((TypeSymbolSemanticAdaptor) providers.SemanticAdaptor).GetAppliedClassGenerics(symbol.ContainingType);
             }
             else
             {
@@ -68,9 +68,25 @@
                 parameterTypes = new ITypeSymbol[] { namedTypeSymbol };
             }
 
-            textWriter.Write("._C_0_");
+            var signatureWiter = textWriter.CreateTextWriterAtSameIndent();
+            var hasGenricComponents = providers.SignatureWriter.WriteSignature(parameterTypes, signatureWiter, appliedClassGenerics);
 
-            providers.SignatureWriter.WriteSignature(parameterTypes, textWriter, appliedClassGenerics);
+            if (hasGenricComponents)
+            {
+                textWriter.Write("['_C_0_'..");
+            }
+            else
+            {
+                textWriter.Write("._C_0_");
+            }
+
+            textWriter.AppendTextWriter(signatureWiter);
+
+            if (hasGenricComponents)
+            {
+                textWriter.Write("]");
+            }
+            
             this.constructorArgumentsVisitor.Visit(textWriter, providers);
 
             if (this.initializer != null)
@@ -78,14 +94,6 @@
                 textWriter.Write(" % _M.DOT)");
                 this.initializer.Visit(textWriter, providers);
             }
-        }
-
-        private static IDictionary<ITypeSymbol, ITypeSymbol> GetAppliedClassGenerics(IMethodSymbol symbol)
-        {
-            // TODO: Move to semantic adaptor or similar.
-            //(symbol.ContainingSymbol as INamedTypeSymbol).TypeArguments
-            //    (symbol.ContainingSymbol as INamedTypeSymbol).TypeParameters;
-            throw new NotImplementedException();
         }
     }
 }

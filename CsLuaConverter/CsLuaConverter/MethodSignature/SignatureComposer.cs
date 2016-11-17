@@ -35,17 +35,17 @@
             return components.ToArray();
         }
 
-        private void AddSignatureComponents(int coefficient, T type, List<SignatureComponent<T>> components, IDictionary<T, T> appliedClassGenerics)
+        private void AddSignatureComponents(int coefficient, T type, List<SignatureComponent<T>> components, IDictionary<T, T> appliedClassGenerics, bool methodGenericMappingIsAvailable = false)
         {
             if (this.semanticAdaptor.IsArray(type))
             {
-                this.AddSignatureComponents(coefficient * 3, this.semanticAdaptor.GetArrayGeneric(type), components, appliedClassGenerics);
+                this.AddSignatureComponents(coefficient * 3, this.semanticAdaptor.GetArrayGeneric(type), components, appliedClassGenerics, methodGenericMappingIsAvailable);
                 return;
             }
 
             if (this.semanticAdaptor.IsGenericType(type))
             {
-                if (this.semanticAdaptor.IsMethodGeneric(type))
+                if (this.semanticAdaptor.IsMethodGeneric(type) && methodGenericMappingIsAvailable == false)
                 {
                     components.Add(new SignatureComponent<T>(coefficient, 1));
                 }
@@ -57,7 +57,7 @@
                     }
                     else if (appliedClassGenerics.ContainsKey(type))
                     {
-                        this.AddSignatureComponents(coefficient, appliedClassGenerics[type], components, appliedClassGenerics);
+                        this.AddSignatureComponents(coefficient, appliedClassGenerics[type], components, null, true);
                     }
                     else
                     {
@@ -77,7 +77,7 @@
 
                 for (var i = 0; i < generics.Length; i++)
                 {
-                    this.AddSignatureComponents(subCoefficient * Primes[i], generics[i], components, appliedClassGenerics);
+                    this.AddSignatureComponents(subCoefficient * Primes[i], generics[i], components, appliedClassGenerics, methodGenericMappingIsAvailable);
                 }
 
                 return;

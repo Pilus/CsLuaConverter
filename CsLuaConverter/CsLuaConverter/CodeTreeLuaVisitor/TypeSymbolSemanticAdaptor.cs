@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
+    using System.Collections.Generic;
     using CsLuaConverter.MethodSignature;
     using System.Linq;
     using Microsoft.CodeAnalysis;
@@ -60,6 +61,14 @@
         public bool IsInterface(ITypeSymbol symbol)
         {
             return symbol.TypeKind == TypeKind.Interface;
+        }
+
+        public IDictionary<ITypeSymbol, ITypeSymbol> GetAppliedClassGenerics(ITypeSymbol classTypeObj)
+        {
+            var namedTypeSymbol = classTypeObj as INamedTypeSymbol;
+
+            return namedTypeSymbol?.TypeParameters.Zip(namedTypeSymbol.TypeArguments, (param, arg) => new {param, arg})
+                .ToDictionary((v) => (ITypeSymbol)v.param, v => v.arg);
         }
     }
 }

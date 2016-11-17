@@ -5547,6 +5547,8 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""WhereWithNoSourceThrows""] = (element % _M.DOT_LVL(typeObject.Level)).WhereWithNoSourceThrows;
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""WhereWithNoPredicateThrows""] = (element % _M.DOT_LVL(typeObject.Level)).WhereWithNoPredicateThrows;
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""WhereReturnsExpectedCollection""] = (element % _M.DOT_LVL(typeObject.Level)).WhereReturnsExpectedCollection;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestCountAndAny""] = (element % _M.DOT_LVL(typeObject.Level)).TestCountAndAny;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestSelect""] = (element % _M.DOT_LVL(typeObject.Level)).TestSelect;
                 end,
             });
             _M.IM(members, 'WhereWithNoSourceThrows', {
@@ -5587,7 +5589,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                         function()
                             local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
                             local predicate = nil;
-                            ((System.Linq.Enumerable % _M.DOT).Where_M_1_62618208[{System.Int32.__typeof}] % _M.DOT)(a, predicate);
+                            ((System.Linq.Enumerable % _M.DOT).Where_M_1_93993440[{System.Int32.__typeof}] % _M.DOT)(a, predicate);
                             _M.Throw(System.Exception._C_0_8736(""Expected to throw exception. No exception thrown.""));
                         end,
                         {
@@ -5612,7 +5614,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
-                    local res = ((System.Linq.Enumerable % _M.DOT).ToArray_M_1_0[{System.Int32.__typeof}] % _M.DOT)(((System.Linq.Enumerable % _M.DOT).Where_M_1_62618208[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v) return v > 10 and v < 40 end)));
+                    local res = ((System.Linq.Enumerable % _M.DOT).ToArray_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(((System.Linq.Enumerable % _M.DOT).Where_M_1_93993440[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v) return v > 10 and v < 40 end)));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, (res % _M.DOT).Length);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(16, (res % _M.DOT)[0]);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(32, (res % _M.DOT)[1]);
@@ -5627,20 +5629,20 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, ((a % _M.DOT).Any_M_1_0[{System.Int32.__typeof}] % _M.DOT)());
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(6, ((a % _M.DOT).Count_M_1_0[{System.Int32.__typeof}] % _M.DOT)());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, ((System.Linq.Enumerable % _M.DOT).Any_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(a));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(6, ((System.Linq.Enumerable % _M.DOT).Count_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(a));
                     local list = System.Collections.Generic.List[{System.String.__typeof}]._C_0_0();
                     ((list % _M.DOT).Add_M_0_8736 % _M.DOT)(""a"");
                     ((list % _M.DOT).Add_M_0_8736 % _M.DOT)(""b"");
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, ((list % _M.DOT).Any_M_1_0[{System.String.__typeof}] % _M.DOT)());
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, ((list % _M.DOT).Count_M_1_0[{System.String.__typeof}] % _M.DOT)());
-                    local enumerable = ((a % _M.DOT).Where_M_1_62618208[{System.Int32.__typeof}] % _M.DOT)(System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(e) return e > 10 and e < 50 end));
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, ((enumerable % _M.DOT).Count_M_1_0[{System.Int32.__typeof}] % _M.DOT)());
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, ((enumerable % _M.DOT).Count_M_1_0[{System.Int32.__typeof}] % _M.DOT)());
-                    local enumerable2 = ((list % _M.DOT).Where_M_1_62618208[{System.String.__typeof}] % _M.DOT)(System.Func[{System.String.__typeof, System.Boolean.__typeof}]._C_0_16704(function(e) return (e % _M.DOT).Length == 1 end));
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, ((enumerable2 % _M.DOT).Count_M_1_0[{System.String.__typeof}] % _M.DOT)());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, ((System.Linq.Enumerable % _M.DOT).Any_M_1_66128[{System.String.__typeof}] % _M.DOT)(list));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, ((System.Linq.Enumerable % _M.DOT).Count_M_1_66128[{System.String.__typeof}] % _M.DOT)(list));
+                    local enumerable = ((System.Linq.Enumerable % _M.DOT).Where_M_1_93993440[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(e) return e > 10 and e < 50 end));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, ((System.Linq.Enumerable % _M.DOT).Count_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(enumerable));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, ((System.Linq.Enumerable % _M.DOT).Count_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(enumerable));
+                    local enumerable2 = ((System.Linq.Enumerable % _M.DOT).Where_M_1_93993440[{System.String.__typeof}] % _M.DOT)(list, System.Func[{System.String.__typeof, System.Boolean.__typeof}]._C_0_16704(function(e) return (e % _M.DOT).Length == 1 end));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, ((System.Linq.Enumerable % _M.DOT).Count_M_1_66128[{System.String.__typeof}] % _M.DOT)(enumerable2));
                     ((list % _M.DOT).Add_M_0_8736 % _M.DOT)(""c"");
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(3, ((enumerable2 % _M.DOT).Count_M_1_0[{System.String.__typeof}] % _M.DOT)());
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(3, ((System.Linq.Enumerable % _M.DOT).Count_M_1_66128[{System.String.__typeof}] % _M.DOT)(enumerable2));
                 end
             });
             _M.IM(members, 'TestSelect', {
@@ -5652,9 +5654,9 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
-                    local l1 = ((((a % _M.DOT).Select_M_2_17340[{System.Int32.__typeof, System.String.__typeof}] % _M.DOT)(System.Func[{System.Int32.__typeof, System.String.__typeof}]._C_0_16704(function(v) return ((v % _M.DOT).ToString_M_0_0 % _M.DOT)() end)) % _M.DOT).ToList_M_1_0[{System.String.__typeof}] % _M.DOT)();
+                    local l1 = ((System.Linq.Enumerable % _M.DOT).ToList_M_1_66128[{System.String.__typeof}] % _M.DOT)(((System.Linq.Enumerable % _M.DOT).Select_M_2_92138[{System.Int32.__typeof, System.String.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.String.__typeof}]._C_0_16704(function(v) return ((v % _M.DOT).ToString_M_0_0 % _M.DOT)() end)));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.Collections.Generic.List[{System.String.__typeof}].__is(l1));
-                    local l2 = ((((a % _M.DOT).Select_M_2_17340[{System.Int32.__typeof, System.Single.__typeof}] % _M.DOT)((element % _M.DOT_LVL(typeObject.Level)).ToFloat) % _M.DOT).ToList_M_1_0[{System.Single.__typeof}] % _M.DOT)();
+                    local l2 = ((System.Linq.Enumerable % _M.DOT).ToList_M_1_66128[{System.Single.__typeof}] % _M.DOT)(((System.Linq.Enumerable % _M.DOT).Select_M_2_92138[{System.Int32.__typeof, System.Single.__typeof}] % _M.DOT)(a, (element % _M.DOT_LVL(typeObject.Level)).ToFloat));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.Collections.Generic.List[{System.Single.__typeof}].__is(l2));
                 end
             });
@@ -5668,7 +5670,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                 func = function(element)
                     local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 1, 3, 5, 7});
                     local b = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 3, 9, 11, 7});
-                    local result = ((((a % _M.DOT).Union_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(b) % _M.DOT).ToArray_M_1_0[{System.Int32.__typeof}] % _M.DOT)();
+                    local result = ((System.Linq.Enumerable % _M.DOT).ToArray_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(((System.Linq.Enumerable % _M.DOT).Union_M_1_165320[{System.Int32.__typeof}] % _M.DOT)(a, b));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(6, (result % _M.DOT).Length);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(1, (result % _M.DOT)[0]);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(3, (result % _M.DOT)[1]);
@@ -5687,7 +5689,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local input = (System.Array[{CsLuaTest.Linq.ClassWithProperties.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = (CsLuaTest.Linq.ClassWithProperties._C_0_0() % _M.DOT).__Initialize({Number = 13}), (CsLuaTest.Linq.ClassWithProperties._C_0_0() % _M.DOT).__Initialize({Number = 7}), (CsLuaTest.Linq.ClassWithProperties._C_0_0() % _M.DOT).__Initialize({Number = 9}), (CsLuaTest.Linq.ClassWithProperties._C_0_0() % _M.DOT).__Initialize({Number = 5})});
-                    local ordered = ((((input % _M.DOT).OrderBy_M_2_17340[{CsLuaTest.Linq.ClassWithProperties.__typeof, System.Int32.__typeof}] % _M.DOT)(System.Func[{CsLuaTest.Linq.ClassWithProperties.__typeof, System.Int32.__typeof}]._C_0_16704(function(v) return (v % _M.DOT).Number end)) % _M.DOT).ToArray_M_1_0[{CsLuaTest.Linq.ClassWithProperties.__typeof}] % _M.DOT)();
+                    local ordered = ((System.Linq.Enumerable % _M.DOT).ToArray_M_1_66128[{CsLuaTest.Linq.ClassWithProperties.__typeof}] % _M.DOT)(((System.Linq.Enumerable % _M.DOT).OrderBy_M_2_92138[{CsLuaTest.Linq.ClassWithProperties.__typeof, System.Int32.__typeof}] % _M.DOT)(input, System.Func[{CsLuaTest.Linq.ClassWithProperties.__typeof, System.Int32.__typeof}]._C_0_16704(function(v) return (v % _M.DOT).Number end)));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(5, ((ordered % _M.DOT)[0] % _M.DOT).Number);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(7, ((ordered % _M.DOT)[1] % _M.DOT).Number);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(9, ((ordered % _M.DOT)[2] % _M.DOT).Number);
@@ -5703,9 +5705,9 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                 signatureHash = 0,
                 func = function(element)
                     local mixedCollection = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 1, 2, ""c"", true, ""e"", 6});
-                    local ints = ((((mixedCollection % _M.DOT).OfType_M_1_0[{System.Int32.__typeof}] % _M.DOT)() % _M.DOT).ToArray_M_1_0[{System.Int32.__typeof}] % _M.DOT)();
+                    local ints = ((System.Linq.Enumerable % _M.DOT).ToArray_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(((System.Linq.Enumerable % _M.DOT).OfType_M_1_33064[{System.Int32.__typeof}] % _M.DOT)(mixedCollection));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(3, (ints % _M.DOT).Length);
-                    local strings = ((((mixedCollection % _M.DOT).OfType_M_1_0[{System.String.__typeof}] % _M.DOT)() % _M.DOT).ToArray_M_1_0[{System.String.__typeof}] % _M.DOT)();
+                    local strings = ((System.Linq.Enumerable % _M.DOT).ToArray_M_1_66128[{System.String.__typeof}] % _M.DOT)(((System.Linq.Enumerable % _M.DOT).OfType_M_1_33064[{System.String.__typeof}] % _M.DOT)(mixedCollection));
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, (strings % _M.DOT).Length);
                 end
             });
@@ -9522,7 +9524,8 @@ _M.ATN('CsLuaTest.Wrap','WrapTests', _M.NE({
         return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
     end,
 }));
-(CsLuaTest.CsLuaTest._C_0_0() % _M.DOT).Execute();";
+(CsLuaTest.CsLuaTest._C_0_0() % _M.DOT).Execute();
+";
 
         /*
         _M.ATN('CsLuaTest.Generics','zzzzzz', _M.NE({

@@ -612,7 +612,7 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     if (source == nil) then
                     _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
                     end
-                    return System.Collections.Generic.List[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_66128(source);
+                    return System.Collections.Generic.List[{methodGenerics[methodGenericsMapping['TSource']]}]['_C_0_'..(66128*methodGenerics[methodGenericsMapping['TSource']].signatureHash)](source);
                 end
             });
             return members;
