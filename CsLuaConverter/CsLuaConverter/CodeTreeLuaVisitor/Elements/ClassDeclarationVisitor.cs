@@ -75,73 +75,73 @@
         }
 
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.symbol == null)
             {
-                this.symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as ClassDeclarationSyntax);
-                providers.CurrentClass = this.symbol;
+                this.symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as ClassDeclarationSyntax);
+                context.CurrentClass = this.symbol;
             }
 
             TryActionAndWrapException(() =>
             {
-                switch ((ClassState) (providers.PartialElementState.CurrentState ?? 0))
+                switch ((ClassState) (context.PartialElementState.CurrentState ?? 0))
                 {
                     default:
-                        this.WriteOpen(textWriter, providers);
-                        providers.PartialElementState.NextState = (int)ClassState.TypeGeneration;
+                        this.WriteOpen(textWriter, context);
+                        context.PartialElementState.NextState = (int)ClassState.TypeGeneration;
                         break;
                     case ClassState.TypeGeneration:
-                        this.WriteTypeGenerator(textWriter, providers);
-                        providers.PartialElementState.NextState = (int)ClassState.WriteStaticValues;
+                        this.WriteTypeGenerator(textWriter, context);
+                        context.PartialElementState.NextState = (int)ClassState.WriteStaticValues;
                         break;
                     case ClassState.WriteStaticValues:
-                        this.WriteStaticValues(textWriter, providers);
-                        providers.PartialElementState.NextState = (int)ClassState.WriteInitialize;
+                        this.WriteStaticValues(textWriter, context);
+                        context.PartialElementState.NextState = (int)ClassState.WriteInitialize;
                         break;
                     case ClassState.WriteInitialize:
-                        this.WriteInitialize(textWriter, providers);
-                        providers.PartialElementState.NextState = (int)ClassState.WriteMembers;
+                        this.WriteInitialize(textWriter, context);
+                        context.PartialElementState.NextState = (int)ClassState.WriteMembers;
                         break;
                     case ClassState.WriteMembers:
-                        this.WriteMembers(textWriter, providers);
-                        providers.PartialElementState.NextState = (int)ClassState.Close;
+                        this.WriteMembers(textWriter, context);
+                        context.PartialElementState.NextState = (int)ClassState.Close;
                         break;
                     case ClassState.Close:
-                        this.WriteClose(textWriter, providers);
-                        providers.PartialElementState.NextState = null;
+                        this.WriteClose(textWriter, context);
+                        context.PartialElementState.NextState = null;
                         break;
                     case ClassState.Footer:
-                        this.WriteFooter(textWriter, providers);
-                        providers.PartialElementState.NextState = null;
+                        this.WriteFooter(textWriter, context);
+                        context.PartialElementState.NextState = null;
                         break;
                 }
-            }, $"In visiting of class {this.name}. State: {((ClassState)(providers.PartialElementState.CurrentState ?? 0))}");
+            }, $"In visiting of class {this.name}. State: {((ClassState)(context.PartialElementState.CurrentState ?? 0))}");
         }
 
-        private void WriteOpen(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteOpen(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (providers.PartialElementState.IsFirst)
+            if (context.PartialElementState.IsFirst)
             {
                 textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", this.GetNumOfGenerics());
                 textWriter.Indent++;
 
-                //this.RegisterGenerics(providers);
-                this.WriteGenericsMapping(textWriter, providers);
-                this.WriteTypeGeneration(textWriter, providers);
-                this.WriteBaseInheritance(textWriter, providers);
-                this.WriteTypePopulation(textWriter, providers);
+                //this.RegisterGenerics(context);
+                this.WriteGenericsMapping(textWriter, context);
+                this.WriteTypeGeneration(textWriter, context);
+                this.WriteBaseInheritance(textWriter, context);
+                this.WriteTypePopulation(textWriter, context);
             }
         }
 
-        private void WriteGenericsMapping(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteGenericsMapping(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("local genericsMapping = ");
 
             if (this.genericsVisitor != null)
             {
                 textWriter.Write("{");
-                this.genericsVisitor.Visit(textWriter, providers);
+                this.genericsVisitor.Visit(textWriter, context);
                 textWriter.WriteLine("};");
             }
             else
@@ -150,43 +150,43 @@
             }
         }
 
-        private void WriteTypeGeneration(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteTypeGeneration(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var adaptor = providers.SemanticAdaptor;
+            var adaptor = context.SemanticAdaptor;
             textWriter.Write(
                 "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Class', ",
                 adaptor.GetName(this.symbol),
                 adaptor.GetFullNamespace(this.symbol),
                 adaptor.GetGenerics(this.symbol).Length);
-            providers.SignatureWriter.WriteSignature(this.symbol, textWriter);
+            context.SignatureWriter.WriteSignature(this.symbol, textWriter);
             textWriter.WriteLine(");");
         }
 
-        private void WriteBaseInheritance(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteBaseInheritance(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = ");
 
-            providers.TypeReferenceWriter.WriteInteractionElementReference(this.symbol.BaseType, textWriter);
+            context.TypeReferenceWriter.WriteInteractionElementReference(this.symbol.BaseType, textWriter);
 
             textWriter.WriteLine(".__meta(staticValues);");
         }
 
-        private void WriteTypePopulation(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteTypePopulation(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             foreach (var interfaceSymbol in this.symbol.Interfaces)
             {
-                if (providers.SemanticAdaptor.IsInterface(interfaceSymbol)
-                    && providers.SemanticAdaptor.GetName(interfaceSymbol) != nameof(ICsLuaAddOn))
+                if (context.SemanticAdaptor.IsInterface(interfaceSymbol)
+                    && context.SemanticAdaptor.GetName(interfaceSymbol) != nameof(ICsLuaAddOn))
                 {
                     textWriter.Write("table.insert(implements, ");
-                    providers.TypeReferenceWriter.WriteTypeReference(interfaceSymbol, textWriter);
+                    context.TypeReferenceWriter.WriteTypeReference(interfaceSymbol, textWriter);
                     textWriter.WriteLine(");");
                 }
             }
 
             /*if (this.baseListVisitor != null)
             {
-                this.baseListVisitor.WriteInterfaceImplements(textWriter, providers, "table.insert(implements, {0});", new []{typeof(ICsLuaAddOn)});
+                this.baseListVisitor.WriteInterfaceImplements(textWriter, context, "table.insert(implements, {0});", new []{typeof(ICsLuaAddOn)});
             }*/
 
             textWriter.WriteLine("typeObject.baseType = baseTypeObject;");
@@ -194,9 +194,9 @@
             textWriter.WriteLine("typeObject.implements = implements;");
         }
 
-        private void WriteTypeGenerator(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteTypeGenerator(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (providers.PartialElementState.IsFirst)
+            if (context.PartialElementState.IsFirst)
             {
                 textWriter.WriteLine("local elementGenerator = function()");
                 textWriter.Indent++;
@@ -210,15 +210,15 @@
 
             foreach (var visitor in this.propertyVisitors)
             {
-                visitor.WriteDefaultValue(textWriter, providers);
+                visitor.WriteDefaultValue(textWriter, context);
             }
 
             foreach (var visitor in this.fieldVisitors)
             {
-                visitor.WriteDefaultValue(textWriter, providers);
+                visitor.WriteDefaultValue(textWriter, context);
             }
 
-            if (providers.PartialElementState.IsLast)
+            if (context.PartialElementState.IsLast)
             {
                 textWriter.Indent--;
 
@@ -231,9 +231,9 @@
             }
         }
 
-        private void WriteStaticValues(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteStaticValues(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (providers.PartialElementState.IsFirst)
+            if (context.PartialElementState.IsFirst)
             {
                 textWriter.WriteLine("staticValues[typeObject.Level] = {");
                 textWriter.Indent++;
@@ -241,25 +241,25 @@
 
             foreach (var visitor in this.propertyVisitors)
             {
-                visitor.WriteDefaultValue(textWriter, providers, true);
+                visitor.WriteDefaultValue(textWriter, context, true);
             }
 
             foreach (var visitor in this.fieldVisitors)
             {
-                visitor.WriteDefaultValue(textWriter, providers, true);
+                visitor.WriteDefaultValue(textWriter, context, true);
             }
 
-            if (providers.PartialElementState.IsLast)
+            if (context.PartialElementState.IsLast)
             {
                 textWriter.Indent--;
                 textWriter.WriteLine("};");
             }
         }
 
-        private void WriteInitialize(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteInitialize(IIndentedTextWriterWrapper textWriter, IContext context)
         {
 
-            if (providers.PartialElementState.IsFirst)
+            if (context.PartialElementState.IsFirst)
             {
                 textWriter.WriteLine("local initialize = function(element, values)");
                 textWriter.Indent++;
@@ -269,48 +269,48 @@
 
             foreach (var visitor in this.propertyVisitors)
             {
-                visitor.WriteInitializeValue(textWriter, providers);
+                visitor.WriteInitializeValue(textWriter, context);
             }
 
             foreach (var visitor in this.fieldVisitors)
             {
-                visitor.WriteInitializeValue(textWriter, providers);
+                visitor.WriteInitializeValue(textWriter, context);
             }
 
-            if (providers.PartialElementState.IsLast)
+            if (context.PartialElementState.IsLast)
             {
                 textWriter.Indent--;
                 textWriter.WriteLine("end");
             }
         }
 
-        private void WriteMembers(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteMembers(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (providers.PartialElementState.IsFirst)
+            if (context.PartialElementState.IsFirst)
             {
                 textWriter.WriteLine("local getMembers = function()");
                 textWriter.Indent++;
                 textWriter.WriteLine("local members = _M.RTEF(getBaseMembers);");
             }
 
-            this.constructorVisitors.VisitAll(textWriter, providers);
-            if (providers.PartialElementState.DefinedConstructorWritten == false && this.constructorVisitors.Any())
+            this.constructorVisitors.VisitAll(textWriter, context);
+            if (context.PartialElementState.DefinedConstructorWritten == false && this.constructorVisitors.Any())
             {
-                providers.PartialElementState.DefinedConstructorWritten = true;
+                context.PartialElementState.DefinedConstructorWritten = true;
             }
 
-            if (providers.PartialElementState.DefinedConstructorWritten == false && providers.PartialElementState.IsLast)
+            if (context.PartialElementState.DefinedConstructorWritten == false && context.PartialElementState.IsLast)
             {
                 // TODO: This might cause issues in partial classes where the constructors are placed in the first part.
                 ConstructorDeclarationVisitor.WriteEmptyConstructor(textWriter);
             }
 
-            this.fieldVisitors.VisitAll(textWriter, providers);
-            this.propertyVisitors.VisitAll(textWriter, providers);
-            this.indexerVisitors.VisitAll(textWriter, providers);
-            this.methodVisitors.VisitAll(textWriter, providers);
+            this.fieldVisitors.VisitAll(textWriter, context);
+            this.propertyVisitors.VisitAll(textWriter, context);
+            this.indexerVisitors.VisitAll(textWriter, context);
+            this.methodVisitors.VisitAll(textWriter, context);
 
-            if (providers.PartialElementState.IsLast)
+            if (context.PartialElementState.IsLast)
             {
                 textWriter.WriteLine("return members;");
                 textWriter.Indent--;
@@ -318,33 +318,33 @@
             }
         }
 
-        private void WriteClose(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteClose(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (providers.PartialElementState.IsLast)
+            if (context.PartialElementState.IsLast)
             {
                 textWriter.WriteLine("return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;");
                 textWriter.Indent--;
                 textWriter.WriteLine("end,");
-                providers.CurrentClass = null;
+                context.CurrentClass = null;
             }
         }
 
-        private void WriteFooter(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteFooter(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (!providers.PartialElementState.IsFirst || this.attributeListVisitor?.HasCsLuaAddOnAttribute() != true)
+            if (!context.PartialElementState.IsFirst || this.attributeListVisitor?.HasCsLuaAddOnAttribute() != true)
             {
                 return;
             }
             
             textWriter.Write("(");
-            textWriter.Write(providers.SemanticAdaptor.GetFullName(this.symbol));
+            textWriter.Write(context.SemanticAdaptor.GetFullName(this.symbol));
             textWriter.WriteLine("._C_0_0() % _M.DOT).Execute();");
         }
 
-        public void WriteExtensionMethods(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteExtensionMethods(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var methodsWithSameExtensionTypes =
-                this.methodVisitors.GroupBy(m => m.GetExtensionTypeSymbol(providers)).Where(t => t.Key != null).ToArray();
+                this.methodVisitors.GroupBy(m => m.GetExtensionTypeSymbol(context)).Where(t => t.Key != null).ToArray();
 
             if (!methodsWithSameExtensionTypes.Any())
             {
@@ -355,10 +355,10 @@
             {
                 var extensionType = methodsWithSameExtensionType.Key;
                 textWriter.Write("_M.RE('");
-                textWriter.Write(providers.SemanticAdaptor.GetFullName(extensionType));
+                textWriter.Write(context.SemanticAdaptor.GetFullName(extensionType));
                 textWriter.Write("', ");
                 //textWriter.Write(extensionType.typeArg);
-                //method.WriteAsExtensionMethod(extensionWriter, providers);
+                //method.WriteAsExtensionMethod(extensionWriter, context);
             }
 
             textWriter.WriteLine("");

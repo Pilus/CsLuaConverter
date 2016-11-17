@@ -15,7 +15,7 @@
             this.nameVisitor = this.CreateVisitor(1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
         }
     }

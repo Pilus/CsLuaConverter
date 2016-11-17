@@ -19,14 +19,14 @@
             this.argumentList = (ArgumentListVisitor)this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+            var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
             
             textWriter.Write("(element % _M.DOT_LVL(typeObject.Level))");
 
             var signatureWriter = textWriter.CreateTextWriterAtSameIndent();
-            var hasGenericComponents = providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), signatureWriter);
+            var hasGenericComponents = context.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), signatureWriter);
 
             if (hasGenericComponents)
             {
@@ -40,7 +40,7 @@
                 textWriter.AppendTextWriter(signatureWriter);
             }
 
-            this.argumentList.Visit(textWriter, providers);
+            this.argumentList.Visit(textWriter, context);
 
             textWriter.WriteLine(";");
         }

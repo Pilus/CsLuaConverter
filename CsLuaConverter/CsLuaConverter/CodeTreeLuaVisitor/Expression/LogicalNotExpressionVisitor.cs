@@ -14,10 +14,10 @@
             this.innnerVisitor = this.CreateVisitor(1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("not(");
-            this.innnerVisitor.Visit(textWriter, providers);
+            this.innnerVisitor.Visit(textWriter, context);
             textWriter.Write(")");
         }
     }

@@ -28,7 +28,7 @@ namespace CsLuaConverterTests
             var solution = solutionTask.Result;
             var project = solution.Projects.Single(p => p.Name.Equals("CsLuaTest"));
 
-            var providers = new EmptyProviders();
+            var providers = new EmptyContext();
             providers.PartialElementState = new PartialElementState();
             providers.SemanticAdaptor = new TypeSymbolSemanticAdaptor();
             providers.TypeReferenceWriter = new TypeReferenceWriter<ITypeSymbol>(providers.SemanticAdaptor);

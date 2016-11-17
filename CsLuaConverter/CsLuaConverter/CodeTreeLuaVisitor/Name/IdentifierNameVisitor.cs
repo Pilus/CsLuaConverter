@@ -19,12 +19,12 @@
             this.text = ((CodeTreeLeaf)this.Branch.Nodes.Single()).Text;
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+            var symbol = context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
 
             var classNode = GetClassDeclarionSyntax(this.Branch.SyntaxNode);
-            var classSymbol = (ITypeSymbol)providers.SemanticModel.GetDeclaredSymbol(classNode);
+            var classSymbol = (ITypeSymbol)context.SemanticModel.GetDeclaredSymbol(classNode);
 
             var previousToken = this.Branch.SyntaxNode.GetFirstToken().GetPreviousToken();
             var previousPreviousToken = previousToken.GetPreviousToken();
@@ -52,7 +52,7 @@
 
             if (symbol.Kind == SymbolKind.NamedType)
             {
-                providers.TypeReferenceWriter.WriteInteractionElementReference((ITypeSymbol)symbol, textWriter);
+                context.TypeReferenceWriter.WriteInteractionElementReference((ITypeSymbol)symbol, textWriter);
             }
             else
             {

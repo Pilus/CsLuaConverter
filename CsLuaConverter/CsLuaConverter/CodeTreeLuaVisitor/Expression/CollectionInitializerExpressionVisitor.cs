@@ -16,12 +16,12 @@
                     SyntaxKind.CommaToken)).ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine(".__Initialize({");
             textWriter.Indent++;
 
-            this.innerVisitors.VisitAll(textWriter, providers, () =>
+            this.innerVisitors.VisitAll(textWriter, context, () =>
             {
                 textWriter.WriteLine(",");
             });

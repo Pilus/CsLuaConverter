@@ -16,12 +16,12 @@
             this.bracketedArgumentList = (BracketedArgumentListVisitor)this.CreateVisitor(1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("(");
-            this.target.Visit(textWriter, providers);
+            this.target.Visit(textWriter, context);
             textWriter.Write(" % _M.DOT)");
-            this.bracketedArgumentList.Visit(textWriter, providers);
+            this.bracketedArgumentList.Visit(textWriter, context);
         }
     }
 }

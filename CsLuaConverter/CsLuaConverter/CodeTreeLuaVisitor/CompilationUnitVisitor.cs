@@ -29,27 +29,27 @@
             }, $"In document {this.Branch.DocumentName}");
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             TryActionAndWrapException(
                 () =>
                     {
-                        providers.SemanticModel = this.semanticModel;
+                        context.SemanticModel = this.semanticModel;
 
-                        this.usings.VisitAll(textWriter, providers);
-                        this.namespaceVisitor.Visit(textWriter, providers);
+                        this.usings.VisitAll(textWriter, context);
+                        this.namespaceVisitor.Visit(textWriter, context);
                     },
                 $"In document {this.Branch.DocumentName}");
         }
 
-        public void WriteFooter(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteFooter(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.namespaceVisitor.WriteFooter(textWriter, providers);
+            this.namespaceVisitor.WriteFooter(textWriter, context);
         }
 
-        public void WriteExtensions(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteExtensions(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.namespaceVisitor.WriteExtensions(textWriter, providers);
+            this.namespaceVisitor.WriteExtensions(textWriter, context);
         }
 
         public string[] GetNamespaceName()

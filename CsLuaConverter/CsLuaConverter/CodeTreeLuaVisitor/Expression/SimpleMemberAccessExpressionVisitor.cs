@@ -31,47 +31,47 @@
             }
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.targetVisitor == null)
             {
-                this.indexVisitor.Visit(textWriter, providers);
+                this.indexVisitor.Visit(textWriter, context);
                 return;
             }
 
             if (!(this.targetVisitor is ThisExpressionVisitor || this.targetVisitor is BaseExpressionVisitor))
             { 
                 textWriter.Write("(");
-                this.VisitTarget(textWriter, providers);
+                this.VisitTarget(textWriter, context);
                 textWriter.Write(" % _M.DOT).");
             }
 
-            this.indexVisitor.Visit(textWriter, providers);
+            this.indexVisitor.Visit(textWriter, context);
         }
 
-        private void VisitTarget(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void VisitTarget(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+            var symbol = context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
 
             if (symbol == null)
             {
-                this.targetVisitor.Visit(textWriter, providers);
+                this.targetVisitor.Visit(textWriter, context);
                 return;
             }
 
             if (symbol is ITypeSymbol)
             {
-                providers.TypeReferenceWriter.WriteInteractionElementReference((ITypeSymbol)symbol, textWriter);
+                context.TypeReferenceWriter.WriteInteractionElementReference((ITypeSymbol)symbol, textWriter);
                 return;
             }
 
             if (!symbol.IsStatic)
             {
-                this.targetVisitor.Visit(textWriter, providers);
+                this.targetVisitor.Visit(textWriter, context);
                 return;
             }
 
-            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
+            context.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
         }
     }
 }

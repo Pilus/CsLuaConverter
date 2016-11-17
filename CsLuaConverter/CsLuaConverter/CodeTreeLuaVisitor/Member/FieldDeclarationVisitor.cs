@@ -33,7 +33,7 @@
             this.variableVisitor = (VariableDeclarationVisitor) this.CreateVisitor(accessorNodes.Length);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine("_M.IM(members, '{0}', {{", this.variableVisitor.GetName());
             textWriter.Indent++;
@@ -45,19 +45,19 @@
             textWriter.WriteLine("});");
         }
 
-        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IProviders providers, bool @static = false)
+        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IContext context, bool @static = false)
         {
             if ((this.IsStatic || this.IsConst) != @static)
             {
                 return;
             }
 
-            this.variableVisitor.WriteDefaultValue(textWriter, providers);
+            this.variableVisitor.WriteDefaultValue(textWriter, context);
         }
 
-        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.variableVisitor.WriteInitializeValue(textWriter, providers);
+            this.variableVisitor.WriteInitializeValue(textWriter, context);
         }
     }
 }

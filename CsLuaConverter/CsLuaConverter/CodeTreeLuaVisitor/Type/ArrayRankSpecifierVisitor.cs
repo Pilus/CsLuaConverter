@@ -17,7 +17,7 @@
                     .SingleOrDefault();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.rankVisitor == null)
             {
@@ -26,7 +26,7 @@
             else
             {
                 textWriter.Write("._C_0_2112(");
-                this.rankVisitor.Visit(textWriter, providers);
+                this.rankVisitor.Visit(textWriter, context);
                 textWriter.Write(")");
             }
         }

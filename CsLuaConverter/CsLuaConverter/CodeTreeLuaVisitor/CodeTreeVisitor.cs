@@ -11,11 +11,11 @@
 
     public class CodeTreeVisitor
     {
-        private readonly IProviders providers;
+        private readonly IContext context;
 
-        public CodeTreeVisitor(IProviders providers)
+        public CodeTreeVisitor(IContext context)
         {
-            this.providers = providers;
+            this.context = context;
         }
 
         public IEnumerable<Namespace> CreateNamespaceBasedVisitorActions(Tuple<CodeTreeBranch, SemanticModel>[] treeRoots)
@@ -42,7 +42,7 @@
                 // Write footer
                 foreach (var compilationUnitVisitor in g)
                 {
-                    compilationUnitVisitor.WriteFooter(textWriter, this.providers);
+                    compilationUnitVisitor.WriteFooter(textWriter, this.context);
                 }
             })});
         }
@@ -135,9 +135,9 @@
 
             foreach (var visitorsWithSameNumGenerics in visitorsByNumGenerics.OrderBy(v => v.Key))
             {
-                //var scope = this.providers.NameProvider.CloneScope();
+                //var scope = this.context.NameProvider.CloneScope();
                 this.VisitFilesWithSameElementNameAndNumGenerics(visitorsWithSameNumGenerics.Value.ToArray(), textWriter, visitorsWithSameNumGenerics.Key);
-                //this.providers.NameProvider.SetScope(scope);
+                //this.context.NameProvider.SetScope(scope);
             }
 
             textWriter.Indent--;
@@ -145,13 +145,13 @@
             /*
             foreach (var visitor in visitors)
             {
-                visitor.WriteExtensions(textWriter, this.providers);
+                visitor.WriteExtensions(textWriter, this.context);
             } */
         }
 
         private void VisitFilesWithSameElementNameAndNumGenerics(CompilationUnitVisitor[] visitors, IIndentedTextWriterWrapper textWriter, int numOfGenerics)
         {
-            var state = this.providers.PartialElementState;
+            var state = this.context.PartialElementState;
             state.CurrentState = null;
             state.DefinedConstructorWritten = false;
 
@@ -163,7 +163,7 @@
                     var visitor = visitors[index];
                     state.IsFirst = index == 0;
                     state.IsLast = index == visitors.Length - 1;
-                    visitor.Visit(textWriter, this.providers);
+                    visitor.Visit(textWriter, this.context);
                 }
 
                 if (state.NextState == null)
@@ -186,7 +186,7 @@
                 textWriter.WriteLine($"{name} = _M.NE({{");
             }
 
-            visitor.Visit(textWriter, this.providers);
+            visitor.Visit(textWriter, this.context);
 
             var nextName = nextVisitor?.GetElementName();
             if (nextName != name)

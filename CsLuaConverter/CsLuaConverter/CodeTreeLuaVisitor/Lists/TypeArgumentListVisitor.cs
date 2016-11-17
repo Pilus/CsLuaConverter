@@ -19,13 +19,13 @@
                     .ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("{");
             for (int index = 0; index < this.visitors.Length; index++)
             {
                 var visitor = this.visitors[index];
-                visitor.Visit(textWriter, providers);
+                visitor.Visit(textWriter, context);
                 textWriter.Write(".__typeof");
 
                 if (index < this.visitors.Length - 1)

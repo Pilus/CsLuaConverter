@@ -24,24 +24,24 @@
             this.Members = this.CreateVisitors(new KindFilter(SyntaxKind.EnumMemberDeclaration)).Select(v => (EnumMemberDeclarationVisitor)v).ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine("[0] = _M.EN({");
             textWriter.Indent++;
 
-            this.Members.First().WriteAsDefault(textWriter, providers);
+            this.Members.First().WriteAsDefault(textWriter, context);
             textWriter.WriteLine(",");
-            this.Members.VisitAll(textWriter, providers, () => textWriter.WriteLine(","));
+            this.Members.VisitAll(textWriter, context, () => textWriter.WriteLine(","));
 
             textWriter.Indent--;
             textWriter.WriteLine("");
 
-            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as EnumDeclarationSyntax);
-            var namespaceName = providers.SemanticAdaptor.GetFullNamespace(symbol);
-            var name = providers.SemanticAdaptor.GetName(symbol);
+            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as EnumDeclarationSyntax);
+            var namespaceName = context.SemanticAdaptor.GetFullNamespace(symbol);
+            var name = context.SemanticAdaptor.GetName(symbol);
 
             textWriter.Write($"}},'{name}','{namespaceName}',");
-            providers.SignatureWriter.WriteSignature(symbol, textWriter);
+            context.SignatureWriter.WriteSignature(symbol, textWriter);
             textWriter.WriteLine("),");
         }
 

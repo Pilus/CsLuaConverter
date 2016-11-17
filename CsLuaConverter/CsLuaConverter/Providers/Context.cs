@@ -7,11 +7,11 @@ namespace CsLuaConverter.Providers
     using CsLuaConverter.MethodSignature;
     using Microsoft.CodeAnalysis;
 
-    public class Providers : IProviders
+    public class Context : IContext
     {
         private readonly PartialElementState partialElementState;
 
-        public Providers()
+        public Context()
         {
             this.partialElementState = new PartialElementState();
             this.SemanticAdaptor = new TypeSymbolSemanticAdaptor();

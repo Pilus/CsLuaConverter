@@ -16,9 +16,9 @@
             this.innerVisitor = this.CreateVisitor(3);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.innerVisitor.Visit(textWriter, providers);
+            this.innerVisitor.Visit(textWriter, context);
         }
     }
 }

@@ -27,13 +27,13 @@
                     .Text;
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.type != null)
             {
-                var symbol = (ITypeSymbol)providers.SemanticModel.GetSymbolInfo(((CatchDeclarationSyntax)this.Branch.SyntaxNode).Type).Symbol;
+                var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(((CatchDeclarationSyntax)this.Branch.SyntaxNode).Type).Symbol;
                 textWriter.Write("type = ");
-                providers.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
+                context.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
                 textWriter.WriteLine(",");
             }
 

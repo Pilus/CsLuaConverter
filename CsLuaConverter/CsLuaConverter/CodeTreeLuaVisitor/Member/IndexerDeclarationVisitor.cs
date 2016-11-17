@@ -37,7 +37,7 @@
             this.accessorList = (AccessorListVisitor)this.CreateVisitor(totalNodes - 1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine("_M.IM(members,'#',{");
             textWriter.Indent++;
@@ -45,18 +45,18 @@
             textWriter.WriteLine("memberType = 'Indexer',");
             textWriter.WriteLine($"scope = '{this.scope}',");
 
-            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as IndexerDeclarationSyntax);
+            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as IndexerDeclarationSyntax);
 
             if (!this.accessorList.IsAutoProperty())
             {
                 var indexerParameter = symbol.Parameters.Single().Name;
                 this.accessorList.SetAdditionalParameters("," + indexerParameter, "," + indexerParameter);
-                this.accessorList.Visit(textWriter, providers);
+                this.accessorList.Visit(textWriter, context);
             }
             else
             {
                 textWriter.Write("returnType = ");
-                providers.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
+                context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
                 textWriter.WriteLine(",");
             }
 

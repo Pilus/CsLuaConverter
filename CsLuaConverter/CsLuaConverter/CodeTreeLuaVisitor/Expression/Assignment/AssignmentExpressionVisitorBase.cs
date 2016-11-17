@@ -22,16 +22,16 @@
             this.rhs = this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.lhs.Visit(textWriter, providers);
+            this.lhs.Visit(textWriter, context);
             textWriter.Write(" = ");
             textWriter.Write(this.prefix);
 
-            this.lhs.Visit(textWriter, providers);
+            this.lhs.Visit(textWriter, context);
             textWriter.Write(this.delimiter);
 
-            this.rhs.Visit(textWriter, providers);
+            this.rhs.Visit(textWriter, context);
             textWriter.Write(this.suffix);
         }
     }

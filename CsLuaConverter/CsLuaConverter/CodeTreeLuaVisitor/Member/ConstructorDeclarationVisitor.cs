@@ -33,10 +33,10 @@
                 (ThisConstructorInitializerVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.ThisConstructorInitializer)).SingleOrDefault();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var syntax = (ConstructorDeclarationSyntax)this.Branch.SyntaxNode;
-            var symbol = providers.SemanticModel.GetDeclaredSymbol(syntax);
+            var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
 
             textWriter.WriteLine("_M.IM(members, '', {");
             textWriter.Indent++;
@@ -46,23 +46,23 @@
             textWriter.WriteLine("static = true,");
             textWriter.WriteLine("numMethodGenerics = 0,");
             textWriter.Write("signatureHash = ");
-            providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
+            context.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
             textWriter.WriteLine(",");
             textWriter.WriteLine("scope = '{0}',", this.scope);
 
             textWriter.Write("func = function(element");
             this.parameterList.FirstElementPrefix = ", ";
-            this.parameterList.Visit(textWriter, providers);
+            this.parameterList.Visit(textWriter, context);
             textWriter.WriteLine(")");
 
             textWriter.Indent++;
             if (this.baseConstructorInitializer != null)
             {
-                this.baseConstructorInitializer.Visit(textWriter, providers);
+                this.baseConstructorInitializer.Visit(textWriter, context);
             }
             else if (this.thisConstructorInitializer != null)
             {
-                this.thisConstructorInitializer.Visit(textWriter, providers);
+                this.thisConstructorInitializer.Visit(textWriter, context);
             }
             else
             {
@@ -71,7 +71,7 @@
 
             textWriter.Indent--;
 
-            this.block.Visit(textWriter, providers);
+            this.block.Visit(textWriter, context);
 
             textWriter.WriteLine("end,");
             

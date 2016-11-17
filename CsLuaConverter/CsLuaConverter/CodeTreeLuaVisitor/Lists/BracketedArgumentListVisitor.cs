@@ -14,10 +14,10 @@
             this.argument = (ArgumentVisitor) this.CreateVisitors(new KindFilter(SyntaxKind.Argument)).Single();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("[");
-            this.argument.Visit(textWriter, providers);
+            this.argument.Visit(textWriter, context);
             textWriter.Write("]");
         }
     }

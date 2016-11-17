@@ -4,7 +4,7 @@ namespace CsLuaConverter.Providers
     using CsLuaConverter.MethodSignature;
     using Microsoft.CodeAnalysis;
 
-    public interface IProviders
+    public interface IContext
     {
         PartialElementState PartialElementState { get; }
         SignatureWriter<ITypeSymbol> SignatureWriter { get; }

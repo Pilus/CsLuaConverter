@@ -16,13 +16,13 @@
             this.creationExpression = (ArrayInitializerExpressionVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.ArrayInitializerExpression)).Single();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var typeInfo = providers.SemanticModel.GetTypeInfo(this.Branch.SyntaxNode);
+            var typeInfo = context.SemanticModel.GetTypeInfo(this.Branch.SyntaxNode);
             textWriter.Write("(");
-            providers.TypeReferenceWriter.WriteInteractionElementReference(typeInfo.Type, textWriter);
+            context.TypeReferenceWriter.WriteInteractionElementReference(typeInfo.Type, textWriter);
             textWriter.Write("._C_0_0() % _M.DOT)");
-            this.creationExpression.Visit(textWriter, providers);
+            this.creationExpression.Visit(textWriter, context);
         }
     }
 }

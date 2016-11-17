@@ -17,12 +17,12 @@
                     .ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine("local attributes = {");
             textWriter.Indent++;
 
-            this.attributes.VisitAll(textWriter, providers);
+            this.attributes.VisitAll(textWriter, context);
 
             textWriter.Indent--;
             textWriter.WriteLine("};");

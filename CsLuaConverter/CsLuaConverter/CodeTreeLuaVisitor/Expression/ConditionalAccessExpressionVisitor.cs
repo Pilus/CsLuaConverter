@@ -18,12 +18,12 @@
             this.innerVisitor = this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("_M.CA(");
-            this.valueVisitor.Visit(textWriter, providers);
+            this.valueVisitor.Visit(textWriter, context);
             textWriter.Write(",function(obj) return (obj % _M.DOT)");
-            this.innerVisitor.Visit(textWriter, providers);
+            this.innerVisitor.Visit(textWriter, context);
             textWriter.Write("; end)");
         }
     }

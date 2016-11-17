@@ -22,9 +22,9 @@
             this.variableDeclarationVisitor = (VariableDeclarationVisitor)this.CreateVisitor(i);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.variableDeclarationVisitor.Visit(textWriter, providers);
+            this.variableDeclarationVisitor.Visit(textWriter, context);
             textWriter.WriteLine(";");
         }
     }

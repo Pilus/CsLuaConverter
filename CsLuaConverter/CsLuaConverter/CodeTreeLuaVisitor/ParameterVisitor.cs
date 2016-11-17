@@ -19,7 +19,7 @@
             this.name = branch.Nodes.OfType<CodeTreeLeaf>().Last().Text;
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.isParams)
             {

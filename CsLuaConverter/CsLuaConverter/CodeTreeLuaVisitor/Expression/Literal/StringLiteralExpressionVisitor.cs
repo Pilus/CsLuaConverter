@@ -12,7 +12,7 @@
             this.text = ((CodeTreeLeaf)this.Branch.Nodes[0]).Text;
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var txt = this.text;
 

@@ -16,7 +16,7 @@
             this.innerVisitors = this.CreateVisitors(new KindRangeFilter(SyntaxKind.OpenBraceToken, SyntaxKind.CloseBraceToken));
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write(".__Initialize({");
 
@@ -24,7 +24,7 @@
                 textWriter.WriteLine();
 
             textWriter.Indent++;
-            this.innerVisitors.VisitAll(textWriter, providers, () =>
+            this.innerVisitors.VisitAll(textWriter, context, () =>
             {
                 textWriter.WriteLine(",");
             });

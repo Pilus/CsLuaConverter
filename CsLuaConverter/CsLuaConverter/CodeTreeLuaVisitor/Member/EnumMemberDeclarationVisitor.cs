@@ -14,13 +14,13 @@
             this.index = ((CodeTreeLeaf) this.Branch.Nodes[0]).Text;
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write($"[\"{this.index}\"] = ");
             this.WriteValue(textWriter);
         }
 
-        public void WriteAsDefault(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteAsDefault(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("__default = ");
             this.WriteValue(textWriter);

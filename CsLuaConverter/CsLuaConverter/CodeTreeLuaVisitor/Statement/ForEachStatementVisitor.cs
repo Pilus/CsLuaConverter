@@ -26,13 +26,13 @@
             this.block = (BlockVisitor)this.CreateVisitor(7);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("for _,{0} in (", this.iteratorName);
-            this.enumerator.Visit(textWriter, providers);
+            this.enumerator.Visit(textWriter, context);
             textWriter.WriteLine(" % _M.DOT).GetEnumerator() do");
 
-            this.block.Visit(textWriter, providers);
+            this.block.Visit(textWriter, context);
             textWriter.WriteLine("end");
         }
     }

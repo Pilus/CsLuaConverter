@@ -17,9 +17,9 @@
             this.type = this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.target.Visit(textWriter, providers);
+            this.target.Visit(textWriter, context);
         }
     }
 }

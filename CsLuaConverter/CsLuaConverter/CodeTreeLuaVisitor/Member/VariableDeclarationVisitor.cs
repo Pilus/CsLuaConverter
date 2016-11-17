@@ -19,20 +19,20 @@
             return this.declaratorVisitor.GetName();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("local ");
-            this.declaratorVisitor.Visit(textWriter, providers);
+            this.declaratorVisitor.Visit(textWriter, context);
         }
 
-        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.declaratorVisitor.WriteDefaultValue(textWriter, providers);
+            this.declaratorVisitor.WriteDefaultValue(textWriter, context);
         }
 
-        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.declaratorVisitor.WriteInitializeValue(textWriter, providers);
+            this.declaratorVisitor.WriteInitializeValue(textWriter, context);
         }
     }
 }

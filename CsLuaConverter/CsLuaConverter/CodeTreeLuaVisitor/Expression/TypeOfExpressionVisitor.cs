@@ -17,10 +17,10 @@
             this.ExpectKind(3, SyntaxKind.CloseParenToken);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = (ITypeSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode.ChildNodes().Single()).Symbol;
-            providers.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
+            var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode.ChildNodes().Single()).Symbol;
+            context.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
         }
     }
 }

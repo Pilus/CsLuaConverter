@@ -18,12 +18,12 @@
             this.target = this.CreateVisitor(0);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = (ITypeSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode.ChildNodes().Last()).Symbol;
-            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
+            var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode.ChildNodes().Last()).Symbol;
+            context.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
             textWriter.Write(".__is(");
-            this.target.Visit(textWriter, providers);
+            this.target.Visit(textWriter, context);
             textWriter.Write(")");
         }
     }

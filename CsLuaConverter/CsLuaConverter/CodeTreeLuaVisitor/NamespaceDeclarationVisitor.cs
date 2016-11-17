@@ -22,11 +22,11 @@
             this.CreateElementVisitor();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.usingVisitors.VisitAll(textWriter, providers);
+            this.usingVisitors.VisitAll(textWriter, context);
 
-            var state = providers.PartialElementState;
+            var state = context.PartialElementState;
             var isFirstNamespace = state.IsFirst;
             var isLastNamespace = state.IsLast;
 
@@ -38,13 +38,13 @@
 
                 state.IsFirst = isFirstNamespace && index == 0;
                 state.IsLast = isLastNamespace && index == elements.Length - 1;
-                elementVisitor.Visit(textWriter, providers);
+                elementVisitor.Visit(textWriter, context);
             }
         }
 
-        public void WriteFooter(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteFooter(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var state = providers.PartialElementState;
+            var state = context.PartialElementState;
             state.CurrentState = (int)ClassState.Footer;
 
             for (var index = 0; index < this.elementVisitors.Length; index++)
@@ -56,16 +56,16 @@
                     state.IsFirst = index == 0;
                     state.IsLast = index == this.elementVisitors.Length - 1;
 
-                    elementVisitor.Visit(textWriter, providers);
+                    elementVisitor.Visit(textWriter, context);
                 }
             }
         }
 
-        public void WriteExtensions(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteExtensions(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             this.elementVisitors.OfType<ClassDeclarationVisitor>()
                 .ToList()
-                .ForEach(e => e.WriteExtensionMethods(textWriter, providers));
+                .ForEach(e => e.WriteExtensionMethods(textWriter, context));
         }
 
         private void CreateNameVisitor()

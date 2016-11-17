@@ -16,7 +16,7 @@
             this.value = ((CodeTreeLeaf) this.Branch.Nodes.Single()).Text;
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write(this.value);
         }

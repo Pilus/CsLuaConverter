@@ -38,10 +38,10 @@
             }
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var node = (ObjectCreationExpressionSyntax)this.Branch.SyntaxNode;
-            var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(node).Symbol;
+            var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(node).Symbol;
 
             textWriter.Write(this.initializer != null ? "(" : "");
 
@@ -50,15 +50,15 @@
             IDictionary<ITypeSymbol, ITypeSymbol> appliedClassGenerics = null;
             if (symbol != null)
             {
-                providers.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
+                context.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
                 parameterTypes = symbol.OriginalDefinition.Parameters.Select(p => p.Type).ToArray();
-                appliedClassGenerics = ((TypeSymbolSemanticAdaptor) providers.SemanticAdaptor).GetAppliedClassGenerics(symbol.ContainingType);
+                appliedClassGenerics = ((TypeSymbolSemanticAdaptor) context.SemanticAdaptor).GetAppliedClassGenerics(symbol.ContainingType);
             }
             else
             {
                 // Special case for missing symbol. Roslyn issue 3825. https://github.com/dotnet/roslyn/issues/3825
-                var namedTypeSymbol = (INamedTypeSymbol)providers.SemanticModel.GetSymbolInfo(node.Type).Symbol;
-                providers.TypeReferenceWriter.WriteInteractionElementReference(namedTypeSymbol, textWriter);
+                var namedTypeSymbol = (INamedTypeSymbol)context.SemanticModel.GetSymbolInfo(node.Type).Symbol;
+                context.TypeReferenceWriter.WriteInteractionElementReference(namedTypeSymbol, textWriter);
 
                 if (namedTypeSymbol.TypeKind != TypeKind.Delegate)
                 {
@@ -69,7 +69,7 @@
             }
 
             var signatureWiter = textWriter.CreateTextWriterAtSameIndent();
-            var hasGenricComponents = providers.SignatureWriter.WriteSignature(parameterTypes, signatureWiter, appliedClassGenerics);
+            var hasGenricComponents = context.SignatureWriter.WriteSignature(parameterTypes, signatureWiter, appliedClassGenerics);
 
             if (hasGenricComponents)
             {
@@ -87,12 +87,12 @@
                 textWriter.Write("]");
             }
             
-            this.constructorArgumentsVisitor.Visit(textWriter, providers);
+            this.constructorArgumentsVisitor.Visit(textWriter, context);
 
             if (this.initializer != null)
             {
                 textWriter.Write(" % _M.DOT)");
-                this.initializer.Visit(textWriter, providers);
+                this.initializer.Visit(textWriter, context);
             }
         }
     }

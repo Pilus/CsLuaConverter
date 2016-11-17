@@ -20,7 +20,7 @@
                     SyntaxKind.GenericName)).Select(v => (INameVisitor) v).ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             throw new NotImplementedException();
         }

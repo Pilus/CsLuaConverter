@@ -14,10 +14,10 @@
             this.text = ((CodeTreeLeaf) this.Branch.Nodes.Single()).Text;
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = (ITypeSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
-            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
+            var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+            context.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
         }
 
         public bool IsVoid()

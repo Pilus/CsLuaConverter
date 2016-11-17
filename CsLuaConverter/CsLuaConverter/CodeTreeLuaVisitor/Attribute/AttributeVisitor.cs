@@ -18,10 +18,10 @@
             this.name = (IdentifierNameVisitor) this.CreateVisitor(0);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as AttributeSyntax).Symbol;
-            providers.TypeReferenceWriter.WriteTypeReference(symbol.ContainingType, textWriter);
+            var symbol = context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as AttributeSyntax).Symbol;
+            context.TypeReferenceWriter.WriteTypeReference(symbol.ContainingType, textWriter);
         }
 
         public bool IsCsLuaAddOnAttribute()

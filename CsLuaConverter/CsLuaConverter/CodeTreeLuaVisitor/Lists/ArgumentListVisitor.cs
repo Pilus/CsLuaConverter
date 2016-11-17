@@ -28,13 +28,13 @@
             this.argumentVisitors = visitors.ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("(");
 
             for (var index = 0; index < this.argumentVisitors.Length; index++)
             {
-                this.argumentVisitors[index].Visit(textWriter, providers);
+                this.argumentVisitors[index].Visit(textWriter, context);
 
                 if (index < this.argumentVisitors.Length - 1)
                 {

@@ -4,6 +4,6 @@
 
     public interface IVisitor
     {
-        void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers);
+        void Visit(IIndentedTextWriterWrapper textWriter, IContext context);
     }
 }

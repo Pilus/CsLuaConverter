@@ -23,7 +23,7 @@
             this.argumentListVisitor = (TypeArgumentListVisitor) this.CreateVisitor(1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var hasInvocationExpressionParent = this.Branch.SyntaxNode.Ancestors().OfType<InvocationExpressionSyntax>().Any();
             if (hasInvocationExpressionParent)
@@ -34,7 +34,7 @@
 
             textWriter.Write(this.name);
             textWriter.Write("[");
-            this.argumentListVisitor.Visit(textWriter, providers);
+            this.argumentListVisitor.Visit(textWriter, context);
             textWriter.Write("]");
         }
 

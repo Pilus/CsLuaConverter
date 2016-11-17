@@ -18,12 +18,12 @@
             this.rhsVisitor = this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.lhsVisitor.Visit(textWriter, providers);
+            this.lhsVisitor.Visit(textWriter, context);
 
             textWriter.Write($" {this.token} ");
-            this.rhsVisitor.Visit(textWriter, providers);
+            this.rhsVisitor.Visit(textWriter, context);
         }
     }
 }

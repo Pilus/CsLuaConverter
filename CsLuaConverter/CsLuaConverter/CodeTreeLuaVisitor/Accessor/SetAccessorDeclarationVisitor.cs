@@ -22,7 +22,7 @@
             }
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.block == null)
             {
@@ -30,7 +30,7 @@
             }
 
             textWriter.WriteLine($"set = function(element{this.AdditionalParameters} , value)");
-            this.block.Visit(textWriter, providers);
+            this.block.Visit(textWriter, context);
             textWriter.WriteLine("end,");
         }
     

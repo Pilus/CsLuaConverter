@@ -17,7 +17,7 @@
                 .OfType<INameVisitor>().ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             throw new System.NotImplementedException();
         }

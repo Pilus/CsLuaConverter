@@ -23,12 +23,12 @@
             this.argumentList = (ArgumentListVisitor) this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as ConstructorInitializerSyntax).Symbol;
+            var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as ConstructorInitializerSyntax).Symbol;
             textWriter.Write("(element % _M.DOT_LVL(typeObject.Level - 1))._C_0_");
-            providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
-            this.argumentList.Visit(textWriter, providers);
+            context.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
+            this.argumentList.Visit(textWriter, context);
             textWriter.WriteLine(";");
         }
     }

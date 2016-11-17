@@ -22,21 +22,21 @@
             this.block = (BlockVisitor)this.CreateVisitor(i);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine("{");
             textWriter.Indent++;
 
             if (this.declaration != null)
             {
-                this.declaration.Visit(textWriter, providers);
+                this.declaration.Visit(textWriter, context);
             }
             else
             {
                 textWriter.WriteLine("func = function()");
             }
 
-            this.block.Visit(textWriter, providers);
+            this.block.Visit(textWriter, context);
             
             textWriter.WriteLine("end,");
             

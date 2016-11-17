@@ -16,13 +16,13 @@
             this.innerVisitor = this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.targetVisitor.Visit(textWriter, providers);
+            this.targetVisitor.Visit(textWriter, context);
 
             textWriter.Write(" = ");
 
-            this.innerVisitor.Visit(textWriter, providers);
+            this.innerVisitor.Visit(textWriter, context);
         }
     }
 }

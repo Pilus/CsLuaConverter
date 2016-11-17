@@ -18,10 +18,10 @@
             this.setVisitor = visitors.OfType<SetAccessorDeclarationVisitor>().SingleOrDefault();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.getVisitor?.Visit(textWriter, providers);
-            this.setVisitor?.Visit(textWriter, providers);
+            this.getVisitor?.Visit(textWriter, context);
+            this.setVisitor?.Visit(textWriter, context);
         }
 
         public bool IsAutoProperty()

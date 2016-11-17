@@ -4,7 +4,7 @@
     using CsLuaConverter.Providers;
     using Microsoft.CodeAnalysis;
 
-    public class EmptyProviders : IProviders
+    public class EmptyContext : IContext
     {
         public PartialElementState PartialElementState { get; set; }
 

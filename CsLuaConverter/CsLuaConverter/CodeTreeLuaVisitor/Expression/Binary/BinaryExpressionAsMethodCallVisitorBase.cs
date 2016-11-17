@@ -18,13 +18,13 @@
             this.methodName = methodName;
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write($"{this.methodName}(");
-            this.lhsVisitor.Visit(textWriter, providers);
+            this.lhsVisitor.Visit(textWriter, context);
 
             textWriter.Write(", ");
-            this.rhsVisitor.Visit(textWriter, providers);
+            this.rhsVisitor.Visit(textWriter, context);
             textWriter.Write(")");
         }
     }

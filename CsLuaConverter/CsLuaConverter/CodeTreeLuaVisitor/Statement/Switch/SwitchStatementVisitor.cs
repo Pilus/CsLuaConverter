@@ -23,12 +23,12 @@
                     .ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("local switchValue = ");
-            this.switchTarget.Visit(textWriter, providers);
+            this.switchTarget.Visit(textWriter, context);
             textWriter.WriteLine(";");
-            this.switchSections.VisitAll(textWriter, providers, "else");
+            this.switchSections.VisitAll(textWriter, context, "else");
             textWriter.WriteLine("end");
         }
     }

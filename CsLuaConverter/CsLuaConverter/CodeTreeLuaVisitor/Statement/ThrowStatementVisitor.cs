@@ -23,9 +23,9 @@
             this.ExpectKind(2, SyntaxKind.SemicolonToken);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var typeSymbol = providers.SemanticModel.GetTypeInfo(this.Branch.SyntaxNode.ChildNodes().First()).Type;
+            var typeSymbol = context.SemanticModel.GetTypeInfo(this.Branch.SyntaxNode.ChildNodes().First()).Type;
 
             if (typeSymbol.Name == nameof(ReplaceWithLuaBlock))
             {
@@ -34,7 +34,7 @@
             }
 
             textWriter.Write("_M.Throw(");
-            this.inner.Visit(textWriter, providers);
+            this.inner.Visit(textWriter, context);
             textWriter.WriteLine(");");
         }
 

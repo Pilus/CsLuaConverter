@@ -25,10 +25,10 @@
             this.initializer = (ArrayInitializerExpressionVisitor) this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("(");
-            this.arrayType.Visit(textWriter, providers);
+            this.arrayType.Visit(textWriter, context);
             textWriter.Write(" % _M.DOT)");
 
             if (this.initializer == null)
@@ -36,7 +36,7 @@
                 return;
             }
 
-            this.initializer.Visit(textWriter, providers);
+            this.initializer.Visit(textWriter, context);
         }
     }
 }

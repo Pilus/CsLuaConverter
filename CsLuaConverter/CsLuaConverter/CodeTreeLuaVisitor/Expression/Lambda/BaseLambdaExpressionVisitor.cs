@@ -23,19 +23,19 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
             this.body = this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = this.GetSymbolForParentUsingTheLambda(providers);
-            providers.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
+            var symbol = this.GetSymbolForParentUsingTheLambda(context);
+            context.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
             textWriter.Write("._C_0_16704"); // Lua.Function as argument
             textWriter.Write("(function(");
-            this.para.Visit(textWriter, providers);
+            this.para.Visit(textWriter, context);
             textWriter.Write(")");
 
             if (this.body is BlockVisitor)
             {
                 textWriter.WriteLine("");
-                this.body.Visit(textWriter, providers);
+                this.body.Visit(textWriter, context);
             }
             else
             {
@@ -44,14 +44,14 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
                     textWriter.Write(" return ");
                 }
 
-                this.body.Visit(textWriter, providers);
+                this.body.Visit(textWriter, context);
                 textWriter.Write(" ");
             }
 
             textWriter.Write("end)");
         }
 
-        private ITypeSymbol GetSymbolForParentUsingTheLambda(IProviders providers)
+        private ITypeSymbol GetSymbolForParentUsingTheLambda(IContext context)
         {
             var argListSyntax = this.Branch.SyntaxNode.Ancestors().OfType<ArgumentListSyntax>().First();
 
@@ -62,12 +62,12 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
 
                 if (argListSyntax.Parent is InvocationExpressionSyntax)
                 {
-                    var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo((InvocationExpressionSyntax) argListSyntax.Parent).Symbol;
+                    var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo((InvocationExpressionSyntax) argListSyntax.Parent).Symbol;
                     return symbol.Parameters[argNum].Type;
                 }
                 else if (argListSyntax.Parent is ObjectCreationExpressionSyntax)
                 {
-                    var symbol = (IMethodSymbol)providers.SemanticModel.GetSymbolInfo(argListSyntax.Parent).Symbol;
+                    var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(argListSyntax.Parent).Symbol;
 
                     if (symbol != null)
                     {
@@ -76,7 +76,7 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
                         return symbol.Parameters[argNum].Type;
                     }
 
-                    var namedTypeSymbol = (INamedTypeSymbol)providers.SemanticModel.GetSymbolInfo((argListSyntax.Parent as ObjectCreationExpressionSyntax).Type).Symbol;
+                    var namedTypeSymbol = (INamedTypeSymbol)context.SemanticModel.GetSymbolInfo((argListSyntax.Parent as ObjectCreationExpressionSyntax).Type).Symbol;
 
                     if (namedTypeSymbol.TypeKind == TypeKind.Delegate)
                     {

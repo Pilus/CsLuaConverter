@@ -18,13 +18,13 @@
             this.arrayRank = (ArrayRankSpecifierVisitor)this.CreateVisitor(1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = (ITypeSymbol)providers.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode.ChildNodes().First()).Symbol;
+            var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode.ChildNodes().First()).Symbol;
             textWriter.Write("System.Array[{");
-            providers.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
+            context.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
             textWriter.Write("}]");
-            this.arrayRank.Visit(textWriter, providers);
+            this.arrayRank.Visit(textWriter, context);
         }
     }
 }

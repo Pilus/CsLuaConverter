@@ -24,7 +24,7 @@
             this.elementVisitors = visitors.ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write(".__Initialize({");
 
@@ -33,7 +33,7 @@
                 textWriter.Write("[0] = ");
             }
 
-            this.elementVisitors.VisitAll(textWriter, providers, () =>
+            this.elementVisitors.VisitAll(textWriter, context, () =>
             {
                 textWriter.Write(", ");
             });

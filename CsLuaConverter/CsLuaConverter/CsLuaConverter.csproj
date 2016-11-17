@@ -277,8 +277,8 @@
     <Compile Include="ISyntaxAnalyser.cs" />
     <Compile Include="LuaFileWriter.cs" />
     <Compile Include="ProjectType.cs" />
-    <Compile Include="Providers\IProviders.cs" />
-    <Compile Include="Providers\Providers.cs" />
+    <Compile Include="Providers\IContext.cs" />
+    <Compile Include="Providers\Context.cs" />
     <Compile Include="AddOnConstruction\ResourceFile.cs" />
     <Compile Include="ProjectAnalysis\ProjectAnalyser.cs" />
     <Compile Include="AddOnConstruction\ProjectInfo.cs" />

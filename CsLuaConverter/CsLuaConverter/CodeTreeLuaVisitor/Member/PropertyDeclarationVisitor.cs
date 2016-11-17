@@ -36,9 +36,9 @@
             this.accessorList = (AccessorListVisitor) this.CreateVisitor(totalNodes - 1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as PropertyDeclarationSyntax);
+            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as PropertyDeclarationSyntax);
 
             textWriter.WriteLine("_M.IM(members, '{0}',{{", this.name);
             textWriter.Indent++;
@@ -47,30 +47,30 @@
             textWriter.WriteLine("scope = '{0}',", this.scope);
             textWriter.WriteLine("static = {0},", this.isStatic.ToString().ToLower());
             textWriter.Write("returnType = ");
-            providers.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
+            context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
             textWriter.WriteLine(";");
 
-            //providers.Context.CurrentType = this.type.GetType(providers);
-            this.accessorList.Visit(textWriter, providers);
+            //context.Context.CurrentType = this.type.GetType(context);
+            this.accessorList.Visit(textWriter, context);
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }
 
-        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IProviders providers, bool isStaticFilter = false)
+        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IContext context, bool isStaticFilter = false)
         {
             if (this.isStatic != isStaticFilter)
             {
                 return;
             }
 
-            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as PropertyDeclarationSyntax);
+            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as PropertyDeclarationSyntax);
 
             textWriter.Write($"{this.name} = _M.DV(");
-            providers.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
+            context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
             textWriter.WriteLine("),");
         }
 
-        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine($"if not(values.{this.name} == nil) then element[typeObject.Level].{this.name} = values.{this.name}; end");
         }

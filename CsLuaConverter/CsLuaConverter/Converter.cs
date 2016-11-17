@@ -59,7 +59,7 @@
 
             typeCollections.AddRange(TypesFileTypeCollection.LoadFromCurrentDir()); */
 
-            var providers = new Providers.Providers();
+            var providers = new Providers.Context();
 
             var treeVisitor = new CodeTreeVisitor(providers);
 

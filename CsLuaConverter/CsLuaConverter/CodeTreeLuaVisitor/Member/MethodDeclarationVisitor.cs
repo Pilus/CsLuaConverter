@@ -62,21 +62,21 @@
         }
         
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as MethodDeclarationSyntax);
+            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as MethodDeclarationSyntax);
             /*if (symbol.IsExtensionMethod)
             {
                 return;
             }*/
 
-            this.WriteMethodGenericsMapping(textWriter, providers);
-            this.WriteMethodMember(textWriter, providers, symbol);
+            this.WriteMethodGenericsMapping(textWriter, context);
+            this.WriteMethodMember(textWriter, context, symbol);
         }
 
-        public ITypeSymbol GetExtensionTypeSymbol(IProviders providers)
+        public ITypeSymbol GetExtensionTypeSymbol(IContext context)
         {
-            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as MethodDeclarationSyntax);
+            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as MethodDeclarationSyntax);
             if (!symbol.IsExtensionMethod)
             {
                 return null;
@@ -87,9 +87,9 @@
             return symbol.Parameters.Single(p => p.IsThis).Type;
         }
 
-        public void WriteAsExtensionMethod(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteAsExtensionMethod(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = providers.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as MethodDeclarationSyntax);
+            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as MethodDeclarationSyntax);
             if (!symbol.IsExtensionMethod)
             {
                 return;
@@ -98,7 +98,7 @@
 
         }
 
-        private void WriteMethodMember(IIndentedTextWriterWrapper textWriter, IProviders providers, IMethodSymbol symbol)
+        private void WriteMethodMember(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
         {
             textWriter.WriteLine("_M.IM(members, '{0}', {{", this.name);
             textWriter.Indent++;
@@ -108,18 +108,18 @@
             this.WriteScope(textWriter);
             WriteIsStatic(textWriter, symbol);
             WriteNumOfMethodGenerics(textWriter, symbol);
-            WriteSignatureHash(textWriter, providers, symbol);
+            WriteSignatureHash(textWriter, context, symbol);
             this.WriteOverride(textWriter);
             WriteIsParams(textWriter, symbol);
-            WriteReturnType(textWriter, providers, symbol);
+            WriteReturnType(textWriter, context, symbol);
             this.WriteGenerics(textWriter);
-            this.WriteBodyFunc(textWriter, providers, symbol);
+            this.WriteBodyFunc(textWriter, context, symbol);
 
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }
 
-        private void WriteBodyFunc(IIndentedTextWriterWrapper textWriter, IProviders providers, IMethodSymbol symbol)
+        private void WriteBodyFunc(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
         {
             if (this.block == null)
             {
@@ -134,18 +134,18 @@
             }
 
             this.parameters.FirstElementPrefix = ", ";
-            this.parameters.Visit(textWriter, providers);
+            this.parameters.Visit(textWriter, context);
 
             textWriter.WriteLine(")");
 
             if (symbol.Parameters.LastOrDefault()?.IsParams == true)
             {
                 textWriter.Indent++;
-                this.WriteParamVariableInit(textWriter, providers, symbol);
+                this.WriteParamVariableInit(textWriter, context, symbol);
                 textWriter.Indent--;
             }
 
-            this.block.Visit(textWriter, providers);
+            this.block.Visit(textWriter, context);
             textWriter.WriteLine("end");
         }
 
@@ -157,7 +157,7 @@
             }
         }
 
-        private static void WriteReturnType(IIndentedTextWriterWrapper textWriter, IProviders providers, IMethodSymbol symbol)
+        private static void WriteReturnType(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
         {
             if (symbol.ReturnsVoid)
             {
@@ -165,7 +165,7 @@
             }
 
             textWriter.Write("returnType = function() return ");
-            providers.TypeReferenceWriter.WriteTypeReference(symbol.ReturnType, textWriter);
+            context.TypeReferenceWriter.WriteTypeReference(symbol.ReturnType, textWriter);
             textWriter.WriteLine(" end,");
         }
 
@@ -187,11 +187,11 @@
 
         private static void WriteSignatureHash(
             IIndentedTextWriterWrapper textWriter,
-            IProviders providers,
+            IContext context,
             IMethodSymbol symbol)
         {
             textWriter.Write("signatureHash = ");
-            providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
+            context.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
             textWriter.WriteLine(",");
         }
 
@@ -220,7 +220,7 @@
             textWriter.WriteLine("level = typeObject.Level,");
         }
 
-        private void WriteMethodGenericsMapping(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteMethodGenericsMapping(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.methodGenerics == null)
             {
@@ -228,18 +228,18 @@
             }
 
             textWriter.Write("local methodGenericsMapping = {");
-            this.methodGenerics.Visit(textWriter, providers);
+            this.methodGenerics.Visit(textWriter, context);
             textWriter.WriteLine("};");
             textWriter.WriteLine("local methodGenerics = _M.MG(methodGenericsMapping);");
         }
 
-        private void WriteParamVariableInit(IIndentedTextWriterWrapper textWriter, IProviders providers, IMethodSymbol symbol)
+        private void WriteParamVariableInit(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
         {
             var parameter = symbol.Parameters.Last();
             textWriter.Write("local ");
             textWriter.Write(parameter.Name);
             textWriter.Write(" = (");
-            providers.TypeReferenceWriter.WriteInteractionElementReference(parameter.Type, textWriter);
+            context.TypeReferenceWriter.WriteInteractionElementReference(parameter.Type, textWriter);
             textWriter.WriteLine("._C_0_0() % _M.DOT).__Initialize({[0] = firstParam, ...});");
         }
     }

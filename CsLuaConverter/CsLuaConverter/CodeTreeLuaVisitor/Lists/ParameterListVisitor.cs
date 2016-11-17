@@ -18,7 +18,7 @@
                 this.CreateVisitors(new KindFilter(SyntaxKind.Parameter)).Select(v => (ParameterVisitor) v).ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.parameters.Any())
             {
@@ -29,7 +29,7 @@
             {
                 var visitor = this.parameters[index];
 
-                visitor.Visit(textWriter, providers);
+                visitor.Visit(textWriter, context);
 
                 if (index != this.parameters.Length - 1)
                 {
