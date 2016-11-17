@@ -1,7 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement.Switch
 {
     using CodeTree;
-    using Providers;
+    using CsLuaConverter.Context;
 
     public class DefaultSwitchLabelVisitor : BaseVisitor, ISwitchLabelVisitor
     {

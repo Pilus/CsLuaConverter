@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Assignment
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class AssignmentExpressionVisitorBase : BaseVisitor
     {

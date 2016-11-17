@@ -10,7 +10,6 @@
     using CodeTreeLuaVisitor;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
     using ProjectInfo = ProjectAnalysis.ProjectInfo;
 
     public class Analyzer : ISyntaxAnalyser

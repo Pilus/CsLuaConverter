@@ -4,12 +4,11 @@
     using System.Linq;
 
     using CodeTree;
-
+    using CsLuaConverter.Context;
     using CsLuaFramework;
 
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class ThrowStatementVisitor : BaseVisitor
     {

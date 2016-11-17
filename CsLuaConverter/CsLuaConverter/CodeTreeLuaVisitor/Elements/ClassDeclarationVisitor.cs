@@ -5,6 +5,7 @@
     using Attribute;
     using CodeTree;
     using Constraint;
+    using CsLuaConverter.Context;
     using CsLuaFramework;
     using Expression;
     using Filters;
@@ -13,7 +14,6 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Providers;
 
     public class ClassDeclarationVisitor : BaseVisitor, IElementVisitor
     {

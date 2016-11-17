@@ -1,9 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class BlockVisitor : BaseVisitor
     {

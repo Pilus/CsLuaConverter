@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
-    using Providers;
+    using CsLuaConverter.Context;
 
     public static class VisitorExtensions
     {

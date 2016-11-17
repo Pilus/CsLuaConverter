@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Binary
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class BinaryExpressionAsMethodCallVisitorBase : BaseVisitor
     {

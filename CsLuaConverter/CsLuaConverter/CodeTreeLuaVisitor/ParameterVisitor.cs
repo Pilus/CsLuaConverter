@@ -3,8 +3,8 @@
     using System.Linq;
 
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
     using Type;
 
     public class ParameterVisitor : BaseVisitor

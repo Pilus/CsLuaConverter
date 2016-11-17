@@ -4,8 +4,8 @@
     using System.Diagnostics;
     using System.Reflection;
     using CodeTree;
-    using Providers;
     using System.Linq;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;

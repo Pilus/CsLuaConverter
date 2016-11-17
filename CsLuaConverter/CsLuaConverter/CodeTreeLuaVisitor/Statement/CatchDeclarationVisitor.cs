@@ -2,13 +2,12 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
 
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-    using Providers;
     using Type;
 
     public class CatchDeclarationVisitor : BaseVisitor

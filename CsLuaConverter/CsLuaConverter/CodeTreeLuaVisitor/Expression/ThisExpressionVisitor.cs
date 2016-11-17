@@ -1,9 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class ThisExpressionVisitor : BaseVisitor
     {

@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using CodeTree;
-    using Providers;
+    using CsLuaConverter.Context;
 
     public class SwitchSectionVisitor : BaseVisitor
     {

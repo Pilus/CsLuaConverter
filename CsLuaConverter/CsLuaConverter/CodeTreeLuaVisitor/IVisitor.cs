@@ -1,6 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
-    using Providers;
+    using CsLuaConverter.Context;
 
     public interface IVisitor
     {

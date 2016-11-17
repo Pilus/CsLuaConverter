@@ -3,11 +3,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Elements;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Name;
-    using Providers;
 
     public class NamespaceDeclarationVisitor : BaseVisitor
     {

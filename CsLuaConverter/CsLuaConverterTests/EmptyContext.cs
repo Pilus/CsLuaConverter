@@ -1,7 +1,7 @@
 ﻿namespace CsLuaConverterTests
 {
+    using CsLuaConverter.Context;
     using CsLuaConverter.MethodSignature;
-    using CsLuaConverter.Providers;
     using Microsoft.CodeAnalysis;
 
     public class EmptyContext : IContext

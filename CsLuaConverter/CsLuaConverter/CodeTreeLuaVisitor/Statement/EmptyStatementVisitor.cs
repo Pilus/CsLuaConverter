@@ -1,7 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement
 {
     using CodeTree;
-    using Providers;
+    using CsLuaConverter.Context;
 
     public class EmptyStatementVisitor : BaseVisitor
     {

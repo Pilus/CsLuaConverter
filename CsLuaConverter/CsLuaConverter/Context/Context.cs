@@ -1,31 +1,21 @@
 ﻿
-namespace CsLuaConverter.Providers
+namespace CsLuaConverter.Context
 {
-    using System.Collections.Generic;
-
     using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.MethodSignature;
     using Microsoft.CodeAnalysis;
 
     public class Context : IContext
     {
-        private readonly PartialElementState partialElementState;
-
         public Context()
         {
-            this.partialElementState = new PartialElementState();
+            this.PartialElementState = new PartialElementState();
             this.SemanticAdaptor = new TypeSymbolSemanticAdaptor();
             this.TypeReferenceWriter = new TypeReferenceWriter<ITypeSymbol>(this.SemanticAdaptor);
             this.SignatureWriter = new SignatureWriter<ITypeSymbol>(new SignatureComposer<ITypeSymbol>(this.SemanticAdaptor), this.TypeReferenceWriter);
         }
         
-        public PartialElementState PartialElementState
-        {
-            get
-            {
-                return this.partialElementState;
-            }
-        }
+        public PartialElementState PartialElementState { get; }
 
         public SignatureWriter<ITypeSymbol> SignatureWriter { get; }
 

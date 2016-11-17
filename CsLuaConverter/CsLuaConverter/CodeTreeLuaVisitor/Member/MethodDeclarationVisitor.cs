@@ -7,13 +7,13 @@
     using Attribute;
     using CodeTree;
     using Constraint;
+    using CsLuaConverter.Context;
     using Filters;
     using Lists;
 
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Providers;
     using Type;
 
     public class MethodDeclarationVisitor : BaseVisitor

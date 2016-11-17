@@ -3,11 +3,10 @@
     using System.Linq;
 
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-    using Providers;
 
     public class ArrayTypeVisitor : BaseVisitor
     {

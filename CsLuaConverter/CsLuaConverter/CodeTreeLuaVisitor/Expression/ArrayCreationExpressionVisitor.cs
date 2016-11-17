@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
     using Type;
 
     public class ArrayCreationExpressionVisitor : BaseVisitor

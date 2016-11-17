@@ -1,6 +1,5 @@
-namespace CsLuaConverter.Providers
+namespace CsLuaConverter.Context
 {
-    using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.MethodSignature;
     using Microsoft.CodeAnalysis;
 

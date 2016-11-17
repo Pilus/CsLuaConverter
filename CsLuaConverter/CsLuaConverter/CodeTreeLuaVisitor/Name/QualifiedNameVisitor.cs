@@ -2,9 +2,9 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
     using Type;
 
     public class QualifiedNameVisitor : BaseVisitor, INameVisitor

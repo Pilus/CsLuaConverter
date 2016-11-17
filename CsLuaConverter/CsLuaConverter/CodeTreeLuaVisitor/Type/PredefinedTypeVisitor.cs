@@ -2,8 +2,7 @@
 {
     using System.Linq;
     using CodeTree;
-
-    using Providers;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis;
     public class PredefinedTypeVisitor : BaseVisitor
     {

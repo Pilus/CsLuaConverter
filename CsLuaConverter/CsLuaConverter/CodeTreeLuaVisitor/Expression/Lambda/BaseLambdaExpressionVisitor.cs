@@ -1,13 +1,12 @@
 ﻿using System.Linq;
 using CsLuaConverter.CodeTree;
-using CsLuaConverter.Providers;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
 {
     using System;
     using System.IO;
-
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 

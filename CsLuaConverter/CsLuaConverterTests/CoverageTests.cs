@@ -17,6 +17,8 @@
             new Regex(@"UsingStatement"), // Using is being handled inside the file or namespace visitors and does not need a separate visitor.
             new Regex(@"Cref"),
             new Regex(@"^Xml"),
+            new Regex(@"Clause$"), // Queries are not supported.
+            new Regex(@"^Goto"), // Not supported because Gotos are evil.
         };
 
         [TestMethod]
@@ -30,7 +32,8 @@
                 .Where(kind => !Filters.Any(filter => filter.IsMatch(kind.ToString())))
                 .ToArray();
 
-            Assert.AreEqual(0, missingImplementations.Length, $"{missingImplementations.Length} visitors have not been implemented.");
+            Assert.AreEqual(0, missingImplementations.Length,
+                $"{missingImplementations.Length} visitors have not been implemented.\n{string.Join("\n", missingImplementations.Select(v => v.ToString()).ToArray())}");
         }
     }
 }

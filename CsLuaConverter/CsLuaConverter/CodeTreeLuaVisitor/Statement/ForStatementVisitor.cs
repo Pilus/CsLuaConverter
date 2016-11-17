@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement
 {
     using CodeTree;
-    using Providers;
     using System.Linq;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
 
     public class ForStatementVisitor : BaseVisitor

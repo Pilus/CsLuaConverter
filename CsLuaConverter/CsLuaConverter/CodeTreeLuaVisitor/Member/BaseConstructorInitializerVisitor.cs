@@ -3,14 +3,13 @@
     using System.Linq;
 
     using CodeTree;
+    using CsLuaConverter.Context;
     using Expression;
     using Lists;
 
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-    using Providers;
 
     public class BaseConstructorInitializerVisitor : BaseVisitor
     {

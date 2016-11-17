@@ -2,12 +2,10 @@
 {
     using System.Linq;
     using CodeTree;
-
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-    using Providers;
     using Type;
 
     public class VariableDeclaratorVisitor : BaseVisitor

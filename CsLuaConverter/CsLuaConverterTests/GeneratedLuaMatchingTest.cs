@@ -7,8 +7,8 @@ namespace CsLuaConverterTests
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using CsLuaConverter;
     using CsLuaConverter.CodeTreeLuaVisitor;
+    using CsLuaConverter.Context;
     using CsLuaConverter.MethodSignature;
-    using CsLuaConverter.Providers;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.MSBuild;
 

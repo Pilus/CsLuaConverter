@@ -2,12 +2,12 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using CsLuaFramework.Attributes;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     using Name;
-    using Providers;
 
     public class AttributeVisitor : BaseVisitor
     {

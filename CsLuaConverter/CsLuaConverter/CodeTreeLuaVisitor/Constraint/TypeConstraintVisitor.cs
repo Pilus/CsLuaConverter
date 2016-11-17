@@ -2,8 +2,8 @@
 {
     using System;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Name;
-    using Providers;
     using Type;
 
     public class TypeConstraintVisitor : BaseVisitor, IConstraint

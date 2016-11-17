@@ -2,7 +2,7 @@
 {
     using System;
     using CodeTree;
-    using Providers;
+    using CsLuaConverter.Context;
 
     public class LiteralVisitorBase : BaseVisitor
     {

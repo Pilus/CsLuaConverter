@@ -2,11 +2,11 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Expression;
     using Lists;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class ThisConstructorInitializerVisitor : BaseVisitor
     {

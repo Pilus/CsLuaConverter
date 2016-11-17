@@ -1,9 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
     using Name;
-    using Providers;
 
     public class UsingDirectiveVisitor : BaseVisitor
     {

@@ -4,10 +4,10 @@
     using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Name;
-    using Providers;
 
     public class TypeParameterConstraintClauseVisitor : BaseVisitor
     {

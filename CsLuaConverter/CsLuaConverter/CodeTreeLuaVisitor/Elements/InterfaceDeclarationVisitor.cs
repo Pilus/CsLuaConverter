@@ -5,13 +5,12 @@
 
     using Attribute;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Expression;
     using Filters;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-
-    using Providers;
 
     public class InterfaceDeclarationVisitor : BaseVisitor, IElementVisitor
     {

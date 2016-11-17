@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class ArrayInitializerExpressionVisitor : BaseVisitor
     {

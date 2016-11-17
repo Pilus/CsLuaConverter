@@ -264,7 +264,7 @@
     <Compile Include="MethodSignature\SignatureComposer.cs" />
     <Compile Include="MethodSignature\SignatureWriter.cs" />
     <Compile Include="Namespace.cs" />
-    <Compile Include="Providers\PartialElementState.cs" />
+    <Compile Include="Context\PartialElementState.cs" />
     <Compile Include="CodeTreeLuaVisitor\UsingDirectiveVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\VisitorException.cs" />
     <Compile Include="CodeTree\CodeTreeBranch.cs" />
@@ -277,8 +277,8 @@
     <Compile Include="ISyntaxAnalyser.cs" />
     <Compile Include="LuaFileWriter.cs" />
     <Compile Include="ProjectType.cs" />
-    <Compile Include="Providers\IContext.cs" />
-    <Compile Include="Providers\Context.cs" />
+    <Compile Include="Context\IContext.cs" />
+    <Compile Include="Context\Context.cs" />
     <Compile Include="AddOnConstruction\ResourceFile.cs" />
     <Compile Include="ProjectAnalysis\ProjectAnalyser.cs" />
     <Compile Include="AddOnConstruction\ProjectInfo.cs" />

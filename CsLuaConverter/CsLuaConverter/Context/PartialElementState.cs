@@ -1,4 +1,4 @@
-﻿namespace CsLuaConverter.Providers
+﻿namespace CsLuaConverter.Context
 {
     public class PartialElementState
     {

@@ -1,7 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Literal
 {
     using CodeTree;
-    using Providers;
+    using CsLuaConverter.Context;
 
     public class StringLiteralExpressionVisitor : BaseVisitor
     {
