@@ -9,8 +9,6 @@
     using System.Threading.Tasks;
 
     using CsLuaConverter.CodeTreeLuaVisitor;
-    using CsLuaConverter.Providers.TypeProvider.TypeCollections;
-
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.MSBuild;
 

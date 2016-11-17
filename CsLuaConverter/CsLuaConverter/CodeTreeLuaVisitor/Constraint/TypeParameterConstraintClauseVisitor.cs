@@ -8,7 +8,6 @@
     using Microsoft.CodeAnalysis.CSharp;
     using Name;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public class TypeParameterConstraintClauseVisitor : BaseVisitor
     {

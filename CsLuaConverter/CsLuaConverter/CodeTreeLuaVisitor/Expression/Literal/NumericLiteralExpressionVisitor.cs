@@ -5,7 +5,6 @@
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public class NumericLiteralExpressionVisitor : BaseVisitor
     {
@@ -20,16 +19,6 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
         {
             textWriter.Write(this.value);
-        }
-
-        private TypeKnowledge GetTypeKnowledge()
-        {
-            return new TypeKnowledge(this.DetermineType());
-        }
-
-        private Type DetermineType()
-        {
-            return this.value.Contains(".") ? typeof (double) : typeof (int);
         }
     }
 }

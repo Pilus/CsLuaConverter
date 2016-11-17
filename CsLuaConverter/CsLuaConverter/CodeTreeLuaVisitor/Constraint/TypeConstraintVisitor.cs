@@ -4,7 +4,6 @@
     using CodeTree;
     using Name;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
     using Type;
 
     public class TypeConstraintVisitor : BaseVisitor, IConstraint

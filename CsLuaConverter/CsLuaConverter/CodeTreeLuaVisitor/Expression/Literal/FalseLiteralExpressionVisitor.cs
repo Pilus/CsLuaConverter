@@ -4,7 +4,7 @@
 
     public class FalseLiteralExpressionVisitor : LiteralVisitorBase
     {
-        public FalseLiteralExpressionVisitor(CodeTreeBranch branch) : base(branch, typeof(bool))
+        public FalseLiteralExpressionVisitor(CodeTreeBranch branch) : base(branch)
         {
         }
     }

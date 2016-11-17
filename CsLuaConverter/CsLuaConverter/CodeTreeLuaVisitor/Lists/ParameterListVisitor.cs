@@ -5,7 +5,6 @@
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public class ParameterListVisitor : BaseVisitor
     {

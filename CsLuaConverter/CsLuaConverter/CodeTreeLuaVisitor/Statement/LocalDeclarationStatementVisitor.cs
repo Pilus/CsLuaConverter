@@ -4,7 +4,6 @@
     using Member;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.GenericsRegistry;
 
     public class LocalDeclarationStatementVisitor : BaseVisitor
     {

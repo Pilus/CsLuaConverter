@@ -5,7 +5,7 @@
 
     public class NullLiteralExpressionVisitor : LiteralVisitorBase
     {
-        public NullLiteralExpressionVisitor(CodeTreeBranch branch) : base(branch, typeof(Nullable), "nil")
+        public NullLiteralExpressionVisitor(CodeTreeBranch branch) : base(branch, "nil")
         {
         }
     }

@@ -4,7 +4,6 @@
     using CodeTree;
 
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
     using Microsoft.CodeAnalysis;
     public class PredefinedTypeVisitor : BaseVisitor
     {

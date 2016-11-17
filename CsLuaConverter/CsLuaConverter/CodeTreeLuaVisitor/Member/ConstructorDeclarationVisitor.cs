@@ -41,19 +41,12 @@
             textWriter.WriteLine("_M.IM(members, '', {");
             textWriter.Indent++;
 
-            //var scope = providers.NameProvider.CloneScope();
-
-            //textWriter.Write("types = {");
-            //this.parameterList.WriteAsTypes(textWriter, providers);
-            //textWriter.WriteLine("},");
-
             textWriter.WriteLine("level = typeObject.Level,");
             textWriter.WriteLine("memberType = 'Cstor',");
             textWriter.WriteLine("static = true,");
             textWriter.WriteLine("numMethodGenerics = 0,");
             textWriter.Write("signatureHash = ");
             providers.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
-            //this.parameterList.GetTypes(providers).WriteSignature(textWriter, providers);
             textWriter.WriteLine(",");
             textWriter.WriteLine("scope = '{0}',", this.scope);
 

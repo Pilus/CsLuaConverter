@@ -14,9 +14,6 @@
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers;
-    using Providers.GenericsRegistry;
-    using Providers.TypeProvider;
-    using Providers.TypeKnowledgeRegistry;
 
     public class ClassDeclarationVisitor : BaseVisitor, IElementVisitor
     {

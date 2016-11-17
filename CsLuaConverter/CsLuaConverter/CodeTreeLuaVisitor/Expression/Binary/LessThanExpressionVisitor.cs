@@ -2,7 +2,6 @@
 {
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers.TypeKnowledgeRegistry;
 
     public class LessThanExpressionVisitor : BinaryExpressionVisitorBase
     {

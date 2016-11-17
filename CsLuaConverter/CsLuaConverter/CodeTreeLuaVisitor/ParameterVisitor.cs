@@ -5,8 +5,6 @@
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
-    using Providers.TypeProvider;
     using Type;
 
     public class ParameterVisitor : BaseVisitor

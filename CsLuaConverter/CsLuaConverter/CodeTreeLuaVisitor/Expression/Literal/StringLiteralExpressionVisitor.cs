@@ -2,7 +2,6 @@
 {
     using CodeTree;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public class StringLiteralExpressionVisitor : BaseVisitor
     {

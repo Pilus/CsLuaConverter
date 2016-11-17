@@ -12,9 +12,6 @@
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     using Providers;
-    using Providers.GenericsRegistry;
-    using Providers.TypeKnowledgeRegistry;
-    using Providers.TypeProvider;
 
     public class InterfaceDeclarationVisitor : BaseVisitor, IElementVisitor
     {
@@ -102,26 +99,6 @@
 
             textWriter.Indent--;
             textWriter.WriteLine("end,");
-        }
-
-        private void RegisterGenerics(IProviders providers)
-        {
-            if (this.genericsVisitor == null)
-            {
-                return;
-            }
-
-            var classTypeResult = providers.TypeProvider.LookupType(new []{this.name}, this.GetNumOfGenerics());
-            var generics = classTypeResult.TypeObject.GetGenericArguments();
-
-            foreach (var genericName in this.genericsVisitor.GetNames())
-            {
-                providers.GenericsRegistry.SetGenerics(
-                    genericName, 
-                    GenericScope.Class, 
-                    generics.Single(t => t.Name == genericName), 
-                    typeof(object));
-            }
         }
 
         private void WriteGenericsMapping(IIndentedTextWriterWrapper textWriter, IProviders providers)

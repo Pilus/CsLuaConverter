@@ -7,7 +7,6 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public class ThisConstructorInitializerVisitor : BaseVisitor
     {

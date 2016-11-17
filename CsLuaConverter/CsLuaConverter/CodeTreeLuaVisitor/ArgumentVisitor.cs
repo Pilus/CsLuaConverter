@@ -4,7 +4,6 @@
     using CodeTree;
     using Providers;
     using CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda;
-    using Providers.TypeKnowledgeRegistry;
 
     public class ArgumentVisitor : BaseVisitor
     {

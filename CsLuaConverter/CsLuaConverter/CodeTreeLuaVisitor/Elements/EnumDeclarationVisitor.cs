@@ -9,7 +9,6 @@
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public class EnumDeclarationVisitor : BaseVisitor, IElementVisitor
     {

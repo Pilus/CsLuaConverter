@@ -9,9 +9,6 @@ namespace CsLuaConverterTests
     using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.MethodSignature;
     using CsLuaConverter.Providers;
-    using CsLuaConverter.Providers.PartialElement;
-    using CsLuaConverter.Providers.TypeKnowledgeRegistry;
-
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.MSBuild;
 

@@ -1,6 +1,6 @@
-﻿namespace CsLuaConverter.Providers.PartialElement
+﻿namespace CsLuaConverter.Providers
 {
-    public class PartialElementState : IPartialElementState
+    public class PartialElementState
     {
         public int? CurrentState { get; set; }
         public int? NextState { get; set; }

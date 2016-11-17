@@ -3,7 +3,6 @@
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.TypeProvider;
     using Type;
 
     public class VariableDeclarationVisitor : BaseVisitor

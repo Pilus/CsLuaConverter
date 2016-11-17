@@ -4,7 +4,6 @@
     using Lists;
     using Microsoft.CodeAnalysis;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
     using Microsoft.CodeAnalysis.CSharp;
 
     public class ParenthesizedLambdaExpressionVisitor : BaseLambdaExpressionVisitor

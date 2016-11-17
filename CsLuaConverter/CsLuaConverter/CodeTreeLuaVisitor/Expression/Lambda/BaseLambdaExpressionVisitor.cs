@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using CsLuaConverter.CodeTree;
 using CsLuaConverter.Providers;
-using CsLuaConverter.Providers.TypeKnowledgeRegistry;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
@@ -12,7 +11,7 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    public class BaseLambdaExpressionVisitor : BaseVisitor, ILambdaVisitor
+    public class BaseLambdaExpressionVisitor : BaseVisitor
     {
         private readonly BaseVisitor para;
         private readonly BaseVisitor body;
@@ -95,18 +94,6 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
             {
                 throw new NotImplementedException();
             }
-        }
-        
-        [Obsolete]
-        public int GetNumParameters()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Obsolete]
-        public TypeKnowledge GetReturnType(IProviders providers, TypeKnowledge inputType)
-        {
-            throw new NotImplementedException();
         }
     }
 }

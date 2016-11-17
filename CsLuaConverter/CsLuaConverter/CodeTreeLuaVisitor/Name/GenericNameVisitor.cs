@@ -9,7 +9,6 @@
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
     using Type;
 
     public class GenericNameVisitor : BaseVisitor, INameVisitor

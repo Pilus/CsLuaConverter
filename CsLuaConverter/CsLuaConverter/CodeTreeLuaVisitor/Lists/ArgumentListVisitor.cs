@@ -9,7 +9,6 @@
     using Expression.Lambda;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public class ArgumentListVisitor : BaseVisitor
     {

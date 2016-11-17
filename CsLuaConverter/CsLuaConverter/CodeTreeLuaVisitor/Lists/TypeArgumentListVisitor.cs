@@ -5,7 +5,6 @@
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
     using Type;
 
     public class TypeArgumentListVisitor : BaseVisitor, IListVisitor

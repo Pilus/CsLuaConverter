@@ -3,7 +3,6 @@
     using CodeTree;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public abstract class BinaryExpressionVisitorBase : BaseVisitor
     {

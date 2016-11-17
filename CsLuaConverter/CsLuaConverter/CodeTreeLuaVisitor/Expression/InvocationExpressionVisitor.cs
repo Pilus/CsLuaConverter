@@ -4,16 +4,12 @@
     using System.Linq;
     using System.Reflection;
     using CodeTree;
-
-    using CsLuaConverter.Providers.GenericsRegistry;
-
     using Lists;
 
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public class InvocationExpressionVisitor : BaseVisitor
     {

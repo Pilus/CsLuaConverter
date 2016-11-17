@@ -8,8 +8,6 @@
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     using Providers;
-    using Providers.GenericsRegistry;
-    using Providers.TypeKnowledgeRegistry;
     using Type;
 
     public class IdentifierNameVisitor : BaseVisitor, INameVisitor

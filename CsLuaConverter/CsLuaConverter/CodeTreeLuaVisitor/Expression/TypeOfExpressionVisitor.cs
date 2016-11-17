@@ -6,7 +6,6 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.TypeKnowledgeRegistry;
     using Type;
 
     public class TypeOfExpressionVisitor : BaseVisitor

@@ -5,7 +5,6 @@
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Providers;
-    using Providers.TypeProvider;
 
     public class SetAccessorDeclarationVisitor : BaseVisitor, IAccessor
     {

@@ -5,8 +5,6 @@
     using CsLuaConverter.CodeTree;
     using CsLuaConverter.CodeTreeLuaVisitor.Filters;
     using CsLuaConverter.Providers;
-    using CsLuaConverter.Providers.TypeKnowledgeRegistry;
-
     using Microsoft.CodeAnalysis.CSharp;
 
     public class ArrayRankSpecifierVisitor : BaseVisitor
