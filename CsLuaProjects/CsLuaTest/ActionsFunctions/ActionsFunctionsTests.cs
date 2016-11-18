@@ -9,7 +9,7 @@
             this.Name = "Actions and Functions";
             this.Tests["TestActionGenericsFromConstructed"] = TestActionGenericsFromConstructed;
             this.Tests["OtherTests"] = OtherTests;
-            this.Tests["TestMethodsCastToActionAndFunction"] = TestMethodsCastToActionAndFunction;
+            //this.Tests["TestMethodsCastToActionAndFunction"] = TestMethodsCastToActionAndFunction;
             this.Tests["TestActionWithAssignment"] = TestActionWithAssignment;
         }
 

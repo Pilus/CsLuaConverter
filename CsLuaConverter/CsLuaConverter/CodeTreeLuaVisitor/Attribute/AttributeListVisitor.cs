@@ -2,9 +2,9 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class AttributeListVisitor : BaseVisitor
     {
@@ -17,12 +17,12 @@
                     .ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine("local attributes = {");
             textWriter.Indent++;
 
-            this.attributes.VisitAll(textWriter, providers);
+            this.attributes.VisitAll(textWriter, context);
 
             textWriter.Indent--;
             textWriter.WriteLine("};");

@@ -4,7 +4,7 @@
 
     public class CharacterLiteralExpressionVisitor : LiteralVisitorBase
     {
-        public CharacterLiteralExpressionVisitor(CodeTreeBranch branch) : base(branch, typeof(string))
+        public CharacterLiteralExpressionVisitor(CodeTreeBranch branch) : base(branch)
         {
         }
     }

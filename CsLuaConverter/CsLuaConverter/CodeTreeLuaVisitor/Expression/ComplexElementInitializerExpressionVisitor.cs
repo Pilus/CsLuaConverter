@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class ComplexElementInitializerExpressionVisitor : BaseVisitor
     {
@@ -19,12 +19,12 @@
 
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("[");
-            this.index.Visit(textWriter, providers);
+            this.index.Visit(textWriter, context);
             textWriter.Write("] = ");
-            this.valueVisitor.Visit(textWriter, providers);
+            this.valueVisitor.Visit(textWriter, context);
         }
     }
 }

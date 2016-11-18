@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class CatchClauseVisitor : BaseVisitor
     {
@@ -22,31 +22,26 @@
             this.block = (BlockVisitor)this.CreateVisitor(i);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var scope = providers.NameProvider.CloneScope();
-
             textWriter.WriteLine("{");
             textWriter.Indent++;
 
             if (this.declaration != null)
             {
-                this.declaration.Visit(textWriter, providers);
+                this.declaration.Visit(textWriter, context);
             }
             else
             {
                 textWriter.WriteLine("func = function()");
             }
 
-            providers.Context.CurrentType = null;
-            this.block.Visit(textWriter, providers);
+            this.block.Visit(textWriter, context);
             
             textWriter.WriteLine("end,");
             
             textWriter.Indent--;
             textWriter.WriteLine("},");
-
-            providers.NameProvider.SetScope(scope);
         }
     }
 }

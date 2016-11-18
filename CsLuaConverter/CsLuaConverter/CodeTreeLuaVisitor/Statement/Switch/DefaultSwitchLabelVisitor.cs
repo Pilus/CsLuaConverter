@@ -1,7 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement.Switch
 {
     using CodeTree;
-    using Providers;
+    using CsLuaConverter.Context;
 
     public class DefaultSwitchLabelVisitor : BaseVisitor, ISwitchLabelVisitor
     {
@@ -9,7 +9,7 @@
         {
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("true");
         }

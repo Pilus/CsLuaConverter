@@ -1,9 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class ElementAccessExpressionVisitor : BaseVisitor
     {
@@ -16,12 +16,12 @@
             this.bracketedArgumentList = (BracketedArgumentListVisitor)this.CreateVisitor(1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("(");
-            this.target.Visit(textWriter, providers);
+            this.target.Visit(textWriter, context);
             textWriter.Write(" % _M.DOT)");
-            this.bracketedArgumentList.Visit(textWriter, providers);
+            this.bracketedArgumentList.Visit(textWriter, context);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class ExpressionStatementVisitor : BaseVisitor
     {
@@ -13,10 +13,9 @@
             this.innerVisitor = this.CreateVisitor(0);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.innerVisitor.Visit(textWriter, providers);
-            providers.Context.CurrentType = null;
+            this.innerVisitor.Visit(textWriter, context);
             textWriter.WriteLine(";");
         }
     }

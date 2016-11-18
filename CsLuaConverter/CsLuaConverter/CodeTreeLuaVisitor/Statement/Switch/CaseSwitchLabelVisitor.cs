@@ -1,9 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement.Switch
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public class CaseSwitchLabelVisitor : BaseVisitor, ISwitchLabelVisitor
     {
@@ -16,11 +15,10 @@
             this.innerVisitor = this.CreateVisitor(1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("switchValue == ");
-            this.innerVisitor.Visit(textWriter, providers);
-            providers.Context.CurrentType = new TypeKnowledge(typeof (bool));
+            this.innerVisitor.Visit(textWriter, context);
         }
     }
 }

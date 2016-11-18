@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Binary
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class BinaryExpressionAsMethodCallVisitorBase : BaseVisitor
     {
@@ -18,20 +18,14 @@
             this.methodName = methodName;
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write($"{this.methodName}(");
-            providers.Context.CurrentType = null;
-            this.lhsVisitor.Visit(textWriter, providers);
-            var lhsType = providers.Context.CurrentType;
+            this.lhsVisitor.Visit(textWriter, context);
 
             textWriter.Write(", ");
-            providers.Context.CurrentType = null;
-            this.rhsVisitor.Visit(textWriter, providers);
-
+            this.rhsVisitor.Visit(textWriter, context);
             textWriter.Write(")");
-
-            providers.Context.CurrentType = lhsType;
         }
     }
 }

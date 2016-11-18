@@ -1,11 +1,15 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Member
 {
+    using System.Linq;
+
     using CodeTree;
+    using CsLuaConverter.Context;
     using Expression;
     using Lists;
+
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
-    using Providers.TypeKnowledgeRegistry;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class BaseConstructorInitializerVisitor : BaseVisitor
     {
@@ -18,27 +22,13 @@
             this.argumentList = (ArgumentListVisitor) this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var baseType = providers.NameProvider.GetScopeElement("base");
-            providers.Context.PossibleMethods = new PossibleMethods(baseType.Type.GetConstructors());
-
-            var argumentWriter = textWriter.CreateTextWriterAtSameIndent();
-
-            this.argumentList.Visit(argumentWriter, providers);
-
-            var cstor = providers.Context.PossibleMethods.GetOnlyRemainingMethodOrThrow();
-
+            var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as ConstructorInitializerSyntax).Symbol;
             textWriter.Write("(element % _M.DOT_LVL(typeObject.Level - 1))._C_0_");
-
-            cstor.WriteSignature(textWriter, providers);
-
-            textWriter.AppendTextWriter(argumentWriter);
-
+            context.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
+            this.argumentList.Visit(textWriter, context);
             textWriter.WriteLine(";");
-            providers.Context.CurrentType = null;
         }
-
-        
     }
 }

@@ -2,10 +2,9 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
-    using Providers.TypeProvider;
 
     public class SetAccessorDeclarationVisitor : BaseVisitor, IAccessor
     {
@@ -23,19 +22,16 @@
             }
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.block == null)
             {
                 return;
             }
 
-            var scope = providers.NameProvider.CloneScope();
-            providers.NameProvider.AddToScope(new ScopeElement("value", providers.Context.CurrentType));
             textWriter.WriteLine($"set = function(element{this.AdditionalParameters} , value)");
-            this.block.Visit(textWriter, providers);
+            this.block.Visit(textWriter, context);
             textWriter.WriteLine("end,");
-            providers.NameProvider.SetScope(scope);
         }
     
         public bool IsAutoProperty()

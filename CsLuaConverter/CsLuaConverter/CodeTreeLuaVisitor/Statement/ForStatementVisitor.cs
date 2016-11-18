@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement
 {
     using CodeTree;
-    using Providers;
     using System.Linq;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
 
     public class ForStatementVisitor : BaseVisitor
@@ -26,17 +26,17 @@
             this.bodyVisitor = this.CreateVisitor(8);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.initialVisitor.Visit(textWriter, providers);
+            this.initialVisitor.Visit(textWriter, context);
             textWriter.WriteLine(";");
             textWriter.Write("while (");
-            this.conditionVisitor.Visit(textWriter, providers);
+            this.conditionVisitor.Visit(textWriter, context);
             textWriter.WriteLine(") do");
-            providers.Context.CurrentType = null;
-            this.bodyVisitor.Visit(textWriter, providers);
-            this.increamentVisitor.Visit(textWriter, providers);
-            providers.Context.CurrentType = null;
+
+            this.bodyVisitor.Visit(textWriter, context);
+            this.increamentVisitor.Visit(textWriter, context);
+
             textWriter.WriteLine(";");
             textWriter.WriteLine("end");
         }

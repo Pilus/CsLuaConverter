@@ -1,9 +1,14 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
+    using System;
+    using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Name;
-    using Providers;
 
     public class SimpleMemberAccessExpressionVisitor : BaseVisitor
     {
@@ -25,44 +30,47 @@
             }
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.targetVisitor == null)
             {
-                this.indexVisitor.Visit(textWriter, providers);
+                this.indexVisitor.Visit(textWriter, context);
                 return;
             }
 
-            providers.Context.CurrentType = null;
-
-            var innerWriter = textWriter.CreateTextWriterAtSameIndent();
-
-            this.targetVisitor.Visit(innerWriter, providers);
-
-            if (providers.Context.NamespaceReference == null)
-            {
-                textWriter.Write("(");
-            }
-
-            textWriter.AppendTextWriter(innerWriter);
-
-            if (providers.Context.NamespaceReference == null)
+            if (!(this.targetVisitor is ThisExpressionVisitor || this.targetVisitor is BaseExpressionVisitor))
             { 
-                textWriter.Write("% _M.DOT");
-
-                if (this.targetVisitor is BaseExpressionVisitor)
-                {
-                    textWriter.Write("_LVL(typeObject.Level - 1, true)");
-                }
-                else if (this.targetVisitor is ThisExpressionVisitor)
-                {
-                    textWriter.Write("_LVL(typeObject.Level)");
-                }
-
-                textWriter.Write(").");
+                textWriter.Write("(");
+                this.VisitTarget(textWriter, context);
+                textWriter.Write(" % _M.DOT).");
             }
 
-            this.indexVisitor.Visit(textWriter, providers);
+            this.indexVisitor.Visit(textWriter, context);
+        }
+
+        private void VisitTarget(IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+
+            if (symbol == null)
+            {
+                this.targetVisitor.Visit(textWriter, context);
+                return;
+            }
+
+            if (symbol is ITypeSymbol)
+            {
+                context.TypeReferenceWriter.WriteInteractionElementReference((ITypeSymbol)symbol, textWriter);
+                return;
+            }
+
+            if (!symbol.IsStatic)
+            {
+                this.targetVisitor.Visit(textWriter, context);
+                return;
+            }
+
+            context.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class ObjectInitializerExpressionVisitor : BaseVisitor
     {
@@ -16,24 +16,20 @@
             this.innerVisitors = this.CreateVisitors(new KindRangeFilter(SyntaxKind.OpenBraceToken, SyntaxKind.CloseBraceToken));
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write(".__Initialize({");
 
             if (this.innerVisitors.Length > 1)
                 textWriter.WriteLine();
 
-            var initializingType = providers.Context.CurrentType;
-
             textWriter.Indent++;
-            this.innerVisitors.VisitAll(textWriter, providers, () =>
+            this.innerVisitors.VisitAll(textWriter, context, () =>
             {
                 textWriter.WriteLine(",");
-                providers.Context.CurrentType = initializingType;
             });
             textWriter.Indent--;
-            providers.Context.CurrentType = null;
-
+            
             if (this.innerVisitors.Length > 1)
                 textWriter.WriteLine();
 

@@ -3,11 +3,11 @@
     using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Elements;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Name;
-    using Providers;
 
     public class NamespaceDeclarationVisitor : BaseVisitor
     {
@@ -22,13 +22,11 @@
             this.CreateElementVisitor();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            providers.TypeProvider.SetCurrentNamespace(this.nameVisitor.GetName());
+            this.usingVisitors.VisitAll(textWriter, context);
 
-            this.usingVisitors.VisitAll(textWriter, providers);
-
-            var state = providers.PartialElementState;
+            var state = context.PartialElementState;
             var isFirstNamespace = state.IsFirst;
             var isLastNamespace = state.IsLast;
 
@@ -40,13 +38,13 @@
 
                 state.IsFirst = isFirstNamespace && index == 0;
                 state.IsLast = isLastNamespace && index == elements.Length - 1;
-                elementVisitor.Visit(textWriter, providers);
+                elementVisitor.Visit(textWriter, context);
             }
         }
 
-        public void WriteFooter(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteFooter(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var state = providers.PartialElementState;
+            var state = context.PartialElementState;
             state.CurrentState = (int)ClassState.Footer;
 
             for (var index = 0; index < this.elementVisitors.Length; index++)
@@ -58,9 +56,16 @@
                     state.IsFirst = index == 0;
                     state.IsLast = index == this.elementVisitors.Length - 1;
 
-                    elementVisitor.Visit(textWriter, providers);
+                    elementVisitor.Visit(textWriter, context);
                 }
             }
+        }
+
+        public void WriteExtensions(IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            this.elementVisitors.OfType<ClassDeclarationVisitor>()
+                .ToList()
+                .ForEach(e => e.WriteExtensionMethods(textWriter, context));
         }
 
         private void CreateNameVisitor()

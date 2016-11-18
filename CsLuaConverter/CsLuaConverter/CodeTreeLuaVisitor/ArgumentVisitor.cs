@@ -2,9 +2,8 @@
 {
     using System.Linq;
     using CodeTree;
-    using Providers;
     using CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda;
-    using Providers.TypeKnowledgeRegistry;
+    using CsLuaConverter.Context;
 
     public class ArgumentVisitor : BaseVisitor
     {
@@ -14,31 +13,9 @@
             this.inner = this.CreateVisitors().Single();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            providers.Context.CurrentType = null;
-            this.inner.Visit(textWriter, providers);
-        }
-
-        public bool IsArgumentVisitorALambda()
-        {
-            return this.inner is ILambdaVisitor;
-        }
-
-        public bool IsArgumentVisitorParenLambda()
-        {
-            return this.inner is ParenthesizedLambdaExpressionVisitor;
-        }
-
-        public TypeKnowledge GetReturnTypeOfSimpleLambdaVisitor(IProviders providers, TypeKnowledge inputType)
-        {
-            return (this.inner as SimpleLambdaExpressionVisitor)?.GetReturnType(providers, inputType);
-        }
-
-        public int? GetInputArgCountOfLambda()
-        {
-            var lambda = this.inner as ILambdaVisitor;
-            return lambda?.GetNumParameters();
+            this.inner.Visit(textWriter, context);
         }
     }
 }

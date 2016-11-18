@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class SimpleAssignmentExpressionVisitor : BaseVisitor
     {
@@ -16,17 +16,13 @@
             this.innerVisitor = this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.targetVisitor.Visit(textWriter, providers);
+            this.targetVisitor.Visit(textWriter, context);
 
             textWriter.Write(" = ");
 
-            providers.Context.ExpectedType = providers.Context.CurrentType;
-            providers.Context.CurrentType = null;
-            this.innerVisitor.Visit(textWriter, providers);
-            providers.Context.ExpectedType = null;
-            providers.Context.CurrentType = null;
+            this.innerVisitor.Visit(textWriter, context);
         }
     }
 }

@@ -2,9 +2,9 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class CollectionInitializerExpressionVisitor : BaseVisitor
     {
@@ -16,16 +16,14 @@
                     SyntaxKind.CommaToken)).ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine(".__Initialize({");
             textWriter.Indent++;
 
-            providers.Context.CurrentType = null;
-            this.innerVisitors.VisitAll(textWriter, providers, () =>
+            this.innerVisitors.VisitAll(textWriter, context, () =>
             {
                 textWriter.WriteLine(",");
-                providers.Context.CurrentType = null;
             });
             textWriter.Indent--;
             textWriter.WriteLine();

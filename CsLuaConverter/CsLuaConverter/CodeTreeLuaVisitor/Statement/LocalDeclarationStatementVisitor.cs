@@ -1,10 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Member;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
-    using Providers.GenericsRegistry;
 
     public class LocalDeclarationStatementVisitor : BaseVisitor
     {
@@ -23,11 +22,9 @@
             this.variableDeclarationVisitor = (VariableDeclarationVisitor)this.CreateVisitor(i);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.variableDeclarationVisitor.Visit(textWriter, providers);
-            providers.Context.CurrentType = null;
-            providers.GenericsRegistry.ClearScope(GenericScope.Invocation);
+            this.variableDeclarationVisitor.Visit(textWriter, context);
             textWriter.WriteLine(";");
         }
     }

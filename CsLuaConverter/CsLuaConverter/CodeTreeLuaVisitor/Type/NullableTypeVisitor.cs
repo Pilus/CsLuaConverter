@@ -1,32 +1,21 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Type
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
-    public class NullableTypeVisitor : BaseTypeVisitor
+    public class NullableTypeVisitor : BaseVisitor
     {
-        private readonly ITypeVisitor innerVisitor;
+        private readonly IVisitor innerVisitor;
         public NullableTypeVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.ExpectKind(1, SyntaxKind.QuestionToken);
-            this.innerVisitor = (ITypeVisitor) this.CreateVisitor(0);
+            this.innerVisitor = this.CreateVisitor(0);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.innerVisitor.Visit(textWriter, providers);
-        }
-
-        public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            this.innerVisitor.WriteAsReference(textWriter, providers);
-        }
-
-        public override TypeKnowledge GetType(IProviders providers)
-        {
-            return this.innerVisitor.GetType(providers);
+            this.innerVisitor.Visit(textWriter, context);
         }
     }
 }

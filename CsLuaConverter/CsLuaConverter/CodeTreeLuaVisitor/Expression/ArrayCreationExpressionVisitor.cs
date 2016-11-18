@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
     using Type;
 
     public class ArrayCreationExpressionVisitor : BaseVisitor
@@ -25,10 +25,10 @@
             this.initializer = (ArrayInitializerExpressionVisitor) this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("(");
-            this.arrayType.Visit(textWriter, providers);
+            this.arrayType.Visit(textWriter, context);
             textWriter.Write(" % _M.DOT)");
 
             if (this.initializer == null)
@@ -36,9 +36,7 @@
                 return;
             }
 
-            var currentType = providers.Context.CurrentType;
-            this.initializer.Visit(textWriter, providers);
-            providers.Context.CurrentType = currentType;
+            this.initializer.Visit(textWriter, context);
         }
     }
 }

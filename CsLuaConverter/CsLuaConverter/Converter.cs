@@ -1,15 +1,13 @@
 ﻿namespace CsLuaConverter
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
 
-    using CsLuaConverter.Providers.TypeProvider.TypeCollections;
-
+    using CsLuaConverter.CodeTreeLuaVisitor;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.MSBuild;
 
@@ -49,19 +47,11 @@
 
         private void ConvertSolution(Solution solution, string wowPath)
         {
-            var typeCollections = new List<BaseTypeCollection>
-            {
-                new ManuallyImplementedSystemTypeTypeCollection(), 
-                new AssemblyTypeCollection(Assembly.Load("Lua")), 
-                new AssemblyTypeCollection(Assembly.Load("CsLuaFramework")), 
-                new SolutionTypeCollection(solution), 
-            };
+            var context = new Context.Context();
 
-            typeCollections.AddRange(TypesFileTypeCollection.LoadFromCurrentDir());
+            var treeVisitor = new CodeTreeVisitor(context);
 
-            var providers = new Providers.Providers(typeCollections);
-
-            ISyntaxAnalyser analyzer = new Analyzer(providers);
+            ISyntaxAnalyser analyzer = new Analyzer(treeVisitor);
 
             var solutionHandler = new SolutionHandler(analyzer);
             var addOns = solutionHandler.GenerateAddOnsFromSolution(solution);

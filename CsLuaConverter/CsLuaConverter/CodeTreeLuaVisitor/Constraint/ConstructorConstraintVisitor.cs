@@ -1,7 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Constraint
 {
     using CodeTree;
-    using Providers;
+    using CsLuaConverter.Context;
 
     public class ConstructorConstraintVisitor : BaseVisitor, IConstraint
     {
@@ -9,7 +9,7 @@
         {
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             throw new System.NotImplementedException();
         }

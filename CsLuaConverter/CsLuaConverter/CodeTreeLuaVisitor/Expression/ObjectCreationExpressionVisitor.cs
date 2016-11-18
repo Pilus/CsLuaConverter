@@ -1,22 +1,25 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using CodeTree;
+    using CsLuaConverter.Context;
     using Lists;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
-    using Providers.TypeKnowledgeRegistry;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Type;
 
     public class ObjectCreationExpressionVisitor : BaseVisitor
     {
-        private readonly ITypeVisitor objectTypeVisitor;
         private readonly ArgumentListVisitor constructorArgumentsVisitor;
         private readonly IVisitor initializer;
 
         public ObjectCreationExpressionVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.ExpectKind(0, SyntaxKind.NewKeyword);
-            this.objectTypeVisitor = (ITypeVisitor) this.CreateVisitor(1);
 
             var i = 2;
             if (this.IsKind(i, SyntaxKind.ArgumentList))
@@ -35,44 +38,62 @@
             }
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var node = (ObjectCreationExpressionSyntax)this.Branch.SyntaxNode;
+            var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(node).Symbol;
+
             textWriter.Write(this.initializer != null ? "(" : "");
 
-            this.objectTypeVisitor.WriteAsReference(textWriter, providers);
-            var type = this.objectTypeVisitor.GetType(providers);
-            textWriter.Write("._C_0_");
 
-            if (this.constructorArgumentsVisitor != null)
-            { 
-                providers.Context.PossibleMethods = new PossibleMethods(type.GetConstructors());
-
-                var cstorArgsWriter = textWriter.CreateTextWriterAtSameIndent();
-                this.constructorArgumentsVisitor.Visit(cstorArgsWriter, providers);
-
-                var method = providers.Context.PossibleMethods.GetOnlyRemainingMethodOrThrow();
-            
-                method.WriteSignature(textWriter, providers);
-
-                textWriter.AppendTextWriter(cstorArgsWriter);
+            ITypeSymbol[] parameterTypes = null;
+            IDictionary<ITypeSymbol, ITypeSymbol> appliedClassGenerics = null;
+            if (symbol != null)
+            {
+                context.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
+                parameterTypes = symbol.OriginalDefinition.Parameters.Select(p => p.Type).ToArray();
+                appliedClassGenerics = ((TypeSymbolSemanticAdaptor) context.SemanticAdaptor).GetAppliedClassGenerics(symbol.ContainingType);
             }
             else
             {
-                textWriter.Write("0()");    
+                // Special case for missing symbol. Roslyn issue 3825. https://github.com/dotnet/roslyn/issues/3825
+                var namedTypeSymbol = (INamedTypeSymbol)context.SemanticModel.GetSymbolInfo(node.Type).Symbol;
+                context.TypeReferenceWriter.WriteInteractionElementReference(namedTypeSymbol, textWriter);
+
+                if (namedTypeSymbol.TypeKind != TypeKind.Delegate)
+                {
+                    throw new Exception($"Could not guess constructor for {namedTypeSymbol}.");
+                }
+
+                parameterTypes = new ITypeSymbol[] { namedTypeSymbol };
             }
 
-            providers.Context.PossibleMethods = null;
-            providers.Context.CurrentType = null;
+            var signatureWiter = textWriter.CreateTextWriterAtSameIndent();
+            var hasGenricComponents = context.SignatureWriter.WriteSignature(parameterTypes, signatureWiter, appliedClassGenerics);
+
+            if (hasGenricComponents)
+            {
+                textWriter.Write("['_C_0_'..");
+            }
+            else
+            {
+                textWriter.Write("._C_0_");
+            }
+
+            textWriter.AppendTextWriter(signatureWiter);
+
+            if (hasGenricComponents)
+            {
+                textWriter.Write("]");
+            }
+            
+            this.constructorArgumentsVisitor.Visit(textWriter, context);
 
             if (this.initializer != null)
             {
                 textWriter.Write(" % _M.DOT)");
-                providers.Context.CurrentType = type;
-                this.initializer.Visit(textWriter, providers);
+                this.initializer.Visit(textWriter, context);
             }
-            
-
-            providers.Context.CurrentType = type;
         }
     }
 }

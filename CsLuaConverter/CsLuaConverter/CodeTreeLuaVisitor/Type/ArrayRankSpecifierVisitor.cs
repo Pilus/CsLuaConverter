@@ -4,9 +4,7 @@
 
     using CsLuaConverter.CodeTree;
     using CsLuaConverter.CodeTreeLuaVisitor.Filters;
-    using CsLuaConverter.Providers;
-    using CsLuaConverter.Providers.TypeKnowledgeRegistry;
-
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
 
     public class ArrayRankSpecifierVisitor : BaseVisitor
@@ -19,7 +17,7 @@
                     .SingleOrDefault();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.rankVisitor == null)
             {
@@ -28,8 +26,7 @@
             else
             {
                 textWriter.Write("._C_0_2112(");
-                providers.Context.CurrentType = null;
-                this.rankVisitor.Visit(textWriter, providers);
+                this.rankVisitor.Visit(textWriter, context);
                 textWriter.Write(")");
             }
         }

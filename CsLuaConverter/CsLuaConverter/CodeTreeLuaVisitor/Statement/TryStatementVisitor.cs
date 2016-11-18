@@ -2,9 +2,9 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class TryStatementVisitor : BaseVisitor
     {
@@ -24,18 +24,18 @@
             this.finaly = (FinallyClauseVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.FinallyClause)).SingleOrDefault();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine("_M.Try(");
             textWriter.Indent++;
 
             textWriter.WriteLine("function()");
-            this.block.Visit(textWriter, providers);
+            this.block.Visit(textWriter, context);
             textWriter.WriteLine("end,");
             textWriter.WriteLine("{");
             textWriter.Indent++;
 
-            this.catches.VisitAll(textWriter, providers);
+            this.catches.VisitAll(textWriter, context);
 
             textWriter.Indent--;
             textWriter.WriteLine("},");
@@ -43,7 +43,7 @@
             if (this.finaly != null)
             {
                 textWriter.WriteLine("function()");
-                this.finaly.Visit(textWriter, providers);
+                this.finaly.Visit(textWriter, context);
                 textWriter.WriteLine("end");
             }
             else

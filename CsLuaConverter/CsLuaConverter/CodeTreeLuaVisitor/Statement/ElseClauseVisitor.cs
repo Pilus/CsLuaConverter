@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class ElseClauseVisitor : BaseVisitor
     {
@@ -21,19 +21,19 @@
             }
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("else");
             if (this.elseIfStatement != null)
             {
-                this.elseIfStatement.Visit(textWriter, providers);
+                this.elseIfStatement.Visit(textWriter, context);
             }
             else
             {
                 textWriter.WriteLine("");
             }
             
-            this.block?.Visit(textWriter, providers);
+            this.block?.Visit(textWriter, context);
 
             if (this.elseIfStatement == null)
             {

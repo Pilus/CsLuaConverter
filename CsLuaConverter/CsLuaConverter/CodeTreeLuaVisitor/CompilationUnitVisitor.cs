@@ -1,17 +1,24 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
+    using System;
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
+
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class CompilationUnitVisitor : BaseVisitor
     {
         private NamespaceDeclarationVisitor namespaceVisitor;
         private UsingDirectiveVisitor[] usings;
-        public CompilationUnitVisitor(CodeTreeBranch branch) : base(branch)
+
+        private readonly SemanticModel semanticModel;
+
+        public CompilationUnitVisitor(CodeTreeBranch branch, SemanticModel semanticModel) : base(branch)
         {
+            this.semanticModel = semanticModel;
             TryActionAndWrapException(() =>
             {
                 this.namespaceVisitor =
@@ -22,20 +29,27 @@
             }, $"In document {this.Branch.DocumentName}");
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            TryActionAndWrapException(() =>
-            {
-                providers.TypeProvider.ClearNamespaces();
+            TryActionAndWrapException(
+                () =>
+                    {
+                        context.SemanticModel = this.semanticModel;
 
-                this.usings.VisitAll(textWriter, providers);
-                this.namespaceVisitor.Visit(textWriter, providers);
-            }, $"In document {this.Branch.DocumentName}");
+                        this.usings.VisitAll(textWriter, context);
+                        this.namespaceVisitor.Visit(textWriter, context);
+                    },
+                $"In document {this.Branch.DocumentName}");
         }
 
-        public void WriteFooter(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteFooter(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.namespaceVisitor.WriteFooter(textWriter, providers);
+            this.namespaceVisitor.WriteFooter(textWriter, context);
+        }
+
+        public void WriteExtensions(IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            this.namespaceVisitor.WriteExtensions(textWriter, context);
         }
 
         public string[] GetNamespaceName()

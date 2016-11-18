@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTree
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
@@ -12,21 +13,30 @@
         public CodeTreeNode[] Nodes;
         public string DocumentName;
 
+        public SyntaxNode SyntaxNode;
+
         public CodeTreeBranch(SyntaxNode node, string documentName)
         {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
+            this.SyntaxNode = node;
             this.Kind = node.GetKind();
             this.Nodes = this.GetNodes(node);
             this.DocumentName = documentName;
         }
 
-        public CodeTreeBranch(SyntaxNode node) : this(node, null)
+        public CodeTreeBranch(SyntaxNode node, string documentName, CodeTreeNode[] nodes)
         {
-            
-        }
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
 
-        public CodeTreeBranch(SyntaxKind kind, CodeTreeNode[] nodes, string documentName)
-        {
-            this.Kind = kind;
+            this.SyntaxNode = node;
+            this.Kind = node.GetKind();
             this.Nodes = nodes;
             this.DocumentName = documentName;
         }
@@ -34,7 +44,7 @@
         public override CodeTreeNode Clone()
         {
             var clonedNodes = this.Nodes.Select(n => n.Clone()).ToArray();
-            return new CodeTreeBranch(this.Kind, clonedNodes, this.DocumentName);
+            return new CodeTreeBranch(this.SyntaxNode, this.DocumentName, clonedNodes);
         }
 
         private CodeTreeNode[] GetNodes(SyntaxNode node)
@@ -52,7 +62,7 @@
                 else
                 {
                     var subNode = token.GetChildOfAnchestor(node);
-                    nodes.Add(new CodeTreeBranch(subNode));
+                    nodes.Add(new CodeTreeBranch(subNode, this.DocumentName));
                     token = subNode.GetLastToken();
                 }
 

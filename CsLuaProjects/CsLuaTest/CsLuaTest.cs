@@ -12,6 +12,9 @@ namespace CsLuaTest
     using CsLuaFramework.Attributes;
     using DefaultValues;
     using Expressions;
+
+    using global::CsLuaTest.Linq;
+
     using General;
     using Generics;
     using Inheritance;
@@ -59,6 +62,7 @@ namespace CsLuaTest
                 new StatementsTests(),
                 new ActivatorTests(),
                 new ActionsFunctionsTests(),
+                new LinqTests(),
             };
 
             tests.ForEach(test => test.PerformTests(new IndentedLineWriter()));

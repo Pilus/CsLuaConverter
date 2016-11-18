@@ -2,7 +2,7 @@
 {
     using Type;
 
-    public interface INameVisitor : ITypeVisitor
+    public interface INameVisitor : IVisitor
     {
         string[] GetName();
     }

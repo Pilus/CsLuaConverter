@@ -2,10 +2,12 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using CsLuaFramework.Attributes;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Name;
-    using Providers;
 
     public class AttributeVisitor : BaseVisitor
     {
@@ -16,18 +18,10 @@
             this.name = (IdentifierNameVisitor) this.CreateVisitor(0);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var name = this.name.GetName().Single();
-
-            if (!name.EndsWith("Attribute"))
-            {
-                name += "Attribute";
-            }
-
-            var type = providers.TypeProvider.LookupType(name);
-            textWriter.Write(type.FullNameWithoutGenerics);
-            textWriter.Write(".__typeof");
+            var symbol = context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as AttributeSyntax).Symbol;
+            context.TypeReferenceWriter.WriteTypeReference(symbol.ContainingType, textWriter);
         }
 
         public bool IsCsLuaAddOnAttribute()

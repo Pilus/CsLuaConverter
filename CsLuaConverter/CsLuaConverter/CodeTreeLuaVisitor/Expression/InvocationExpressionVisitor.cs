@@ -4,15 +4,15 @@
     using System.Linq;
     using System.Reflection;
     using CodeTree;
-
-    using CsLuaConverter.Providers.GenericsRegistry;
-
+    using CsLuaConverter.Context;
     using Lists;
-    using Providers;
-    using Providers.TypeKnowledgeRegistry;
+
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class InvocationExpressionVisitor : BaseVisitor
     {
+        private static readonly string[] namespacesWithNoAmbigiousMethods = new [] {"Lua"};
         private readonly BaseVisitor target;
         private readonly ArgumentListVisitor argumentList;
         public InvocationExpressionVisitor(CodeTreeBranch branch) : base(branch)
@@ -21,131 +21,131 @@
             this.argumentList = (ArgumentListVisitor) this.CreateVisitor(1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            
-            var originalMethods = providers.Context.PossibleMethods;
-            providers.Context.PossibleMethods = null;
+            var syntax = (InvocationExpressionSyntax)this.Branch.SyntaxNode;
+            var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(syntax).Symbol;
 
-            var targetWriter = textWriter.CreateTextWriterAtSameIndent();
-            this.target.Visit(targetWriter, providers);
-
-            if (providers.Context.PossibleMethods != null)
+            if (symbol.IsExtensionMethod && symbol.MethodKind == MethodKind.ReducedExtension)
             {
-                var argumentListWriter = textWriter.CreateTextWriterAtSameIndent();
-                this.argumentList.Visit(argumentListWriter, providers);
+                this.WriteAsExtensionMethodCall(textWriter, context, symbol);
+                return;
+            }
 
-                var method = providers.Context.PossibleMethods.GetOnlyRemainingMethodOrThrow();
+            textWriter.Write("(");
 
-                var numGenerics = method.GetNumberOfMethodGenerics();
+            if (symbol.MethodKind != MethodKind.DelegateInvoke)
+            {
+                var signatureTextWriter = textWriter.CreateTextWriterAtSameIndent();
+                var signatureHasGenerics = context.SignatureWriter.WriteSignature(symbol.ConstructedFrom.Parameters.Select(p => p.Type).ToArray(), signatureTextWriter);
 
-                if (!method.IsGetType())
+                if (signatureHasGenerics)
                 {
-                    var signatureWriter = textWriter.CreateTextWriterAtSameIndent();
-                    var signatureHasGenericComponents = method.WriteSignature(signatureWriter, providers);
+                    var targetVisitor = textWriter.CreateTextWriterAtSameIndent();
+                    this.VisitTarget(targetVisitor, context, symbol);
 
-                    textWriter.Write("(");
-
-                    var targetString = targetWriter.ToString();
-                    var targetElements = SplitByLastDot(targetString);
-                    textWriter.Write(targetElements[0]);
-                    textWriter.Write(signatureHasGenericComponents ? "['" : ".");
-                    textWriter.Write(targetElements[1]);
-                    textWriter.Write($"_M_{numGenerics}_" + (signatureHasGenericComponents ? "'..(" : ""));
-                    textWriter.AppendTextWriter(signatureWriter);
-
-                    var writeMethodGenericsAction = providers.Context.PossibleMethods.WriteMethodGenerics;
-                    if (writeMethodGenericsAction != null)
+                    var expectedEnd = $".{symbol.Name}.";
+                    if (targetVisitor.ToString().EndsWith(expectedEnd))
                     {
-                        writeMethodGenericsAction(textWriter);
+                        throw new Exception($"Expect index visitor to end with '{expectedEnd}'. Got '{targetVisitor}'");
                     }
-                    else if (numGenerics > 0)
-                    {
-                        WriteMethodGenerics(method.GetResolvedMethodGenerics(), textWriter, providers);
-                    }
-                    textWriter.Write((signatureHasGenericComponents ? ")]" : "") + " % _M.DOT)");
+
+                    var targetString = targetVisitor.ToString();
+                    textWriter.Write(targetString.Remove(targetString.Length - expectedEnd.Length + 1));
+                    textWriter.Write($"['{symbol.Name}");
                 }
                 else
                 {
-                    textWriter.Write("(");
-                    textWriter.AppendTextWriter(targetWriter);
-                    textWriter.Write(" % _M.DOT)");
+                    this.VisitTarget(textWriter, context, symbol);
                 }
 
-                textWriter.AppendTextWriter(argumentListWriter);
+                var fullNamespace = context.SemanticAdaptor.GetFullNamespace(symbol.ContainingType);
+                if (!namespacesWithNoAmbigiousMethods.Contains(fullNamespace))
+                { 
+                    textWriter.Write("_M_{0}_", symbol.TypeArguments.Length);
 
-                /*
-                if (providers.Context.PossibleMethods.MethodGenerics != null)
-                {
-                    var genericObjs = method.GetGenericTypes();
-                    for (int index = 0; index < providers.Context.PossibleMethods.MethodGenerics.Length; index++)
+                    if (signatureHasGenerics)
                     {
-                        var generic = providers.Context.PossibleMethods.MethodGenerics[index];
-                        var genericObj = genericObjs[index];
-
-                        providers.GenericsRegistry.SetGenerics(
-                            genericObj.Name,
-                            GenericScope.Invocation,
-                            genericObj,
-                            generic.GetTypeObject());
+                        textWriter.Write("'..(");
                     }
-                } */
 
-                //method.genericsTypes.ToList()
+                    textWriter.AppendTextWriter(signatureTextWriter);
 
-                providers.Context.CurrentType = method.GetReturnType(providers.Context.PossibleMethods.MethodGenerics).ResolveGenerics(providers);
-                providers.GenericsRegistry.ClearScope(GenericScope.Invocation);
+                    if (signatureHasGenerics)
+                    {
+                        textWriter.Write(")]");
+                    }
+                }
             }
             else
             {
-                var currentType = providers.Context.CurrentType;
-
-                if (!currentType.IsDelegate())
-                {
-                    throw new VisitorException("Cannot invoke non delegate.");
-                }
-
-                var invoke = currentType.GetTypeObject().GetMember("Invoke").OfType<MethodBase>().First();
-                var method = new MethodKnowledge(invoke);
-                providers.Context.PossibleMethods = new PossibleMethods(new []{ method });
-                providers.Context.CurrentType = null;
-
-                textWriter.Write("(");
-                textWriter.AppendTextWriter(targetWriter);
-                textWriter.Write(" % _M.DOT)");
-                this.argumentList.Visit(textWriter, providers);
-
-                providers.Context.CurrentType = method.GetReturnType(providers.Context.PossibleMethods.MethodGenerics);
+                this.target.Visit(textWriter, context);
             }
 
-            providers.Context.PossibleMethods = originalMethods;
-        }
-
-        private static string[] SplitByLastDot(string str)
-        {
-            var split = str.Split('.');
-            var first = string.Join(".", split.Take(split.Length - 1));
-            return new[] {first, split[split.Length - 1]};
-        }
-
-        private static void WriteMethodGenerics(TypeKnowledge[] genericTypes, IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            textWriter.Write("[{");
-            var first = true;
-            genericTypes.ToList().ForEach(genericType =>
+            if (symbol.TypeArguments.Any())
             {
-                if (first)
-                {
-                    first = false;
-                }
-                else
-                {
-                    textWriter.Write(", ");
-                }
+                context.TypeReferenceWriter.WriteTypeReferences(symbol.TypeArguments.ToArray(), textWriter);
+            }
 
-                genericType.WriteAsType(textWriter, providers);
-            });
-            textWriter.Write("}]");
+            textWriter.Write(" % _M.DOT)");
+
+            this.argumentList.Visit(textWriter, context);
+        }
+
+        private void VisitTarget(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
+        {
+            this.target.Visit(textWriter, context);
+        }
+
+        private void WriteAsExtensionMethodCall(IIndentedTextWriterWrapper textWriter, IContext context,
+            IMethodSymbol symbol)
+        {
+            textWriter.Write("(({0} % _M.DOT).", context.SemanticAdaptor.GetFullName(symbol.ContainingType));
+
+            var signatureTextWriter = textWriter.CreateTextWriterAtSameIndent();
+            var signatureHasGenerics = context.SignatureWriter.WriteSignature(symbol.ReducedFrom.Parameters.Select(p => p.Type).ToArray(), signatureTextWriter);
+
+            if (signatureHasGenerics)
+            {
+                textWriter.Write("['");
+            }
+            
+            textWriter.Write("{0}_M_{1}_", symbol.Name, symbol.TypeArguments.Length);
+
+            if (signatureHasGenerics)
+            {
+                textWriter.Write("'..(");
+            }
+
+            textWriter.AppendTextWriter(signatureTextWriter);
+
+            if (signatureHasGenerics)
+            {
+                textWriter.Write(")]");
+            }
+
+            if (symbol.TypeArguments.Any())
+            {
+                context.TypeReferenceWriter.WriteTypeReferences(symbol.TypeArguments.ToArray(), textWriter);
+            }
+
+            textWriter.Write(" % _M.DOT)");
+
+            var argWriter = textWriter.CreateTextWriterAtSameIndent();
+            this.argumentList.Visit(argWriter, context);
+
+            var targetWriter = textWriter.CreateTextWriterAtSameIndent();
+            this.VisitTarget(targetWriter, context, symbol);
+            var targetStr = targetWriter.ToString();
+            textWriter.Write(targetStr.Substring(0, targetStr.LastIndexOf(" % _M.DOT)")));
+
+            var argStr = argWriter.ToString();
+            if (argStr.Length > 2)
+            {
+                textWriter.Write(", ");
+            }
+            
+            textWriter.Write(argStr.Substring(1)); // Skip the opening (
         }
     }
 }

@@ -2,9 +2,11 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
+    using Microsoft.CodeAnalysis;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ImplicitArrayCreationExpressionVisitor : BaseVisitor
     {
@@ -14,18 +16,13 @@
             this.creationExpression = (ArrayInitializerExpressionVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.ArrayInitializerExpression)).Single();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-
-            var creationWriter = textWriter.CreateTextWriterAtSameIndent();
-            this.creationExpression.Visit(creationWriter, providers);
-
-            var arrayType = providers.Context.CurrentType;
-
+            var typeInfo = context.SemanticModel.GetTypeInfo(this.Branch.SyntaxNode);
             textWriter.Write("(");
-            arrayType.WriteAsReference(textWriter, providers);
-            textWriter.Write("._C_0_0()%_M.DOT)");
-            textWriter.AppendTextWriter(creationWriter);
+            context.TypeReferenceWriter.WriteInteractionElementReference(typeInfo.Type, textWriter);
+            textWriter.Write("._C_0_0() % _M.DOT)");
+            this.creationExpression.Visit(textWriter, context);
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class BlockVisitor : BaseVisitor
     {
@@ -14,11 +14,10 @@
             this.visitors = this.CreateVisitors(new KindRangeFilter(SyntaxKind.OpenBraceToken, SyntaxKind.CloseBraceToken));
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            providers.Context.CurrentType = null;
             textWriter.Indent++;
-            this.visitors.VisitAll(textWriter, providers);
+            this.visitors.VisitAll(textWriter, context);
             textWriter.Indent--;
         }
     }

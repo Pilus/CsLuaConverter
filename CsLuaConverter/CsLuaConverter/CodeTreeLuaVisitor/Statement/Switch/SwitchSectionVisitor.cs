@@ -2,7 +2,7 @@
 {
     using System.Linq;
     using CodeTree;
-    using Providers;
+    using CsLuaConverter.Context;
 
     public class SwitchSectionVisitor : BaseVisitor
     {
@@ -16,14 +16,13 @@
             this.bodyElements = visitors.Where(v => !(v is ISwitchLabelVisitor || v is BreakStatementVisitor)).ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("if (");
-            this.labels.VisitAll(textWriter, providers, " or ");
-            providers.Context.CurrentType = null;
+            this.labels.VisitAll(textWriter, context, " or ");
             textWriter.WriteLine(") then");
             textWriter.Indent++;
-            this.bodyElements.VisitAll(textWriter, providers);
+            this.bodyElements.VisitAll(textWriter, context);
             textWriter.Indent--;
         }
     }

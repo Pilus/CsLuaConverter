@@ -2,9 +2,9 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class GetAccessorDeclarationVisitor : BaseVisitor, IAccessor
     {
@@ -22,7 +22,7 @@
             }
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.block == null)
             {
@@ -30,7 +30,7 @@
             }
 
             textWriter.WriteLine($"get = function(element{this.AdditionalParameters})");
-            this.block.Visit(textWriter, providers);
+            this.block.Visit(textWriter, context);
             textWriter.WriteLine("end,");
         }
 

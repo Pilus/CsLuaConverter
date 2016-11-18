@@ -2,8 +2,8 @@
 {
     using System;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class IfStatementVisitor : BaseVisitor
     {
@@ -35,18 +35,18 @@
             }
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("if (");
-            this.expression.Visit(textWriter, providers);
+            this.expression.Visit(textWriter, context);
             textWriter.WriteLine(") then");
 
-            this.block?.Visit(textWriter, providers);
-            this.singleLineVisitor?.Visit(textWriter, providers);
+            this.block?.Visit(textWriter, context);
+            this.singleLineVisitor?.Visit(textWriter, context);
 
             if (this.elseCause != null)
             {
-                this.elseCause.Visit(textWriter, providers);
+                this.elseCause.Visit(textWriter, context);
             }
             else
             {

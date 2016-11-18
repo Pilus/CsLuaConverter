@@ -3,8 +3,8 @@
     using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class ArrayInitializerExpressionVisitor : BaseVisitor
     {
@@ -24,7 +24,7 @@
             this.elementVisitors = visitors.ToArray();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write(".__Initialize({");
 
@@ -33,24 +33,11 @@
                 textWriter.Write("[0] = ");
             }
 
-            var initializingType = providers.Context.CurrentType;
-
-            providers.Context.CurrentType = null;
-            this.elementVisitors.VisitAll(textWriter, providers, () =>
+            this.elementVisitors.VisitAll(textWriter, context, () =>
             {
                 textWriter.Write(", ");
-                providers.Context.CurrentType = null;
             });
             textWriter.Write("})");
-
-            providers.Context.CurrentType = initializingType ?? providers.Context.CurrentType;
-
-            if (providers.Context.CurrentType.IsArray())
-            {
-                return;
-            }
-
-            providers.Context.CurrentType = providers.Context.CurrentType.GetAsArrayType();
         }
     }
 }

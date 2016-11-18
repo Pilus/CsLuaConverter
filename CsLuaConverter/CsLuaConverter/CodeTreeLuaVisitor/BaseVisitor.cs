@@ -4,9 +4,10 @@
     using System.Diagnostics;
     using System.Reflection;
     using CodeTree;
-    using Providers;
     using System.Linq;
+    using CsLuaConverter.Context;
     using Filters;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
     public abstract class BaseVisitor : IVisitor
@@ -17,10 +18,10 @@
 
         protected BaseVisitor(CodeTreeBranch branch)
         {
-            this.Branch = branch;
+            Branch = branch;
         }
 
-        public abstract void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers);
+        public abstract void Visit(IIndentedTextWriterWrapper textWriter, IContext context);
 
         [DebuggerNonUserCode]
         protected static bool IsKind(CodeTreeNode node, SyntaxKind kind)
@@ -50,11 +51,11 @@
             return (filter == null ? this.Branch.Nodes : filter.Filter(this.Branch.Nodes)).ToArray();
         }
 
-        protected void CreateVisitorsAndVisitBranches(IIndentedTextWriterWrapper textWriter, IProviders providers, INodeFilter filter = null, Func<CodeTreeBranch, BaseVisitor> customFactory = null)
+        protected void CreateVisitorsAndVisitBranches(IIndentedTextWriterWrapper textWriter, IContext context, INodeFilter filter = null, Func<CodeTreeBranch, BaseVisitor> customFactory = null)
         {
             foreach (var visitor in this.CreateVisitors(filter, customFactory))
             {
-                visitor.Visit(textWriter, providers);
+                visitor.Visit(textWriter, context);
             }
         }
 

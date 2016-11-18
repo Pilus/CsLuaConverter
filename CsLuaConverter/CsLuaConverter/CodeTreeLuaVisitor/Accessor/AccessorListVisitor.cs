@@ -2,9 +2,9 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class AccessorListVisitor : BaseVisitor, IAccessor
     {
@@ -18,12 +18,10 @@
             this.setVisitor = visitors.OfType<SetAccessorDeclarationVisitor>().SingleOrDefault();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var propertyType = providers.Context.CurrentType;
-            this.getVisitor?.Visit(textWriter, providers);
-            providers.Context.CurrentType = propertyType;
-            this.setVisitor?.Visit(textWriter, providers);
+            this.getVisitor?.Visit(textWriter, context);
+            this.setVisitor?.Visit(textWriter, context);
         }
 
         public bool IsAutoProperty()

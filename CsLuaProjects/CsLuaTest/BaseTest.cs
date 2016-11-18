@@ -8,7 +8,7 @@
     {
         public string Name = "Unnamed";
         public static string Output = "";
-        public const bool ContinueOnError = true;
+        public const bool ContinueOnError = false;
         public static int TestCount;
         public static int FailCount;
         public static int IgnoreCount;
@@ -74,14 +74,14 @@
             Output = "";
         }
 
-        protected static void Assert(object expectedValueObj, object actualValueObj)
+        protected static void Assert(object expectedValueObj, object actualValueObj, string additionalString = null)
         {
             var expectedValue = Strings.tostring(expectedValueObj);
             var actualValue = Strings.tostring(actualValueObj);
 
             if (expectedValue != actualValue)
             {
-                throw new Exception(Strings.format("Incorrect value. Expected: '{0}' got: '{1}'.", expectedValue, actualValue));
+                throw new Exception(Strings.format("Incorrect value. Expected: '{0}' got: '{1}'. {2}", expectedValue, actualValue, additionalString ?? string.Empty));
             }
         }
     }

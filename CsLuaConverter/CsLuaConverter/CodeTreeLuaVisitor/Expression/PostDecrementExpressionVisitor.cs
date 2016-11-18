@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class PostDecrementExpressionVisitor : BaseVisitor
     {
@@ -14,17 +14,13 @@
             this.target = this.CreateVisitor(0);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var currentType = providers.Context.CurrentType;
-            this.target.Visit(textWriter, providers);
+            this.target.Visit(textWriter, context);
             textWriter.Write(" = ");
 
-            providers.Context.CurrentType = currentType;
-            this.target.Visit(textWriter, providers);
+            this.target.Visit(textWriter, context);
             textWriter.Write(" - 1");
-
-            providers.Context.CurrentType = null;
         }
     }
 }

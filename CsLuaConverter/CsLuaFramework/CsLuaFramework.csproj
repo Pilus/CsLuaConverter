@@ -55,6 +55,7 @@
     <Compile Include="Attributes\RequiresCsLuaHeader.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ReplaceWithLuaBlock.cs" />
     <Compile Include="Serializer.cs" />
     <Compile Include="TypeExtensions.cs" />
     <Compile Include="Wrapping\IMultipleValues.cs" />

@@ -2,10 +2,9 @@
 {
     using System.Linq;
     using CodeTree;
-    using Providers;
-    using Providers.TypeKnowledgeRegistry;
-
-    public class PredefinedTypeVisitor : BaseTypeVisitor
+    using CsLuaConverter.Context;
+    using Microsoft.CodeAnalysis;
+    public class PredefinedTypeVisitor : BaseVisitor
     {
         private readonly string text;
 
@@ -14,33 +13,10 @@
             this.text = ((CodeTreeLeaf) this.Branch.Nodes.Single()).Text;
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var type = providers.TypeProvider.LookupType(this.text);
-            textWriter.Write(type.FullNameWithoutGenerics);
-            providers.Context.CurrentType = new TypeKnowledge(type.TypeObject, true);
-        }
-
-        public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            if (this.IsVoid())
-            {
-                throw new VisitorException("Can not write void type as refrence.");
-            }
-
-            var type = providers.TypeProvider.LookupType(this.text);
-            textWriter.Write(type.FullNameWithoutGenerics);
-        }
-
-        public override TypeKnowledge GetType(IProviders providers)
-        {
-            if (this.IsVoid())
-            {
-                return null;
-            }
-
-            var type = providers.TypeProvider.LookupType(this.text);
-            return new TypeKnowledge(type.TypeObject);
+            var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+            context.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
         }
 
         public bool IsVoid()

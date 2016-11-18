@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Solution Include=".\CsLuaProjects\CsImplementation\CsImplementation.sln">
+      <Properties>Configuration=Debug;Platform=Any CPU</Properties>
+    </Solution>
+    <Solution Include=".\CsLuaConverter\CsLuaConverter.sln">
+      <Properties>Configuration=Release;Platform=Any CPU</Properties>
+    </Solution>
+    <Solution Include=".\CsLuaProjects\CsLuaTest.sln">
+      <Properties>Configuration=Release;Platform=Any CPU</Properties>
+    </Solution>
+  </ItemGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+  </PropertyGroup>
+  <Target Name="Build">
+    <MSBuild Projects="@(Solution)" BuildInParallel="true" Targets="Build" />
+  </Target>
+  <Target Name="Clean">
+    <MSBuild Projects="@(Solution)" BuildInParallel="true" Targets="Clean" />
+  </Target>
+  <Target Name="Rebuild">
+    <MSBuild Projects="@(Solution)" BuildInParallel="true" Targets="Rebuild" />
+  </Target>
+</Project>

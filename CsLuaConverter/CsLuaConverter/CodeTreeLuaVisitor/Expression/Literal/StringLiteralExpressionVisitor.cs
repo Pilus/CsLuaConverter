@@ -1,8 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Literal
 {
     using CodeTree;
-    using Providers;
-    using Providers.TypeKnowledgeRegistry;
+    using CsLuaConverter.Context;
 
     public class StringLiteralExpressionVisitor : BaseVisitor
     {
@@ -13,7 +12,7 @@
             this.text = ((CodeTreeLeaf)this.Branch.Nodes[0]).Text;
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var txt = this.text;
 
@@ -23,8 +22,6 @@
             }
 
             textWriter.Write(txt);
-
-            providers.Context.CurrentType = new TypeKnowledge(typeof(string));
         }
     }
 }

@@ -2,8 +2,10 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Type;
 
     public class VariableDeclaratorVisitor : BaseVisitor
@@ -23,10 +25,10 @@
             }
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write(this.name);
-            this.valueVisitor?.Visit(textWriter, providers);
+            this.valueVisitor?.Visit(textWriter, context);
         }
 
         public string GetName()
@@ -34,24 +36,25 @@
             return this.name;
         }
 
-        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IProviders providers, ITypeVisitor typeVisitor)
+        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write(this.name);
 
             if (this.valueVisitor != null)
             {
-                this.valueVisitor.Visit(textWriter, providers);
+                this.valueVisitor.Visit(textWriter, context);
                 textWriter.WriteLine(",");
             }
             else
             {
+                var symbol = (IFieldSymbol)context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as VariableDeclaratorSyntax);
                 textWriter.Write(" = _M.DV(");
-                typeVisitor.WriteAsType(textWriter, providers);
+                context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
                 textWriter.WriteLine("),");
             }
         }
 
-        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine($"if not(values.{this.name} == nil) then element[typeObject.Level].{this.name} = values.{this.name}; end");
         }

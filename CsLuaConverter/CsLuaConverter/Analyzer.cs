@@ -10,28 +10,28 @@
     using CodeTreeLuaVisitor;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
     using ProjectInfo = ProjectAnalysis.ProjectInfo;
 
     public class Analyzer : ISyntaxAnalyser
     {
         private readonly CodeTreeVisitor codeTreeVisitor;
 
-        public Analyzer(IProviders providers)
+        public Analyzer(CodeTreeVisitor codeTreeVisitor)
         {
-            this.codeTreeVisitor = new CodeTreeVisitor(providers);
+            this.codeTreeVisitor = codeTreeVisitor;
         }
 
-        public AnalyzedProjectInfo AnalyzeProject(ProjectInfo projectInfo)
+        public IEnumerable<Namespace> GetNamespaces(ProjectInfo projectInfo)
         {
-            return new AnalyzedProjectInfo()
+            if (!projectInfo.IsCsLua())
             {
-                Info = projectInfo,
-                Namespaces = projectInfo.IsCsLua() ? this.GetNamespaces(projectInfo.Project) : null,
-            };
+                return null;
+            }
+
+            return this.GetNamespaces(projectInfo.Project);
         }
 
-        private Dictionary<string, Action<IIndentedTextWriterWrapper>> GetNamespaces(Project project)
+        public IEnumerable<Namespace> GetNamespaces(Project project)
         {
             if (Debugger.IsAttached)
             {
@@ -49,21 +49,25 @@
             }
         }
 
-        private Dictionary<string, Action<IIndentedTextWriterWrapper>> GetNamespacesFromProject(Project project)
+        private IEnumerable<Namespace> GetNamespacesFromProject(Project project)
         {
             IEnumerable<Document> docs = project.Documents
                 .Where(doc => doc.Folders.FirstOrDefault() != "Properties"
                               && !doc.FilePath.EndsWith("AssemblyAttributes.cs")
                 );
 
-            var codeTrees = docs.Select(GetCodeTree).ToArray();
+            var codeTreesWithSemanticModels = docs.Select(
+                doc => new Tuple<CodeTreeBranch, SemanticModel>(
+                           GetCodeTree(doc),
+                           doc.GetSemanticModelAsync().Result)).ToArray();
 
-            return this.codeTreeVisitor.CreateNamespaceBasedVisitorActions(codeTrees);
+            return this.codeTreeVisitor.CreateNamespaceBasedVisitorActions(codeTreesWithSemanticModels);
         }
 
         private static CodeTreeBranch GetCodeTree(Document document)
         {
             SyntaxNode syntaxTreeRoot = GetSyntaxTreeRoot(document);
+
             return new CodeTreeBranch(syntaxTreeRoot, document.FilePath);
         }
 

@@ -1,30 +1,25 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
     using Type;
 
     public class AsExpressionVisitor : BaseVisitor
     {
         private readonly IVisitor target;
-        private readonly ITypeVisitor type;
+        private readonly IVisitor type;
 
         public AsExpressionVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.target = this.CreateVisitor(0);
             this.ExpectKind(1, SyntaxKind.AsKeyword);
-            this.type = (ITypeVisitor) this.CreateVisitor(2);
+            this.type = this.CreateVisitor(2);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            //this.type.WriteAsReference(textWriter, providers);
-            //textWriter.Write(".__as(");
-            providers.Context.CurrentType = null;
-            this.target.Visit(textWriter, providers);
-            //textWriter.Write(")");
-            providers.Context.CurrentType = this.type.GetType(providers);
+            this.target.Visit(textWriter, context);
         }
     }
 }

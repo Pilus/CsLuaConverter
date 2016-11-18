@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class UnaryPlusExpressionVisitor : BaseVisitor
     {
@@ -13,10 +13,10 @@
             this.target = this.CreateVisitor(1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("+");
-            this.target.Visit(textWriter, providers);
+            this.target.Visit(textWriter, context);
         }
     }
 }

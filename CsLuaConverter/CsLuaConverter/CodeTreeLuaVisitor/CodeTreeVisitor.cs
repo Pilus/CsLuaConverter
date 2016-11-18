@@ -4,94 +4,64 @@
     using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class CodeTreeVisitor
     {
-        private readonly IProviders providers;
+        private readonly IContext context;
 
-        public CodeTreeVisitor(IProviders providers)
+        public CodeTreeVisitor(IContext context)
         {
-            this.providers = providers;
+            this.context = context;
         }
 
-        public Dictionary<string, Action<IIndentedTextWriterWrapper>> CreateNamespaceBasedVisitorActions(CodeTreeBranch[] treeRoots)
+        public IEnumerable<Namespace> CreateNamespaceBasedVisitorActions(Tuple<CodeTreeBranch, SemanticModel>[] treeRoots)
         {
             BaseVisitor.LockVisitorCreation = false;
             treeRoots = treeRoots.SelectMany(SeperateCodeElements).ToArray();
-            var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree)).ToArray();
+            var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree.Item1, tree.Item2)).ToArray();
             BaseVisitor.LockVisitorCreation = true;
 
-            return visitors.GroupBy(v => v.GetTopNamespace()).ToDictionary(g => g.Key, g => new Action<IIndentedTextWriterWrapper>((textWriter) =>
+            return visitors.GroupBy(v => v.GetTopNamespace()).Select(g => new Namespace() {
+                Name = g.Key,
+                WritingAction = new Action<IIndentedTextWriterWrapper>((textWriter) =>
             {
                 var fileGroups = g.GroupBy(v => string.Join(".", v.GetNamespaceName()) + ".__" + v.GetElementName());
                 var ordered = fileGroups.OrderBy(fg => fg.Key).ToArray();
                 
-                var previousNamespace = new string[] { };
-
                 for (var index = 0; index < ordered.Length; index++)
                 {
                     var groupedVisitors = ordered[index].ToArray();
 
-                    var nameSpace = groupedVisitors.First().GetNamespaceName();
-                    var nonCommonNamespace = RemoveCommonStartSequence(nameSpace, previousNamespace);
-
-                    // Reset back to the common root with the previous namespace.
-                    for (var i = 0;
-                        i < (previousNamespace.Length - (nameSpace.Length - nonCommonNamespace.Length));
-                        i++)
-                    {
-                        //textWriter.Indent--;
-                        //textWriter.WriteLine("},");
-                    }
-
-                    foreach (var subNamespace in nonCommonNamespace)
-                    {
-                        //textWriter.WriteLine($"{subNamespace} = {{");
-                        //textWriter.Indent++;
-                    }
-
                     this.VisitFilesWithSameElementName(groupedVisitors, textWriter);
-
-                    previousNamespace = nameSpace;
-
-                    if (index != ordered.Length - 1) continue;
-
-                    for (var i = 0; i < (nameSpace.Length - 1); i++)
-                    {
-                        //textWriter.Indent--;
-                        //textWriter.WriteLine("},");
-                    }
-
-                    //textWriter.Indent--;
-                    //textWriter.WriteLine("}");
                 }
 
                 // Write footer
                 foreach (var compilationUnitVisitor in g)
                 {
-                    compilationUnitVisitor.WriteFooter(textWriter, this.providers);
+                    compilationUnitVisitor.WriteFooter(textWriter, this.context);
                 }
-            }));
+            })});
         }
 
-        private static CodeTreeBranch[] SeperateCodeElements(CodeTreeBranch tree)
+        private static Tuple<CodeTreeBranch, SemanticModel>[] SeperateCodeElements(Tuple<CodeTreeBranch, SemanticModel> pair)
         {
-            var numElements = CountNumOfElements(tree);
+            var numElements = CountNumOfElements(pair.Item1);
 
             if (numElements < 2)
             {
-                return new []{ tree };
+                return new []{ pair };
             }
 
-            var newTrees = new List<CodeTreeBranch>();
+            var newTrees = new List<Tuple<CodeTreeBranch, SemanticModel>>();
 
             for (var i = 0; i < numElements; i++)
             {
-                var clone = (CodeTreeBranch)tree.Clone();
+                var clone = (CodeTreeBranch)pair.Item1.Clone();
                 FilterElements(clone, i);
-                newTrees.Add(clone);
+                newTrees.Add(new Tuple<CodeTreeBranch, SemanticModel>(clone, pair.Item2));
             }
 
             return newTrees.ToArray();
@@ -164,18 +134,23 @@
 
             foreach (var visitorsWithSameNumGenerics in visitorsByNumGenerics.OrderBy(v => v.Key))
             {
-                var scope = this.providers.NameProvider.CloneScope();
+                //var scope = this.context.NameProvider.CloneScope();
                 this.VisitFilesWithSameElementNameAndNumGenerics(visitorsWithSameNumGenerics.Value.ToArray(), textWriter, visitorsWithSameNumGenerics.Key);
-                this.providers.NameProvider.SetScope(scope);
+                //this.context.NameProvider.SetScope(scope);
             }
 
             textWriter.Indent--;
             textWriter.WriteLine("}));");
+            /*
+            foreach (var visitor in visitors)
+            {
+                visitor.WriteExtensions(textWriter, this.context);
+            } */
         }
 
         private void VisitFilesWithSameElementNameAndNumGenerics(CompilationUnitVisitor[] visitors, IIndentedTextWriterWrapper textWriter, int numOfGenerics)
         {
-            var state = this.providers.PartialElementState;
+            var state = this.context.PartialElementState;
             state.CurrentState = null;
             state.DefinedConstructorWritten = false;
 
@@ -187,7 +162,7 @@
                     var visitor = visitors[index];
                     state.IsFirst = index == 0;
                     state.IsLast = index == visitors.Length - 1;
-                    visitor.Visit(textWriter, this.providers);
+                    visitor.Visit(textWriter, this.context);
                 }
 
                 if (state.NextState == null)
@@ -210,7 +185,7 @@
                 textWriter.WriteLine($"{name} = _M.NE({{");
             }
 
-            visitor.Visit(textWriter, this.providers);
+            visitor.Visit(textWriter, this.context);
 
             var nextName = nextVisitor?.GetElementName();
             if (nextName != name)

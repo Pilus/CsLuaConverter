@@ -4,22 +4,14 @@
 
     class WrappingException : Exception
     {
-        public WrappingException(string message, Exception innerException) : base(message, innerException)
+        public WrappingException(string message, Exception innerException) : base(message + "\nInnerException: " + innerException?.Message, innerException)
         {
             
         }
 
-        public override string Message
+        public override string ToString()
         {
-            get
-            {
-                var msg = base.Message;
-                if (this.InnerException != null)
-                {
-                    msg += "\n" + this.InnerException.Message;
-                }
-                return msg;
-            }
+            return base.ToString() + "\nInnerException: " + this.InnerException?.ToString();
         }
     }
 }

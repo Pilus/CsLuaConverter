@@ -1,14 +1,13 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
-    using Providers.TypeProvider;
     using Type;
 
     public class ForEachStatementVisitor : BaseVisitor
     {
-        private readonly ITypeVisitor iteratorType;
+        private readonly IVisitor iteratorType;
         private readonly string iteratorName;
         private readonly IVisitor enumerator;
         private readonly BlockVisitor block;
@@ -17,7 +16,7 @@
         {
             this.ExpectKind(0, SyntaxKind.ForEachKeyword);
             this.ExpectKind(1, SyntaxKind.OpenParenToken);
-            this.iteratorType = (ITypeVisitor) this.CreateVisitor(2);
+            this.iteratorType = this.CreateVisitor(2);
             this.ExpectKind(3, SyntaxKind.IdentifierToken);
             this.iteratorName = ((CodeTreeLeaf) this.Branch.Nodes[3]).Text;
             this.ExpectKind(4, SyntaxKind.InKeyword);
@@ -27,28 +26,14 @@
             this.block = (BlockVisitor)this.CreateVisitor(7);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var scope = providers.NameProvider.CloneScope();
-
             textWriter.Write("for _,{0} in (", this.iteratorName);
-            this.enumerator.Visit(textWriter, providers);
-            textWriter.WriteLine("%_M.DOT).GetEnumerator() do");
+            this.enumerator.Visit(textWriter, context);
+            textWriter.WriteLine(" % _M.DOT).GetEnumerator() do");
 
-            var iteratorTypeKnowledge = this.iteratorType.GetType(providers);
-
-            if (iteratorTypeKnowledge == null)
-            {
-                iteratorTypeKnowledge = providers.Context.CurrentType.GetEnumeratorType();
-            }
-
-            providers.NameProvider.AddToScope(new ScopeElement(this.iteratorName, iteratorTypeKnowledge));
-
-            
-            this.block.Visit(textWriter, providers);
+            this.block.Visit(textWriter, context);
             textWriter.WriteLine("end");
-
-            providers.NameProvider.SetScope(scope);
         }
     }
 }

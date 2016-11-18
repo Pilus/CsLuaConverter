@@ -2,9 +2,9 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
 
     public class BracketedArgumentListVisitor : BaseVisitor
     {
@@ -14,15 +14,11 @@
             this.argument = (ArgumentVisitor) this.CreateVisitors(new KindFilter(SyntaxKind.Argument)).Single();
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var type = providers.Context.CurrentType;
-            providers.Context.CurrentType = null;
             textWriter.Write("[");
-            this.argument.Visit(textWriter, providers);
+            this.argument.Visit(textWriter, context);
             textWriter.Write("]");
-
-            providers.Context.CurrentType = type.GetValueType();
         }
     }
 }

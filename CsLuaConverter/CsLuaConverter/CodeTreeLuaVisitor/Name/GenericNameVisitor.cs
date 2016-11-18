@@ -2,13 +2,16 @@
 {
     using System.Linq;
     using CodeTree;
+    using CsLuaConverter.CodeTreeLuaVisitor.Expression;
+    using CsLuaConverter.Context;
     using Lists;
+
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
-    using Providers.TypeKnowledgeRegistry;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Type;
 
-    public class GenericNameVisitor : BaseTypeVisitor, INameVisitor
+    public class GenericNameVisitor : BaseVisitor, INameVisitor
     {
         private readonly string name;
         private readonly TypeArgumentListVisitor argumentListVisitor;
@@ -20,54 +23,24 @@
             this.argumentListVisitor = (TypeArgumentListVisitor) this.CreateVisitor(1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var current = providers.Context.CurrentType;
-
-            if (current == null)
+            var hasInvocationExpressionParent = this.Branch.SyntaxNode.Ancestors().OfType<InvocationExpressionSyntax>().Any();
+            if (hasInvocationExpressionParent)
             {
-                // TODO: Handle case where this.name refers to a method on the current element.
-
-                var type = providers.TypeProvider.LookupType(this.name);
-                textWriter.Write(type.FullNameWithoutGenerics);
-
-                this.WriteGenericTypes(textWriter, providers);
-                providers.Context.CurrentType = this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
-            }
-            else
-            {
-                providers.Context.PossibleMethods = new PossibleMethods(current.GetTypeKnowledgeForSubElement(this.name, providers).OfType<MethodKnowledge>().ToArray());
-                providers.Context.PossibleMethods.FilterOnNumberOfGenerics(this.argumentListVisitor.GetNumElements());
                 textWriter.Write(this.name);
-                providers.Context.PossibleMethods.WriteMethodGenerics = ((tw) => this.WriteGenericTypes(tw, providers));
-                providers.Context.PossibleMethods.MethodGenerics = this.argumentListVisitor.GetTypes(providers);
+                return;
             }
+
+            textWriter.Write(this.name);
+            textWriter.Write("[");
+            this.argumentListVisitor.Visit(textWriter, context);
+            textWriter.Write("]");
         }
 
         public string[] GetName()
         {
             return new[] {this.name};
-        }
-
-        public override void WriteAsReference(IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            var type = providers.TypeProvider.LookupType(new[] {this.name}, this.argumentListVisitor.GetNumElements());
-            textWriter.Write(type.FullNameWithoutGenerics);
-            this.WriteGenericTypes(textWriter, providers);
-        }
-
-        public override TypeKnowledge GetType(IProviders providers)
-        {
-            var type = providers.TypeProvider.LookupType(new[] {this.name}, this.argumentListVisitor.GetNumElements());
-
-            return this.argumentListVisitor.ApplyGenericsToType(providers, new TypeKnowledge(type.TypeObject));
-        }
-
-        public void WriteGenericTypes(IIndentedTextWriterWrapper textWriter, IProviders providers)
-        {
-            textWriter.Write("[");
-            this.argumentListVisitor.Visit(textWriter, providers);
-            textWriter.Write("]");
         }
     }
 }

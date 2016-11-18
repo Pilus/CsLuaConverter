@@ -1,9 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
     using CodeTree;
+    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
-    using Providers.TypeKnowledgeRegistry;
 
     public class LogicalNotExpressionVisitor : BaseVisitor
     {
@@ -15,12 +14,11 @@
             this.innnerVisitor = this.CreateVisitor(1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("not(");
-            this.innnerVisitor.Visit(textWriter, providers);
+            this.innnerVisitor.Visit(textWriter, context);
             textWriter.Write(")");
-            providers.Context.CurrentType = new TypeKnowledge(typeof(bool));
         }
     }
 }

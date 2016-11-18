@@ -4,9 +4,10 @@
     using System.Linq;
     using Accessor;
     using CodeTree;
+    using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Type;
 
     public class PropertyDeclarationVisitor : BaseVisitor
@@ -14,7 +15,6 @@
         private readonly string name;
         private readonly Scope scope;
         private readonly bool isStatic;
-        private readonly ITypeVisitor type;
         private readonly AccessorListVisitor accessorList;
 
         public PropertyDeclarationVisitor(CodeTreeBranch branch) : base(branch)
@@ -29,16 +29,16 @@
 
             this.isStatic = accessorNodes.Any(n => n.Kind.Equals(SyntaxKind.StaticKeyword));
 
-            this.type = (ITypeVisitor) this.CreateVisitor(totalNodes - 3);
-
             this.ExpectKind(totalNodes - 2, SyntaxKind.IdentifierToken);
             this.name = ((CodeTreeLeaf) this.Branch.Nodes[totalNodes - 2]).Text;
 
             this.accessorList = (AccessorListVisitor) this.CreateVisitor(totalNodes - 1);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as PropertyDeclarationSyntax);
+
             textWriter.WriteLine("_M.IM(members, '{0}',{{", this.name);
             textWriter.Indent++;
             textWriter.WriteLine("level = typeObject.Level,");
@@ -46,28 +46,30 @@
             textWriter.WriteLine("scope = '{0}',", this.scope);
             textWriter.WriteLine("static = {0},", this.isStatic.ToString().ToLower());
             textWriter.Write("returnType = ");
-            this.type.WriteAsType(textWriter, providers);
+            context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
             textWriter.WriteLine(";");
 
-            providers.Context.CurrentType = this.type.GetType(providers);
-            this.accessorList.Visit(textWriter, providers);
+            //context.Context.CurrentType = this.type.GetType(context);
+            this.accessorList.Visit(textWriter, context);
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }
 
-        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IProviders providers, bool isStaticFilter = false)
+        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IContext context, bool isStaticFilter = false)
         {
             if (this.isStatic != isStaticFilter)
             {
                 return;
             }
 
+            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as PropertyDeclarationSyntax);
+
             textWriter.Write($"{this.name} = _M.DV(");
-            this.type.WriteAsType(textWriter, providers);
+            context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
             textWriter.WriteLine("),");
         }
 
-        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine($"if not(values.{this.name} == nil) then element[typeObject.Level].{this.name} = values.{this.name}; end");
         }

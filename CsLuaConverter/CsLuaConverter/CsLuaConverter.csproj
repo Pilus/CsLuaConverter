@@ -6,7 +6,7 @@
     <ProjectGuid>{E1D96749-5BF9-4B04-81A1-9D4B3B1F6BF4}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AssemblyName>CsLuaConverter</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <SolutionDir Condition="'$(SolutionDir)' == '' OR '$(SolutionDir)' == '*Undefined*'">..\..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <OutputPath>Binaries\$(Configuration)\</OutputPath>
@@ -25,30 +25,59 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
-  <ItemGroup Label="File References">
-    <Reference Include="Microsoft.Build" />
-    <Reference Include="Microsoft.CodeAnalysis">
-      <HintPath>.\Microsoft.CodeAnalysis.dll</HintPath>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeAnalysis, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.1.3.2\lib\net45\Microsoft.CodeAnalysis.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp">
-      <HintPath>.\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.1.3.2\lib\net45\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces">
-      <HintPath>.\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.Workspaces.1.3.2\lib\net45\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.Workspaces">
-      <HintPath>.\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.3.2\lib\net45\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>.\System.Collections.Immutable.dll</HintPath>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces.Desktop, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.3.2\lib\net45\Microsoft.CodeAnalysis.Workspaces.Desktop.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Linq" />
-    <Reference Include="System.Reflection.Metadata">
-      <HintPath>.\System.Reflection.Metadata.dll</HintPath>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.XML" />
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Convention, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Hosting, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.Runtime, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.30.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Composition.1.0.30\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=1.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reflection.Metadata.1.3.0\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\..\CsLuaProjects\CsLuaConverter\</OutputPath>
@@ -114,15 +143,18 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\LogicalOrExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\ModuloExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\RightShiftExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\ConditionalAccessExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ConditionalExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\ILambdaVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\MethodSignatureExtensions.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\SimpleLambdaExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\MemberBindingExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\UnaryPlusExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\TypeReferenceWriter.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\BaseConstructorInitializerVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\EnumMemberDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\IndexerDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\ThisConstructorInitializerVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\TypeSymbolSemanticAdaptor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\BreakStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\LiteralVisitorBase.cs" />
@@ -155,7 +187,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\PostDecrementExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\PostIncrementExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\SimpleAssignmentExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\SimpleLambdaExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\BaseLambdaExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\StringLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Assignment\SubtractAssignmentExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\SubtractExpressionVisitor.cs" />
@@ -203,11 +235,8 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\SimpleMemberAccessExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\Switch\SwitchStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\TryStatementVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\TypeKnowledgeExtensions.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeParameterVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\ArrayTypeVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Type\BaseTypeVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Type\ITypeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\PredefinedTypeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\VariableDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\VariableDeclaratorVisitor.cs" />
@@ -229,8 +258,13 @@
     <Compile Include="CodeTreeLuaVisitor\IVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\NamespaceDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Name\QualifiedNameVisitor.cs" />
-    <Compile Include="Providers\PartialElement\IPartialElementState.cs" />
-    <Compile Include="Providers\PartialElement\PartialElementState.cs" />
+    <Compile Include="MethodSignature\ITypeReferenceWriter.cs" />
+    <Compile Include="MethodSignature\ISemanticAdaptor.cs" />
+    <Compile Include="MethodSignature\SignatureComponent.cs" />
+    <Compile Include="MethodSignature\SignatureComposer.cs" />
+    <Compile Include="MethodSignature\SignatureWriter.cs" />
+    <Compile Include="Namespace.cs" />
+    <Compile Include="Context\PartialElementState.cs" />
     <Compile Include="CodeTreeLuaVisitor\UsingDirectiveVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\VisitorException.cs" />
     <Compile Include="CodeTree\CodeTreeBranch.cs" />
@@ -243,35 +277,8 @@
     <Compile Include="ISyntaxAnalyser.cs" />
     <Compile Include="LuaFileWriter.cs" />
     <Compile Include="ProjectType.cs" />
-    <Compile Include="Providers\GenericsRegistry\GenericScope.cs" />
-    <Compile Include="Providers\GenericsRegistry\GenericsRegistry.cs" />
-    <Compile Include="Providers\GenericsRegistry\IGenericsRegistry.cs" />
-    <Compile Include="Providers\IProviders.cs" />
-    <Compile Include="Providers\NameProvider\INameProvider.cs" />
-    <Compile Include="Providers\NameProvider\NameProvider.cs" />
-    <Compile Include="Providers\ProviderException.cs" />
-    <Compile Include="Providers\Providers.cs" />
-    <Compile Include="Providers\TypeKnowledgeRegistry\IKnowledge.cs" />
-    <Compile Include="Providers\TypeKnowledgeRegistry\IContext.cs" />
-    <Compile Include="Providers\TypeKnowledgeRegistry\MethodKnowledge.cs" />
-    <Compile Include="Providers\TypeKnowledgeRegistry\PossibleMethods.cs" />
-    <Compile Include="Providers\TypeKnowledgeRegistry\TypeKnowledge.cs" />
-    <Compile Include="Providers\TypeKnowledgeRegistry\Context.cs" />
-    <Compile Include="Providers\TypeProvider\ActionFuncTypes.cs" />
-    <Compile Include="Providers\TypeProvider\ExtensionMethod.cs" />
-    <Compile Include="Providers\TypeProvider\ITypeProvider.cs" />
-    <Compile Include="Providers\TypeProvider\ITypeResult.cs" />
-    <Compile Include="Providers\TypeProvider\LoadedNamespace.cs" />
-    <Compile Include="Providers\TypeProvider\LoadedType.cs" />
-    <Compile Include="Providers\TypeProvider\NativeTypeResult.cs" />
-    <Compile Include="Providers\TypeProvider\ScopeElement.cs" />
-    <Compile Include="Providers\TypeProvider\TypeCollections\AssemblyTypeCollection.cs" />
-    <Compile Include="Providers\TypeProvider\TypeCollections\BaseTypeCollection.cs" />
-    <Compile Include="Providers\TypeProvider\TypeCollections\ManuallyImplementedSystemTypeTypeCollection.cs" />
-    <Compile Include="Providers\TypeProvider\TypeCollections\SolutionTypeCollection.cs" />
-    <Compile Include="Providers\TypeProvider\TypeCollections\TypesFileTypeCollection.cs" />
-    <Compile Include="Providers\TypeProvider\TypeNameProvider.cs" />
-    <Compile Include="Providers\TypeProvider\TypeResult.cs" />
+    <Compile Include="Context\IContext.cs" />
+    <Compile Include="Context\Context.cs" />
     <Compile Include="AddOnConstruction\ResourceFile.cs" />
     <Compile Include="ProjectAnalysis\ProjectAnalyser.cs" />
     <Compile Include="AddOnConstruction\ProjectInfo.cs" />
@@ -285,6 +292,7 @@
     <Compile Include="WrappingException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="CopyLuaToOutput.ps1" />
     <None Include="Lua\Meta\Add.lua" />
     <None Include="Lua\Meta\AddToNamespace.lua" />
@@ -337,6 +345,7 @@
     <None Include="Lua\System\String.lua" />
     <None Include="Lua\System\Object.lua" />
     <None Include="Lua\System\SystemImplementation.lua" />
+    <None Include="packages.config" />
     <None Include="SystemImplementation.types">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -363,6 +372,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Lua\Meta\Extensions.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup />
   <ImportGroup Label="Targets">

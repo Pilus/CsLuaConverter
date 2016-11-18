@@ -7,18 +7,18 @@
     using Attribute;
     using CodeTree;
     using Constraint;
-    using Expression;
+    using CsLuaConverter.Context;
     using Filters;
     using Lists;
+
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
-    using Providers;
-    using Providers.GenericsRegistry;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Type;
 
     public class MethodDeclarationVisitor : BaseVisitor
     {
         private readonly string name;
-        private readonly ITypeVisitor returnTypeVisitor;
         private readonly TypeParameterListVisitor methodGenerics;
         private readonly Scope scope;
         private readonly bool isStatic;
@@ -39,7 +39,6 @@
 
             var accessorAndTypeFilter = new KindRangeFilter(branch.Nodes[offset].Kind, SyntaxKind.IdentifierToken);
             var accessorAndType = accessorAndTypeFilter.Filter(this.Branch.Nodes).ToArray();
-            this.returnTypeVisitor = (ITypeVisitor) this.CreateVisitor(offset + accessorAndType.Length - 1);
             this.methodGenerics =
                 (TypeParameterListVisitor) this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameterList)).SingleOrDefault();
             this.name =
@@ -62,137 +61,185 @@
             this.genericsConstraint = (TypeParameterConstraintClauseVisitor)this.CreateVisitors(new KindFilter(SyntaxKind.TypeParameterConstraintClause)).SingleOrDefault();
         }
         
-        private static MethodBase[] GetAllMembers(Type type, string name)
+
+        public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var all = new List<MemberInfo>();
-            all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Instance));
-            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Instance));
+            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as MethodDeclarationSyntax);
+            /*if (symbol.IsExtensionMethod)
+            {
+                return;
+            }*/
 
-            all.AddRange(type.GetMembers(BindingFlags.Public | BindingFlags.Static));
-            all.AddRange(type.GetMembers(BindingFlags.NonPublic | BindingFlags.Static));
-
-            return all.OfType<MethodBase>().Where(m => m.Name == name).ToArray();
+            this.WriteMethodGenericsMapping(textWriter, context);
+            this.WriteMethodMember(textWriter, context, symbol);
         }
 
-        public override void Visit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        public ITypeSymbol GetExtensionTypeSymbol(IContext context)
         {
-            var definingType = providers.NameProvider.GetScopeElement("this").Type.GetTypeObject();
-            var genericObjects = GetAllMembers(definingType, this.name).SelectMany(m => m.GetGenericArguments()).ToList();
-
-            if (this.methodGenerics != null)
+            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as MethodDeclarationSyntax);
+            if (!symbol.IsExtensionMethod)
             {
-                textWriter.Write("local methodGenericsMapping = {");
-                this.methodGenerics.Visit(textWriter, providers);
-                textWriter.WriteLine("};");
-                textWriter.WriteLine("local methodGenerics = _M.MG(methodGenericsMapping);");
-
-                foreach (var genericName in this.methodGenerics.GetNames())
-                {
-                    providers.GenericsRegistry.SetGenerics(
-                        genericName, 
-                        GenericScope.MethodDeclaration, 
-                        genericObjects.First(t => t.Name == genericName), 
-                        this.genericsConstraint?.GetConstrainedType(providers, genericName).GetTypeObject() ?? typeof(object));
-                }
+                return null;
             }
 
+
+
+            return symbol.Parameters.Single(p => p.IsThis).Type;
+        }
+
+        public void WriteAsExtensionMethod(IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as MethodDeclarationSyntax);
+            if (!symbol.IsExtensionMethod)
+            {
+                return;
+            }
+
+
+        }
+
+        private void WriteMethodMember(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
+        {
             textWriter.WriteLine("_M.IM(members, '{0}', {{", this.name);
             textWriter.Indent++;
 
-            textWriter.WriteLine("level = typeObject.Level,");
-            textWriter.WriteLine("memberType = 'Method',");
-            textWriter.WriteLine("scope = '{0}',", this.scope);
-            textWriter.WriteLine("static = {0},", this.isStatic.ToString().ToLower());
-            textWriter.WriteLine("numMethodGenerics = {0},", this.methodGenerics?.GetNumElements() ?? 0);
-            textWriter.Write("signatureHash = ");
-            this.parameters.GetTypes(providers).WriteSignature(textWriter, providers);
-            textWriter.WriteLine(",");
-
-
-            if (this.isOverride)
-            {
-                textWriter.WriteLine("override = true,");
-            }
-
-            if (this.parameters.GetTypes(providers).LastOrDefault()?.IsParams == true)
-            {
-                textWriter.WriteLine("isParams = true,");
-            }
-
-            
-            if (this.returnTypeVisitor != null && (this.returnTypeVisitor as PredefinedTypeVisitor)?.IsVoid() != true)
-            {
-                textWriter.Write("returnType = ");
-                this.returnTypeVisitor.WriteAsType(textWriter, providers);
-                textWriter.WriteLine(",");
-            }
-            /*
-            textWriter.Write("types = {");
-            this.parameters.WriteAsTypes(textWriter, providers);
-            textWriter.WriteLine("},"); */
-
-            if (this.methodGenerics != null)
-            {
-                textWriter.WriteLine("generics = methodGenericsMapping,");
-            }
-
-            if (this.methodGenerics != null)
-            {
-                providers.GenericsRegistry.ClearScope(GenericScope.MethodDeclaration);
-
-                foreach (var genericName in this.methodGenerics.GetNames())
-                {
-                    providers.GenericsRegistry.SetGenerics(
-                        genericName,
-                        GenericScope.Method,
-                        genericObjects.First(t => t.Name == genericName),
-                        this.genericsConstraint?.GetConstrainedType(providers, genericName).GetTypeObject() ?? typeof(object));
-                }
-            }
-
-            if (this.block != null)
-            { 
-                textWriter.Write("func = function(element");
-
-                if (this.methodGenerics != null)
-                {
-                    textWriter.Write(", methodGenericsMapping, methodGenerics");
-                }
-
-                var scope = providers.NameProvider.CloneScope();
-
-                this.parameters.FirstElementPrefix = ", ";
-                this.parameters.Visit(textWriter, providers);
-
-                textWriter.WriteLine(")");
-
-                if (this.parameters.GetTypes(providers).LastOrDefault()?.IsParams == true)
-                {
-                    textWriter.Indent++;
-                    this.WriteParamVariableInit(textWriter, providers);
-                    textWriter.Indent--;
-                }
-
-                this.block.Visit(textWriter, providers);
-                textWriter.WriteLine("end");
-
-                providers.NameProvider.SetScope(scope);
-            }
-
-            providers.GenericsRegistry.ClearScope(GenericScope.Method);
+            WriteLevel(textWriter);
+            WriteMemberType(textWriter);
+            this.WriteScope(textWriter);
+            WriteIsStatic(textWriter, symbol);
+            WriteNumOfMethodGenerics(textWriter, symbol);
+            WriteSignatureHash(textWriter, context, symbol);
+            this.WriteOverride(textWriter);
+            WriteIsParams(textWriter, symbol);
+            WriteReturnType(textWriter, context, symbol);
+            this.WriteGenerics(textWriter);
+            this.WriteBodyFunc(textWriter, context, symbol);
 
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }
 
-        public void WriteParamVariableInit(IIndentedTextWriterWrapper textWriter, IProviders providers)
+        private void WriteBodyFunc(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
         {
-            var names = this.parameters.GetNames();
-            var types = this.parameters.GetTypes(providers);
+            if (this.block == null)
+            {
+                return;
+            }
+
+            textWriter.Write("func = function(element");
+
+            if (this.methodGenerics != null)
+            {
+                textWriter.Write(", methodGenericsMapping, methodGenerics");
+            }
+
+            this.parameters.FirstElementPrefix = ", ";
+            this.parameters.Visit(textWriter, context);
+
+            textWriter.WriteLine(")");
+
+            if (symbol.Parameters.LastOrDefault()?.IsParams == true)
+            {
+                textWriter.Indent++;
+                this.WriteParamVariableInit(textWriter, context, symbol);
+                textWriter.Indent--;
+            }
+
+            this.block.Visit(textWriter, context);
+            textWriter.WriteLine("end");
+        }
+
+        private void WriteGenerics(IIndentedTextWriterWrapper textWriter)
+        {
+            if (this.methodGenerics != null)
+            {
+                textWriter.WriteLine("generics = methodGenericsMapping,");
+            }
+        }
+
+        private static void WriteReturnType(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
+        {
+            if (symbol.ReturnsVoid)
+            {
+                return;
+            }
+
+            textWriter.Write("returnType = function() return ");
+            context.TypeReferenceWriter.WriteTypeReference(symbol.ReturnType, textWriter);
+            textWriter.WriteLine(" end,");
+        }
+
+        private static void WriteIsParams(IIndentedTextWriterWrapper textWriter, IMethodSymbol symbol)
+        {
+            if (symbol.Parameters.LastOrDefault()?.IsParams == true)
+            {
+                textWriter.WriteLine("isParams = true,");
+            }
+        }
+
+        private void WriteOverride(IIndentedTextWriterWrapper textWriter)
+        {
+            if (this.isOverride)
+            {
+                textWriter.WriteLine("override = true,");
+            }
+        }
+
+        private static void WriteSignatureHash(
+            IIndentedTextWriterWrapper textWriter,
+            IContext context,
+            IMethodSymbol symbol)
+        {
+            textWriter.Write("signatureHash = ");
+            context.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
+            textWriter.WriteLine(",");
+        }
+
+        private static void WriteNumOfMethodGenerics(IIndentedTextWriterWrapper textWriter, IMethodSymbol symbol)
+        {
+            textWriter.WriteLine("numMethodGenerics = {0},", symbol.TypeArguments.Length);
+        }
+
+        private static void WriteIsStatic(IIndentedTextWriterWrapper textWriter, IMethodSymbol symbol)
+        {
+            textWriter.WriteLine("static = {0},", symbol.IsStatic.ToString().ToLower());
+        }
+
+        private void WriteScope(IIndentedTextWriterWrapper textWriter)
+        {
+            textWriter.WriteLine("scope = '{0}',", this.scope);
+        }
+
+        private static void WriteMemberType(IIndentedTextWriterWrapper textWriter)
+        {
+            textWriter.WriteLine("memberType = 'Method',");
+        }
+
+        private static void WriteLevel(IIndentedTextWriterWrapper textWriter)
+        {
+            textWriter.WriteLine("level = typeObject.Level,");
+        }
+
+        private void WriteMethodGenericsMapping(IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            if (this.methodGenerics == null)
+            {
+                return;
+            }
+
+            textWriter.Write("local methodGenericsMapping = {");
+            this.methodGenerics.Visit(textWriter, context);
+            textWriter.WriteLine("};");
+            textWriter.WriteLine("local methodGenerics = _M.MG(methodGenericsMapping);");
+        }
+
+        private void WriteParamVariableInit(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
+        {
+            var parameter = symbol.Parameters.Last();
             textWriter.Write("local ");
-            textWriter.Write(names.Last());
+            textWriter.Write(parameter.Name);
             textWriter.Write(" = (");
-            types.Last().WriteAsReference(textWriter, providers);
+            context.TypeReferenceWriter.WriteInteractionElementReference(parameter.Type, textWriter);
             textWriter.WriteLine("._C_0_0() % _M.DOT).__Initialize({[0] = firstParam, ...});");
         }
     }

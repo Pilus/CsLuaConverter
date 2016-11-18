@@ -22,7 +22,14 @@
                 .Where(project => !project.ProjectType.Equals(ProjectType.Ignored))
                 .ToList();
 
-            var analyzedProjects = projects.Select(project => this.syntaxAnalyzer.AnalyzeProject(project)).ToList();
+            var analyzedProjects =
+                projects.Select(
+                    project =>
+                    new AnalyzedProjectInfo()
+                        {
+                            Info = project,
+                            Namespaces = this.syntaxAnalyzer.GetNamespaces(project).ToArray()
+                        }).ToList();
 
             ReferenceAnalyzer.PopulateAndAnalyseReferences(analyzedProjects);
 
