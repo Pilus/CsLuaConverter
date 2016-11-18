@@ -12,7 +12,10 @@
             this.Tests["WhereWithNoSourceThrows"] = WhereWithNoSourceThrows;
             this.Tests["WhereWithNoPredicateThrows"] = WhereWithNoPredicateThrows;
             this.Tests["WhereReturnsExpectedCollection"] = WhereReturnsExpectedCollection;
-            
+            this.Tests["WhereWithIndexWithNoSourceThrows"] = WhereWithIndexWithNoSourceThrows;
+            this.Tests["WhereWithIndexWithNoPredicateThrows"] = WhereWithIndexWithNoPredicateThrows;
+            this.Tests["WhereWithIndexReturnsExpectedCollection"] = WhereWithIndexReturnsExpectedCollection;
+
             this.Tests["TestCountAndAny"] = TestCountAndAny;
             this.Tests["TestSelect"] = TestSelect;
             //this.Tests["TestUnion"] = TestUnion;
@@ -60,6 +63,45 @@
             Assert(32, res[1]);
         }
 
+        private static void WhereWithIndexWithNoSourceThrows()
+        {
+            try
+            {
+                Enumerable.Where<int>(null, (v, i) => false);
+                throw new Exception("Expected to throw exception. No exception thrown.");
+            }
+            catch (Exception ex)
+            {
+                Assert(true, ex is ArgumentNullException, "Expected ArgumentNullException, got " + ex.GetType().Name);
+                Assert("Value cannot be null.\nParameter name: source", ex.Message);
+            }
+        }
+
+        private static void WhereWithIndexWithNoPredicateThrows()
+        {
+            try
+            {
+                var a = new int[] { 2, 4, 8, 16, 32, 64 };
+                Func<int, int, bool> predicate = null;
+                a.Where(predicate);
+                throw new Exception("Expected to throw exception. No exception thrown.");
+            }
+            catch (Exception ex)
+            {
+                Assert(true, ex is ArgumentNullException, "Expected ArgumentNullException, got " + ex.GetType().Name);
+                Assert("Value cannot be null.\nParameter name: predicate", ex.Message);
+            }
+        }
+
+        private static void WhereWithIndexReturnsExpectedCollection()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            var res = a.Where((v, i) => v > 4 && i < 4).ToArray();
+
+            Assert(2, res.Length);
+            Assert(8, res[0]);
+            Assert(16, res[1]);
+        }
 
         private static void TestCountAndAny()
         {

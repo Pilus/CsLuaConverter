@@ -12,7 +12,16 @@
     {
         public static ProjectInfo AnalyzeProject(Project project)
         {
-            var assembly = Assembly.LoadFile(project.OutputFilePath);
+            Assembly assembly;
+            try
+            {
+                assembly = Assembly.LoadFile(project.OutputFilePath);
+            }
+            catch (FileNotFoundException exception)
+            {
+                throw new Exception($"Could not find file {project.OutputFilePath}.", exception);
+            }
+            
             var csLuaAddOnAttribute = GetCsLuaAddOnAttribute(assembly);
             var projectPath = GetProjectPath(project);
 

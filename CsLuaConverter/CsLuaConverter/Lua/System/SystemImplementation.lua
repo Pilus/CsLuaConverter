@@ -503,6 +503,37 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
             });
             local methodGenericsMapping = {['TSource'] = 1};
             local methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Where', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 187239290,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    if (predicate == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("predicate"));
+                    end
+                    
+            local enumerator = (source % _M.DOT).GetEnumerator();
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+                while (true) do
+                    local key, value = enumerator(_, prevKey);
+                    if (key == nil) or (predicate % _M.DOT)(value, key) == true then
+                        return key, value;
+                    end
+                    prevKey = key;
+                end
+            end); 
+                end
+            });
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ToArray', {
                 level = typeObject.Level,
                 memberType = 'Method',

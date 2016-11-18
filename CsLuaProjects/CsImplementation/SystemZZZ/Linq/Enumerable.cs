@@ -7,7 +7,7 @@
 
     public static class Enumerable
     {
-        public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, System.Func<TSource, bool> predicate)
+        public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
             if (source == null) throw Error.ArgumentNull("source");
             if (predicate == null) throw Error.ArgumentNull("predicate");
@@ -17,6 +17,24 @@
                 while (true) do
                     local key, value = enumerator(_, prevKey);
                     if (key == nil) or (predicate % _M.DOT)(value) == true then
+                        return key, value;
+                    end
+                    prevKey = key;
+                end
+            end); */
+            throw new ReplaceWithLuaBlock();
+        }
+
+        public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, int, bool> predicate)
+        {
+            if (source == null) throw Error.ArgumentNull("source");
+            if (predicate == null) throw Error.ArgumentNull("predicate");
+            /* LUA
+            local enumerator = (source % _M.DOT).GetEnumerator();
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+                while (true) do
+                    local key, value = enumerator(_, prevKey);
+                    if (key == nil) or (predicate % _M.DOT)(value, key) == true then
                         return key, value;
                     end
                     prevKey = key;
