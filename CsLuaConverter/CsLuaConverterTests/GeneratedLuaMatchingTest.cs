@@ -5544,6 +5544,9 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""WhereWithNoSourceThrows""] = (element % _M.DOT_LVL(typeObject.Level)).WhereWithNoSourceThrows;
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""WhereWithNoPredicateThrows""] = (element % _M.DOT_LVL(typeObject.Level)).WhereWithNoPredicateThrows;
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""WhereReturnsExpectedCollection""] = (element % _M.DOT_LVL(typeObject.Level)).WhereReturnsExpectedCollection;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""WhereWithIndexWithNoSourceThrows""] = (element % _M.DOT_LVL(typeObject.Level)).WhereWithIndexWithNoSourceThrows;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""WhereWithIndexWithNoPredicateThrows""] = (element % _M.DOT_LVL(typeObject.Level)).WhereWithIndexWithNoPredicateThrows;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""WhereWithIndexReturnsExpectedCollection""] = (element % _M.DOT_LVL(typeObject.Level)).WhereWithIndexReturnsExpectedCollection;
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestCountAndAny""] = (element % _M.DOT_LVL(typeObject.Level)).TestCountAndAny;
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestSelect""] = (element % _M.DOT_LVL(typeObject.Level)).TestSelect;
                 end,
@@ -5615,6 +5618,75 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, (res % _M.DOT).Length);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(16, (res % _M.DOT)[0]);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(32, (res % _M.DOT)[1]);
+                end
+            });
+            _M.IM(members, 'WhereWithIndexWithNoSourceThrows', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    _M.Try(
+                        function()
+                            ((System.Linq.Enumerable % _M.DOT).Where_M_1_187239290[{System.Int32.__typeof}] % _M.DOT)(nil, System.Func[{System.Int32.__typeof, System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v, i) return false end));
+                            _M.Throw(System.Exception._C_0_8736(""Expected to throw exception. No exception thrown.""));
+                        end,
+                        {
+                            {
+                                type = System.Exception.__typeof,
+                                func = function(ex)
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got ""  +_M.Add+  (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(""Value cannot be null.\nParameter name: source"", (ex % _M.DOT).Message);
+                                end,
+                            },
+                        },
+                        nil
+                    );
+                end
+            });
+            _M.IM(members, 'WhereWithIndexWithNoPredicateThrows', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    _M.Try(
+                        function()
+                            local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
+                            local predicate = nil;
+                            ((System.Linq.Enumerable % _M.DOT).Where_M_1_187239290[{System.Int32.__typeof}] % _M.DOT)(a, predicate);
+                            _M.Throw(System.Exception._C_0_8736(""Expected to throw exception. No exception thrown.""));
+                        end,
+                        {
+                            {
+                                type = System.Exception.__typeof,
+                                func = function(ex)
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got ""  +_M.Add+  (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(""Value cannot be null.\nParameter name: predicate"", (ex % _M.DOT).Message);
+                                end,
+                            },
+                        },
+                        nil
+                    );
+                end
+            });
+            _M.IM(members, 'WhereWithIndexReturnsExpectedCollection', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
+                    local res = ((System.Linq.Enumerable % _M.DOT).ToArray_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(((System.Linq.Enumerable % _M.DOT).Where_M_1_187239290[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v, i) return v > 4 and i < 4 end)));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, (res % _M.DOT).Length);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(8, (res % _M.DOT)[0]);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(16, (res % _M.DOT)[1]);
                 end
             });
             _M.IM(members, 'TestCountAndAny', {
@@ -9521,13 +9593,7 @@ _M.ATN('CsLuaTest.Wrap','WrapTests', _M.NE({
         return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
     end,
 }));
-(CsLuaTest.CsLuaTest._C_0_0() % _M.DOT).Execute();
-";
+(CsLuaTest.CsLuaTest._C_0_0() % _M.DOT).Execute();";
 
-        /*
-        _M.ATN('CsLuaTest.Generics','zzzzzz', _M.NE({
-
-        }));
-            */
     }
 }
