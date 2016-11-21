@@ -55,16 +55,15 @@
             textWriter.WriteLine("});");
         }
 
-        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IContext context, bool isStaticFilter = false)
+        public static void WriteDefaultValue(PropertyDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context, bool isStaticFilter = false)
         {
-            if (this.isStatic != isStaticFilter)
+            var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
+            if (symbol.IsStatic != isStaticFilter)
             {
                 return;
             }
 
-            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as PropertyDeclarationSyntax);
-
-            textWriter.Write($"{this.name} = _M.DV(");
+            textWriter.Write($"{symbol.Name} = _M.DV(");
             context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
             textWriter.WriteLine("),");
         }

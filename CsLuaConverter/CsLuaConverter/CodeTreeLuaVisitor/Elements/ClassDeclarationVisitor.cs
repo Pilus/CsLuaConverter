@@ -15,7 +15,7 @@
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    public class ClassDeclarationVisitor : BaseVisitor, IElementVisitor
+    public class ClassDeclarationVisitor : SyntaxVisitorBase<ClassDeclarationSyntax>, IElementVisitor
     {
         private string name;
         private TypeParameterListVisitor genericsVisitor;
@@ -33,9 +33,13 @@
 
         public ClassDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.CreateVisitors();
+            //this.CreateVisitors();
         }
 
+        public ClassDeclarationVisitor(ClassDeclarationSyntax syntax) : base(syntax)
+        {
+        }
+        /*
         private void CreateVisitors()
         {
             var accessorNodes = this.GetFilteredNodes(new KindRangeFilter(null, SyntaxKind.ClassKeyword));
@@ -72,14 +76,14 @@
                 this.CreateVisitors(new KindFilter(SyntaxKind.ConstructorDeclaration))
                     .Select(v => (ConstructorDeclarationVisitor) v)
                     .ToArray();
-        }
+        } */
 
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (this.symbol == null)
             {
-                this.symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as ClassDeclarationSyntax);
+                this.symbol = context.SemanticModel.GetDeclaredSymbol(this.Syntax);
                 context.CurrentClass = this.symbol;
             }
 
@@ -126,7 +130,6 @@
                 textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", this.GetNumOfGenerics());
                 textWriter.Indent++;
 
-                //this.RegisterGenerics(context);
                 this.WriteGenericsMapping(textWriter, context);
                 this.WriteTypeGeneration(textWriter, context);
                 this.WriteBaseInheritance(textWriter, context);
@@ -208,9 +211,9 @@
                 textWriter.Indent++;
             }
 
-            foreach (var visitor in this.propertyVisitors)
+            foreach (var property in this.Syntax.Members.OfType<PropertyDeclarationSyntax>())
             {
-                visitor.WriteDefaultValue(textWriter, context);
+                PropertyDeclarationVisitor.WriteDefaultValue(property, textWriter, context);
             }
 
             foreach (var visitor in this.fieldVisitors)
@@ -239,9 +242,9 @@
                 textWriter.Indent++;
             }
 
-            foreach (var visitor in this.propertyVisitors)
+            foreach (var property in this.Syntax.Members.OfType<PropertyDeclarationSyntax>())
             {
-                visitor.WriteDefaultValue(textWriter, context, true);
+                PropertyDeclarationVisitor.WriteDefaultValue(property, textWriter, context, true);
             }
 
             foreach (var visitor in this.fieldVisitors)
@@ -366,12 +369,12 @@
 
         public string GetName()
         {
-            return this.name;
+            return this.Syntax.Identifier.Text;
         }
 
         public int GetNumOfGenerics()
         {
-            return this.genericsVisitor?.GetNumElements() ?? 0;
+            return this.Syntax.TypeParameterList?.Parameters.Count ?? 0;
         }
     }
 }
