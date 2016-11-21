@@ -4,20 +4,21 @@
     using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    public class BlockVisitor : BaseVisitor
+    public class BlockVisitor : SyntaxVisitorBase<BlockSyntax>
     {
-        private readonly BaseVisitor[] visitors;
-
         public BlockVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.visitors = this.CreateVisitors(new KindRangeFilter(SyntaxKind.OpenBraceToken, SyntaxKind.CloseBraceToken));
+        }
+        public BlockVisitor(BlockSyntax syntax) : base(syntax)
+        {
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Indent++;
-            this.visitors.VisitAll(textWriter, context);
+            VisitAllNodes(this.Syntax.Statements, textWriter, context);
             textWriter.Indent--;
         }
     }

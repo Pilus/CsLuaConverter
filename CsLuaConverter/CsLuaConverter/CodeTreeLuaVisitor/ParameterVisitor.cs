@@ -5,29 +5,28 @@
     using CodeTree;
     using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Type;
 
-    public class ParameterVisitor : BaseVisitor
+    public class ParameterVisitor : SyntaxVisitorBase<ParameterSyntax>
     {
-        private readonly bool isParams;
-        private readonly IVisitor type;
-        private readonly string name;
-
         public ParameterVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.isParams = this.Branch.Nodes[0].Kind.Equals(SyntaxKind.ParamsKeyword);
-            this.name = branch.Nodes.OfType<CodeTreeLeaf>().Last().Text;
+        }
+
+        public ParameterVisitor(ParameterSyntax syntax) : base(syntax)
+        {
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (this.isParams)
+            if (this.Syntax.Modifiers.Any(mod => mod.Kind() == SyntaxKind.ParamsKeyword))
             {
                 textWriter.Write("firstParam, ...");
             }
             else
             {
-                textWriter.Write(this.name);
+                textWriter.Write(this.Syntax.Identifier.Text);
             }
         }
     }

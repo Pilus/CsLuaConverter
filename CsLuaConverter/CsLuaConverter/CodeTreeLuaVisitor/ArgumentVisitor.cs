@@ -2,20 +2,22 @@
 {
     using System.Linq;
     using CodeTree;
-    using CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda;
     using CsLuaConverter.Context;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    public class ArgumentVisitor : BaseVisitor
+    public class ArgumentVisitor : SyntaxVisitorBase<ArgumentSyntax>
     {
-        private readonly BaseVisitor inner;
         public ArgumentVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.inner = this.CreateVisitors().Single();
+        }
+
+        public ArgumentVisitor(ArgumentSyntax syntax) : base(syntax)
+        {
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.inner.Visit(textWriter, context);
+            VisitNode(this.Syntax.Expression, textWriter, context);
         }
     }
 }

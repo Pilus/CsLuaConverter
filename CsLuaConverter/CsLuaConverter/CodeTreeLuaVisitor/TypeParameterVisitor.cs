@@ -2,21 +2,22 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
-    using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    public class TypeParameterVisitor : BaseVisitor
+    public class TypeParameterVisitor : SyntaxVisitorBase<TypeParameterSyntax>
     {
-        public string Name;
-
         public TypeParameterVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.ExpectKind(0, SyntaxKind.IdentifierToken);
-            this.Name = ((CodeTreeLeaf) this.Branch.Nodes[0]).Text;
+
+        }
+
+        public TypeParameterVisitor(TypeParameterSyntax syntax) : base(syntax)
+        {
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            textWriter.Write(this.Name);
+            textWriter.Write(this.Syntax.Identifier.Text);
         }
     }
 }

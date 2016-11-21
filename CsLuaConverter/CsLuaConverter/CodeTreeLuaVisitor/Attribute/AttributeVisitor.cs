@@ -9,7 +9,7 @@
 
     using Name;
 
-    public class AttributeVisitor : BaseVisitor
+    public class AttributeVisitor : SyntaxVisitorBase<AttributeSyntax>
     {
         private readonly IdentifierNameVisitor name;
         public AttributeVisitor(CodeTreeBranch branch) : base(branch)
@@ -18,9 +18,14 @@
             this.name = (IdentifierNameVisitor) this.CreateVisitor(0);
         }
 
+        public AttributeVisitor(AttributeSyntax syntax) : base(syntax)
+        {
+            
+        }
+
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode as AttributeSyntax).Symbol;
+            var symbol = context.SemanticModel.GetSymbolInfo(this.Syntax).Symbol;
             context.TypeReferenceWriter.WriteTypeReference(symbol.ContainingType, textWriter);
         }
 

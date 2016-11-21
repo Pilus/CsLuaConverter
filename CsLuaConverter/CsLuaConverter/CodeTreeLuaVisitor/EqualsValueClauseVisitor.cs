@@ -3,21 +3,23 @@
     using CodeTree;
     using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    public class EqualsValueClauseVisitor : BaseVisitor
+    public class EqualsValueClauseVisitor : SyntaxVisitorBase<EqualsValueClauseSyntax>
     {
-        private readonly BaseVisitor innerVisitor;
-
         public EqualsValueClauseVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.ExpectKind(0, SyntaxKind.EqualsToken);
-            this.innerVisitor = this.CreateVisitor(1);
+        }
+
+        public EqualsValueClauseVisitor(EqualsValueClauseSyntax syntax) : base(syntax)
+        {
+            
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write(" = ");
-            this.innerVisitor.Visit(textWriter, context);
+            VisitNode(this.Syntax.Value, textWriter, context);
         }
     }
 }

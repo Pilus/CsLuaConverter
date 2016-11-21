@@ -149,6 +149,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\MemberBindingExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\UnaryPlusExpressionVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\SyntaxVisitorBase.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeReferenceWriter.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\BaseConstructorInitializerVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\EnumMemberDeclarationVisitor.cs" />
@@ -197,7 +198,7 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\TypeOfExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\UnaryMinusExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\FieldDeclarationVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Accessor\GetAccessorDeclarationVisitor.cs" />
+    <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ElseClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\EmptyStatementVisitor.cs" />
@@ -226,7 +227,6 @@
     <Compile Include="CodeTreeLuaVisitor\ParameterVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\PropertyDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Scope.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Accessor\SetAccessorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ExpressionStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ForEachStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\IfStatementVisitor.cs" />

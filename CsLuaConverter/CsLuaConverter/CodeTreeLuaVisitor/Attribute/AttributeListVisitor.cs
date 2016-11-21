@@ -5,8 +5,9 @@
     using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    public class AttributeListVisitor : BaseVisitor
+    public class AttributeListVisitor : SyntaxVisitorBase<AttributeListSyntax>
     {
         private readonly AttributeVisitor[] attributes;
         public AttributeListVisitor(CodeTreeBranch branch) : base(branch)
@@ -17,12 +18,16 @@
                     .ToArray();
         }
 
+        public AttributeListVisitor(AttributeListSyntax syntax) : base(syntax)
+        {
+        }
+
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine("local attributes = {");
             textWriter.Indent++;
 
-            this.attributes.VisitAll(textWriter, context);
+            VisitAllNodes(this.Syntax.Attributes, textWriter, context);
 
             textWriter.Indent--;
             textWriter.WriteLine("};");

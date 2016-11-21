@@ -107,7 +107,7 @@
 
             try
             {
-                var constructor = type.GetConstructors().SingleOrDefault();
+                var constructor = type.GetConstructors().FirstOrDefault();
 
                 if (constructor == null)
                 {

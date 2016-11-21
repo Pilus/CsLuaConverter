@@ -5,34 +5,38 @@
     using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    public class AccessorListVisitor : BaseVisitor, IAccessor
+    public class AccessorListVisitor : SyntaxVisitorBase<AccessorListSyntax>, IAccessor
     {
-        private readonly GetAccessorDeclarationVisitor getVisitor;
-        private readonly SetAccessorDeclarationVisitor setVisitor;
+        private readonly AccessorDeclarationVisitor getVisitor;
 
         public AccessorListVisitor(CodeTreeBranch branch) : base(branch)
         {
-            var visitors = this.CreateVisitors(new KindRangeFilter(SyntaxKind.OpenBraceToken, SyntaxKind.CloseBraceToken));
-            this.getVisitor = visitors.OfType<GetAccessorDeclarationVisitor>().SingleOrDefault();
-            this.setVisitor = visitors.OfType<SetAccessorDeclarationVisitor>().SingleOrDefault();
+        }
+
+        public AccessorListVisitor(AccessorListSyntax syntax) : base(syntax)
+        {
+            
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.getVisitor?.Visit(textWriter, context);
-            this.setVisitor?.Visit(textWriter, context);
+            VisitAllNodes(this.Syntax.Accessors, textWriter, context);
+            //this.getVisitor?.Visit(textWriter, context);
+            //this.setVisitor?.Visit(textWriter, context);
         }
 
         public bool IsAutoProperty()
         {
-            return (this.getVisitor?.IsAutoProperty() ?? false) && (this.setVisitor == null || this.setVisitor.IsAutoProperty());
+            return this.Syntax.Accessors.Any(a => a.Body == null);
+            //return (this.getVisitor?.IsAutoProperty() ?? false) && (this.setVisitor == null || this.setVisitor.IsAutoProperty());
         }
 
         public void SetAdditionalParameters(string getParameters, string setParameters)
         {
-            this.getVisitor.AdditionalParameters = getParameters;
-            this.setVisitor.AdditionalParameters = setParameters;
+            //this.getVisitor.AdditionalParameters = getParameters;
+            //this.setVisitor.AdditionalParameters = setParameters;
         }
     }
 }

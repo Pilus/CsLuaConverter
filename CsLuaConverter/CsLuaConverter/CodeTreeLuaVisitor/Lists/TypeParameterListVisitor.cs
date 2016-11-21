@@ -36,10 +36,5 @@
         {
             return this.visitors.Length;
         }
-
-        public string[] GetNames()
-        {
-            return this.visitors.Select(v => v.Name).ToArray();
-        }
     }
 }

@@ -22,7 +22,7 @@
             BaseVisitor.LockVisitorCreation = false;
             treeRoots = treeRoots.SelectMany(SeperateCodeElements).ToArray();
             var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree.Item1, tree.Item2)).ToArray();
-            BaseVisitor.LockVisitorCreation = true;
+            //BaseVisitor.LockVisitorCreation = true;
 
             return visitors.GroupBy(v => v.GetTopNamespace()).Select(g => new Namespace() {
                 Name = g.Key,

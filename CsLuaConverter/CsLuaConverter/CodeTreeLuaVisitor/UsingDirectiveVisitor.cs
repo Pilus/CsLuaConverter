@@ -3,16 +3,16 @@
     using CodeTree;
     using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Name;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    public class UsingDirectiveVisitor : BaseVisitor
+    public class UsingDirectiveVisitor : SyntaxVisitorBase<UsingDirectiveSyntax>
     {
-        private readonly IVisitor nameVisitor;
         public UsingDirectiveVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.ExpectKind(0, SyntaxKind.UsingKeyword);
-            this.ExpectKind(1, SyntaxKind.QualifiedName, SyntaxKind.IdentifierName);
-            this.nameVisitor = this.CreateVisitor(1);
+        }
+
+        public UsingDirectiveVisitor(UsingDirectiveSyntax syntax) : base(syntax)
+        {
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)

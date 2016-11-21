@@ -94,6 +94,9 @@ namespace CsLuaConverterTests
 
 
 
+
+
+
     private const string CsLuaCompiled = @"_M.ATN('CsLuaTest','BaseTest', _M.NE({
     [0] = function(interactionElement, generics, staticValues)
         local genericsMapping = {};
@@ -3317,10 +3320,10 @@ _M.ATN('CsLuaTest.General','ClassWithIndexer', _M.NE({
                 level = typeObject.Level,
                 memberType = 'Indexer',
                 scope = 'Public',
-                get = function(element,index)
+                get = function(element, index)
                     return ""GetAtIndex""  +_M.Add+  index;
                 end,
-                set = function(element,index , value)
+                set = function(element, index, value)
                     (element % _M.DOT_LVL(typeObject.Level)).Set = ""SetAtIndex""  +_M.Add+  index  +_M.Add+  ""Is""  +_M.Add+  value;
                 end,
             });
@@ -3397,7 +3400,7 @@ _M.ATN('CsLuaTest.General','ClassWithProperty', _M.NE({
                 scope = 'Public',
                 static = false,
                 returnType = System.String.__typeof;
-                set = function(element , value)
+                set = function(element, value)
                     (CsLuaTest.BaseTest % _M.DOT).Output = value;
                 end,
             });
@@ -3407,11 +3410,11 @@ _M.ATN('CsLuaTest.General','ClassWithProperty', _M.NE({
                 scope = 'Public',
                 static = false,
                 returnType = System.String.__typeof;
+                set = function(element, value)
+                    (CsLuaTest.BaseTest % _M.DOT).Output = value;
+                end,
                 get = function(element)
                     return (CsLuaTest.BaseTest % _M.DOT).Output;
-                end,
-                set = function(element , value)
-                    (CsLuaTest.BaseTest % _M.DOT).Output = value;
                 end,
             });
             _M.IM(members, 'ACommonName',{
@@ -7638,7 +7641,7 @@ _M.ATN('CsLuaTest.Static','StaticClass', _M.NE({
                 get = function(element)
                     return (element % _M.DOT_LVL(typeObject.Level)).backingField;
                 end,
-                set = function(element , value)
+                set = function(element, value)
                     (element % _M.DOT_LVL(typeObject.Level)).backingField = value * 2;
                 end,
             });
