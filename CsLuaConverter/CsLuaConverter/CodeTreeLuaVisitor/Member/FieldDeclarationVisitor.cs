@@ -6,6 +6,7 @@
     using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class FieldDeclarationVisitor : BaseVisitor
     {
@@ -45,14 +46,17 @@
             textWriter.WriteLine("});");
         }
 
-        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IContext context, bool @static = false)
+        public static void WriteDefaultValue(FieldDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context, bool @static = false)
         {
-            if ((this.IsStatic || this.IsConst) != @static)
+            var isStatic = syntax.Modifiers.Any(n => n.GetKind().Equals(SyntaxKind.StaticKeyword));
+            var isConst = syntax.Modifiers.Any(n => n.GetKind().Equals(SyntaxKind.ConstKeyword));
+
+            if ((isStatic || isConst) != @static)
             {
                 return;
             }
 
-            this.variableVisitor.WriteDefaultValue(textWriter, context);
+            VariableDeclarationVisitor.WriteDefaultValue(syntax.Declaration, textWriter, context);
         }
 
         public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IContext context)

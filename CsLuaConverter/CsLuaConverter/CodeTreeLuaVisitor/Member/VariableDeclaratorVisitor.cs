@@ -36,18 +36,18 @@
             return this.name;
         }
 
-        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void WriteDefaultValue(VariableDeclaratorSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            textWriter.Write(this.name);
+            textWriter.Write(syntax.Identifier.Text);
 
-            if (this.valueVisitor != null)
+            if (syntax.Initializer != null)
             {
-                this.valueVisitor.Visit(textWriter, context);
+                // this.valueVisitor.Visit(textWriter, context); // TODO: reenable
                 textWriter.WriteLine(",");
             }
             else
             {
-                var symbol = (IFieldSymbol)context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as VariableDeclaratorSyntax);
+                var symbol = (IFieldSymbol)context.SemanticModel.GetDeclaredSymbol(syntax);
                 textWriter.Write(" = _M.DV(");
                 context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
                 textWriter.WriteLine("),");

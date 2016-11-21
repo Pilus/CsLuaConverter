@@ -216,9 +216,9 @@
                 PropertyDeclarationVisitor.WriteDefaultValue(property, textWriter, context);
             }
 
-            foreach (var visitor in this.fieldVisitors)
+            foreach (var field in this.Syntax.Members.OfType<FieldDeclarationSyntax>())
             {
-                visitor.WriteDefaultValue(textWriter, context);
+                FieldDeclarationVisitor.WriteDefaultValue(field, textWriter, context);
             }
 
             if (context.PartialElementState.IsLast)
@@ -247,9 +247,9 @@
                 PropertyDeclarationVisitor.WriteDefaultValue(property, textWriter, context, true);
             }
 
-            foreach (var visitor in this.fieldVisitors)
+            foreach (var field in this.Syntax.Members.OfType<FieldDeclarationSyntax>())
             {
-                visitor.WriteDefaultValue(textWriter, context, true);
+                FieldDeclarationVisitor.WriteDefaultValue(field, textWriter, context, true);
             }
 
             if (context.PartialElementState.IsLast)

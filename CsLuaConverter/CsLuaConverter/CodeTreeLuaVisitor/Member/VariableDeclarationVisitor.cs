@@ -1,8 +1,12 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Member
 {
+    using System.Linq;
+
     using CodeTree;
     using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+
     using Type;
 
     public class VariableDeclarationVisitor : BaseVisitor
@@ -25,9 +29,9 @@
             this.declaratorVisitor.Visit(textWriter, context);
         }
 
-        public void WriteDefaultValue(IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void WriteDefaultValue(VariableDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.declaratorVisitor.WriteDefaultValue(textWriter, context);
+            VariableDeclaratorVisitor.WriteDefaultValue(syntax.Variables.Single(), textWriter, context);
         }
 
         public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IContext context)
