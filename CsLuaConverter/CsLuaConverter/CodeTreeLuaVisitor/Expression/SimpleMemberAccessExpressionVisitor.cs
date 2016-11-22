@@ -32,20 +32,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (this.targetVisitor == null)
-            {
-                this.indexVisitor.Visit(textWriter, context);
-                return;
-            }
-
-            if (!(this.targetVisitor is ThisExpressionVisitor || this.targetVisitor is BaseExpressionVisitor))
-            { 
-                textWriter.Write("(");
-                this.VisitTarget(textWriter, context);
-                textWriter.Write(" % _M.DOT).");
-            }
-
-            this.indexVisitor.Visit(textWriter, context);
+            throw new NotImplementedException(); // Moved
+            
         }
 
         private void VisitTarget(IIndentedTextWriterWrapper textWriter, IContext context)

@@ -2,8 +2,10 @@
 {
     using System;
 
+    using CsLuaConverter.CodeTreeLuaVisitor.Expression;
     using CsLuaConverter.Context;
 
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -14,7 +16,10 @@
                 {
                     throw new Exception($"Could not find extension method for expressionSyntax {obj.GetType().Name}.");
                 })
-            .Case<AssignmentExpressionSyntax>(Write);
+            .Case<AssignmentExpressionSyntax>(Write)
+            .Case<MemberAccessExpressionSyntax>(Write)
+            .Case<TypeSyntax>(TypeExtensions.Write);
+
         /*
         AnonymousFunctionExpressionSyntax
         AnonymousObjectCreationExpressionSyntax
@@ -37,7 +42,6 @@
         InvocationExpressionSyntax
         LiteralExpressionSyntax
         MakeRefExpressionSyntax
-        MemberAccessExpressionSyntax
         MemberBindingExpressionSyntax
         ObjectCreationExpressionSyntax
         OmittedArraySizeExpressionSyntax
@@ -50,7 +54,6 @@
         SizeOfExpressionSyntax
         StackAllocArrayCreationExpressionSyntax
         TypeOfExpressionSyntax
-        TypeSyntax
         */
 
         public static void Write(this ExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
@@ -118,6 +121,50 @@
             textWriter.Write(delimiter);
             syntax.Right.Write(textWriter, context);
             textWriter.Write(suffix);
+        }
+
+
+        public static void Write(this MemberAccessExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            if (syntax.Expression == null)
+            {
+                syntax.Name.Write(textWriter, context);
+                return;
+            }
+
+            if (!(syntax.Expression is ThisExpressionSyntax || syntax.Expression is BaseExpressionSyntax))
+            {
+                textWriter.Write("(");
+                WriteAccessExpression(syntax, textWriter, context);
+                textWriter.Write(" % _M.DOT).");
+            }
+
+            syntax.Name.Write(textWriter, context);
+        }
+
+        private static void WriteAccessExpression(MemberAccessExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = context.SemanticModel.GetSymbolInfo(syntax).Symbol;
+
+            if (symbol == null)
+            {
+                syntax.Expression.Write(textWriter, context);
+                return;
+            }
+
+            if (symbol is ITypeSymbol)
+            {
+                context.TypeReferenceWriter.WriteInteractionElementReference((ITypeSymbol)symbol, textWriter);
+                return;
+            }
+
+            if (!symbol.IsStatic)
+            {
+                syntax.Expression.Write(textWriter, context);
+                return;
+            }
+
+            context.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
         }
     }
 }
