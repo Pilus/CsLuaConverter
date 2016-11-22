@@ -42,7 +42,7 @@
 
             if (syntax.Initializer != null)
             {
-                // this.valueVisitor.Visit(textWriter, context); // TODO: reenable
+                EqualsValueClauseVisitor.Visit(syntax.Initializer, textWriter, context);
                 textWriter.WriteLine(",");
             }
             else
@@ -52,11 +52,6 @@
                 context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
                 textWriter.WriteLine("),");
             }
-        }
-
-        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            textWriter.WriteLine($"if not(values.{this.name} == nil) then element[typeObject.Level].{this.name} = values.{this.name}; end");
         }
     }
 }

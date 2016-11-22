@@ -17,7 +17,12 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            textWriter.Write(this.Syntax.Identifier.Text);
+            Visit(this.Syntax, textWriter, context);
+        }
+
+        public static void Visit(TypeParameterSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write(syntax.Identifier.Text);
         }
     }
 }

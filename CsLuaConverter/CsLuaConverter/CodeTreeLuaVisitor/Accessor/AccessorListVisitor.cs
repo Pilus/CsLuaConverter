@@ -22,21 +22,17 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            VisitAllNodes(this.Syntax.Accessors, textWriter, context);
-            //this.getVisitor?.Visit(textWriter, context);
-            //this.setVisitor?.Visit(textWriter, context);
+            Visit(this.Syntax, textWriter, context);
+        }
+
+        public static void Visit(AccessorListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            VisitAllNodes(syntax.Accessors, textWriter, context);
         }
 
         public bool IsAutoProperty()
         {
             return this.Syntax.Accessors.Any(a => a.Body == null);
-            //return (this.getVisitor?.IsAutoProperty() ?? false) && (this.setVisitor == null || this.setVisitor.IsAutoProperty());
-        }
-
-        public void SetAdditionalParameters(string getParameters, string setParameters)
-        {
-            //this.getVisitor.AdditionalParameters = getParameters;
-            //this.setVisitor.AdditionalParameters = setParameters;
         }
     }
 }

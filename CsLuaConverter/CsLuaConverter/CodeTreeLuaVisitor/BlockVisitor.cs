@@ -17,8 +17,13 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            Visit(this.Syntax, textWriter, context);
+        }
+
+        public static void Visit(BlockSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
             textWriter.Indent++;
-            VisitAllNodes(this.Syntax.Statements, textWriter, context);
+            VisitAllNodes(syntax.Statements, textWriter, context);
             textWriter.Indent--;
         }
     }

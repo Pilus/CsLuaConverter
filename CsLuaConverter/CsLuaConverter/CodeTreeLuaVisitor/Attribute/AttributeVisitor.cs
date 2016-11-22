@@ -25,7 +25,12 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = context.SemanticModel.GetSymbolInfo(this.Syntax).Symbol;
+            Visit(this.Syntax, textWriter, context);
+        }
+
+        public static void Visit(AttributeSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = context.SemanticModel.GetSymbolInfo(syntax).Symbol;
             context.TypeReferenceWriter.WriteTypeReference(symbol.ContainingType, textWriter);
         }
 

@@ -49,7 +49,6 @@
             context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
             textWriter.WriteLine(";");
 
-            //context.Context.CurrentType = this.type.GetType(context);
             this.accessorList.Visit(textWriter, context);
             textWriter.Indent--;
             textWriter.WriteLine("});");
@@ -68,9 +67,9 @@
             textWriter.WriteLine("),");
         }
 
-        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void WriteInitializeValue(PropertyDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            textWriter.WriteLine($"if not(values.{this.name} == nil) then element[typeObject.Level].{this.name} = values.{this.name}; end");
+            textWriter.WriteLine($"if not(values.{syntax.Identifier.Text} == nil) then element[typeObject.Level].{syntax.Identifier.Text} = values.{syntax.Identifier.Text}; end");
         }
     }
 }

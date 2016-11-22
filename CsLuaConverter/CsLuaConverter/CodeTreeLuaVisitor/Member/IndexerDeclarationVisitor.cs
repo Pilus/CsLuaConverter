@@ -48,8 +48,6 @@
 
             if (!this.accessorList.IsAutoProperty())
             {
-                var indexerParameter = symbol.Parameters.Single().Name;
-                this.accessorList.SetAdditionalParameters("," + indexerParameter, "," + indexerParameter);
                 this.accessorList.Visit(textWriter, context);
             }
             else

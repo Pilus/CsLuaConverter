@@ -20,13 +20,18 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (this.Syntax.Modifiers.Any(mod => mod.Kind() == SyntaxKind.ParamsKeyword))
+            Visit(this.Syntax, textWriter, context);
+        }
+
+        public static void Visit(ParameterSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            if (syntax.Modifiers.Any(mod => mod.Kind() == SyntaxKind.ParamsKeyword))
             {
                 textWriter.Write("firstParam, ...");
             }
             else
             {
-                textWriter.Write(this.Syntax.Identifier.Text);
+                textWriter.Write(syntax.Identifier.Text);
             }
         }
     }

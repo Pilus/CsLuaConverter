@@ -59,9 +59,10 @@
             VariableDeclarationVisitor.WriteDefaultValue(syntax.Declaration, textWriter, context);
         }
 
-        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void WriteInitializeValue(FieldDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.variableVisitor.WriteInitializeValue(textWriter, context);
+            var name = syntax.Declaration.Variables.Single().Identifier.Text;
+            textWriter.WriteLine($"if not(values.{name} == nil) then element[typeObject.Level].{name} = values.{name}; end");
         }
     }
 }

@@ -24,10 +24,15 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            Visit(this.Syntax, textWriter, context);
+        }
+
+        public static void Visit(AttributeListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
             textWriter.WriteLine("local attributes = {");
             textWriter.Indent++;
 
-            VisitAllNodes(this.Syntax.Attributes, textWriter, context);
+            VisitAllNodes(syntax.Attributes, textWriter, context);
 
             textWriter.Indent--;
             textWriter.WriteLine("};");

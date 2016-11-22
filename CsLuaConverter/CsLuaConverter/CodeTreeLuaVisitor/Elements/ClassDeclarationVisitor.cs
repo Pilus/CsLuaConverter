@@ -33,13 +33,13 @@
 
         public ClassDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
-            //this.CreateVisitors();
+            this.CreateVisitors();
         }
 
         public ClassDeclarationVisitor(ClassDeclarationSyntax syntax) : base(syntax)
         {
         }
-        /*
+        
         private void CreateVisitors()
         {
             var accessorNodes = this.GetFilteredNodes(new KindRangeFilter(null, SyntaxKind.ClassKeyword));
@@ -76,7 +76,7 @@
                 this.CreateVisitors(new KindFilter(SyntaxKind.ConstructorDeclaration))
                     .Select(v => (ConstructorDeclarationVisitor) v)
                     .ToArray();
-        } */
+        } //*/
 
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
@@ -270,14 +270,14 @@
                 textWriter.WriteLine("if baseInitialize then baseInitialize(element, values); end");
             }
 
-            foreach (var visitor in this.propertyVisitors)
+            foreach (var property in this.Syntax.Members.OfType<PropertyDeclarationSyntax>())
             {
-                visitor.WriteInitializeValue(textWriter, context);
+                PropertyDeclarationVisitor.WriteInitializeValue(property, textWriter, context);
             }
 
-            foreach (var visitor in this.fieldVisitors)
+            foreach (var field in this.Syntax.Members.OfType<FieldDeclarationSyntax>())
             {
-                visitor.WriteInitializeValue(textWriter, context);
+                FieldDeclarationVisitor.WriteInitializeValue(field, textWriter, context);
             }
 
             if (context.PartialElementState.IsLast)
@@ -375,6 +375,14 @@
         public int GetNumOfGenerics()
         {
             return this.Syntax.TypeParameterList?.Parameters.Count ?? 0;
+        }
+
+        private static void ForEachMember<T>(ClassDeclarationSyntax syntax, System.Action<T, IIndentedTextWriterWrapper, IContext> action, IIndentedTextWriterWrapper textWriter, IContext context) where T : MemberDeclarationSyntax
+        {
+            foreach (var memberSyntax in syntax.Members.OfType<T>())
+            {
+                action(memberSyntax, textWriter, context);
+            }
         }
     }
 }

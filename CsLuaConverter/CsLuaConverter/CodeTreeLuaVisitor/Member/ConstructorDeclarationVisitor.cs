@@ -35,7 +35,11 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var syntax = (ConstructorDeclarationSyntax)this.Branch.SyntaxNode;
+            this.Visit((ConstructorDeclarationSyntax) this.Branch.SyntaxNode, textWriter, context);
+        }
+
+        public void Visit(ConstructorDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
             var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
 
             textWriter.WriteLine("_M.IM(members, '', {");

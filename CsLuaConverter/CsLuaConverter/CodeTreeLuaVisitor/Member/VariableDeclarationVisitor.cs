@@ -33,10 +33,5 @@
         {
             VariableDeclaratorVisitor.WriteDefaultValue(syntax.Variables.Single(), textWriter, context);
         }
-
-        public void WriteInitializeValue(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            this.declaratorVisitor.WriteInitializeValue(textWriter, context);
-        }
     }
 }

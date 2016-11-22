@@ -21,28 +21,33 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (this.Syntax.Body == null)
+            Visit(this.Syntax, textWriter, context);
+        }
+
+        public static void Visit(AccessorDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            if (syntax.Body == null)
             {
                 return;
             }
 
-            textWriter.Write(this.Syntax.Keyword.Text);
+            textWriter.Write(syntax.Keyword.Text);
             textWriter.Write(" = function(element");
 
-            var indexerDeclaration = this.Syntax.Parent.Parent as IndexerDeclarationSyntax;
+            var indexerDeclaration = syntax.Parent.Parent as IndexerDeclarationSyntax;
             if (indexerDeclaration != null)
             {
                 textWriter.Write(", ");
                 VisitAllNodes(indexerDeclaration.ParameterList.Parameters, textWriter, context, () => textWriter.Write(", "));
             }
 
-            if (this.Syntax.Keyword.Kind() == SyntaxKind.SetKeyword)
+            if (syntax.Keyword.Kind() == SyntaxKind.SetKeyword)
             {
                 textWriter.Write(", value");
             }
 
             textWriter.WriteLine(")");
-            VisitNode(this.Syntax.Body, textWriter, context);
+            VisitNode(syntax.Body, textWriter, context);
             textWriter.WriteLine("end,");
         }
 

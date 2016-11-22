@@ -18,8 +18,13 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            Visit(this.Syntax, textWriter, context);
+        }
+
+        public static void Visit(EqualsValueClauseSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
             textWriter.Write(" = ");
-            VisitNode(this.Syntax.Value, textWriter, context);
+            VisitNode(syntax.Value, textWriter, context);
         }
     }
 }
