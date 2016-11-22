@@ -70,49 +70,5 @@
                 textWriter.Write(syntax.Identifier.Text);
             }
         }
-
-        private static readonly TypeSwitch StatementTypeSwitch = new TypeSwitch(obj =>
-        {
-            throw new Exception($"Could not find extension method for statementSyntax {obj.GetType().Name}.");
-        })
-            .Case<BlockSyntax>(Write);
-
-        /*
-        BreakStatementSyntax
-        CheckedStatementSyntax
-        ContinueStatementSyntax
-        DoStatementSyntax
-        EmptyStatementSyntax
-        ExpressionStatementSyntax
-        FixedStatementSyntax
-        ForEachStatementSyntax
-        ForStatementSyntax
-        GotoStatementSyntax
-        IfStatementSyntax
-        LabeledStatementSyntax
-        LocalDeclarationStatementSyntax
-        LockStatementSyntax
-        ReturnStatementSyntax
-        SwitchStatementSyntax
-        ThrowStatementSyntax
-        TryStatementSyntax
-        UnsafeStatementSyntax
-        UsingStatementSyntax
-        WhileStatementSyntax
-        YieldStatementSyntax
-        */
-
-        public static void Write(this StatementSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            StatementTypeSwitch.Write(syntax, textWriter, context);
-        }
-
-        public static void Write(this BlockSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            textWriter.Indent++;
-            syntax.Statements.Write(Write, textWriter, context);
-            textWriter.Indent--;
-        }
-
     }
 }
