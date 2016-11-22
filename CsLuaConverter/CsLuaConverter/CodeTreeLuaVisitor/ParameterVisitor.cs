@@ -4,6 +4,7 @@
 
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Type;
@@ -20,19 +21,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            Visit(this.Syntax, textWriter, context);
-        }
-
-        public static void Visit(ParameterSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            if (syntax.Modifiers.Any(mod => mod.Kind() == SyntaxKind.ParamsKeyword))
-            {
-                textWriter.Write("firstParam, ...");
-            }
-            else
-            {
-                textWriter.Write(syntax.Identifier.Text);
-            }
+            this.Syntax.Write(textWriter, context);
         }
     }
 }

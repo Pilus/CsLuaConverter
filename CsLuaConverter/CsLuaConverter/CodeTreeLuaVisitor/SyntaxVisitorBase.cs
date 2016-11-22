@@ -54,7 +54,7 @@
             return BaseVisitor.CreateVisitor(new CodeTreeBranch(node, null));
         }
 
-        protected static void VisitNode(CSharpSyntaxNode node, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void VisitNode(CSharpSyntaxNode node, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var visitor = CreateVisitor(node);
             visitor.Visit(textWriter, context);

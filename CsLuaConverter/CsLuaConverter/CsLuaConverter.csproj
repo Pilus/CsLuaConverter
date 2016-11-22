@@ -289,6 +289,8 @@
     <Compile Include="CsLuaMetaReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="AddOnConstruction\TocBuilder.cs" />
+    <Compile Include="SyntaxExtensions\Extensions.cs" />
+    <Compile Include="SyntaxExtensions\TypeSwitch.cs" />
     <Compile Include="WrappingException.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,8 +9,6 @@
 
     public class AccessorListVisitor : SyntaxVisitorBase<AccessorListSyntax>, IAccessor
     {
-        private readonly AccessorDeclarationVisitor getVisitor;
-
         public AccessorListVisitor(CodeTreeBranch branch) : base(branch)
         {
         }

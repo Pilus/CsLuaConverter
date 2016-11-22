@@ -2,6 +2,7 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -17,14 +18,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            Visit(this.Syntax, textWriter, context);
-        }
-
-        public static void Visit(BlockSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            textWriter.Indent++;
-            VisitAllNodes(syntax.Statements, textWriter, context);
-            textWriter.Indent--;
+            this.Syntax.Write(textWriter, context);
         }
     }
 }
