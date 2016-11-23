@@ -4,6 +4,7 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -32,33 +33,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            throw new NotImplementedException(); // Moved
-            
+            var syntax = (MemberAccessExpressionSyntax) this.Branch.SyntaxNode;
+            syntax.Write(textWriter, context);
         }
 
-        private void VisitTarget(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            var symbol = context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
-
-            if (symbol == null)
-            {
-                this.targetVisitor.Visit(textWriter, context);
-                return;
-            }
-
-            if (symbol is ITypeSymbol)
-            {
-                context.TypeReferenceWriter.WriteInteractionElementReference((ITypeSymbol)symbol, textWriter);
-                return;
-            }
-
-            if (!symbol.IsStatic)
-            {
-                this.targetVisitor.Visit(textWriter, context);
-                return;
-            }
-
-            context.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
-        }
     }
 }

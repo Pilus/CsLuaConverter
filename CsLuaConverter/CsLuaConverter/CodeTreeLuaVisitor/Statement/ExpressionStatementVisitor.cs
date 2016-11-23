@@ -4,6 +4,7 @@
 
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -18,10 +19,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            throw new NotImplementedException();
             var syntax = (ExpressionStatementSyntax)this.Branch.SyntaxNode;
-            this.innerVisitor.Visit(textWriter, context);
-            textWriter.WriteLine(";");
+            syntax.Write(textWriter, context);
         }
     }
 }

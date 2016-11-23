@@ -7,9 +7,9 @@
     public class TypeSwitch
     {
         private readonly Dictionary<Type, Delegate> matches = new Dictionary<Type, Delegate>();
-        private readonly Action<object> defaultAction;
+        private readonly Action<object, IIndentedTextWriterWrapper, IContext> defaultAction;
 
-        public TypeSwitch(Action<object> defaultAction)
+        public TypeSwitch(Action<object, IIndentedTextWriterWrapper, IContext> defaultAction)
         {
             this.defaultAction = defaultAction;
         }
@@ -29,7 +29,7 @@
             }
             else
             {
-                this.defaultAction(obj);
+                this.defaultAction(obj, textWriter, context);
             }
         }
     }

@@ -1,7 +1,7 @@
 ﻿namespace CsLuaConverter.SyntaxExtensions
 {
     using System;
-
+    using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.CodeTreeLuaVisitor.Expression;
     using CsLuaConverter.Context;
 
@@ -12,9 +12,10 @@
     public static class ExpressionExtensions
     {
         private static readonly TypeSwitch TypeSwitch = new TypeSwitch(
-            obj =>
+            (syntax, textWriter, context) =>
                 {
-                    throw new Exception($"Could not find extension method for expressionSyntax {obj.GetType().Name}.");
+                    SyntaxVisitorBase<MemberAccessExpressionSyntax>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
+                    //throw new Exception($"Could not find extension method for expressionSyntax {obj.GetType().Name}.");
                 })
             .Case<AssignmentExpressionSyntax>(Write)
             .Case<MemberAccessExpressionSyntax>(Write)
@@ -66,15 +67,19 @@
             string prefix = "";
             string delimiter = "";
             string suffix = "";
+            bool skipRepeatOfLeft = false;
 
             switch (syntax.Kind())
             {
+                case SyntaxKind.SimpleAssignmentExpression:
+                    skipRepeatOfLeft = true;
+                    break;
                 case SyntaxKind.AddAssignmentExpression:
                     delimiter = " +_M.Add+ ";
                     break;
                 case SyntaxKind.AndAssignmentExpression:
                     prefix = "bit.band(";
-                    delimiter = ",";
+                    delimiter = ", ";
                     suffix = ")";
                     break;
                 case SyntaxKind.DivideAssignmentExpression:
@@ -82,43 +87,49 @@
                     break;
                 case SyntaxKind.ExclusiveOrAssignmentExpression:
                     prefix = "bit.bxor(";
-                    delimiter = ",";
+                    delimiter = ", ";
                     suffix = ")";
                     break;
                 case SyntaxKind.LeftShiftAssignmentExpression:
                     prefix = "bit.lshift(";
-                    delimiter = ",";
+                    delimiter = ", ";
                     suffix = ")";
                     break;
                 case SyntaxKind.ModuloAssignmentExpression:
                     prefix = "math.mod(";
-                    delimiter = ",";
+                    delimiter = ", ";
                     suffix = ")";
                     break;
                 case SyntaxKind.MultiplyAssignmentExpression:
-                    delimiter = " / ";
+                    delimiter = " * ";
                     break;
                 case SyntaxKind.OrAssignmentExpression:
                     prefix = "bit.bor(";
-                    delimiter = ",";
+                    delimiter = ", ";
                     suffix = ")";
                     break;
                 case SyntaxKind.RightShiftAssignmentExpression:
                     prefix = "bit.rshift(";
-                    delimiter = ",";
+                    delimiter = ", ";
                     suffix = ")";
                     break;
                 case SyntaxKind.SubtractAssignmentExpression:
                     delimiter = " - ";
                     break;
+                default:
+                    throw new Exception($"Unknown assignment expression kind: {syntax.Kind()}.");
             }
 
             syntax.Left.Write(textWriter, context);
             textWriter.Write(" = ");
 
             textWriter.Write(prefix);
-            syntax.Left.Write(textWriter, context);
-            textWriter.Write(delimiter);
+            if (!skipRepeatOfLeft)
+            {
+                syntax.Left.Write(textWriter, context);
+                textWriter.Write(delimiter);
+            }
+            
             syntax.Right.Write(textWriter, context);
             textWriter.Write(suffix);
         }
