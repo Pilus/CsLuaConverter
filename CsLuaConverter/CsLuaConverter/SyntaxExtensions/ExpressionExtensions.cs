@@ -1,6 +1,9 @@
 ﻿namespace CsLuaConverter.SyntaxExtensions
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.CodeTreeLuaVisitor.Expression;
     using CsLuaConverter.Context;
@@ -14,12 +17,15 @@
         private static readonly TypeSwitch TypeSwitch = new TypeSwitch(
             (syntax, textWriter, context) =>
                 {
-                    SyntaxVisitorBase<MemberAccessExpressionSyntax>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
-                    //throw new Exception($"Could not find extension method for expressionSyntax {obj.GetType().Name}.");
+                    SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
+                    //throw new Exception($"Could not find extension method for expressionSyntax {syntax.GetType().Name}.");
                 })
             .Case<AssignmentExpressionSyntax>(Write)
             .Case<MemberAccessExpressionSyntax>(Write)
-            .Case<TypeSyntax>(TypeExtensions.Write);
+            .Case<TypeSyntax>(TypeExtensions.Write)
+            .Case<ObjectCreationExpressionSyntax>(Write)
+            .Case<NameSyntax>(NameExtensions.Write)
+            .Case<IdentifierNameSyntax>(NameExtensions.Write);
 
         /*
         AnonymousFunctionExpressionSyntax
@@ -44,7 +50,6 @@
         LiteralExpressionSyntax
         MakeRefExpressionSyntax
         MemberBindingExpressionSyntax
-        ObjectCreationExpressionSyntax
         OmittedArraySizeExpressionSyntax
         ParenthesizedExpressionSyntax
         PostfixUnaryExpressionSyntax
@@ -176,6 +181,63 @@
             }
 
             context.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
+        }
+
+        public static void Write(this ObjectCreationExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(syntax).Symbol;
+
+            textWriter.Write(syntax.Initializer != null ? "(" : "");
+
+
+            ITypeSymbol[] parameterTypes = null;
+            IDictionary<ITypeSymbol, ITypeSymbol> appliedClassGenerics = null;
+            if (symbol != null)
+            {
+                context.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
+                parameterTypes = symbol.OriginalDefinition.Parameters.Select(p => p.Type).ToArray();
+                appliedClassGenerics = ((TypeSymbolSemanticAdaptor) context.SemanticAdaptor).GetAppliedClassGenerics(symbol.ContainingType);
+            }
+            else
+            {
+                // Special case for missing symbol. Roslyn issue 3825. https://github.com/dotnet/roslyn/issues/3825
+                var namedTypeSymbol = (INamedTypeSymbol)context.SemanticModel.GetSymbolInfo(syntax.Type).Symbol;
+                context.TypeReferenceWriter.WriteInteractionElementReference(namedTypeSymbol, textWriter);
+
+                if (namedTypeSymbol.TypeKind != TypeKind.Delegate)
+                {
+                    throw new Exception($"Could not guess constructor for {namedTypeSymbol}.");
+                }
+
+                parameterTypes = new ITypeSymbol[] { namedTypeSymbol };
+            }
+
+            var signatureWiter = textWriter.CreateTextWriterAtSameIndent();
+            var hasGenricComponents = context.SignatureWriter.WriteSignature(parameterTypes, signatureWiter, appliedClassGenerics);
+
+            if (hasGenricComponents)
+            {
+                textWriter.Write("['_C_0_'..");
+            }
+            else
+            {
+                textWriter.Write("._C_0_");
+            }
+
+            textWriter.AppendTextWriter(signatureWiter);
+
+            if (hasGenricComponents)
+            {
+                textWriter.Write("]");
+            }
+
+            SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode(syntax.ArgumentList, textWriter, context);
+
+            if (syntax.Initializer != null)
+            {
+                textWriter.Write(" % _M.DOT)");
+                SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode(syntax.Initializer, textWriter, context);
+            }
         }
     }
 }

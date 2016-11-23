@@ -6,6 +6,8 @@
 
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
+
     using Lists;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
@@ -26,7 +28,7 @@
             {
                 this.constructorArgumentsVisitor = (ArgumentListVisitor)this.CreateVisitor(i);
                 i++;
-            }            
+            }
 
             if (this.IsKind(i, SyntaxKind.CollectionInitializerExpression) || this.IsKind(i, SyntaxKind.ObjectInitializerExpression))
             {
@@ -40,60 +42,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var node = (ObjectCreationExpressionSyntax)this.Branch.SyntaxNode;
-            var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(node).Symbol;
-
-            textWriter.Write(this.initializer != null ? "(" : "");
-
-
-            ITypeSymbol[] parameterTypes = null;
-            IDictionary<ITypeSymbol, ITypeSymbol> appliedClassGenerics = null;
-            if (symbol != null)
-            {
-                context.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
-                parameterTypes = symbol.OriginalDefinition.Parameters.Select(p => p.Type).ToArray();
-                appliedClassGenerics = ((TypeSymbolSemanticAdaptor) context.SemanticAdaptor).GetAppliedClassGenerics(symbol.ContainingType);
-            }
-            else
-            {
-                // Special case for missing symbol. Roslyn issue 3825. https://github.com/dotnet/roslyn/issues/3825
-                var namedTypeSymbol = (INamedTypeSymbol)context.SemanticModel.GetSymbolInfo(node.Type).Symbol;
-                context.TypeReferenceWriter.WriteInteractionElementReference(namedTypeSymbol, textWriter);
-
-                if (namedTypeSymbol.TypeKind != TypeKind.Delegate)
-                {
-                    throw new Exception($"Could not guess constructor for {namedTypeSymbol}.");
-                }
-
-                parameterTypes = new ITypeSymbol[] { namedTypeSymbol };
-            }
-
-            var signatureWiter = textWriter.CreateTextWriterAtSameIndent();
-            var hasGenricComponents = context.SignatureWriter.WriteSignature(parameterTypes, signatureWiter, appliedClassGenerics);
-
-            if (hasGenricComponents)
-            {
-                textWriter.Write("['_C_0_'..");
-            }
-            else
-            {
-                textWriter.Write("._C_0_");
-            }
-
-            textWriter.AppendTextWriter(signatureWiter);
-
-            if (hasGenricComponents)
-            {
-                textWriter.Write("]");
-            }
-            
-            this.constructorArgumentsVisitor.Visit(textWriter, context);
-
-            if (this.initializer != null)
-            {
-                textWriter.Write(" % _M.DOT)");
-                this.initializer.Visit(textWriter, context);
-            }
+            var syntax = (ObjectCreationExpressionSyntax)this.Branch.SyntaxNode;
+            syntax.Write(textWriter, context);
         }
     }
 }
