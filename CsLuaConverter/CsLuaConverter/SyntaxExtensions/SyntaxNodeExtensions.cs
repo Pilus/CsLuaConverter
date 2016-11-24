@@ -9,8 +9,68 @@
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    public static class Extensions
+    public static class SyntaxNodeExtensions
     {
+
+        /*
+        AccessorListSyntax
+        AnonymousObjectMemberDeclaratorSyntax
+        ArrayRankSpecifierSyntax
+        ArrowExpressionClauseSyntax
+        AttributeArgumentListSyntax
+        AttributeArgumentSyntax
+        AttributeListSyntax
+        AttributeSyntax
+        AttributeTargetSpecifierSyntax
+        BaseArgumentListSyntax (multiple) http://www.coderesx.com/roslyn/html/CD5162BE.htm
+        BaseCrefParameterListSyntax (multiple) http://www.coderesx.com/roslyn/html/8DFF3B4E.htm
+        BaseListSyntax
+        BaseParameterListSyntax (multiple) http://www.coderesx.com/roslyn/html/E5C82C37.htm
+        BaseTypeSyntax
+        CatchClauseSyntax
+        CatchDeclarationSyntax
+        CatchFilterClauseSyntax
+        CompilationUnitSyntax
+        ConstructorInitializerSyntax
+        CrefParameterSyntax
+        CrefSyntax
+        ElseClauseSyntax
+        EqualsValueClauseSyntax
+        ExplicitInterfaceSpecifierSyntax
+        ExpressionSyntax
+        ExternAliasDirectiveSyntax
+        FinallyClauseSyntax
+        InterpolatedStringContentSyntax (multiple) http://www.coderesx.com/roslyn/html/21FD763E.htm
+        InterpolationAlignmentClauseSyntax
+        InterpolationFormatClauseSyntax
+        JoinIntoClauseSyntax
+        MemberDeclarationSyntax (multiple) http://www.coderesx.com/roslyn/html/1EB73B23.htm#fullInheritance
+        NameColonSyntax
+        NameEqualsSyntax
+        OrderingSyntax
+        QueryBodySyntax
+        QueryClauseSyntax (multiple) http://www.coderesx.com/roslyn/html/653AF424.htm
+        QueryContinuationSyntax
+        SelectOrGroupClauseSyntax (multiple) http://www.coderesx.com/roslyn/html/22E3D638.htm
+        StructuredTriviaSyntax (multiple) http://www.coderesx.com/roslyn/html/95F4125E.htm
+        SwitchLabelSyntax (multiple) http://www.coderesx.com/roslyn/html/9DA2DA90.htm
+        SwitchSectionSyntax
+        TypeArgumentListSyntax
+        TypeParameterConstraintClauseSyntax
+        TypeParameterConstraintSyntax (multiple) http://www.coderesx.com/roslyn/html/4B6E21F4.htm
+        TypeParameterListSyntax
+        TypeParameterSyntax
+        UsingDirectiveSyntax
+        VariableDeclarationSyntax
+        VariableDeclaratorSyntax
+        XmlAttributeSyntax (multiple) http://www.coderesx.com/roslyn/html/C79783A1.htm
+        XmlElementEndTagSyntax
+        XmlElementStartTagSyntax
+        XmlNameSyntax
+        XmlNodeSyntax
+        XmlPrefixSyntax
+        */
+
         public static void Write<T>(this SeparatedSyntaxList<T> list, Action<T, IIndentedTextWriterWrapper, IContext> action, IIndentedTextWriterWrapper textWriter, IContext context) where T : CSharpSyntaxNode
         {
             for (var index = 0; index < list.Count; index++)

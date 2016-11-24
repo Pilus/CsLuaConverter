@@ -279,7 +279,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="AddOnConstruction\TocBuilder.cs" />
     <Compile Include="SyntaxExtensions\ExpressionExtensions.cs" />
-    <Compile Include="SyntaxExtensions\Extensions.cs" />
+    <Compile Include="SyntaxExtensions\SyntaxNodeExtensions.cs" />
     <Compile Include="SyntaxExtensions\NameExtensions.cs" />
     <Compile Include="SyntaxExtensions\StatementExtensions.cs" />
     <Compile Include="SyntaxExtensions\TypeExtensions.cs" />
