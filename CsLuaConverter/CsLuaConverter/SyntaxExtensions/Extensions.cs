@@ -70,5 +70,10 @@
                 textWriter.Write(syntax.Identifier.Text);
             }
         }
+
+        public static void Write(this ArgumentSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            syntax.Expression.Write(textWriter, context);
+        }
     }
 }

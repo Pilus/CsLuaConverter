@@ -3,6 +3,8 @@
     using System;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class LiteralVisitorBase : BaseVisitor
     {
@@ -15,7 +17,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            textWriter.Write(this.text);
+            var syntax = (LiteralExpressionSyntax) this.Branch.SyntaxNode;
+            syntax.Write(textWriter, context);
         }
     }
 }

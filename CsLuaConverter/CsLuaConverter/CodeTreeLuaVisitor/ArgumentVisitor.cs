@@ -3,6 +3,7 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ArgumentVisitor : SyntaxVisitorBase<ArgumentSyntax>
@@ -17,12 +18,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            Visit(this.Syntax, textWriter, context);
-        }
-
-        public static void Visit(ArgumentSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            VisitNode(syntax.Expression, textWriter, context);
+            this.Syntax.Write(textWriter, context);
         }
     }
 }

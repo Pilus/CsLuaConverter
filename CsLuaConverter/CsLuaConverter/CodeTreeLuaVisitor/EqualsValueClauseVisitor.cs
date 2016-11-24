@@ -2,6 +2,7 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -24,7 +25,7 @@
         public static void Visit(EqualsValueClauseSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write(" = ");
-            VisitNode(syntax.Value, textWriter, context);
+            syntax.Value.Write(textWriter, context);
         }
     }
 }

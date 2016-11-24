@@ -18,14 +18,15 @@
             (syntax, textWriter, context) =>
                 {
                     SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
-                    //throw new Exception($"Could not find extension method for expressionSyntax {syntax.GetType().Name}.");
+                    //throw new Exception($"Could not find extension method for expressionSyntax {syntax.GetType().Name}. Kind: {(syntax as CSharpSyntaxNode)?.Kind().ToString() ?? "null"}.");
                 })
             .Case<AssignmentExpressionSyntax>(Write)
             .Case<MemberAccessExpressionSyntax>(Write)
             .Case<TypeSyntax>(TypeExtensions.Write)
             .Case<ObjectCreationExpressionSyntax>(Write)
             .Case<NameSyntax>(NameExtensions.Write)
-            .Case<InvocationExpressionSyntax>(Write);
+            .Case<InvocationExpressionSyntax>(Write)
+            .Case<LiteralExpressionSyntax>(Write);
 
         /*
         AnonymousFunctionExpressionSyntax
@@ -46,7 +47,6 @@
         InitializerExpressionSyntax
         InstanceExpressionSyntax
         InterpolatedStringExpressionSyntax
-        LiteralExpressionSyntax
         MakeRefExpressionSyntax
         MemberBindingExpressionSyntax
         OmittedArraySizeExpressionSyntax
@@ -362,6 +362,26 @@
             }
             
             textWriter.Write(argStr.Substring(1)); // Skip the opening (
+        }
+
+        public static void Write(this LiteralExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var text = syntax.Token.Text;
+            switch (syntax.Kind())
+            {
+                case SyntaxKind.NullLiteralExpression:
+                    text = "nil";
+                    break;
+                case SyntaxKind.StringLiteralExpression:
+                    if (text.StartsWith("@"))
+                    {
+                        text = "[[" + text.Substring(2, text.Length - 3) + "]]";
+                    }
+                    break;
+            }
+
+
+            textWriter.Write(text);
         }
     }
 }
