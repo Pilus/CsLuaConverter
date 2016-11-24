@@ -25,7 +25,7 @@
             .Case<TypeSyntax>(TypeExtensions.Write)
             .Case<ObjectCreationExpressionSyntax>(Write)
             .Case<NameSyntax>(NameExtensions.Write)
-            .Case<IdentifierNameSyntax>(NameExtensions.Write);
+            .Case<InvocationExpressionSyntax>(Write);
 
         /*
         AnonymousFunctionExpressionSyntax
@@ -46,7 +46,6 @@
         InitializerExpressionSyntax
         InstanceExpressionSyntax
         InterpolatedStringExpressionSyntax
-        InvocationExpressionSyntax
         LiteralExpressionSyntax
         MakeRefExpressionSyntax
         MemberBindingExpressionSyntax
@@ -238,6 +237,131 @@
                 textWriter.Write(" % _M.DOT)");
                 SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode(syntax.Initializer, textWriter, context);
             }
+        }
+
+        private static readonly string[] namespacesWithNoAmbigiousMethods = new [] {"Lua"};
+
+        public static void Write(this InvocationExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = (IMethodSymbol) ModelExtensions.GetSymbolInfo(context.SemanticModel, syntax).Symbol;
+
+            if (symbol.IsExtensionMethod && symbol.MethodKind == MethodKind.ReducedExtension)
+            {
+                WriteAsExtensionMethodCall(syntax, textWriter, context, symbol);
+                return;
+            }
+
+            textWriter.Write("(");
+
+            if (symbol.MethodKind != MethodKind.DelegateInvoke)
+            {
+                var signatureTextWriter = textWriter.CreateTextWriterAtSameIndent();
+                var signatureHasGenerics =
+                    context.SignatureWriter.WriteSignature(symbol.ConstructedFrom.Parameters.Select(p => p.Type).ToArray(),
+                        signatureTextWriter);
+
+                if (signatureHasGenerics)
+                {
+                    var targetWriter = textWriter.CreateTextWriterAtSameIndent();
+                    syntax.Expression.Write(targetWriter, context);
+
+                    var expectedEnd = $".{symbol.Name}.";
+                    if (targetWriter.ToString().EndsWith(expectedEnd))
+                    {
+                        throw new Exception($"Expect index visitor to end with '{expectedEnd}'. Got '{targetWriter}'");
+                    }
+
+                    var targetString = targetWriter.ToString();
+                    textWriter.Write(targetString.Remove(targetString.Length - expectedEnd.Length + 1));
+                    textWriter.Write($"['{symbol.Name}");
+                }
+                else
+                {
+                    syntax.Expression.Write(textWriter, context);
+                }
+
+                var fullNamespace = context.SemanticAdaptor.GetFullNamespace(symbol.ContainingType);
+                if (!namespacesWithNoAmbigiousMethods.Contains(fullNamespace))
+                {
+                    textWriter.Write("_M_{0}_", symbol.TypeArguments.Length);
+
+                    if (signatureHasGenerics)
+                    {
+                        textWriter.Write("'..(");
+                    }
+
+                    textWriter.AppendTextWriter(signatureTextWriter);
+
+                    if (signatureHasGenerics)
+                    {
+                        textWriter.Write(")]");
+                    }
+                }
+            }
+            else
+            {
+                syntax.Expression.Write(textWriter, context);
+            }
+
+            if (symbol.TypeArguments.Any())
+            {
+                context.TypeReferenceWriter.WriteTypeReferences(symbol.TypeArguments.ToArray(), textWriter);
+            }
+
+            textWriter.Write(" % _M.DOT)");
+
+            SyntaxVisitorBase<InvocationExpressionSyntax>.VisitNode(syntax.ArgumentList, textWriter, context);
+        }
+
+        private static void WriteAsExtensionMethodCall(InvocationExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context,
+            IMethodSymbol symbol)
+        {
+            textWriter.Write("(({0} % _M.DOT).", context.SemanticAdaptor.GetFullName(symbol.ContainingType));
+
+            var signatureTextWriter = textWriter.CreateTextWriterAtSameIndent();
+            var signatureHasGenerics = context.SignatureWriter.WriteSignature(symbol.ReducedFrom.Parameters.Select(p => p.Type).ToArray(), signatureTextWriter);
+
+            if (signatureHasGenerics)
+            {
+                textWriter.Write("['");
+            }
+            
+            textWriter.Write("{0}_M_{1}_", symbol.Name, symbol.TypeArguments.Length);
+
+            if (signatureHasGenerics)
+            {
+                textWriter.Write("'..(");
+            }
+
+            textWriter.AppendTextWriter(signatureTextWriter);
+
+            if (signatureHasGenerics)
+            {
+                textWriter.Write(")]");
+            }
+
+            if (symbol.TypeArguments.Any())
+            {
+                context.TypeReferenceWriter.WriteTypeReferences(symbol.TypeArguments.ToArray(), textWriter);
+            }
+
+            textWriter.Write(" % _M.DOT)");
+
+            var argWriter = textWriter.CreateTextWriterAtSameIndent();
+            SyntaxVisitorBase<InvocationExpressionSyntax>.VisitNode(syntax.ArgumentList, argWriter, context);
+
+            var targetWriter = textWriter.CreateTextWriterAtSameIndent();
+            syntax.Expression.Write(targetWriter, context);
+            var targetStr = targetWriter.ToString();
+            textWriter.Write(targetStr.Substring(0, targetStr.LastIndexOf(" % _M.DOT)")));
+
+            var argStr = argWriter.ToString();
+            if (argStr.Length > 2)
+            {
+                textWriter.Write(", ");
+            }
+            
+            textWriter.Write(argStr.Substring(1)); // Skip the opening (
         }
     }
 }
