@@ -23,14 +23,17 @@
         public void Write(object obj, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var type = obj.GetType();
-            if (this.matches.ContainsKey(type))
+            while (type != null)
             {
-                this.matches[type].DynamicInvoke(obj, textWriter, context);
+                if (this.matches.ContainsKey(type))
+                {
+                    this.matches[type].DynamicInvoke(obj, textWriter, context);
+                    return;
+                }
+                type = type.BaseType;
             }
-            else
-            {
-                this.defaultAction(obj, textWriter, context);
-            }
+            
+            this.defaultAction(obj, textWriter, context);
         }
     }
 }
