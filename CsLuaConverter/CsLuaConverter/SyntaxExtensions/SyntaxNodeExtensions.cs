@@ -11,7 +11,12 @@
 
     public static class SyntaxNodeExtensions
     {
-
+        private static readonly TypeSwitch TypeSwitch = new TypeSwitch(
+            (syntax, textWriter, context) =>
+            {
+                SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode) syntax, textWriter, context);
+                //throw new Exception($"Could not find extension method for syntax {syntax.GetType().Name}. Kind: {(syntax as CSharpSyntaxNode)?.Kind().ToString() ?? "null"}.");
+            });
         /*
         AccessorListSyntax
         AnonymousObjectMemberDeclaratorSyntax
@@ -70,6 +75,11 @@
         XmlNodeSyntax
         XmlPrefixSyntax
         */
+
+        public static void Write(this CSharpSyntaxNode syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            TypeSwitch.Write(syntax, textWriter, context);
+        }
 
         public static void Write<T>(this SeparatedSyntaxList<T> list, Action<T, IIndentedTextWriterWrapper, IContext> action, IIndentedTextWriterWrapper textWriter, IContext context) where T : CSharpSyntaxNode
         {

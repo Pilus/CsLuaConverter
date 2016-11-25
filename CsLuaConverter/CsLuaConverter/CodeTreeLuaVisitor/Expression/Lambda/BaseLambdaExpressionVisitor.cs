@@ -7,6 +7,7 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
     using System;
     using System.IO;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -39,7 +40,7 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
             if (syntax.Body is BlockSyntax)
             {
                 textWriter.WriteLine("");
-                this.body.Visit(textWriter, context);
+                syntax.Body.Write(textWriter, context);
             }
             else
             {
@@ -48,7 +49,7 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
                     textWriter.Write(" return ");
                 }
 
-                this.body.Visit(textWriter, context);
+                syntax.Body.Write(textWriter, context);
                 textWriter.Write(" ");
             }
 
