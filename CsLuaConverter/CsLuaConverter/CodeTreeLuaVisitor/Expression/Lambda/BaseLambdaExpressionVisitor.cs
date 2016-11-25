@@ -24,21 +24,26 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = this.GetSymbolForParentUsingTheLambda(context);
+            var syntax = (LambdaExpressionSyntax) this.Branch.SyntaxNode;
+            this.Write(syntax, textWriter, context);
+        }
+        public void Write(LambdaExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context) { 
+
+            var symbol = GetSymbolForParentUsingTheLambda(syntax, context);
             context.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
             textWriter.Write("._C_0_16704"); // Lua.Function as argument
             textWriter.Write("(function(");
             this.para.Visit(textWriter, context);
             textWriter.Write(")");
 
-            if (this.body is BlockVisitor)
+            if (syntax.Body is BlockSyntax)
             {
                 textWriter.WriteLine("");
                 this.body.Visit(textWriter, context);
             }
             else
             {
-                if (!(this.body is SimpleAssignmentExpressionVisitor))
+                if (!(syntax.Body is AssignmentExpressionSyntax))
                 {
                     textWriter.Write(" return ");
                 }
@@ -50,13 +55,13 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
             textWriter.Write("end)");
         }
 
-        private ITypeSymbol GetSymbolForParentUsingTheLambda(IContext context)
+        private static ITypeSymbol GetSymbolForParentUsingTheLambda(LambdaExpressionSyntax syntax, IContext context)
         {
-            var argListSyntax = this.Branch.SyntaxNode.Ancestors().OfType<ArgumentListSyntax>().First();
+            var argListSyntax = syntax.Ancestors().OfType<ArgumentListSyntax>().First();
 
             if (argListSyntax != null)
             {
-                var argument = this.Branch.SyntaxNode.Ancestors().OfType<ArgumentSyntax>().First();
+                var argument = syntax.Ancestors().OfType<ArgumentSyntax>().First();
                 var argNum = argListSyntax.ChildNodes().ToList().IndexOf(argument);
 
                 if (argListSyntax.Parent is InvocationExpressionSyntax)
