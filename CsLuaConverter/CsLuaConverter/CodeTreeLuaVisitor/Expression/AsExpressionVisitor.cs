@@ -3,6 +3,8 @@
     using CodeTree;
     using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using SyntaxExtensions;
     using Type;
 
     public class AsExpressionVisitor : BaseVisitor
@@ -19,7 +21,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.target.Visit(textWriter, context);
+            var syntax = (BinaryExpressionSyntax) this.Branch.SyntaxNode;
+            syntax.Write(textWriter, context);
         }
     }
 }

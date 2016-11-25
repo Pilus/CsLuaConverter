@@ -16,17 +16,18 @@
     {
         private static readonly TypeSwitch TypeSwitch = new TypeSwitch(
             (syntax, textWriter, context) =>
-                {
-                    SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
-                    //throw new Exception($"Could not find extension method for expressionSyntax {syntax.GetType().Name}. Kind: {(syntax as CSharpSyntaxNode)?.Kind().ToString() ?? "null"}.");
-                })
+            {
+                SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode) syntax, textWriter, context);
+                //throw new Exception($"Could not find extension method for expressionSyntax {syntax.GetType().Name}. Kind: {(syntax as CSharpSyntaxNode)?.Kind().ToString() ?? "null"}.");
+            })
             .Case<AssignmentExpressionSyntax>(Write)
             .Case<MemberAccessExpressionSyntax>(Write)
             .Case<TypeSyntax>(TypeExtensions.Write)
             .Case<ObjectCreationExpressionSyntax>(Write)
             .Case<NameSyntax>(NameExtensions.Write)
             .Case<InvocationExpressionSyntax>(Write)
-            .Case<LiteralExpressionSyntax>(Write);
+            .Case<LiteralExpressionSyntax>(Write)
+            .Case<BinaryExpressionSyntax>(Write);
 
         /*
         AnonymousFunctionExpressionSyntax
@@ -34,7 +35,6 @@
         ArrayCreationExpressionSyntax
         AssignmentExpressionSyntax
         AwaitExpressionSyntax
-        BinaryExpressionSyntax
         CastExpressionSyntax
         CheckedExpressionSyntax
         ConditionalAccessExpressionSyntax
@@ -380,8 +380,105 @@
                     break;
             }
 
-
             textWriter.Write(text);
+        }
+
+        public static void Write(this BinaryExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var prefix = "";
+            var delimiter = "";
+            var suffix = "";
+
+            switch (syntax.Kind())
+            {
+                case SyntaxKind.AddExpression:
+                    delimiter = " +_M.Add+ ";
+                    break;
+                case SyntaxKind.AsExpression:
+                    syntax.Left.Write(textWriter, context);
+                    return;
+                case SyntaxKind.BitwiseAndExpression:
+                    prefix = "bit.band(";
+                    delimiter = ", ";
+                    suffix = ")";
+                    break;
+                case SyntaxKind.BitwiseOrExpression:
+                    prefix = "bit.bor(";
+                    delimiter = ", ";
+                    suffix = ")";
+                    break;
+                case SyntaxKind.CoalesceExpression:
+                    delimiter = " or ";
+                    break;
+                case SyntaxKind.DivideExpression:
+                    delimiter = " / ";
+                    break;
+                case SyntaxKind.EqualsExpression:
+                    delimiter = " == ";
+                    break;
+                case SyntaxKind.ExclusiveOrExpression:
+                    prefix = "bit.bxor(";
+                    delimiter = ", ";
+                    suffix = ")";
+                    break;
+                case SyntaxKind.GreaterThanExpression:
+                    delimiter = " > ";
+                    break;
+                case SyntaxKind.GreaterThanOrEqualExpression:
+                    delimiter = " >= ";
+                    break;
+                case SyntaxKind.IsExpression:
+                    var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(syntax.Right).Symbol;
+                    context.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
+                    textWriter.Write(".__is(");
+                    syntax.Left.Write(textWriter, context);
+                    textWriter.Write(")");
+                    return;
+                case SyntaxKind.LeftShiftExpression:
+                    prefix = "bit.lshift(";
+                    delimiter = ", ";
+                    suffix = ")";
+                    break;
+                case SyntaxKind.LessThanExpression:
+                    delimiter = " < ";
+                    break;
+                case SyntaxKind.LessThanOrEqualExpression:
+                    delimiter = " <= ";
+                    break;
+                case SyntaxKind.LogicalAndExpression:
+                    delimiter = " and ";
+                    break;
+                case SyntaxKind.LogicalOrExpression:
+                    delimiter = " or ";
+                    break;
+                case SyntaxKind.ModuloExpression:
+                    prefix = "math.mod(";
+                    delimiter = ", ";
+                    suffix = ")";
+                    break;
+                case SyntaxKind.MultiplyExpression:
+                    delimiter = " * ";
+                    break;
+                case SyntaxKind.NotEqualsExpression:
+                    delimiter = " ~= ";
+                    break;
+                case SyntaxKind.RightShiftExpression:
+                    prefix = "bit.rshift(";
+                    delimiter = ", ";
+                    suffix = ")";
+                    break;
+                case SyntaxKind.SubtractExpression:
+                    delimiter = " - ";
+                    break;
+                default:
+                    throw new Exception($"Unknown binary expression syntax kind {syntax.Kind()}.");
+            }
+
+            textWriter.Write(prefix);
+            syntax.Left.Write(textWriter, context);
+            textWriter.Write(delimiter);
+            syntax.Right.Write(textWriter, context);
+            textWriter.Write(suffix);
         }
     }
 }

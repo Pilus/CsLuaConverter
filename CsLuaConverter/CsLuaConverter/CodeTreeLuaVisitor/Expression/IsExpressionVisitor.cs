@@ -4,8 +4,10 @@
 
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Type;
 
     public class IsExpressionVisitor : BaseVisitor
@@ -19,11 +21,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode.ChildNodes().Last()).Symbol;
-            context.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
-            textWriter.Write(".__is(");
-            this.target.Visit(textWriter, context);
-            textWriter.Write(")");
+            var syntax = (BinaryExpressionSyntax)this.Branch.SyntaxNode;
+            syntax.Write(textWriter, context);
         }
     }
 }
