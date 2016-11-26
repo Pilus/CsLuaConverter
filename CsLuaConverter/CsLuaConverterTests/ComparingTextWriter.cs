@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Text.RegularExpressions;
 
     public class ComparingTextWriter : TextWriter
     {
@@ -46,7 +47,7 @@
 
         private void Compare(string str, bool newLineAtEnd)
         {
-            var newLines = str.Split('\n');
+            var newLines = Regex.Split(str, "\r\n");
 
             for (var i = 0; i < newLines.Length; i++)
             {

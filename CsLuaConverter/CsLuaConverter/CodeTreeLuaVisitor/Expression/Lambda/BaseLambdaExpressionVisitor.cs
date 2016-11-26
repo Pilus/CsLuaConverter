@@ -34,7 +34,16 @@ namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Lambda
             context.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
             textWriter.Write("._C_0_16704"); // Lua.Function as argument
             textWriter.Write("(function(");
-            this.para.Visit(textWriter, context);
+
+            if (syntax is SimpleLambdaExpressionSyntax)
+            {
+                ((SimpleLambdaExpressionSyntax)syntax).Parameter.Write(textWriter, context);
+            }
+            else
+            {
+                ((ParenthesizedLambdaExpressionSyntax)syntax).ParameterList.Write(textWriter, context);
+            }
+
             textWriter.Write(")");
 
             if (syntax.Body is BlockSyntax)
