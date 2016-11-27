@@ -13,8 +13,8 @@
     public class ForStatementVisitor : BaseVisitor
     {
         private readonly BaseVisitor initialVisitor;
-        private readonly BaseVisitor conditionVisitor;
-        private readonly BaseVisitor increamentVisitor;
+        //private readonly BaseVisitor conditionVisitor;
+        //private readonly BaseVisitor increamentVisitor;
         private readonly BaseVisitor bodyVisitor;
 
         public ForStatementVisitor(CodeTreeBranch branch) : base(branch)
@@ -26,8 +26,8 @@
             this.ExpectKind(5, SyntaxKind.SemicolonToken);
             this.ExpectKind(7, SyntaxKind.CloseParenToken);
             this.initialVisitor = this.CreateVisitor(2);
-            this.conditionVisitor = this.CreateVisitor(4);
-            this.increamentVisitor = this.CreateVisitor(6);
+            //this.conditionVisitor = this.CreateVisitor(4);
+            //this.increamentVisitor = this.CreateVisitor(6);
             this.bodyVisitor = this.CreateVisitor(8);
         }
 

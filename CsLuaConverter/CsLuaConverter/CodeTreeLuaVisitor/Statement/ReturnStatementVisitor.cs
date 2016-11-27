@@ -9,7 +9,7 @@
 
     public class ReturnStatementVisitor : BaseVisitor
     {
-        private readonly BaseVisitor innerVisitor;
+        //private readonly BaseVisitor innerVisitor;
         public ReturnStatementVisitor(CodeTreeBranch branch) : base(branch)
         {
             this.ExpectKind(0, SyntaxKind.ReturnKeyword);
@@ -21,7 +21,7 @@
             }
 
             this.ExpectKind(2, SyntaxKind.SemicolonToken);
-            this.innerVisitor = this.CreateVisitor(1);
+            //this.innerVisitor = this.CreateVisitor(1);
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)

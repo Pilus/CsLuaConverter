@@ -9,7 +9,7 @@
 
     public class IfStatementVisitor : BaseVisitor
     {
-        private readonly IVisitor expression;
+        //private readonly IVisitor expression;
         private readonly BlockVisitor block;
         private readonly ElseClauseVisitor elseCause;
         private readonly BaseVisitor singleLineVisitor;
@@ -18,7 +18,7 @@
         {
             this.ExpectKind(0, SyntaxKind.IfKeyword);
             this.ExpectKind(1, SyntaxKind.OpenParenToken);
-            this.expression = this.CreateVisitor(2);
+            //this.expression = this.CreateVisitor(2);
             this.ExpectKind(3, SyntaxKind.CloseParenToken);
 
             if (this.IsKind(4, SyntaxKind.Block))
