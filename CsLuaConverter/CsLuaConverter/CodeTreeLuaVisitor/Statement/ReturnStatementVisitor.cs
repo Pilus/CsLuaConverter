@@ -2,7 +2,10 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
+
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ReturnStatementVisitor : BaseVisitor
     {
@@ -23,11 +26,13 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var syntax = (ReturnStatementSyntax)this.Branch.SyntaxNode;
+
             textWriter.Write("return");
-            if (this.innerVisitor != null)
+            if (syntax.Expression != null)
             {
                 textWriter.Write(" ");
-                this.innerVisitor.Visit(textWriter, context);
+                syntax.Expression.Write(textWriter, context);
             }
             
             textWriter.WriteLine(";");

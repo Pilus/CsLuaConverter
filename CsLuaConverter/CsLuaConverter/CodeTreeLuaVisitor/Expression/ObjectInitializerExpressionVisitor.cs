@@ -2,8 +2,11 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
+
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ObjectInitializerExpressionVisitor : BaseVisitor
     {
@@ -11,26 +14,23 @@
 
         public ObjectInitializerExpressionVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.ExpectKind(0, SyntaxKind.OpenBraceToken);
-            this.ExpectKind(this.Branch.Nodes.Length - 1, SyntaxKind.CloseBraceToken);
-            this.innerVisitors = this.CreateVisitors(new KindRangeFilter(SyntaxKind.OpenBraceToken, SyntaxKind.CloseBraceToken));
+
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var symbol = (InitializerExpressionSyntax)this.Branch.SyntaxNode;
+            // Note, there are 4 different implementations using InitializerExpressionSyntax
             textWriter.Write(".__Initialize({");
 
-            if (this.innerVisitors.Length > 1)
+            if (symbol.Expressions.Count > 1)
                 textWriter.WriteLine();
 
             textWriter.Indent++;
-            this.innerVisitors.VisitAll(textWriter, context, () =>
-            {
-                textWriter.WriteLine(",");
-            });
+            symbol.Expressions.Write(ExpressionExtensions.Write, textWriter, context);
             textWriter.Indent--;
             
-            if (this.innerVisitors.Length > 1)
+            if (symbol.Expressions.Count > 1)
                 textWriter.WriteLine();
 
             textWriter.Write("})");

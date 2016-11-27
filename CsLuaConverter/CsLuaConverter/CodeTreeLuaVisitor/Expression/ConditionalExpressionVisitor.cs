@@ -2,7 +2,10 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
+
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ConditionalExpressionVisitor : BaseVisitor
     {
@@ -30,6 +33,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var syntax = (ConditionalExpressionSyntax)this.Branch.SyntaxNode;
+
             if (this.conditionalStatement != null)
             {
                 textWriter.Write("_M.CA(");
@@ -40,13 +45,13 @@
                 return;
             }
 
-            this.condition.Visit(textWriter, context);
+            syntax.Condition.Write(textWriter, context);
 
             textWriter.Write(" and ");
-            this.trueStatement.Visit(textWriter, context);
+            syntax.WhenTrue.Write(textWriter, context);
 
             textWriter.Write(" or ");
-            this.falseStatement.Visit(textWriter, context);
+            syntax.WhenFalse.Write(textWriter, context);
         }
     }
 }

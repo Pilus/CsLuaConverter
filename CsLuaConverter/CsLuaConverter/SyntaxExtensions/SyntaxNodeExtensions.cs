@@ -12,10 +12,10 @@
     {
         private static readonly TypeSwitch TypeSwitch = new TypeSwitch(
             (syntax, textWriter, context) =>
-            {
-                SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode) syntax, textWriter, context);
-                //throw new Exception($"Could not find extension method for syntax {syntax.GetType().Name}. Kind: {(syntax as CSharpSyntaxNode)?.Kind().ToString() ?? "null"}.");
-            });
+                {
+                    SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
+                    //throw new Exception($"Could not find extension method for syntax {syntax.GetType().Name}. Kind: {(syntax as CSharpSyntaxNode)?.Kind().ToString() ?? "null"}.");
+                }).Case<ExpressionSyntax>(ExpressionExtensions.Write);
         /*
         AccessorListSyntax
         AnonymousObjectMemberDeclaratorSyntax
@@ -41,7 +41,6 @@
         ElseClauseSyntax
         EqualsValueClauseSyntax
         ExplicitInterfaceSpecifierSyntax
-        ExpressionSyntax
         ExternAliasDirectiveSyntax
         FinallyClauseSyntax
         InterpolatedStringContentSyntax (multiple) http://www.coderesx.com/roslyn/html/21FD763E.htm

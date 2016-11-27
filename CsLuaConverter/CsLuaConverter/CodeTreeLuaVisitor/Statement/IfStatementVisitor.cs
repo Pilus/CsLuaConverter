@@ -2,7 +2,10 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
+
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class IfStatementVisitor : BaseVisitor
     {
@@ -36,8 +39,10 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var syntax = (IfStatementSyntax)this.Branch.SyntaxNode;
+
             textWriter.Write("if (");
-            this.expression.Visit(textWriter, context);
+            syntax.Condition.Write(textWriter, context);
             textWriter.WriteLine(") then");
 
             this.block?.Visit(textWriter, context);

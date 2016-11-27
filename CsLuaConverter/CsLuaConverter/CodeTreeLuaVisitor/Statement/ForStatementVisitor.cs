@@ -1,9 +1,14 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement
 {
+    using System.Linq;
+
     using CodeTree;
 
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
+
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ForStatementVisitor : BaseVisitor
     {
@@ -28,14 +33,16 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var syntax = (ForStatementSyntax)this.Branch.SyntaxNode;
+
             this.initialVisitor.Visit(textWriter, context);
             textWriter.WriteLine(";");
             textWriter.Write("while (");
-            this.conditionVisitor.Visit(textWriter, context);
+            syntax.Condition.Write(textWriter, context);
             textWriter.WriteLine(") do");
 
             this.bodyVisitor.Visit(textWriter, context);
-            this.increamentVisitor.Visit(textWriter, context);
+            syntax.Incrementors.Single().Write(textWriter, context);
 
             textWriter.WriteLine(";");
             textWriter.WriteLine("end");
