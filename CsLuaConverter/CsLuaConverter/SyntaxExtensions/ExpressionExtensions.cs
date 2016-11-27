@@ -29,7 +29,10 @@
             .Case<LiteralExpressionSyntax>(Write)
             .Case<BinaryExpressionSyntax>(Write)
             .Case<LambdaExpressionSyntax>(Write)
-            .Case<ParenthesizedExpressionSyntax>(Write);
+            .Case<ParenthesizedExpressionSyntax>(Write)
+            .Case<InitializerExpressionSyntax>(Write)
+            .Case<BaseExpressionSyntax>(Write)
+            .Case<ArrayCreationExpressionSyntax>(Write);
 
         /*
         AnonymousFunctionExpressionSyntax
@@ -46,7 +49,6 @@
         ElementBindingExpressionSyntax
         ImplicitArrayCreationExpressionSyntax
         ImplicitElementAccessSyntax
-        InitializerExpressionSyntax
         InstanceExpressionSyntax
         InterpolatedStringExpressionSyntax
         MakeRefExpressionSyntax
@@ -68,7 +70,10 @@
             TypeSwitch.Write(syntax, textWriter, context);
         }
 
-        public static void Write(this AssignmentExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(
+            this AssignmentExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context)
         {
             string prefix = "";
             string delimiter = "";
@@ -135,13 +140,16 @@
                 syntax.Left.Write(textWriter, context);
                 textWriter.Write(delimiter);
             }
-            
+
             syntax.Right.Write(textWriter, context);
             textWriter.Write(suffix);
         }
 
 
-        public static void Write(this MemberAccessExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(
+            this MemberAccessExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context)
         {
             if (syntax.Expression == null)
             {
@@ -159,7 +167,10 @@
             syntax.Name.Write(textWriter, context);
         }
 
-        private static void WriteAccessExpression(MemberAccessExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        private static void WriteAccessExpression(
+            MemberAccessExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context)
         {
             var symbol = context.SemanticModel.GetSymbolInfo(syntax).Symbol;
 
@@ -184,7 +195,10 @@
             context.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
         }
 
-        public static void Write(this ObjectCreationExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(
+            this ObjectCreationExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context)
         {
             var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(syntax).Symbol;
 
@@ -197,7 +211,8 @@
             {
                 context.TypeReferenceWriter.WriteInteractionElementReference(symbol.ContainingType, textWriter);
                 parameterTypes = symbol.OriginalDefinition.Parameters.Select(p => p.Type).ToArray();
-                appliedClassGenerics = ((TypeSymbolSemanticAdaptor) context.SemanticAdaptor).GetAppliedClassGenerics(symbol.ContainingType);
+                appliedClassGenerics =
+                    ((TypeSymbolSemanticAdaptor)context.SemanticAdaptor).GetAppliedClassGenerics(symbol.ContainingType);
             }
             else
             {
@@ -214,7 +229,10 @@
             }
 
             var signatureWiter = textWriter.CreateTextWriterAtSameIndent();
-            var hasGenricComponents = context.SignatureWriter.WriteSignature(parameterTypes, signatureWiter, appliedClassGenerics);
+            var hasGenricComponents = context.SignatureWriter.WriteSignature(
+                parameterTypes,
+                signatureWiter,
+                appliedClassGenerics);
 
             if (hasGenricComponents)
             {
@@ -241,11 +259,14 @@
             }
         }
 
-        private static readonly string[] namespacesWithNoAmbigiousMethods = new [] {"Lua"};
+        private static readonly string[] namespacesWithNoAmbigiousMethods = new[] { "Lua" };
 
-        public static void Write(this InvocationExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(
+            this InvocationExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context)
         {
-            var symbol = (IMethodSymbol) ModelExtensions.GetSymbolInfo(context.SemanticModel, syntax).Symbol;
+            var symbol = (IMethodSymbol)ModelExtensions.GetSymbolInfo(context.SemanticModel, syntax).Symbol;
 
             if (symbol.IsExtensionMethod && symbol.MethodKind == MethodKind.ReducedExtension)
             {
@@ -259,7 +280,8 @@
             {
                 var signatureTextWriter = textWriter.CreateTextWriterAtSameIndent();
                 var signatureHasGenerics =
-                    context.SignatureWriter.WriteSignature(symbol.ConstructedFrom.Parameters.Select(p => p.Type).ToArray(),
+                    context.SignatureWriter.WriteSignature(
+                        symbol.ConstructedFrom.Parameters.Select(p => p.Type).ToArray(),
                         signatureTextWriter);
 
                 if (signatureHasGenerics)
@@ -315,19 +337,25 @@
             SyntaxVisitorBase<InvocationExpressionSyntax>.VisitNode(syntax.ArgumentList, textWriter, context);
         }
 
-        private static void WriteAsExtensionMethodCall(InvocationExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context,
+        private static void WriteAsExtensionMethodCall(
+            InvocationExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context,
             IMethodSymbol symbol)
         {
             textWriter.Write("(({0} % _M.DOT).", context.SemanticAdaptor.GetFullName(symbol.ContainingType));
 
             var signatureTextWriter = textWriter.CreateTextWriterAtSameIndent();
-            var signatureHasGenerics = context.SignatureWriter.WriteSignature(symbol.ReducedFrom.Parameters.Select(p => p.Type).ToArray(), signatureTextWriter);
+            var signatureHasGenerics =
+                context.SignatureWriter.WriteSignature(
+                    symbol.ReducedFrom.Parameters.Select(p => p.Type).ToArray(),
+                    signatureTextWriter);
 
             if (signatureHasGenerics)
             {
                 textWriter.Write("['");
             }
-            
+
             textWriter.Write("{0}_M_{1}_", symbol.Name, symbol.TypeArguments.Length);
 
             if (signatureHasGenerics)
@@ -362,11 +390,14 @@
             {
                 textWriter.Write(", ");
             }
-            
+
             textWriter.Write(argStr.Substring(1)); // Skip the opening (
         }
 
-        public static void Write(this LiteralExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(
+            this LiteralExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context)
         {
             var text = syntax.Token.Text;
             switch (syntax.Kind())
@@ -385,7 +416,10 @@
             textWriter.Write(text);
         }
 
-        public static void Write(this BinaryExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(
+            this BinaryExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context)
         {
             var prefix = "";
             var delimiter = "";
@@ -483,7 +517,8 @@
             textWriter.Write(suffix);
         }
 
-        public static void Write(LambdaExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context) { 
+        public static void Write(LambdaExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
 
             var symbol = GetSymbolForParentUsingTheLambda(syntax, context);
             context.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
@@ -531,7 +566,11 @@
 
                 if (argListSyntax.Parent is InvocationExpressionSyntax)
                 {
-                    var symbol = (IMethodSymbol)ModelExtensions.GetSymbolInfo(context.SemanticModel, (InvocationExpressionSyntax) argListSyntax.Parent).Symbol;
+                    var symbol =
+                        (IMethodSymbol)
+                        ModelExtensions.GetSymbolInfo(
+                            context.SemanticModel,
+                            (InvocationExpressionSyntax)argListSyntax.Parent).Symbol;
                     return symbol.Parameters[argNum].Type;
                 }
                 else if (argListSyntax.Parent is ObjectCreationExpressionSyntax)
@@ -545,7 +584,11 @@
                         return symbol.Parameters[argNum].Type;
                     }
 
-                    var namedTypeSymbol = (INamedTypeSymbol)ModelExtensions.GetSymbolInfo(context.SemanticModel, (argListSyntax.Parent as ObjectCreationExpressionSyntax).Type).Symbol;
+                    var namedTypeSymbol =
+                        (INamedTypeSymbol)
+                        ModelExtensions.GetSymbolInfo(
+                            context.SemanticModel,
+                            (argListSyntax.Parent as ObjectCreationExpressionSyntax).Type).Symbol;
 
                     if (namedTypeSymbol.TypeKind == TypeKind.Delegate)
                     {
@@ -565,14 +608,20 @@
             }
         }
 
-        public static void Write(ParenthesizedExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(
+            ParenthesizedExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context)
         {
             textWriter.Write("(");
             syntax.Expression.Write(textWriter, context);
             textWriter.Write(")");
         }
 
-        public static void Write(this InitializerExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(
+            this InitializerExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context)
         {
             // Note, there are 4 different implementations using InitializerExpressionSyntax
 
@@ -594,16 +643,20 @@
                     textWriter.Write("[0] = ");
                 }
             }
-            else if(syntax.Expressions.Count > 1 || syntax.GetKind() == SyntaxKind.CollectionInitializerExpression)
+            else if (syntax.Expressions.Count > 1 || syntax.GetKind() == SyntaxKind.CollectionInitializerExpression)
             {
                 textWriter.WriteLine();
             }
-            
+
 
             textWriter.Indent++;
             if (syntax.GetKind() == SyntaxKind.CollectionInitializerExpression)
             {
-                syntax.Expressions.Write(ExpressionExtensions.Write, textWriter, context, () => textWriter.WriteLine(","));
+                syntax.Expressions.Write(
+                    ExpressionExtensions.Write,
+                    textWriter,
+                    context,
+                    () => textWriter.WriteLine(","));
             }
             else
             {
@@ -622,6 +675,25 @@
             }
 
             textWriter.Write("})");
+        }
+
+        public static void Write(this BaseExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("element");
+        }
+
+        public static void Write(this ArrayCreationExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("(");
+            syntax.Type.Write(textWriter, context);
+            textWriter.Write(" % _M.DOT)");
+
+            if (syntax.Initializer == null)
+            {
+                return;
+            }
+
+            syntax.Initializer.Write(textWriter, context);
         }
     }
 }
