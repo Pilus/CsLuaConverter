@@ -1,11 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Accessor
 {
-    using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
     using CsLuaConverter.SyntaxExtensions;
-    using Filters;
-    using Microsoft.CodeAnalysis.CSharp;
+
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class AccessorDeclarationVisitor : SyntaxVisitorBase<AccessorDeclarationSyntax>, IAccessor

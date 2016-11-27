@@ -7,7 +7,7 @@
     using System.Linq;
     using CsLuaConverter.Context;
     using Filters;
-    using Microsoft.CodeAnalysis;
+
     using Microsoft.CodeAnalysis.CSharp;
 
     public abstract class BaseVisitor : IVisitor

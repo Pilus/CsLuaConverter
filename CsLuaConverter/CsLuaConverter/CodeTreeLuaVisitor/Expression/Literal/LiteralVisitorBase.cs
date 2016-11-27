@@ -1,6 +1,5 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression.Literal
 {
-    using System;
     using CodeTree;
     using CsLuaConverter.Context;
     using CsLuaConverter.SyntaxExtensions;

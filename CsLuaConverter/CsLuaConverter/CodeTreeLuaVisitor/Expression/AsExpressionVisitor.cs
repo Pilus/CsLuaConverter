@@ -5,7 +5,6 @@
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using SyntaxExtensions;
-    using Type;
 
     public class AsExpressionVisitor : BaseVisitor
     {

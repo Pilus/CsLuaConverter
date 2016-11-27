@@ -3,13 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using CodeTree;
     using CodeTreeLuaVisitor;
     using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
+
     using ProjectInfo = ProjectAnalysis.ProjectInfo;
 
     public class Analyzer : ISyntaxAnalyser

@@ -2,14 +2,12 @@
 {
     using System.Linq;
     using CodeTree;
-    using CsLuaConverter.CodeTreeLuaVisitor.Expression;
+
     using CsLuaConverter.Context;
     using Lists;
 
-    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Type;
 
     public class GenericNameVisitor : BaseVisitor, INameVisitor
     {

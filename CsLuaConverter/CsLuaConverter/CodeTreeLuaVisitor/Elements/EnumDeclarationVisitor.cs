@@ -3,7 +3,7 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
-    using Expression;
+
     using Filters;
     using Member;
     using Microsoft.CodeAnalysis.CSharp;

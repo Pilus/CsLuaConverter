@@ -3,7 +3,6 @@
     using CodeTree;
     using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
-    using Type;
 
     public class ForEachStatementVisitor : BaseVisitor
     {

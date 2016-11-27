@@ -7,8 +7,6 @@
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    using Type;
-
     public class VariableDeclarationVisitor : BaseVisitor
     {
         private readonly VariableDeclaratorVisitor declaratorVisitor;

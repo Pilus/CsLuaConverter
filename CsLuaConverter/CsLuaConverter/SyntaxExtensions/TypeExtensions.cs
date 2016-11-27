@@ -1,6 +1,5 @@
 ﻿namespace CsLuaConverter.SyntaxExtensions
 {
-    using System;
     using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.Context;
 

@@ -1,6 +1,5 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
-    using System;
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;

@@ -3,7 +3,7 @@
     using CodeTree;
     using CsLuaConverter.Context;
     using CsLuaConverter.SyntaxExtensions;
-    using Microsoft.CodeAnalysis.CSharp;
+
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class EqualsValueClauseVisitor : SyntaxVisitorBase<EqualsValueClauseSyntax>

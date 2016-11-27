@@ -5,7 +5,6 @@
     using System.Linq;
 
     using CsLuaConverter.CodeTreeLuaVisitor;
-    using CsLuaConverter.CodeTreeLuaVisitor.Expression;
     using CsLuaConverter.Context;
 
     using Microsoft.CodeAnalysis;
@@ -16,10 +15,10 @@
     {
         private static readonly TypeSwitch TypeSwitch = new TypeSwitch(
             (syntax, textWriter, context) =>
-            {
-                SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode) syntax, textWriter, context);
-                //throw new Exception($"Could not find extension method for expressionSyntax {syntax.GetType().Name}. Kind: {(syntax as CSharpSyntaxNode)?.Kind().ToString() ?? "null"}.");
-            })
+                {
+                    SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
+                    //throw new Exception($"Could not find extension method for expressionSyntax {syntax.GetType().Name}. Kind: {(syntax as CSharpSyntaxNode)?.Kind().ToString() ?? "null"}.");
+                })
             .Case<AssignmentExpressionSyntax>(Write)
             .Case<MemberAccessExpressionSyntax>(Write)
             .Case<TypeSyntax>(TypeExtensions.Write)
@@ -27,7 +26,9 @@
             .Case<NameSyntax>(NameExtensions.Write)
             .Case<InvocationExpressionSyntax>(Write)
             .Case<LiteralExpressionSyntax>(Write)
-            .Case<BinaryExpressionSyntax>(Write);
+            .Case<BinaryExpressionSyntax>(Write)
+            .Case<LambdaExpressionSyntax>(Write)
+            .Case<ParenthesizedExpressionSyntax>(Write);
 
         /*
         AnonymousFunctionExpressionSyntax
@@ -479,6 +480,95 @@
             textWriter.Write(delimiter);
             syntax.Right.Write(textWriter, context);
             textWriter.Write(suffix);
+        }
+
+        public static void Write(LambdaExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context) { 
+
+            var symbol = GetSymbolForParentUsingTheLambda(syntax, context);
+            context.TypeReferenceWriter.WriteInteractionElementReference(symbol, textWriter);
+            textWriter.Write("._C_0_16704"); // Lua.Function as argument
+            textWriter.Write("(function(");
+
+            if (syntax is SimpleLambdaExpressionSyntax)
+            {
+                ((SimpleLambdaExpressionSyntax)syntax).Parameter.Write(textWriter, context);
+            }
+            else
+            {
+                ((ParenthesizedLambdaExpressionSyntax)syntax).ParameterList.Write(textWriter, context);
+            }
+
+            textWriter.Write(")");
+
+            if (syntax.Body is BlockSyntax)
+            {
+                textWriter.WriteLine("");
+                syntax.Body.Write(textWriter, context);
+            }
+            else
+            {
+                if (!(syntax.Body is AssignmentExpressionSyntax))
+                {
+                    textWriter.Write(" return ");
+                }
+
+                syntax.Body.Write(textWriter, context);
+                textWriter.Write(" ");
+            }
+
+            textWriter.Write("end)");
+        }
+
+        private static ITypeSymbol GetSymbolForParentUsingTheLambda(LambdaExpressionSyntax syntax, IContext context)
+        {
+            var argListSyntax = syntax.Ancestors().OfType<ArgumentListSyntax>().First();
+
+            if (argListSyntax != null)
+            {
+                var argument = syntax.Ancestors().OfType<ArgumentSyntax>().First();
+                var argNum = argListSyntax.ChildNodes().ToList().IndexOf(argument);
+
+                if (argListSyntax.Parent is InvocationExpressionSyntax)
+                {
+                    var symbol = (IMethodSymbol)ModelExtensions.GetSymbolInfo(context.SemanticModel, (InvocationExpressionSyntax) argListSyntax.Parent).Symbol;
+                    return symbol.Parameters[argNum].Type;
+                }
+                else if (argListSyntax.Parent is ObjectCreationExpressionSyntax)
+                {
+                    var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(argListSyntax.Parent).Symbol;
+
+                    if (symbol != null)
+                    {
+                        throw new NotImplementedException();
+                        // Note: not verified code path
+                        return symbol.Parameters[argNum].Type;
+                    }
+
+                    var namedTypeSymbol = (INamedTypeSymbol)ModelExtensions.GetSymbolInfo(context.SemanticModel, (argListSyntax.Parent as ObjectCreationExpressionSyntax).Type).Symbol;
+
+                    if (namedTypeSymbol.TypeKind == TypeKind.Delegate)
+                    {
+                        return namedTypeSymbol;
+                    }
+
+                    throw new Exception($"Could not guess constructor for {namedTypeSymbol}.");
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public static void Write(ParenthesizedExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("(");
+            syntax.Expression.Write(textWriter, context);
+            textWriter.Write(")");
         }
     }
 }

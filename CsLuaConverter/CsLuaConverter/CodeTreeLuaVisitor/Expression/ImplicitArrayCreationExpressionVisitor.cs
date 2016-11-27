@@ -6,7 +6,6 @@
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ImplicitArrayCreationExpressionVisitor : BaseVisitor
     {

@@ -136,7 +136,6 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\RightShiftExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ConditionalAccessExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ConditionalExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\SimpleLambdaExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\MemberBindingExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\UnaryPlusExpressionVisitor.cs" />
@@ -174,11 +173,9 @@
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\NumericLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectCreationExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ParenthesizedExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\ParenthesizedLambdaExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\PostDecrementExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\PostIncrementExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\SimpleAssignmentExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\Lambda\BaseLambdaExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Literal\StringLiteralExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\Binary\SubtractExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ThisExpressionVisitor.cs" />

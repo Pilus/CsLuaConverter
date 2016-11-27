@@ -1,13 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Lists
 {
-    using System;
-    using System.CodeDom.Compiler;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
+
     using CodeTree;
     using CsLuaConverter.Context;
-    using Expression.Lambda;
     using Microsoft.CodeAnalysis.CSharp;
 
     public class ArgumentListVisitor : BaseVisitor

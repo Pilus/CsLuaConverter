@@ -5,7 +5,6 @@
     using System.Diagnostics;
     using System.Linq;
     using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
 
     [DebuggerDisplay("CodeTreeBranch - {Kind}")]
     public class CodeTreeBranch : CodeTreeNode

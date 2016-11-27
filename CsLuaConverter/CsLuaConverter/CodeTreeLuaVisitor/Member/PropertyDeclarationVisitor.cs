@@ -8,7 +8,6 @@
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Type;
 
     public class PropertyDeclarationVisitor : BaseVisitor
     {

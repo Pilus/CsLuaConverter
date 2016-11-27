@@ -5,7 +5,6 @@
     using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Type;
 
     public class TypeArgumentListVisitor : BaseVisitor, IListVisitor
     {

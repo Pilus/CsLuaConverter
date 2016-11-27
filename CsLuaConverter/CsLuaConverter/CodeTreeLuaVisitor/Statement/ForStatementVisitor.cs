@@ -1,7 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Statement
 {
     using CodeTree;
-    using System.Linq;
+
     using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
 

@@ -2,8 +2,6 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
 
     public class ThisExpressionVisitor : BaseVisitor
     {

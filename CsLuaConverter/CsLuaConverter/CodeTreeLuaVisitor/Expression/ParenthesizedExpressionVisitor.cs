@@ -2,7 +2,10 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
+
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ParenthesizedExpressionVisitor : BaseVisitor
     {
@@ -16,9 +19,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            textWriter.Write("(");
-            this.innerVisitor.Visit(textWriter, context);
-            textWriter.Write(")");
+            var syntax = (ParenthesizedExpressionSyntax)this.Branch.SyntaxNode;
+            ExpressionExtensions.Write(syntax, textWriter, context);
         }
     }
 }

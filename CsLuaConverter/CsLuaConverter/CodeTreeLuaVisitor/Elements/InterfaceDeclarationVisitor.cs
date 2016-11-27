@@ -1,12 +1,11 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Elements
 {
     using System.Linq;
-    using System.Reflection.PortableExecutable;
 
     using Attribute;
     using CodeTree;
     using CsLuaConverter.Context;
-    using Expression;
+
     using Filters;
     using Lists;
     using Microsoft.CodeAnalysis.CSharp;

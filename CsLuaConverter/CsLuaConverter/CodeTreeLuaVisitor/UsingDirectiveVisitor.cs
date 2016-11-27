@@ -2,7 +2,7 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
-    using Microsoft.CodeAnalysis.CSharp;
+
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class UsingDirectiveVisitor : SyntaxVisitorBase<UsingDirectiveSyntax>

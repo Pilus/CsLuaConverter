@@ -1,9 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Member
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
+
     using Attribute;
     using CodeTree;
     using Constraint;
@@ -14,7 +13,6 @@
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Type;
 
     public class MethodDeclarationVisitor : BaseVisitor
     {

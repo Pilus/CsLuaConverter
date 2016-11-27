@@ -1,13 +1,10 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Constraint
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
-    using Name;
 
     public class TypeParameterConstraintClauseVisitor : BaseVisitor
     {

@@ -1,13 +1,10 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
-    using System.Linq;
-
     using CodeTree;
     using CsLuaConverter.Context;
     using CsLuaConverter.SyntaxExtensions;
-    using Microsoft.CodeAnalysis.CSharp;
+
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using Type;
 
     public class ParameterVisitor : SyntaxVisitorBase<ParameterSyntax>
     {

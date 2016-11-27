@@ -3,8 +3,7 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
-    using Filters;
-    using Microsoft.CodeAnalysis.CSharp;
+
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class AccessorListVisitor : SyntaxVisitorBase<AccessorListSyntax>, IAccessor

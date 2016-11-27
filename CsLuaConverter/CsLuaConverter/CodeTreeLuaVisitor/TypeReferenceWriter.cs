@@ -1,7 +1,5 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
-    using System;
-
     using CsLuaConverter.MethodSignature;
     public class TypeReferenceWriter<T> : ITypeReferenceWriter<T>
     {
