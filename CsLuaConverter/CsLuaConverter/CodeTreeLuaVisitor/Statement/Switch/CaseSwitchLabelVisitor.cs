@@ -2,23 +2,21 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
-    using Microsoft.CodeAnalysis.CSharp;
+    using CsLuaConverter.SyntaxExtensions;
+
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class CaseSwitchLabelVisitor : BaseVisitor, ISwitchLabelVisitor
     {
-        private readonly IVisitor innerVisitor;
-
         public CaseSwitchLabelVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.ExpectKind(0, SyntaxKind.CaseKeyword);
-            this.ExpectKind(2, SyntaxKind.ColonToken);
-            this.innerVisitor = this.CreateVisitor(1);
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var syntax = (CaseSwitchLabelSyntax)this.Branch.SyntaxNode;
             textWriter.Write("switchValue == ");
-            this.innerVisitor.Visit(textWriter, context);
+            syntax.Value.Write(textWriter, context);
         }
     }
 }

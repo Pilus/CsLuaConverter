@@ -79,7 +79,7 @@
             TypeSwitch.Write(syntax, textWriter, context);
         }
 
-        public static void Write<T>(this SeparatedSyntaxList<T> list, Action<T, IIndentedTextWriterWrapper, IContext> action, IIndentedTextWriterWrapper textWriter, IContext context) where T : CSharpSyntaxNode
+        public static void Write<T>(this SeparatedSyntaxList<T> list, Action<T, IIndentedTextWriterWrapper, IContext> action, IIndentedTextWriterWrapper textWriter, IContext context, Action delimiterAction = null) where T : CSharpSyntaxNode
         {
             for (var index = 0; index < list.Count; index++)
             {
@@ -87,7 +87,14 @@
 
                 if (index != list.Count - 1)
                 {
-                    textWriter.Write(", ");
+                    if (delimiterAction != null)
+                    {
+                        delimiterAction();
+                    }
+                    else
+                    {
+                        textWriter.Write(", ");
+                    }
                 }
             }
         }

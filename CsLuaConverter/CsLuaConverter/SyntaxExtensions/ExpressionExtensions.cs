@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using CsLuaConverter.CodeTree;
     using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.Context;
 
@@ -569,6 +570,58 @@
             textWriter.Write("(");
             syntax.Expression.Write(textWriter, context);
             textWriter.Write(")");
+        }
+
+        public static void Write(this InitializerExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            // Note, there are 4 different implementations using InitializerExpressionSyntax
+
+            if (syntax.Kind() == SyntaxKind.ComplexElementInitializerExpression)
+            {
+                textWriter.Write("[");
+                syntax.Expressions.First().Write(textWriter, context);
+                textWriter.Write("] = ");
+                syntax.Expressions.Last().Write(textWriter, context);
+                return;
+            }
+
+            textWriter.Write(".__Initialize({");
+
+            if (syntax.Kind() == SyntaxKind.ArrayInitializerExpression)
+            {
+                if (syntax.Expressions.Any())
+                {
+                    textWriter.Write("[0] = ");
+                }
+            }
+            else if(syntax.Expressions.Count > 1 || syntax.GetKind() == SyntaxKind.CollectionInitializerExpression)
+            {
+                textWriter.WriteLine();
+            }
+            
+
+            textWriter.Indent++;
+            if (syntax.GetKind() == SyntaxKind.CollectionInitializerExpression)
+            {
+                syntax.Expressions.Write(ExpressionExtensions.Write, textWriter, context, () => textWriter.WriteLine(","));
+            }
+            else
+            {
+                syntax.Expressions.Write(ExpressionExtensions.Write, textWriter, context);
+            }
+
+            textWriter.Indent--;
+
+            if (syntax.Kind() == SyntaxKind.ArrayInitializerExpression)
+            {
+
+            }
+            else if (syntax.Expressions.Count > 1 || syntax.GetKind() == SyntaxKind.CollectionInitializerExpression)
+            {
+                textWriter.WriteLine();
+            }
+
+            textWriter.Write("})");
         }
     }
 }

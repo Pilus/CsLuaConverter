@@ -1,43 +1,21 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Expression
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
-    using Microsoft.CodeAnalysis.CSharp;
+    using CsLuaConverter.SyntaxExtensions;
+
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ArrayInitializerExpressionVisitor : BaseVisitor
     {
-        private readonly IVisitor[] elementVisitors;
-
         public ArrayInitializerExpressionVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.ExpectKind(0, SyntaxKind.OpenBraceToken);
-            var visitors = new List<IVisitor>();
-
-            for (var i = 1; i < this.Branch.Nodes.Length - 1; i = i + 2)
-            {
-                visitors.Add(this.CreateVisitor(i));
-                this.ExpectKind(i + 1, SyntaxKind.CommaToken, SyntaxKind.CloseBraceToken);
-            }
-
-            this.elementVisitors = visitors.ToArray();
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            textWriter.Write(".__Initialize({");
-
-            if (this.elementVisitors.Any())
-            {
-                textWriter.Write("[0] = ");
-            }
-
-            this.elementVisitors.VisitAll(textWriter, context, () =>
-            {
-                textWriter.Write(", ");
-            });
-            textWriter.Write("})");
+            var syntax = (InitializerExpressionSyntax)this.Branch.SyntaxNode;
+            syntax.Write(textWriter, context);
         }
     }
 }

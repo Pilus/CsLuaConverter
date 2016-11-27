@@ -2,21 +2,23 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
-    using Microsoft.CodeAnalysis.CSharp;
+    using CsLuaConverter.SyntaxExtensions;
+
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class UnaryMinusExpressionVisitor : BaseVisitor
     {
-        private readonly IVisitor target;
+
         public UnaryMinusExpressionVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.ExpectKind(0, SyntaxKind.MinusToken);
-            this.target = this.CreateVisitor(1);
+
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var syntax = (PrefixUnaryExpressionSyntax)this.Branch.SyntaxNode;
             textWriter.Write("-");
-            this.target.Visit(textWriter, context);
+            syntax.Operand.Write(textWriter, context);
         }
     }
 }
