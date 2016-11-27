@@ -32,17 +32,16 @@
             .Case<ParenthesizedExpressionSyntax>(Write)
             .Case<InitializerExpressionSyntax>(Write)
             .Case<BaseExpressionSyntax>(Write)
-            .Case<ArrayCreationExpressionSyntax>(Write);
+            .Case<ArrayCreationExpressionSyntax>(Write)
+            .Case<CastExpressionSyntax>(Write)
+            .Case<ConditionalAccessExpressionSyntax>(Write);
 
         /*
         AnonymousFunctionExpressionSyntax
         AnonymousObjectCreationExpressionSyntax
-        ArrayCreationExpressionSyntax
         AssignmentExpressionSyntax
         AwaitExpressionSyntax
-        CastExpressionSyntax
         CheckedExpressionSyntax
-        ConditionalAccessExpressionSyntax
         ConditionalExpressionSyntax
         DefaultExpressionSyntax
         ElementAccessExpressionSyntax
@@ -255,7 +254,7 @@
             if (syntax.Initializer != null)
             {
                 textWriter.Write(" % _M.DOT)");
-                SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode(syntax.Initializer, textWriter, context);
+                syntax.Initializer.Write(textWriter, context);
             }
         }
 
@@ -694,6 +693,22 @@
             }
 
             syntax.Initializer.Write(textWriter, context);
+        }
+
+        public static void Write(this CastExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            syntax.Expression.Write(textWriter, context);
+        }
+
+        public static void Write(this ConditionalAccessExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context)
+        {
+            textWriter.Write("_M.CA(");
+            syntax.Expression.Write(textWriter, context);
+            textWriter.Write(",function(obj) return (obj % _M.DOT)");
+            syntax.WhenNotNull.Write(textWriter, context);
+            textWriter.Write("; end)");
         }
     }
 }
