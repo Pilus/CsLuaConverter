@@ -119,7 +119,6 @@
     <Compile Include="CodeTreeLuaVisitor\Constraint\IConstraint.cs" />
     <Compile Include="CodeTreeLuaVisitor\Constraint\TypeConstraintVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Elements\InterfaceState.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\ConditionalExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\MemberBindingExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectInitializerExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\UnaryPlusExpressionVisitor.cs" />
@@ -136,9 +135,6 @@
     <Compile Include="CodeTreeLuaVisitor\Member\ConstructorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\EqualsValueClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ElementAccessExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\ImplicitArrayCreationExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\InvocationExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\IsExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ObjectCreationExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\PostDecrementExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\PostIncrementExpressionVisitor.cs" />

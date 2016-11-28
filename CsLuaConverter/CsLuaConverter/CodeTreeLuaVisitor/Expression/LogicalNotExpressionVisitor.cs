@@ -2,7 +2,9 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class LogicalNotExpressionVisitor : BaseVisitor
     {
@@ -16,8 +18,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var syntax = (PrefixUnaryExpressionSyntax)this.Branch.SyntaxNode;
             textWriter.Write("not(");
-            this.innnerVisitor.Visit(textWriter, context);
+            syntax.Operand.Write(textWriter, context);
             textWriter.Write(")");
         }
     }

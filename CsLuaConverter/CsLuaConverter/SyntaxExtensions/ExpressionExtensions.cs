@@ -34,7 +34,9 @@
             .Case<BaseExpressionSyntax>(Write)
             .Case<ArrayCreationExpressionSyntax>(Write)
             .Case<CastExpressionSyntax>(Write)
-            .Case<ConditionalAccessExpressionSyntax>(Write);
+            .Case<ConditionalAccessExpressionSyntax>(Write)
+            .Case<ConditionalExpressionSyntax>(Write)
+            .Case<ImplicitArrayCreationExpressionSyntax>(Write);
 
         /*
         AnonymousFunctionExpressionSyntax
@@ -42,11 +44,9 @@
         AssignmentExpressionSyntax
         AwaitExpressionSyntax
         CheckedExpressionSyntax
-        ConditionalExpressionSyntax
         DefaultExpressionSyntax
         ElementAccessExpressionSyntax
         ElementBindingExpressionSyntax
-        ImplicitArrayCreationExpressionSyntax
         ImplicitElementAccessSyntax
         InstanceExpressionSyntax
         InterpolatedStringExpressionSyntax
@@ -709,6 +709,36 @@
             textWriter.Write(",function(obj) return (obj % _M.DOT)");
             syntax.WhenNotNull.Write(textWriter, context);
             textWriter.Write("; end)");
+        }
+
+        public static void Write(this ConditionalExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            if (syntax.WhenFalse == null)
+            {
+                textWriter.Write("_M.CA(");
+                syntax.Condition.Write(textWriter, context);
+                textWriter.Write(",function(obj) return (obj % _M.DOT).");
+                syntax.WhenTrue.Write(textWriter, context);
+                textWriter.Write("; end)");
+                return;
+            }
+
+            syntax.Condition.Write(textWriter, context);
+
+            textWriter.Write(" and ");
+            syntax.WhenTrue.Write(textWriter, context);
+
+            textWriter.Write(" or ");
+            syntax.WhenFalse.Write(textWriter, context);
+        }
+
+        public static void Write(this ImplicitArrayCreationExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var typeInfo = context.SemanticModel.GetTypeInfo(syntax);
+            textWriter.Write("(");
+            context.TypeReferenceWriter.WriteInteractionElementReference(typeInfo.Type, textWriter);
+            textWriter.Write("._C_0_0() % _M.DOT)");
+            syntax.Initializer.Write(textWriter, context);
         }
     }
 }
