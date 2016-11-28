@@ -38,7 +38,10 @@
             .Case<ConditionalExpressionSyntax>(Write)
             .Case<ImplicitArrayCreationExpressionSyntax>(Write)
             .Case<PostfixUnaryExpressionSyntax>(Write)
-            .Case<PrefixUnaryExpressionSyntax>(Write);
+            .Case<PrefixUnaryExpressionSyntax>(Write)
+            .Case<ThisExpressionSyntax>(Write)
+            .Case<MemberBindingExpressionSyntax>(Write)
+            .Case<TypeOfExpressionSyntax>(Write);
 
         /*
         AnonymousFunctionExpressionSyntax
@@ -53,9 +56,7 @@
         InstanceExpressionSyntax
         InterpolatedStringExpressionSyntax
         MakeRefExpressionSyntax
-        MemberBindingExpressionSyntax
         OmittedArraySizeExpressionSyntax
-        ParenthesizedExpressionSyntax
         QueryExpressionSyntax
         RefTypeExpressionSyntax
         RefValueExpressionSyntax
@@ -762,16 +763,44 @@
 
         public static void Write(PrefixUnaryExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (syntax.Kind() == SyntaxKind.UnaryMinusExpression)
+            var kind = syntax.Kind();
+            if (kind == SyntaxKind.UnaryMinusExpression)
             {
                 textWriter.Write("-");
+                syntax.Operand.Write(textWriter, context);
             }
-            else // TODO handle LogicalNotExpression as well.
+            else if (kind == SyntaxKind.UnaryPlusExpression)// TODO handle LogicalNotExpression as well.
             {
                 textWriter.Write("+");
+                syntax.Operand.Write(textWriter, context);
             }
-            
-            syntax.Operand.Write(textWriter, context);
+            else if (kind == SyntaxKind.LogicalNotExpression)
+            {
+                textWriter.Write("not(");
+                syntax.Operand.Write(textWriter, context);
+                textWriter.Write(")");
+            }
+            else
+            {
+                throw new Exception($"Unhandled PrefixUnaryExpressionSyntax kind {kind}.");
+            }
+        }
+
+        public static void Write(ThisExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("element");
+        }
+
+        public static void Write(this MemberBindingExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write(".");
+            syntax.Name.Write(textWriter, context);
+        }
+
+        public static void Write(this TypeOfExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(syntax.ChildNodes().Single()).Symbol;
+            context.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
         }
     }
 }

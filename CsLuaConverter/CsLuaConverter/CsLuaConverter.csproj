@@ -119,8 +119,6 @@
     <Compile Include="CodeTreeLuaVisitor\Constraint\IConstraint.cs" />
     <Compile Include="CodeTreeLuaVisitor\Constraint\TypeConstraintVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Elements\InterfaceState.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\MemberBindingExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\UnaryPlusExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\SyntaxVisitorBase.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeReferenceWriter.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\BaseConstructorInitializerVisitor.cs" />
@@ -130,13 +128,9 @@
     <Compile Include="CodeTreeLuaVisitor\TypeSymbolSemanticAdaptor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\BreakStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchClauseVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\LogicalNotExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\ConstructorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\EqualsValueClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Expression\ElementAccessExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\ThisExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\TypeOfExpressionVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\UnaryMinusExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\FieldDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchDeclarationVisitor.cs" />
@@ -172,7 +166,6 @@
     <Compile Include="CodeTreeLuaVisitor\Statement\IfStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\LocalDeclarationStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ReturnStatementVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\SimpleMemberAccessExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\Switch\SwitchStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\TryStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeParameterVisitor.cs" />
