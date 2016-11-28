@@ -36,7 +36,9 @@
             .Case<CastExpressionSyntax>(Write)
             .Case<ConditionalAccessExpressionSyntax>(Write)
             .Case<ConditionalExpressionSyntax>(Write)
-            .Case<ImplicitArrayCreationExpressionSyntax>(Write);
+            .Case<ImplicitArrayCreationExpressionSyntax>(Write)
+            .Case<PostfixUnaryExpressionSyntax>(Write)
+            .Case<PrefixUnaryExpressionSyntax>(Write);
 
         /*
         AnonymousFunctionExpressionSyntax
@@ -54,8 +56,6 @@
         MemberBindingExpressionSyntax
         OmittedArraySizeExpressionSyntax
         ParenthesizedExpressionSyntax
-        PostfixUnaryExpressionSyntax
-        PrefixUnaryExpressionSyntax
         QueryExpressionSyntax
         RefTypeExpressionSyntax
         RefValueExpressionSyntax
@@ -739,6 +739,39 @@
             context.TypeReferenceWriter.WriteInteractionElementReference(typeInfo.Type, textWriter);
             textWriter.Write("._C_0_0() % _M.DOT)");
             syntax.Initializer.Write(textWriter, context);
+        }
+
+        public static void Write(PostfixUnaryExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var operand = "";
+
+            if (syntax.Kind() == SyntaxKind.PostIncrementExpression)
+            {
+                operand = "+";
+            }
+            else if (syntax.Kind() == SyntaxKind.PostDecrementExpression)
+            {
+                operand = "-";
+            }
+
+            syntax.Operand.Write(textWriter, context);
+            textWriter.Write(" = ");
+            syntax.Operand.Write(textWriter, context);
+            textWriter.Write($" {operand} 1");
+        }
+
+        public static void Write(PrefixUnaryExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            if (syntax.Kind() == SyntaxKind.UnaryMinusExpression)
+            {
+                textWriter.Write("-");
+            }
+            else // TODO handle LogicalNotExpression as well.
+            {
+                textWriter.Write("+");
+            }
+            
+            syntax.Operand.Write(textWriter, context);
         }
     }
 }

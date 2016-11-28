@@ -3,7 +3,7 @@
     using CodeTree;
     using CsLuaConverter.Context;
     using CsLuaConverter.SyntaxExtensions;
-
+    using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class UnaryMinusExpressionVisitor : BaseVisitor
@@ -17,8 +17,7 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var syntax = (PrefixUnaryExpressionSyntax)this.Branch.SyntaxNode;
-            textWriter.Write("-");
-            syntax.Operand.Write(textWriter, context);
+            ExpressionExtensions.Write(syntax, textWriter, context);
         }
     }
 }

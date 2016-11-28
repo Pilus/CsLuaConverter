@@ -2,7 +2,9 @@
 {
     using CsLuaConverter.CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class MemberBindingExpressionVisitor : BaseVisitor
     {
@@ -16,8 +18,10 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var syntax = (MemberBindingExpressionSyntax) this.Branch.SyntaxNode;
+
             textWriter.Write(".");
-            this.innerVisitor.Visit(textWriter, context);
+            syntax.Name.Write(textWriter, context);
         }
     }
 }

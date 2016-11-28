@@ -5,42 +5,43 @@
 
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using CsLuaFramework;
 
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ThrowStatementVisitor : BaseVisitor
     {
         const string LuaHeader = "/* LUA";
 
-        private readonly IVisitor inner;
         public ThrowStatementVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.ExpectKind(0, SyntaxKind.ThrowKeyword);
-            this.inner = this.CreateVisitor(1);
-            this.ExpectKind(2, SyntaxKind.SemicolonToken);
+
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var typeSymbol = context.SemanticModel.GetTypeInfo(this.Branch.SyntaxNode.ChildNodes().First()).Type;
+            var syntax = (ThrowStatementSyntax)this.Branch.SyntaxNode;
+
+            var typeSymbol = context.SemanticModel.GetTypeInfo(syntax.Expression).Type;
 
             if (typeSymbol.Name == nameof(ReplaceWithLuaBlock))
             {
-                this.WriteLuaCodeFromCommentBlock(textWriter);
+                WriteLuaCodeFromCommentBlock(syntax, textWriter);
                 return;
             }
 
             textWriter.Write("_M.Throw(");
-            this.inner.Visit(textWriter, context);
+            syntax.Expression.Write(textWriter, context);
             textWriter.WriteLine(");");
         }
 
-        private void WriteLuaCodeFromCommentBlock(IIndentedTextWriterWrapper textWriter)
+        private static void WriteLuaCodeFromCommentBlock(ThrowStatementSyntax syntax, IIndentedTextWriterWrapper textWriter)
         {
             var luaComments =
-                this.Branch.SyntaxNode.Parent.DescendantTrivia()
+                syntax.Expression.Parent.DescendantTrivia()
                     .Where(t => t.IsKind(SyntaxKind.MultiLineCommentTrivia) && t.ToString().StartsWith(LuaHeader))
                     .ToArray();
 
