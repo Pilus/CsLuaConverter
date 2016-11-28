@@ -3,6 +3,9 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
+
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class SwitchSectionVisitor : BaseVisitor
     {
@@ -18,10 +21,13 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var syntax = (SwitchSectionSyntax)this.Branch.SyntaxNode;
+
             textWriter.Write("if (");
-            this.labels.VisitAll(textWriter, context, " or ");
+            syntax.Labels.Write(SwitchExtensions.Write, textWriter, context, () => textWriter.Write(" or "));
             textWriter.WriteLine(") then");
             textWriter.Indent++;
+            //syntax.Statements.Write(StatementExtensions.Write, textWriter, context);
             this.bodyElements.VisitAll(textWriter, context);
             textWriter.Indent--;
         }

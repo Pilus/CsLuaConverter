@@ -2,6 +2,9 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
+
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class DefaultSwitchLabelVisitor : BaseVisitor, ISwitchLabelVisitor
     {
@@ -11,7 +14,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            textWriter.Write("true");
+            var syntax = (DefaultSwitchLabelSyntax)this.Branch.SyntaxNode;
+            syntax.Write(textWriter, context);
         }
+        
     }
 }

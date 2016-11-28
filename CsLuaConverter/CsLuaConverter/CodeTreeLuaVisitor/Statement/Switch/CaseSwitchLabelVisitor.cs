@@ -15,8 +15,7 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var syntax = (CaseSwitchLabelSyntax)this.Branch.SyntaxNode;
-            textWriter.Write("switchValue == ");
-            syntax.Value.Write(textWriter, context);
+            syntax.Write(textWriter, context);
         }
     }
 }

@@ -15,7 +15,10 @@
                 {
                     SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
                     //throw new Exception($"Could not find extension method for syntax {syntax.GetType().Name}. Kind: {(syntax as CSharpSyntaxNode)?.Kind().ToString() ?? "null"}.");
-                }).Case<ExpressionSyntax>(ExpressionExtensions.Write);
+                }).Case<ExpressionSyntax>(ExpressionExtensions.Write)
+            .Case<AccessorDeclarationSyntax>(Write)
+            .Case<ParameterSyntax>(Write)
+            .Case<ArgumentSyntax>(Write);
         /*
         AccessorListSyntax
         AnonymousObjectMemberDeclaratorSyntax
@@ -99,11 +102,16 @@
             }
         }
 
-        public static void Write<T>(this SyntaxList<T> list, Action<T, IIndentedTextWriterWrapper, IContext> action, IIndentedTextWriterWrapper textWriter, IContext context) where T : CSharpSyntaxNode
+        public static void Write<T>(this SyntaxList<T> list, Action<T, IIndentedTextWriterWrapper, IContext> action, IIndentedTextWriterWrapper textWriter, IContext context, Action delimiterAction = null) where T : CSharpSyntaxNode
         {
-            foreach (T syntax in list)
+            for (var index = 0; index < list.Count; index++)
             {
-                action(syntax, textWriter, context);
+                action(list[index], textWriter, context);
+
+                if (index != list.Count - 1)
+                {
+                    delimiterAction?.Invoke();
+                }
             }
         }
 

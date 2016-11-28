@@ -4,7 +4,10 @@
 
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
+
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ArgumentListVisitor : BaseVisitor
     {
@@ -26,17 +29,12 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var syntax = (ArgumentListSyntax)this.Branch.SyntaxNode;
+
             textWriter.Write("(");
 
-            for (var index = 0; index < this.argumentVisitors.Length; index++)
-            {
-                this.argumentVisitors[index].Visit(textWriter, context);
+            syntax.Arguments.Write(SyntaxNodeExtensions.Write, textWriter, context);
 
-                if (index < this.argumentVisitors.Length - 1)
-                {
-                    textWriter.Write(", ");
-                }
-            }
             textWriter.Write(")");
         }
     }

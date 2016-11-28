@@ -223,6 +223,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="AddOnConstruction\TocBuilder.cs" />
     <Compile Include="SyntaxExtensions\ExpressionExtensions.cs" />
+    <Compile Include="SyntaxExtensions\SwitchExtensions.cs" />
     <Compile Include="SyntaxExtensions\SyntaxNodeExtensions.cs" />
     <Compile Include="SyntaxExtensions\NameExtensions.cs" />
     <Compile Include="SyntaxExtensions\StatementExtensions.cs" />
