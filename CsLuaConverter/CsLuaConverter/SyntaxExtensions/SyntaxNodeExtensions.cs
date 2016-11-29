@@ -102,16 +102,21 @@
             }
         }
 
-        public static void Write<T>(this SyntaxList<T> list, Action<T, IIndentedTextWriterWrapper, IContext> action, IIndentedTextWriterWrapper textWriter, IContext context, Action delimiterAction = null) where T : CSharpSyntaxNode
+        public static void Write<T>(this SyntaxList<T> list, Action<T, IIndentedTextWriterWrapper, IContext> action, IIndentedTextWriterWrapper textWriter, IContext context, Action delimiterAction = null, Func<T, bool> filter = null) where T : CSharpSyntaxNode
         {
-            for (var index = 0; index < list.Count; index++)
+            var first = true;
+            foreach (T syntax in filter != null ? list.Where(filter) : list)
             {
-                action(list[index], textWriter, context);
-
-                if (index != list.Count - 1)
+                if (first)
+                {
+                    first = false;
+                }
+                else
                 {
                     delimiterAction?.Invoke();
                 }
+
+                action(syntax, textWriter, context);
             }
         }
 

@@ -27,8 +27,8 @@
             syntax.Labels.Write(SwitchExtensions.Write, textWriter, context, () => textWriter.Write(" or "));
             textWriter.WriteLine(") then");
             textWriter.Indent++;
-            //syntax.Statements.Write(StatementExtensions.Write, textWriter, context);
-            this.bodyElements.VisitAll(textWriter, context);
+            syntax.Statements.Write(StatementExtensions.Write, textWriter, context, null, s => !(s is BreakStatementSyntax));
+            //this.bodyElements.VisitAll(textWriter, context);
             textWriter.Indent--;
         }
     }
