@@ -203,6 +203,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="AddOnConstruction\TocBuilder.cs" />
     <Compile Include="SyntaxExtensions\ExpressionExtensions.cs" />
+    <Compile Include="SyntaxExtensions\ListExtensions.cs" />
     <Compile Include="SyntaxExtensions\LoopExtensions.cs" />
     <Compile Include="SyntaxExtensions\SwitchExtensions.cs" />
     <Compile Include="SyntaxExtensions\SyntaxNodeExtensions.cs" />

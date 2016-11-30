@@ -3,10 +3,11 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
-
+    using CsLuaConverter.SyntaxExtensions;
     using Lists;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ThisConstructorInitializerVisitor : BaseVisitor
     {
@@ -21,7 +22,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(this.Branch.SyntaxNode).Symbol;
+            var syntax = (ConstructorInitializerSyntax)this.Branch.SyntaxNode;
+            var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(syntax).Symbol;
             
             textWriter.Write("(element % _M.DOT_LVL(typeObject.Level))");
 
@@ -40,7 +42,8 @@
                 textWriter.AppendTextWriter(signatureWriter);
             }
 
-            this.argumentList.Visit(textWriter, context);
+            syntax.ArgumentList.Write(textWriter, context);
+            //this.argumentList.Visit(textWriter, context);
 
             textWriter.WriteLine(";");
         }

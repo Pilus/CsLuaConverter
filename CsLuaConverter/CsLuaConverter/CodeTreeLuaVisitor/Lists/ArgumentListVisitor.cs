@@ -31,11 +31,7 @@
         {
             var syntax = (ArgumentListSyntax)this.Branch.SyntaxNode;
 
-            textWriter.Write("(");
-
-            syntax.Arguments.Write(SyntaxNodeExtensions.Write, textWriter, context);
-
-            textWriter.Write(")");
+            syntax.Write(textWriter, context);
         }
     }
 }
