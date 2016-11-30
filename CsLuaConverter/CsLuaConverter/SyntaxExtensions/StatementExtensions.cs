@@ -18,23 +18,22 @@
             .Case<SwitchStatementSyntax>(SwitchExtensions.Write)
             .Case<BreakStatementSyntax>(Write)
             .Case<IfStatementSyntax>(Write)
-            .Case<ElseClauseSyntax>(Write);
+            .Case<ElseClauseSyntax>(Write)
+            .Case<EmptyStatementSyntax>(Write)
+            .Case<LocalDeclarationStatementSyntax>(Write)
+            .Case<ReturnStatementSyntax>(Write);
 
         /*
         
         CheckedStatementSyntax
         ContinueStatementSyntax
         DoStatementSyntax
-        EmptyStatementSyntax
         FixedStatementSyntax
         ForEachStatementSyntax
         ForStatementSyntax
         GotoStatementSyntax
-        IfStatementSyntax
         LabeledStatementSyntax
-        LocalDeclarationStatementSyntax
         LockStatementSyntax
-        ReturnStatementSyntax
         ThrowStatementSyntax
         TryStatementSyntax
         UnsafeStatementSyntax
@@ -98,6 +97,28 @@
                 syntax.Statement.Write(textWriter, context);
                 textWriter.WriteLine("end");
             }
+        }
+
+        public static void Write(this EmptyStatementSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+        }
+
+        public static void Write(this LocalDeclarationStatementSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            syntax.Declaration.Write(textWriter, context);
+            textWriter.WriteLine(";");
+        }
+
+        public static void Write(this ReturnStatementSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("return");
+            if (syntax.Expression != null)
+            {
+                textWriter.Write(" ");
+                syntax.Expression.Write(textWriter, context);
+            }
+
+            textWriter.WriteLine(";");
         }
     }
 }
