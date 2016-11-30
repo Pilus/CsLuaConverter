@@ -21,24 +21,23 @@
             .Case<ElseClauseSyntax>(Write)
             .Case<EmptyStatementSyntax>(Write)
             .Case<LocalDeclarationStatementSyntax>(Write)
-            .Case<ReturnStatementSyntax>(Write);
+            .Case<ReturnStatementSyntax>(Write)
+            .Case<TryStatementSyntax>(TryCatchExtensions.Write)
+            .Case<ThrowStatementSyntax>(TryCatchExtensions.Write)
+            .Case<ForEachStatementSyntax>(LoopExtensions.Write)
+            .Case<ForStatementSyntax>(LoopExtensions.Write)
+            .Case<WhileStatementSyntax>(LoopExtensions.Write);
 
         /*
-        
         CheckedStatementSyntax
         ContinueStatementSyntax
         DoStatementSyntax
         FixedStatementSyntax
-        ForEachStatementSyntax
-        ForStatementSyntax
         GotoStatementSyntax
         LabeledStatementSyntax
         LockStatementSyntax
-        ThrowStatementSyntax
-        TryStatementSyntax
         UnsafeStatementSyntax
         UsingStatementSyntax
-        WhileStatementSyntax
         YieldStatementSyntax
         */
 
