@@ -29,5 +29,24 @@
         {
             textWriter.Write("true");
         }
+
+        public static void Write(this SwitchSectionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("if (");
+            syntax.Labels.Write(Write, textWriter, context, () => textWriter.Write(" or "));
+            textWriter.WriteLine(") then");
+            textWriter.Indent++;
+            syntax.Statements.Write(StatementExtensions.Write, textWriter, context, null, s => !(s is BreakStatementSyntax));
+            textWriter.Indent--;
+        }
+
+        public static void Write(this SwitchStatementSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("local switchValue = ");
+            syntax.Expression.Write(textWriter, context);
+            textWriter.WriteLine(";");
+            syntax.Sections.Write(Write, textWriter, context, () => textWriter.Write("else"));
+            textWriter.WriteLine("end");
+        }
     }
 }

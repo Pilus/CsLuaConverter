@@ -138,10 +138,6 @@
     <Compile Include="CodeTreeLuaVisitor\Statement\EmptyStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\FinallyClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ForStatementVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Statement\Switch\CaseSwitchLabelVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Statement\Switch\DefaultSwitchLabelVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Statement\Switch\ISwitchLabelVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Statement\Switch\SwitchSectionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ThrowStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\WhileStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\ArrayRankSpecifierVisitor.cs" />
@@ -166,7 +162,6 @@
     <Compile Include="CodeTreeLuaVisitor\Statement\IfStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\LocalDeclarationStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ReturnStatementVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Statement\Switch\SwitchStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\TryStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeParameterVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\ArrayTypeVisitor.cs" />

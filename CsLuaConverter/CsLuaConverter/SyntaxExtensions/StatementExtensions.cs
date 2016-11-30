@@ -14,7 +14,8 @@
                     //throw new Exception($"Could not find extension method for statementSyntax {obj.GetType().Name}.");
                 })
             .Case<BlockSyntax>(Write)
-            .Case<ExpressionStatementSyntax>(Write);
+            .Case<ExpressionStatementSyntax>(Write)
+            .Case<SwitchStatementSyntax>(SwitchExtensions.Write);
 
         /*
         BreakStatementSyntax
@@ -31,7 +32,6 @@
         LocalDeclarationStatementSyntax
         LockStatementSyntax
         ReturnStatementSyntax
-        SwitchStatementSyntax
         ThrowStatementSyntax
         TryStatementSyntax
         UnsafeStatementSyntax
