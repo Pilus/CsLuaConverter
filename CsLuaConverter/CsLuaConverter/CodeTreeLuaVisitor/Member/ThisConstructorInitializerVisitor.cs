@@ -14,17 +14,18 @@
         private readonly ArgumentListVisitor argumentList;
         public ThisConstructorInitializerVisitor(CodeTreeBranch branch) : base(branch)
         {
-            this.ExpectKind(0, SyntaxKind.ColonToken);
-            this.ExpectKind(1, SyntaxKind.ThisKeyword);
-            this.ExpectKind(2, SyntaxKind.ArgumentList);
-            this.argumentList = (ArgumentListVisitor)this.CreateVisitor(2);
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var syntax = (ConstructorInitializerSyntax)this.Branch.SyntaxNode;
+            Write(syntax, textWriter, context);
+        }
+
+        public static void Write(ConstructorInitializerSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
             var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(syntax).Symbol;
-            
+
             textWriter.Write("(element % _M.DOT_LVL(typeObject.Level))");
 
             var signatureWriter = textWriter.CreateTextWriterAtSameIndent();
@@ -43,7 +44,6 @@
             }
 
             syntax.ArgumentList.Write(textWriter, context);
-            //this.argumentList.Visit(textWriter, context);
 
             textWriter.WriteLine(";");
         }

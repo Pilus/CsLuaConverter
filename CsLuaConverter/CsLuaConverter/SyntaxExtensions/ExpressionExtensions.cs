@@ -250,7 +250,7 @@
                 textWriter.Write("]");
             }
 
-            SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode(syntax.ArgumentList, textWriter, context);
+            syntax.ArgumentList.Write(textWriter, context);
 
             if (syntax.Initializer != null)
             {
@@ -334,7 +334,7 @@
 
             textWriter.Write(" % _M.DOT)");
 
-            SyntaxVisitorBase<InvocationExpressionSyntax>.VisitNode(syntax.ArgumentList, textWriter, context);
+            syntax.ArgumentList.Write(textWriter, context);
         }
 
         private static void WriteAsExtensionMethodCall(
