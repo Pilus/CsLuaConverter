@@ -24,7 +24,6 @@
             return this;
         }
 
-        [DebuggerNonUserCode]
         public void Write(CSharpSyntaxNode obj, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var type = obj.GetType();

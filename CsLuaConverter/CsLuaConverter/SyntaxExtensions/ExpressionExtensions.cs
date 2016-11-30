@@ -378,7 +378,7 @@
             textWriter.Write(" % _M.DOT)");
 
             var argWriter = textWriter.CreateTextWriterAtSameIndent();
-            SyntaxVisitorBase<InvocationExpressionSyntax>.VisitNode(syntax.ArgumentList, argWriter, context);
+            syntax.ArgumentList.Write(argWriter, context);
 
             var targetWriter = textWriter.CreateTextWriterAtSameIndent();
             syntax.Expression.Write(targetWriter, context);
