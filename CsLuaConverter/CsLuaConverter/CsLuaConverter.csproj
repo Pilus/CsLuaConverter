@@ -126,7 +126,6 @@
     <Compile Include="CodeTreeLuaVisitor\Member\IndexerDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\ThisConstructorInitializerVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeSymbolSemanticAdaptor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Statement\BreakStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\ConstructorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\EqualsValueClauseVisitor.cs" />
@@ -134,7 +133,6 @@
     <Compile Include="CodeTreeLuaVisitor\Member\FieldDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\CatchDeclarationVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Statement\ElseClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\EmptyStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\FinallyClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ForStatementVisitor.cs" />
@@ -159,7 +157,6 @@
     <Compile Include="CodeTreeLuaVisitor\Scope.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ExpressionStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ForEachStatementVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Statement\IfStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\LocalDeclarationStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\ReturnStatementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Statement\TryStatementVisitor.cs" />

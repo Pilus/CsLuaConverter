@@ -15,10 +15,13 @@
                 })
             .Case<BlockSyntax>(Write)
             .Case<ExpressionStatementSyntax>(Write)
-            .Case<SwitchStatementSyntax>(SwitchExtensions.Write);
+            .Case<SwitchStatementSyntax>(SwitchExtensions.Write)
+            .Case<BreakStatementSyntax>(Write)
+            .Case<IfStatementSyntax>(Write)
+            .Case<ElseClauseSyntax>(Write);
 
         /*
-        BreakStatementSyntax
+        
         CheckedStatementSyntax
         ContinueStatementSyntax
         DoStatementSyntax
@@ -56,6 +59,45 @@
         {
             syntax.Expression.Write(textWriter, context);
             textWriter.WriteLine(";");
+        }
+
+        public static void Write(this BreakStatementSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.WriteLine("break;");
+        }
+
+        public static void Write(this IfStatementSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("if (");
+            syntax.Condition.Write(textWriter, context);
+            textWriter.WriteLine(") then");
+
+            syntax.Statement.Write(textWriter, context);
+
+            if (syntax.Else != null)
+            {
+                syntax.Else.Write(textWriter, context);
+            }
+            else
+            {
+                textWriter.WriteLine("end");
+            }
+        }
+
+        public static void Write(this ElseClauseSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("else");
+
+            if (syntax.Statement is IfStatementSyntax)
+            {
+                syntax.Statement.Write(textWriter, context);
+            }
+            else
+            {
+                textWriter.WriteLine("");
+                syntax.Statement.Write(textWriter, context);
+                textWriter.WriteLine("end");
+            }
         }
     }
 }
