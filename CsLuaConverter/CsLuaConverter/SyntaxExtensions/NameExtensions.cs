@@ -1,5 +1,7 @@
 ﻿namespace CsLuaConverter.SyntaxExtensions
 {
+    using System;
+    using System.Linq;
     using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.Context;
 
@@ -12,16 +14,19 @@
         private static readonly TypeSwitch TypeSwitch = new TypeSwitch(
         (syntax, textWriter, context) =>
         {
-            SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
-            //throw new Exception($"Could not find extension method for expressionSyntax {syntax.GetType().Name}.");
+            //SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
+            throw new Exception($"Could not find extension method for expressionSyntax {syntax.GetType().Name}.");
         })
-        .Case<IdentifierNameSyntax>(Write);
+        .Case<IdentifierNameSyntax>(Write)
+        .Case<GenericNameSyntax>(Write);
 
-        //  AliasQualifiedNameSyntax
-        //  QualifiedNameSyntax
-        //  SimpleNameSyntax
-        //      GenericNameSyntax
-        //      IdentifierNameSyntax    x
+        /*
+        AliasQualifiedNameSyntax
+        QualifiedNameSyntax
+        SimpleNameSyntax
+            GenericNameSyntax
+     x      IdentifierNameSyntax
+        */
 
         public static void Write(this NameSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
@@ -91,6 +96,21 @@
             }
 
             return IsDeclaringTypeThisOrBase(declaredType, thisSymbol.BaseType);
+        }
+
+        public static void Write(this GenericNameSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var hasInvocationExpressionParent = syntax.Ancestors().OfType<InvocationExpressionSyntax>().Any();
+            if (hasInvocationExpressionParent)
+            {
+                textWriter.Write(syntax.Identifier.Text);
+                return;
+            }
+
+            textWriter.Write(syntax.Identifier.Text);
+            textWriter.Write("[");
+            syntax.TypeArgumentList.Write(textWriter, context);
+            textWriter.Write("]");
         }
     }
 }

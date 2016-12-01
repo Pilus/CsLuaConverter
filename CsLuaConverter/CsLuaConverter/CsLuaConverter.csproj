@@ -130,8 +130,6 @@
     <Compile Include="CodeTreeLuaVisitor\EqualsValueClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\FieldDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorDeclarationVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Type\ArrayRankSpecifierVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Type\NullableTypeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Constraint\TypeParameterConstraintClauseVisitor.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="IIndentedTextWriterWrapper.cs" />
@@ -146,8 +144,6 @@
     <Compile Include="CodeTreeLuaVisitor\Member\PropertyDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Scope.cs" />
     <Compile Include="CodeTreeLuaVisitor\TypeParameterVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Type\ArrayTypeVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Type\PredefinedTypeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\VariableDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\VariableDeclaratorVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\VisitorExtensions.cs" />
