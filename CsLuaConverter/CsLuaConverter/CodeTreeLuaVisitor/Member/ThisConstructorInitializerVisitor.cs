@@ -11,7 +11,6 @@
 
     public class ThisConstructorInitializerVisitor : BaseVisitor
     {
-        private readonly ArgumentListVisitor argumentList;
         public ThisConstructorInitializerVisitor(CodeTreeBranch branch) : base(branch)
         {
         }

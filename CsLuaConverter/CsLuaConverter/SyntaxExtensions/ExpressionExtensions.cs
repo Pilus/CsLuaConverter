@@ -41,7 +41,8 @@
             .Case<PrefixUnaryExpressionSyntax>(Write)
             .Case<ThisExpressionSyntax>(Write)
             .Case<MemberBindingExpressionSyntax>(Write)
-            .Case<TypeOfExpressionSyntax>(Write);
+            .Case<TypeOfExpressionSyntax>(Write)
+            .Case<ElementAccessExpressionSyntax>(Write);
 
         /*
         AnonymousFunctionExpressionSyntax
@@ -50,7 +51,6 @@
         AwaitExpressionSyntax
         CheckedExpressionSyntax
         DefaultExpressionSyntax
-        ElementAccessExpressionSyntax
         ElementBindingExpressionSyntax
         ImplicitElementAccessSyntax
         InstanceExpressionSyntax
@@ -801,6 +801,14 @@
         {
             var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(syntax.ChildNodes().Single()).Symbol;
             context.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
+        }
+
+        public static void Write(this ElementAccessExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("(");
+            syntax.Expression.Write(textWriter, context);
+            textWriter.Write(" % _M.DOT)");
+            syntax.ArgumentList.Write(textWriter, context);
         }
     }
 }

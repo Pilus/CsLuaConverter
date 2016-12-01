@@ -128,7 +128,6 @@
     <Compile Include="CodeTreeLuaVisitor\TypeSymbolSemanticAdaptor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\ConstructorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\EqualsValueClauseVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Expression\ElementAccessExpressionVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\FieldDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Type\ArrayRankSpecifierVisitor.cs" />
@@ -138,9 +137,7 @@
     <Compile Include="IIndentedTextWriterWrapper.cs" />
     <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorListVisitor.cs" />
     <Compile Include="IndentedTextWriterWrapper.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Lists\ArgumentListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\BaseListVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Lists\BracketedArgumentListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\ParameterListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\TypeParameterListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\MethodDeclarationVisitor.cs" />
