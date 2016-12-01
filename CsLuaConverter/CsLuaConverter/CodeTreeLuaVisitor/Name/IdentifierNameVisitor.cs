@@ -3,7 +3,7 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
-
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     using NameExtensions = CsLuaConverter.SyntaxExtensions.NameExtensions;
@@ -19,7 +19,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            NameExtensions.Write((IdentifierNameSyntax)this.Branch.SyntaxNode, textWriter, context);
+            var syntax = (IdentifierNameSyntax)this.Branch.SyntaxNode;
+            syntax.Write(textWriter, context);
         }
 
         public string[] GetName()

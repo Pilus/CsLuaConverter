@@ -4,6 +4,7 @@
     using CodeTree;
 
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Lists;
 
     using Microsoft.CodeAnalysis.CSharp;
@@ -23,17 +24,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var hasInvocationExpressionParent = this.Branch.SyntaxNode.Ancestors().OfType<InvocationExpressionSyntax>().Any();
-            if (hasInvocationExpressionParent)
-            {
-                textWriter.Write(this.name);
-                return;
-            }
-
-            textWriter.Write(this.name);
-            textWriter.Write("[");
-            this.argumentListVisitor.Visit(textWriter, context);
-            textWriter.Write("]");
+            var syntax = (GenericNameSyntax)this.Branch.SyntaxNode;
+            syntax.Write(textWriter, context);
         }
 
         public string[] GetName()

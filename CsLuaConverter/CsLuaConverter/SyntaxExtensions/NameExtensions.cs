@@ -23,8 +23,8 @@
         /*
         AliasQualifiedNameSyntax
         QualifiedNameSyntax
-        SimpleNameSyntax
-            GenericNameSyntax
+    (x) SimpleNameSyntax
+     x      GenericNameSyntax
      x      IdentifierNameSyntax
         */
 

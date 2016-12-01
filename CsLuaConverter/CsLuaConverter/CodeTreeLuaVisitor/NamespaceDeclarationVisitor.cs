@@ -7,11 +7,12 @@
     using Elements;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Name;
 
     public class NamespaceDeclarationVisitor : BaseVisitor
     {
-        private INameVisitor nameVisitor;
+        //private INameVisitor nameVisitor;
         private IElementVisitor[] elementVisitors;
         private BaseVisitor[] usingVisitors;
         
@@ -72,7 +73,7 @@
         {
             this.ExpectKind(0, SyntaxKind.NamespaceKeyword);
             this.ExpectKind(1, SyntaxKind.QualifiedName, SyntaxKind.IdentifierName);
-            this.nameVisitor = (INameVisitor)this.CreateVisitor(1);
+            //this.nameVisitor = (INameVisitor)this.CreateVisitor(1);
         }
 
         private void CreateUsingVisitors()
@@ -102,7 +103,26 @@
 
         public string[] GetNamespaceName()
         {
-            return this.nameVisitor.GetName();
+            var syntax = (NamespaceDeclarationSyntax)this.Branch.SyntaxNode;
+            return GetName(syntax.Name).ToArray();
+        }
+
+        private static List<string> GetName(NameSyntax syntax)
+        {
+            if (syntax is IdentifierNameSyntax)
+            {
+                return new List<string>(new[] {((IdentifierNameSyntax) syntax).Identifier.Text});
+            }
+
+            if (syntax is QualifiedNameSyntax)
+            {
+                var name = (QualifiedNameSyntax)syntax;
+                var list = GetName(name.Left);
+                list.Add(name.Right.Identifier.Text);
+                return list;
+            }
+
+            throw new System.NotImplementedException();
         }
 
         public string GetElementName()
