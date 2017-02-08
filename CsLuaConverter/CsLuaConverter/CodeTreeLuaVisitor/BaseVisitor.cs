@@ -23,12 +23,6 @@
 
         public abstract void Visit(IIndentedTextWriterWrapper textWriter, IContext context);
 
-        [DebuggerNonUserCode]
-        protected static bool IsKind(CodeTreeNode node, SyntaxKind kind)
-        {
-            return node.Kind == kind;
-        }
-
         private Func<CodeTreeBranch, BaseVisitor> customFactory;
         [DebuggerNonUserCode]
         protected BaseVisitor[] CreateVisitors(INodeFilter filter = null, Func<CodeTreeBranch, BaseVisitor> customFactory = null)
@@ -51,14 +45,6 @@
             return (filter == null ? this.Branch.Nodes : filter.Filter(this.Branch.Nodes)).ToArray();
         }
 
-        protected void CreateVisitorsAndVisitBranches(IIndentedTextWriterWrapper textWriter, IContext context, INodeFilter filter = null, Func<CodeTreeBranch, BaseVisitor> customFactory = null)
-        {
-            foreach (var visitor in this.CreateVisitors(filter, customFactory))
-            {
-                visitor.Visit(textWriter, context);
-            }
-        }
-
         [DebuggerNonUserCode]
         protected void ExpectKind(int index, params SyntaxKind[] kinds)
         {
@@ -66,12 +52,6 @@
             {
                 throw new VisitorException($"In {this.Branch.Kind}: Expected kind {string.Join(", ", kinds)} at index {index}. Got {this.Branch.Nodes[index].Kind}.");
             }
-        }
-
-        [DebuggerNonUserCode]
-        protected bool IsKind(int index, SyntaxKind kind)
-        {
-            return index < this.Branch.Nodes.Length && this.Branch.Nodes[index].Kind == kind;
         }
 
         [DebuggerNonUserCode]

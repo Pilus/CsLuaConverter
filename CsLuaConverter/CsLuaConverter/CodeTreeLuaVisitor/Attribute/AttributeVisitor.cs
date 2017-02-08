@@ -3,6 +3,7 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using CsLuaFramework.Attributes;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -25,18 +26,12 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            Visit(this.Syntax, textWriter, context);
-        }
-
-        public static void Visit(AttributeSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            var symbol = context.SemanticModel.GetSymbolInfo(syntax).Symbol;
-            context.TypeReferenceWriter.WriteTypeReference(symbol.ContainingType, textWriter);
+            this.Syntax.Visit(textWriter, context);
         }
 
         public bool IsCsLuaAddOnAttribute()
         {
-            var name = this.name.GetName().Single();
+            var name = this.Syntax.Name.GetText().ToString();
             return name.Equals(nameof(CsLuaAddOnAttribute)) || name.Equals(nameof(CsLuaAddOnAttribute).Replace("Attribute", ""));
         }
     }

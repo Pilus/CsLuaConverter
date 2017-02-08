@@ -3,7 +3,7 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
-
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class AccessorListVisitor : SyntaxVisitorBase<AccessorListSyntax>, IAccessor
@@ -24,7 +24,7 @@
 
         public static void Visit(AccessorListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            VisitAllNodes(syntax.Accessors, textWriter, context);
+            syntax.Accessors.Write(SyntaxNodeExtensions.Write, textWriter, context);
         }
 
         public bool IsAutoProperty()

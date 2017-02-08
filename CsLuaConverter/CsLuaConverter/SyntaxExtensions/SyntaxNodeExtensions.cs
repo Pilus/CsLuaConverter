@@ -20,14 +20,11 @@
             .Case<ParameterSyntax>(Write)
             .Case<ArgumentSyntax>(Write);
         /*
-        AccessorListSyntax
         AnonymousObjectMemberDeclaratorSyntax
         ArrayRankSpecifierSyntax
         ArrowExpressionClauseSyntax
         AttributeArgumentListSyntax
         AttributeArgumentSyntax
-        AttributeListSyntax
-        AttributeSyntax
         AttributeTargetSpecifierSyntax
         BaseArgumentListSyntax (multiple) http://www.coderesx.com/roslyn/html/CD5162BE.htm
         BaseCrefParameterListSyntax (multiple) http://www.coderesx.com/roslyn/html/8DFF3B4E.htm
@@ -176,6 +173,28 @@
                 syntax.Sizes.Write(ExpressionExtensions.Write, textWriter, context);
                 textWriter.Write(")");
             }
+        }
+
+        public static void Visit(this AttributeSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = context.SemanticModel.GetSymbolInfo(syntax).Symbol;
+            context.TypeReferenceWriter.WriteTypeReference(symbol.ContainingType, textWriter);
+        }
+
+        public static void Visit(this AttributeListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.WriteLine("local attributes = {");
+            textWriter.Indent++;
+
+            syntax.Attributes.Write(Write, textWriter, context);
+
+            textWriter.Indent--;
+            textWriter.WriteLine("};");
+        }
+
+        public static void Visit(this AccessorListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            syntax.Accessors.Write(SyntaxNodeExtensions.Write, textWriter, context);
         }
     }
 }

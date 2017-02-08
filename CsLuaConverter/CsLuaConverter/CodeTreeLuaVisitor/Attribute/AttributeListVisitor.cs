@@ -3,6 +3,7 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -24,18 +25,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            Visit(this.Syntax, textWriter, context);
-        }
-
-        public static void Visit(AttributeListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            textWriter.WriteLine("local attributes = {");
-            textWriter.Indent++;
-
-            VisitAllNodes(syntax.Attributes, textWriter, context);
-
-            textWriter.Indent--;
-            textWriter.WriteLine("};");
+            this.Syntax.Visit(textWriter, context);
         }
 
         public bool HasCsLuaAddOnAttribute()
