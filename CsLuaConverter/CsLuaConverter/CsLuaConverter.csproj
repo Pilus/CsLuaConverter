@@ -139,7 +139,6 @@
     <Compile Include="CodeTreeLuaVisitor\Lists\ParameterListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\TypeParameterListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\MethodDeclarationVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Name\GenericNameVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\ParameterVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\PropertyDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Scope.cs" />
@@ -195,6 +194,7 @@
     <Compile Include="CsLuaMetaReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="AddOnConstruction\TocBuilder.cs" />
+    <Compile Include="SyntaxExtensions\ClassExtensions.cs" />
     <Compile Include="SyntaxExtensions\ExpressionExtensions.cs" />
     <Compile Include="SyntaxExtensions\ListExtensions.cs" />
     <Compile Include="SyntaxExtensions\LoopExtensions.cs" />

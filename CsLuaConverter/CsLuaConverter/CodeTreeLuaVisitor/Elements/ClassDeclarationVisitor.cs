@@ -5,6 +5,7 @@
     using CodeTree;
     using Constraint;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using CsLuaFramework;
 
     using Filters;
@@ -91,11 +92,11 @@
                 switch ((ClassState) (context.PartialElementState.CurrentState ?? 0))
                 {
                     default:
-                        this.WriteOpen(textWriter, context);
+                        this.WriteOpen(this.Syntax, textWriter, context);
                         context.PartialElementState.NextState = (int)ClassState.TypeGeneration;
                         break;
                     case ClassState.TypeGeneration:
-                        this.WriteTypeGenerator(textWriter, context);
+                        ClassExtensions.WriteTypeGenerator(this.Syntax, textWriter, context);
                         context.PartialElementState.NextState = (int)ClassState.WriteStaticValues;
                         break;
                     case ClassState.WriteStaticValues:
@@ -122,114 +123,19 @@
             }, $"In visiting of class {this.name}. State: {((ClassState)(context.PartialElementState.CurrentState ?? 0))}");
         }
 
-        private void WriteOpen(IIndentedTextWriterWrapper textWriter, IContext context)
+        private void WriteOpen(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (context.PartialElementState.IsFirst)
             {
-                textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", this.GetNumOfGenerics());
+                var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
+
+                textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", context.SemanticAdaptor.HasTypeGenerics(symbol) ? context.SemanticAdaptor.GetGenerics(symbol).Length : 0);
                 textWriter.Indent++;
 
-                this.WriteGenericsMapping(textWriter, context);
-                this.WriteTypeGeneration(textWriter, context);
-                this.WriteBaseInheritance(textWriter, context);
-                this.WriteTypePopulation(textWriter, context);
-            }
-        }
-
-        private void WriteGenericsMapping(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            textWriter.Write("local genericsMapping = ");
-
-            if (this.genericsVisitor != null)
-            {
-                textWriter.Write("{");
-                this.genericsVisitor.Visit(textWriter, context);
-                textWriter.WriteLine("};");
-            }
-            else
-            {
-                textWriter.WriteLine("{};");
-            }
-        }
-
-        private void WriteTypeGeneration(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            var adaptor = context.SemanticAdaptor;
-            textWriter.Write(
-                "local typeObject = System.Type('{0}','{1}', nil, {2}, generics, nil, interactionElement, 'Class', ",
-                adaptor.GetName(this.symbol),
-                adaptor.GetFullNamespace(this.symbol),
-                adaptor.GetGenerics(this.symbol).Length);
-            context.SignatureWriter.WriteSignature(this.symbol, textWriter);
-            textWriter.WriteLine(");");
-        }
-
-        private void WriteBaseInheritance(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            textWriter.Write("local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = ");
-
-            context.TypeReferenceWriter.WriteInteractionElementReference(this.symbol.BaseType, textWriter);
-
-            textWriter.WriteLine(".__meta(staticValues);");
-        }
-
-        private void WriteTypePopulation(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            foreach (var interfaceSymbol in this.symbol.Interfaces)
-            {
-                if (context.SemanticAdaptor.IsInterface(interfaceSymbol)
-                    && context.SemanticAdaptor.GetName(interfaceSymbol) != nameof(ICsLuaAddOn))
-                {
-                    textWriter.Write("table.insert(implements, ");
-                    context.TypeReferenceWriter.WriteTypeReference(interfaceSymbol, textWriter);
-                    textWriter.WriteLine(");");
-                }
-            }
-
-            /*if (this.baseListVisitor != null)
-            {
-                this.baseListVisitor.WriteInterfaceImplements(textWriter, context, "table.insert(implements, {0});", new []{typeof(ICsLuaAddOn)});
-            }*/
-
-            textWriter.WriteLine("typeObject.baseType = baseTypeObject;");
-            textWriter.WriteLine("typeObject.level = baseTypeObject.level + 1;");
-            textWriter.WriteLine("typeObject.implements = implements;");
-        }
-
-        private void WriteTypeGenerator(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            if (context.PartialElementState.IsFirst)
-            {
-                textWriter.WriteLine("local elementGenerator = function()");
-                textWriter.Indent++;
-
-                textWriter.WriteLine("local element = baseElementGenerator();");
-                textWriter.WriteLine("element.type = typeObject;");
-                textWriter.WriteLine("element[typeObject.Level] = {");
-
-                textWriter.Indent++;
-            }
-
-            foreach (var property in this.Syntax.Members.OfType<PropertyDeclarationSyntax>())
-            {
-                PropertyDeclarationVisitor.WriteDefaultValue(property, textWriter, context);
-            }
-
-            foreach (var field in this.Syntax.Members.OfType<FieldDeclarationSyntax>())
-            {
-                FieldDeclarationVisitor.WriteDefaultValue(field, textWriter, context);
-            }
-
-            if (context.PartialElementState.IsLast)
-            {
-                textWriter.Indent--;
-
-                textWriter.WriteLine("};");
-
-                textWriter.WriteLine("return element;");
-                textWriter.Indent--;
-
-                textWriter.WriteLine("end");
+                syntax.WriteGenericsMapping(textWriter, context);
+                ClassExtensions.WriteTypeGeneration(symbol, textWriter, context);
+                ClassExtensions.WriteBaseInheritance(symbol, textWriter, context);
+                ClassExtensions.WriteTypePopulation(symbol, textWriter, context);
             }
         }
 
