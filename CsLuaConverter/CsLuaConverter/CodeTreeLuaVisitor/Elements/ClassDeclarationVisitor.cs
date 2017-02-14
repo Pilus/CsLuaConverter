@@ -7,7 +7,7 @@
     using CsLuaConverter.Context;
     using CsLuaConverter.SyntaxExtensions;
     using CsLuaFramework;
-
+    using CsLuaFramework.Attributes;
     using Filters;
     using Lists;
     using Member;
@@ -84,15 +84,16 @@
             if (this.symbol == null)
             {
                 this.symbol = context.SemanticModel.GetDeclaredSymbol(this.Syntax);
-                context.CurrentClass = this.symbol;
             }
+
+            context.CurrentClass = this.symbol;
 
             TryActionAndWrapException(() =>
             {
                 switch ((ClassState) (context.PartialElementState.CurrentState ?? 0))
                 {
                     default:
-                        this.WriteOpen(this.Syntax, textWriter, context);
+                        ClassExtensions.WriteOpen(this.Syntax, textWriter, context);
                         context.PartialElementState.NextState = (int)ClassState.TypeGeneration;
                         break;
                     case ClassState.TypeGeneration:
@@ -100,11 +101,11 @@
                         context.PartialElementState.NextState = (int)ClassState.WriteStaticValues;
                         break;
                     case ClassState.WriteStaticValues:
-                        this.WriteStaticValues(textWriter, context);
+                        ClassExtensions.WriteStaticValues(this.Syntax, textWriter, context);
                         context.PartialElementState.NextState = (int)ClassState.WriteInitialize;
                         break;
                     case ClassState.WriteInitialize:
-                        this.WriteInitialize(textWriter, context);
+                        ClassExtensions.WriteInitialize(this.Syntax, textWriter, context);
                         context.PartialElementState.NextState = (int)ClassState.WriteMembers;
                         break;
                     case ClassState.WriteMembers:
@@ -112,84 +113,15 @@
                         context.PartialElementState.NextState = (int)ClassState.Close;
                         break;
                     case ClassState.Close:
-                        this.WriteClose(textWriter, context);
+                        ClassExtensions.WriteClose(textWriter, context);
                         context.PartialElementState.NextState = null;
                         break;
                     case ClassState.Footer:
-                        this.WriteFooter(textWriter, context);
+                        ClassExtensions.WriteFooter(textWriter, context);
                         context.PartialElementState.NextState = null;
                         break;
                 }
             }, $"In visiting of class {this.name}. State: {((ClassState)(context.PartialElementState.CurrentState ?? 0))}");
-        }
-
-        private void WriteOpen(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            if (context.PartialElementState.IsFirst)
-            {
-                var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
-
-                textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", context.SemanticAdaptor.HasTypeGenerics(symbol) ? context.SemanticAdaptor.GetGenerics(symbol).Length : 0);
-                textWriter.Indent++;
-
-                syntax.WriteGenericsMapping(textWriter, context);
-                ClassExtensions.WriteTypeGeneration(symbol, textWriter, context);
-                ClassExtensions.WriteBaseInheritance(symbol, textWriter, context);
-                ClassExtensions.WriteTypePopulation(symbol, textWriter, context);
-            }
-        }
-
-        private void WriteStaticValues(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            if (context.PartialElementState.IsFirst)
-            {
-                textWriter.WriteLine("staticValues[typeObject.Level] = {");
-                textWriter.Indent++;
-            }
-
-            foreach (var property in this.Syntax.Members.OfType<PropertyDeclarationSyntax>())
-            {
-                PropertyDeclarationVisitor.WriteDefaultValue(property, textWriter, context, true);
-            }
-
-            foreach (var field in this.Syntax.Members.OfType<FieldDeclarationSyntax>())
-            {
-                FieldDeclarationVisitor.WriteDefaultValue(field, textWriter, context, true);
-            }
-
-            if (context.PartialElementState.IsLast)
-            {
-                textWriter.Indent--;
-                textWriter.WriteLine("};");
-            }
-        }
-
-        private void WriteInitialize(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-
-            if (context.PartialElementState.IsFirst)
-            {
-                textWriter.WriteLine("local initialize = function(element, values)");
-                textWriter.Indent++;
-
-                textWriter.WriteLine("if baseInitialize then baseInitialize(element, values); end");
-            }
-
-            foreach (var property in this.Syntax.Members.OfType<PropertyDeclarationSyntax>())
-            {
-                PropertyDeclarationVisitor.WriteInitializeValue(property, textWriter, context);
-            }
-
-            foreach (var field in this.Syntax.Members.OfType<FieldDeclarationSyntax>())
-            {
-                FieldDeclarationVisitor.WriteInitializeValue(field, textWriter, context);
-            }
-
-            if (context.PartialElementState.IsLast)
-            {
-                textWriter.Indent--;
-                textWriter.WriteLine("end");
-            }
         }
 
         private void WriteMembers(IIndentedTextWriterWrapper textWriter, IContext context)
@@ -226,29 +158,6 @@
             }
         }
 
-        private void WriteClose(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            if (context.PartialElementState.IsLast)
-            {
-                textWriter.WriteLine("return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;");
-                textWriter.Indent--;
-                textWriter.WriteLine("end,");
-                context.CurrentClass = null;
-            }
-        }
-
-        private void WriteFooter(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            if (!context.PartialElementState.IsFirst || this.attributeListVisitor?.HasCsLuaAddOnAttribute() != true)
-            {
-                return;
-            }
-            
-            textWriter.Write("(");
-            textWriter.Write(context.SemanticAdaptor.GetFullName(this.symbol));
-            textWriter.WriteLine("._C_0_0() % _M.DOT).Execute();");
-        }
-
         public void WriteExtensionMethods(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var methodsWithSameExtensionTypes =
@@ -265,8 +174,6 @@
                 textWriter.Write("_M.RE('");
                 textWriter.Write(context.SemanticAdaptor.GetFullName(extensionType));
                 textWriter.Write("', ");
-                //textWriter.Write(extensionType.typeArg);
-                //method.WriteAsExtensionMethod(extensionWriter, context);
             }
 
             textWriter.WriteLine("");
@@ -280,14 +187,6 @@
         public int GetNumOfGenerics()
         {
             return this.Syntax.TypeParameterList?.Parameters.Count ?? 0;
-        }
-
-        private static void ForEachMember<T>(ClassDeclarationSyntax syntax, System.Action<T, IIndentedTextWriterWrapper, IContext> action, IIndentedTextWriterWrapper textWriter, IContext context) where T : MemberDeclarationSyntax
-        {
-            foreach (var memberSyntax in syntax.Members.OfType<T>())
-            {
-                action(memberSyntax, textWriter, context);
-            }
         }
     }
 }
