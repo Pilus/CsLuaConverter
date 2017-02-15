@@ -4,7 +4,7 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
-
+    using CsLuaConverter.SyntaxExtensions;
     using Filters;
     using Lists;
 
@@ -52,11 +52,10 @@
             textWriter.Write("signatureHash = ");
             context.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
             textWriter.WriteLine(",");
-            textWriter.WriteLine("scope = '{0}',", this.scope);
+            textWriter.WriteLine("scope = '{0}',", symbol.DeclaredAccessibility);
 
             textWriter.Write("func = function(element");
-            this.parameterList.FirstElementPrefix = ", ";
-            this.parameterList.Visit(textWriter, context);
+            syntax.ParameterList.Write(textWriter, context);
             textWriter.WriteLine(")");
 
             textWriter.Indent++;
@@ -79,29 +78,6 @@
 
             textWriter.WriteLine("end,");
             
-            textWriter.Indent--;
-            textWriter.WriteLine("});");
-        }
-
-        public static void WriteEmptyConstructor(IIndentedTextWriterWrapper textWriter)
-        {
-            textWriter.WriteLine("_M.IM(members, '', {");
-            textWriter.Indent++;
-
-            textWriter.WriteLine("level = typeObject.Level,");
-            textWriter.WriteLine("memberType = 'Cstor',");
-            textWriter.WriteLine("static = true,");
-            textWriter.WriteLine("numMethodGenerics = 0,");
-            textWriter.WriteLine("signatureHash = 0,");
-            textWriter.WriteLine("scope = 'Public',");
-            textWriter.WriteLine("func = function(element)");
-
-            textWriter.Indent++;
-            textWriter.WriteLine("(element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();");
-            textWriter.Indent--;
-
-            textWriter.WriteLine("end,");
-
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }

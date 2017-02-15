@@ -20,7 +20,7 @@
             textWriter.Write("]");
         }
 
-        public static void Write(ParameterListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(this ParameterListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (syntax.Parameters.Any() && (syntax.Parent is ConstructorDeclarationSyntax || syntax.Parent is MethodDeclarationSyntax))
             {

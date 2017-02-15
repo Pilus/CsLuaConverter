@@ -22,7 +22,7 @@
         {
             var syntax = (ParameterListSyntax)this.Branch.SyntaxNode;
 
-            ListExtensions.Write(syntax, textWriter, context);
+            syntax.Write(textWriter, context);
         }
     }
 }

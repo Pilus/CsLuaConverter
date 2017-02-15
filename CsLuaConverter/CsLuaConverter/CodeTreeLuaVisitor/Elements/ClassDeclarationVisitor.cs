@@ -109,7 +109,7 @@
                         context.PartialElementState.NextState = (int)ClassState.WriteMembers;
                         break;
                     case ClassState.WriteMembers:
-                        this.WriteMembers(textWriter, context);
+                        this.WriteMembers(this.Syntax, textWriter, context);
                         context.PartialElementState.NextState = (int)ClassState.Close;
                         break;
                     case ClassState.Close:
@@ -124,7 +124,7 @@
             }, $"In visiting of class {this.name}. State: {((ClassState)(context.PartialElementState.CurrentState ?? 0))}");
         }
 
-        private void WriteMembers(IIndentedTextWriterWrapper textWriter, IContext context)
+        private void WriteMembers(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (context.PartialElementState.IsFirst)
             {
@@ -133,8 +133,8 @@
                 textWriter.WriteLine("local members = _M.RTEF(getBaseMembers);");
             }
 
-            this.constructorVisitors.VisitAll(textWriter, context);
-            if (context.PartialElementState.DefinedConstructorWritten == false && this.constructorVisitors.Any())
+            
+            if (context.PartialElementState.DefinedConstructorWritten == false && syntax.Members.OfType<ConstructorDeclarationSyntax>().Any())
             {
                 context.PartialElementState.DefinedConstructorWritten = true;
             }
@@ -142,9 +142,10 @@
             if (context.PartialElementState.DefinedConstructorWritten == false && context.PartialElementState.IsLast)
             {
                 // TODO: This might cause issues in partial classes where the constructors are placed in the first part.
-                ConstructorDeclarationVisitor.WriteEmptyConstructor(textWriter);
+                MemberExtensions.WriteEmptyConstructor(textWriter);
             }
 
+            this.constructorVisitors.VisitAll(textWriter, context);
             this.fieldVisitors.VisitAll(textWriter, context);
             this.propertyVisitors.VisitAll(textWriter, context);
             this.indexerVisitors.VisitAll(textWriter, context);
