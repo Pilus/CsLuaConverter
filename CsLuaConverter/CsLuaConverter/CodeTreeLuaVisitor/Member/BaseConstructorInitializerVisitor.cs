@@ -26,11 +26,7 @@
 
         private static void Write(ConstructorInitializerSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(syntax).Symbol;
-            textWriter.Write("(element % _M.DOT_LVL(typeObject.Level - 1))._C_0_");
-            context.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
-            syntax.ArgumentList.Write(textWriter, context);
-            textWriter.WriteLine(";");
+            syntax.Write(textWriter, context);
         }
     }
 }

@@ -23,28 +23,7 @@
 
         public static void Write(ConstructorInitializerSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = (IMethodSymbol)context.SemanticModel.GetSymbolInfo(syntax).Symbol;
-
-            textWriter.Write("(element % _M.DOT_LVL(typeObject.Level))");
-
-            var signatureWriter = textWriter.CreateTextWriterAtSameIndent();
-            var hasGenericComponents = context.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), signatureWriter);
-
-            if (hasGenericComponents)
-            {
-                textWriter.Write("['_C_0_'..(");
-                textWriter.AppendTextWriter(signatureWriter);
-                textWriter.Write(")]");
-            }
-            else
-            {
-                textWriter.Write("._C_0_");
-                textWriter.AppendTextWriter(signatureWriter);
-            }
-
-            syntax.ArgumentList.Write(textWriter, context);
-
-            textWriter.WriteLine(";");
+            syntax.Write(textWriter, context);
         }
     }
 }

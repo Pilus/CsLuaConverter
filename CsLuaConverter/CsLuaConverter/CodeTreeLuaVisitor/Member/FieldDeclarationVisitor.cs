@@ -5,6 +5,7 @@
     using CodeTree;
     using CsLuaConverter.Context;
     using Filters;
+    using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -36,12 +37,19 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            textWriter.WriteLine("_M.IM(members, '{0}', {{", this.variableVisitor.GetName());
+            this.Write(this.Branch.SyntaxNode as FieldDeclarationSyntax, textWriter, context);
+        }
+
+        public void Write(FieldDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = (IFieldSymbol)context.SemanticModel.GetDeclaredSymbol(syntax.Declaration.Variables.Single());
+            
+            textWriter.WriteLine("_M.IM(members, '{0}', {{", symbol.Name);
             textWriter.Indent++;
             textWriter.WriteLine("level = typeObject.Level,");
             textWriter.WriteLine("memberType = 'Field',");
-            textWriter.WriteLine("scope = '{0}',", this.Scope);
-            textWriter.WriteLine("static = {0},", (this.IsStatic || this.IsConst).ToString().ToLower());
+            textWriter.WriteLine("scope = '{0}',", symbol.DeclaredAccessibility);
+            textWriter.WriteLine("static = {0},", symbol.IsStatic.ToString().ToLower());
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }

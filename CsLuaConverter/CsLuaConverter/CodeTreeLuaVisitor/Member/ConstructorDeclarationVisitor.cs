@@ -35,51 +35,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.Visit((ConstructorDeclarationSyntax) this.Branch.SyntaxNode, textWriter, context);
-        }
-
-        public void Visit(ConstructorDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
-
-            textWriter.WriteLine("_M.IM(members, '', {");
-            textWriter.Indent++;
-
-            textWriter.WriteLine("level = typeObject.Level,");
-            textWriter.WriteLine("memberType = 'Cstor',");
-            textWriter.WriteLine("static = true,");
-            textWriter.WriteLine("numMethodGenerics = 0,");
-            textWriter.Write("signatureHash = ");
-            context.SignatureWriter.WriteSignature(symbol.Parameters.Select(p => p.Type).ToArray(), textWriter);
-            textWriter.WriteLine(",");
-            textWriter.WriteLine("scope = '{0}',", symbol.DeclaredAccessibility);
-
-            textWriter.Write("func = function(element");
-            syntax.ParameterList.Write(textWriter, context);
-            textWriter.WriteLine(")");
-
-            textWriter.Indent++;
-            if (this.baseConstructorInitializer != null)
-            {
-                this.baseConstructorInitializer.Visit(textWriter, context);
-            }
-            else if (this.thisConstructorInitializer != null)
-            {
-                this.thisConstructorInitializer.Visit(textWriter, context);
-            }
-            else
-            {
-                textWriter.WriteLine("(element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();");
-            }
-
-            textWriter.Indent--;
-
-            this.block.Visit(textWriter, context);
-
-            textWriter.WriteLine("end,");
-            
-            textWriter.Indent--;
-            textWriter.WriteLine("});");
+            ((ConstructorDeclarationSyntax) this.Branch.SyntaxNode).Visit(textWriter, context);
         }
     }
 }

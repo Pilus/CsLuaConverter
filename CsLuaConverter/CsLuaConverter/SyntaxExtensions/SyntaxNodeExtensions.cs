@@ -47,7 +47,6 @@
         InterpolationAlignmentClauseSyntax
         InterpolationFormatClauseSyntax
         JoinIntoClauseSyntax
-        MemberDeclarationSyntax (multiple) http://www.coderesx.com/roslyn/html/1EB73B23.htm#fullInheritance
         NameColonSyntax
         NameEqualsSyntax
         OrderingSyntax

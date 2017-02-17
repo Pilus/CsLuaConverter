@@ -145,11 +145,13 @@
                 MemberExtensions.WriteEmptyConstructor(textWriter);
             }
 
+            //syntax.Members.Write(MemberExtensions.Write, textWriter, context);
+
             this.constructorVisitors.VisitAll(textWriter, context);
             this.fieldVisitors.VisitAll(textWriter, context);
             this.propertyVisitors.VisitAll(textWriter, context);
             this.indexerVisitors.VisitAll(textWriter, context);
-            this.methodVisitors.VisitAll(textWriter, context);
+            this.methodVisitors.VisitAll(textWriter, context);//*/
 
             if (context.PartialElementState.IsLast)
             {
