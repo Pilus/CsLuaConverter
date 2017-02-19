@@ -7,6 +7,7 @@
     using CodeTree;
     using Constraint;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Filters;
     using Lists;
 
@@ -62,10 +63,11 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as MethodDeclarationSyntax);
+            var syntax = this.Branch.SyntaxNode as MethodDeclarationSyntax;
+            var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
 
-            this.WriteMethodGenericsMapping(textWriter, context);
-            this.WriteMethodMember(textWriter, context, symbol);
+            WriteMethodGenericsMapping(syntax, textWriter, context);
+            this.WriteMethodMember(syntax, textWriter, context, symbol);
         }
 
         public ITypeSymbol GetExtensionTypeSymbol(IContext context)
@@ -92,50 +94,51 @@
 
         }
 
-        private void WriteMethodMember(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
+        private void WriteMethodMember(MethodDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
         {
             textWriter.WriteLine("_M.IM(members, '{0}', {{", this.name);
             textWriter.Indent++;
 
             WriteLevel(textWriter);
             WriteMemberType(textWriter);
-            this.WriteScope(textWriter);
+            WriteScope(textWriter, symbol);
             WriteIsStatic(textWriter, symbol);
             WriteNumOfMethodGenerics(textWriter, symbol);
             WriteSignatureHash(textWriter, context, symbol);
-            this.WriteOverride(textWriter);
+            WriteOverride(textWriter, symbol);
             WriteIsParams(textWriter, symbol);
             WriteReturnType(textWriter, context, symbol);
-            this.WriteGenerics(textWriter);
-            this.WriteBodyFunc(textWriter, context, symbol);
+            WriteGenerics(syntax, textWriter);
+            this.WriteBodyFunc(syntax, textWriter, context, symbol);
 
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }
 
-        private void WriteBodyFunc(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
+        private void WriteBodyFunc(MethodDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
         {
-            if (this.block == null)
+            if (syntax.Body == null)
             {
                 return;
             }
 
             textWriter.Write("func = function(element");
 
-            if (this.methodGenerics != null)
+            if (syntax.TypeParameterList != null)
             {
                 textWriter.Write(", methodGenericsMapping, methodGenerics");
             }
 
-            this.parameters.FirstElementPrefix = ", ";
-            this.parameters.Visit(textWriter, context);
+            //this.parameters.FirstElementPrefix = ", ";
+            //this.parameters.Visit(textWriter, context);
+            syntax.ParameterList.Write(textWriter, context);
 
             textWriter.WriteLine(")");
 
             if (symbol.Parameters.LastOrDefault()?.IsParams == true)
             {
                 textWriter.Indent++;
-                this.WriteParamVariableInit(textWriter, context, symbol);
+                WriteParamVariableInit(textWriter, context, symbol);
                 textWriter.Indent--;
             }
 
@@ -143,9 +146,9 @@
             textWriter.WriteLine("end");
         }
 
-        private void WriteGenerics(IIndentedTextWriterWrapper textWriter)
+        private static void WriteGenerics(MethodDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter)
         {
-            if (this.methodGenerics != null)
+            if (syntax.TypeParameterList != null)
             {
                 textWriter.WriteLine("generics = methodGenericsMapping,");
             }
@@ -171,9 +174,9 @@
             }
         }
 
-        private void WriteOverride(IIndentedTextWriterWrapper textWriter)
+        private static void WriteOverride(IIndentedTextWriterWrapper textWriter, IMethodSymbol symbol)
         {
-            if (this.isOverride)
+            if (symbol.IsOverride)
             {
                 textWriter.WriteLine("override = true,");
             }
@@ -199,9 +202,9 @@
             textWriter.WriteLine("static = {0},", symbol.IsStatic.ToString().ToLower());
         }
 
-        private void WriteScope(IIndentedTextWriterWrapper textWriter)
+        private static void WriteScope(IIndentedTextWriterWrapper textWriter, IMethodSymbol symbol)
         {
-            textWriter.WriteLine("scope = '{0}',", this.scope);
+            textWriter.WriteLine("scope = '{0}',", symbol.DeclaredAccessibility);
         }
 
         private static void WriteMemberType(IIndentedTextWriterWrapper textWriter)
@@ -214,20 +217,20 @@
             textWriter.WriteLine("level = typeObject.Level,");
         }
 
-        private void WriteMethodGenericsMapping(IIndentedTextWriterWrapper textWriter, IContext context)
+        private static void WriteMethodGenericsMapping(MethodDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (this.methodGenerics == null)
+            if (syntax.TypeParameterList == null)
             {
                 return;
             }
 
             textWriter.Write("local methodGenericsMapping = {");
-            this.methodGenerics.Visit(textWriter, context);
+            syntax.TypeParameterList.Write(textWriter, context);
             textWriter.WriteLine("};");
             textWriter.WriteLine("local methodGenerics = _M.MG(methodGenericsMapping);");
         }
 
-        private void WriteParamVariableInit(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
+        private static void WriteParamVariableInit(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)
         {
             var parameter = symbol.Parameters.Last();
             textWriter.Write("local ");

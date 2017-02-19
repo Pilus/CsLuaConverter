@@ -199,6 +199,7 @@
     <Compile Include="SyntaxExtensions\ListExtensions.cs" />
     <Compile Include="SyntaxExtensions\LoopExtensions.cs" />
     <Compile Include="SyntaxExtensions\MemberExtensions.cs" />
+    <Compile Include="SyntaxExtensions\MethodExtensions.cs" />
     <Compile Include="SyntaxExtensions\SwitchExtensions.cs" />
     <Compile Include="SyntaxExtensions\SyntaxNodeExtensions.cs" />
     <Compile Include="SyntaxExtensions\NameExtensions.cs" />

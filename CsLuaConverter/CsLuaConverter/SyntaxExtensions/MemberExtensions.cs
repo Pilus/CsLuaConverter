@@ -251,5 +251,27 @@
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }
+
+        public static void Write(this TypeParameterSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write(syntax.Identifier.Text);
+        }
+
+        public static void Write(this TypeParameterListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var c = 1;
+            foreach (var visitor in syntax.Parameters)
+            {
+                if (c > 1)
+                {
+                    textWriter.Write(",");
+                }
+
+                textWriter.Write("['");
+                visitor.Write(textWriter, context);
+                textWriter.Write("'] = {0}", c);
+                c++;
+            }
+        }
     }
 }

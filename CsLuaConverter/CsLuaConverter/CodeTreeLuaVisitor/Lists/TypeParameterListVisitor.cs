@@ -3,8 +3,10 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class TypeParameterListVisitor : BaseVisitor, IListVisitor
     {
@@ -17,19 +19,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var c = 1;
-            foreach (var visitor in this.visitors)
-            {
-                if (c > 1)
-                {
-                    textWriter.Write(",");
-                }
+            var syntax = (TypeParameterListSyntax)this.Branch.SyntaxNode;
 
-                textWriter.Write("['");
-                visitor.Visit(textWriter, context);
-                textWriter.Write("'] = {0}", c);
-                c++;
-            }
+            syntax.Write(textWriter, context);
         }
 
         public int GetNumElements()

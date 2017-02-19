@@ -2,6 +2,7 @@
 {
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class TypeParameterVisitor : SyntaxVisitorBase<TypeParameterSyntax>
@@ -17,12 +18,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            Visit(this.Syntax, textWriter, context);
-        }
-
-        public static void Visit(TypeParameterSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            textWriter.Write(syntax.Identifier.Text);
+            this.Syntax.Write(textWriter, context);
         }
     }
 }

@@ -180,7 +180,7 @@
             context.TypeReferenceWriter.WriteTypeReference(symbol.ContainingType, textWriter);
         }
 
-        public static void Visit(this AttributeListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(this AttributeListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.WriteLine("local attributes = {");
             textWriter.Indent++;
