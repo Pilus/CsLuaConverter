@@ -5,6 +5,7 @@
     using Accessor;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -37,27 +38,8 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            textWriter.WriteLine("_M.IM(members,'#',{");
-            textWriter.Indent++;
-            textWriter.WriteLine("level = typeObject.Level,");
-            textWriter.WriteLine("memberType = 'Indexer',");
-            textWriter.WriteLine($"scope = '{this.scope}',");
-
-            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as IndexerDeclarationSyntax);
-
-            if (!this.accessorList.IsAutoProperty())
-            {
-                this.accessorList.Visit(textWriter, context);
-            }
-            else
-            {
-                textWriter.Write("returnType = ");
-                context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
-                textWriter.WriteLine(",");
-            }
-
-            textWriter.Indent--;
-            textWriter.WriteLine("});");
+            var syntax = this.Branch.SyntaxNode as IndexerDeclarationSyntax;
+            syntax.Write(textWriter, context);
         }
     }
 }

@@ -191,7 +191,7 @@
             textWriter.WriteLine("};");
         }
 
-        public static void Visit(this AccessorListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(this AccessorListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             syntax.Accessors.Write(SyntaxNodeExtensions.Write, textWriter, context);
         }

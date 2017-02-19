@@ -5,6 +5,7 @@
     using Accessor;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -36,39 +37,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as PropertyDeclarationSyntax);
+            var syntax = (PropertyDeclarationSyntax)this.Branch.SyntaxNode;
 
-            textWriter.WriteLine("_M.IM(members, '{0}',{{", this.name);
-            textWriter.Indent++;
-            textWriter.WriteLine("level = typeObject.Level,");
-            textWriter.WriteLine("memberType = '{0}',", this.accessorList.IsAutoProperty() ? "AutoProperty" : "Property");
-            textWriter.WriteLine("scope = '{0}',", this.scope);
-            textWriter.WriteLine("static = {0},", this.isStatic.ToString().ToLower());
-            textWriter.Write("returnType = ");
-            context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
-            textWriter.WriteLine(";");
-
-            this.accessorList.Visit(textWriter, context);
-            textWriter.Indent--;
-            textWriter.WriteLine("});");
-        }
-
-        public static void WriteDefaultValue(PropertyDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context, bool isStaticFilter = false)
-        {
-            var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
-            if (symbol.IsStatic != isStaticFilter)
-            {
-                return;
-            }
-
-            textWriter.Write($"{symbol.Name} = _M.DV(");
-            context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
-            textWriter.WriteLine("),");
-        }
-
-        public static void WriteInitializeValue(PropertyDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            textWriter.WriteLine($"if not(values.{syntax.Identifier.Text} == nil) then element[typeObject.Level].{syntax.Identifier.Text} = values.{syntax.Identifier.Text}; end");
+            syntax.Write(textWriter, context);
         }
     }
 }

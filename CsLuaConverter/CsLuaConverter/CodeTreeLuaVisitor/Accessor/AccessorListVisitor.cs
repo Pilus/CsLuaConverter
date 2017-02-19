@@ -19,12 +19,14 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.Syntax.Visit(textWriter, context);
+            this.Syntax.Write(textWriter, context);
         }
 
         public bool IsAutoProperty()
         {
-            return this.Syntax.Accessors.Any(a => a.Body == null);
+            return this.Syntax.IsAutoProperty();
         }
+
+        
     }
 }

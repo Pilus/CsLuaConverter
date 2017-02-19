@@ -35,7 +35,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            ((ConstructorDeclarationSyntax) this.Branch.SyntaxNode).Visit(textWriter, context);
+            ((ConstructorDeclarationSyntax) this.Branch.SyntaxNode).Write(textWriter, context);
         }
     }
 }

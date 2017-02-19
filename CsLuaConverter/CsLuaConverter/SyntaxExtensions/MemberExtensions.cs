@@ -2,6 +2,8 @@
 {
     using System;
     using System.Linq;
+    using CsLuaConverter.CodeTree;
+    using CsLuaConverter.CodeTreeLuaVisitor.Member;
     using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
@@ -21,7 +23,7 @@
         /*
         BaseFieldDeclarationSyntax
             EventFieldDeclarationSyntax
-            FieldDeclarationSyntax
+      x     FieldDeclarationSyntax
         BaseMethodDeclarationSyntax
       x     ConstructorDeclarationSyntax
             ConversionOperatorDeclarationSyntax
@@ -108,7 +110,7 @@
             textWriter.WriteLine(";");
         }
 
-        public static void Visit(this ConstructorDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(this ConstructorDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
 
@@ -145,6 +147,107 @@
 
             textWriter.WriteLine("end,");
             
+            textWriter.Indent--;
+            textWriter.WriteLine("});");
+        }
+
+        public static void Write(this FieldDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = (IFieldSymbol)context.SemanticModel.GetDeclaredSymbol(syntax.Declaration.Variables.Single());
+            
+            textWriter.WriteLine("_M.IM(members, '{0}', {{", symbol.Name);
+            textWriter.Indent++;
+            textWriter.WriteLine("level = typeObject.Level,");
+            textWriter.WriteLine("memberType = 'Field',");
+            textWriter.WriteLine("scope = '{0}',", symbol.DeclaredAccessibility);
+            textWriter.WriteLine("static = {0},", symbol.IsStatic.ToString().ToLower());
+            textWriter.Indent--;
+            textWriter.WriteLine("});");
+        }
+
+        public static void WriteDefaultValue(this FieldDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context, bool @static = false)
+        {
+            var isStatic = syntax.Modifiers.Any(n => n.GetKind().Equals(SyntaxKind.StaticKeyword));
+            var isConst = syntax.Modifiers.Any(n => n.GetKind().Equals(SyntaxKind.ConstKeyword));
+
+            if ((isStatic || isConst) != @static)
+            {
+                return;
+            }
+
+            VariableDeclarationVisitor.WriteDefaultValue(syntax.Declaration, textWriter, context);
+        }
+
+        public static void WriteInitializeValue(this FieldDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var name = syntax.Declaration.Variables.Single().Identifier.Text;
+            textWriter.WriteLine($"if not(values.{name} == nil) then element[typeObject.Level].{name} = values.{name}; end");
+        }
+
+        public static void Write(this PropertyDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
+
+            textWriter.WriteLine("_M.IM(members, '{0}',{{", symbol.Name);
+            textWriter.Indent++;
+            textWriter.WriteLine("level = typeObject.Level,");
+            textWriter.WriteLine("memberType = '{0}',",
+                syntax.AccessorList.IsAutoProperty() ? "AutoProperty" : "Property");
+            textWriter.WriteLine("scope = '{0}',", symbol.DeclaredAccessibility);
+            textWriter.WriteLine("static = {0},", symbol.IsStatic.ToString().ToLower());
+            textWriter.Write("returnType = ");
+            context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
+            textWriter.WriteLine(";");
+
+            syntax.AccessorList.Write(textWriter, context);
+            textWriter.Indent--;
+            textWriter.WriteLine("});");
+        }
+
+        public static bool IsAutoProperty(this AccessorListSyntax syntax)
+        {
+            return syntax.Accessors.Any(a => a.Body == null);
+        }
+
+        public static void WriteDefaultValue(this PropertyDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context, bool isStaticFilter = false)
+        {
+            var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
+            if (symbol.IsStatic != isStaticFilter)
+            {
+                return;
+            }
+
+            textWriter.Write($"{symbol.Name} = _M.DV(");
+            context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
+            textWriter.WriteLine("),");
+        }
+
+        public static void WriteInitializeValue(this PropertyDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.WriteLine($"if not(values.{syntax.Identifier.Text} == nil) then element[typeObject.Level].{syntax.Identifier.Text} = values.{syntax.Identifier.Text}; end");
+        }
+
+        public static void Write(this IndexerDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
+
+            textWriter.WriteLine("_M.IM(members,'#',{");
+            textWriter.Indent++;
+            textWriter.WriteLine("level = typeObject.Level,");
+            textWriter.WriteLine("memberType = 'Indexer',");
+            textWriter.WriteLine($"scope = '{symbol.DeclaredAccessibility}',");
+
+            if (!syntax.AccessorList.IsAutoProperty())
+            {
+                syntax.AccessorList.Write(textWriter, context);
+            }
+            else
+            {
+                textWriter.Write("returnType = ");
+                context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
+                textWriter.WriteLine(",");
+            }
+
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }

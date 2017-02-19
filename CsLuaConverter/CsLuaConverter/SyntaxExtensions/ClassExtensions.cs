@@ -73,12 +73,12 @@
 
             foreach (var property in syntax.Members.OfType<PropertyDeclarationSyntax>())
             {
-                PropertyDeclarationVisitor.WriteDefaultValue(property, textWriter, context);
+                property.WriteDefaultValue(textWriter, context);
             }
 
             foreach (var field in syntax.Members.OfType<FieldDeclarationSyntax>())
             {
-                FieldDeclarationVisitor.WriteDefaultValue(field, textWriter, context);
+                field.WriteDefaultValue(textWriter, context);
             }
 
             if (context.PartialElementState.IsLast)
@@ -120,12 +120,12 @@
 
             foreach (var property in syntax.Members.OfType<PropertyDeclarationSyntax>())
             {
-                PropertyDeclarationVisitor.WriteDefaultValue(property, textWriter, context, true);
+                property.WriteDefaultValue(textWriter, context, true);
             }
 
             foreach (var field in syntax.Members.OfType<FieldDeclarationSyntax>())
             {
-                FieldDeclarationVisitor.WriteDefaultValue(field, textWriter, context, true);
+                field.WriteDefaultValue(textWriter, context, true);
             }
 
             if (context.PartialElementState.IsLast)
@@ -148,12 +148,12 @@
 
             foreach (var property in syntax.Members.OfType<PropertyDeclarationSyntax>())
             {
-                PropertyDeclarationVisitor.WriteInitializeValue(property, textWriter, context);
+                property.WriteInitializeValue(textWriter, context);
             }
 
             foreach (var field in syntax.Members.OfType<FieldDeclarationSyntax>())
             {
-                FieldDeclarationVisitor.WriteInitializeValue(field, textWriter, context);
+                field.WriteInitializeValue(textWriter, context);
             }
 
             if (context.PartialElementState.IsLast)
