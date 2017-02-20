@@ -195,5 +195,46 @@
         {
             syntax.Accessors.Write(SyntaxNodeExtensions.Write, textWriter, context);
         }
+
+        public static void Write(this EqualsValueClauseSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write(" = ");
+            syntax.Value.Write(textWriter, context);
+        }
+
+        public static void Write(this VariableDeclaratorSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write(syntax.Identifier.Text);
+            syntax.Initializer?.Write(textWriter, context);
+        }
+
+        public static void WriteDefaultValue(this VariableDeclaratorSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write(syntax.Identifier.Text);
+
+            if (syntax.Initializer != null)
+            {
+                syntax.Initializer.Write(textWriter, context);
+                textWriter.WriteLine(",");
+            }
+            else
+            {
+                var symbol = (IFieldSymbol)context.SemanticModel.GetDeclaredSymbol(syntax);
+                textWriter.Write(" = _M.DV(");
+                context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
+                textWriter.WriteLine("),");
+            }
+        }
+
+        public static void Write(this VariableDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("local ");
+            syntax.Variables.Write(Write, textWriter, context);
+        }
+
+        public static void WriteDefaultValue(this VariableDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            syntax.Variables.Single().WriteDefaultValue(textWriter, context);
+        }
     }
 }

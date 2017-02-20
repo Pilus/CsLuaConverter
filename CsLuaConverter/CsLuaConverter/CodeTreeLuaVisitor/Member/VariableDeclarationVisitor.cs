@@ -4,6 +4,7 @@
 
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -25,11 +26,6 @@
         {
             textWriter.Write("local ");
             this.declaratorVisitor.Visit(textWriter, context);
-        }
-
-        public static void WriteDefaultValue(VariableDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            VariableDeclaratorVisitor.WriteDefaultValue(syntax.Variables.Single(), textWriter, context);
         }
     }
 }

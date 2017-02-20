@@ -539,7 +539,7 @@
             if (syntax.Body is BlockSyntax)
             {
                 textWriter.WriteLine("");
-                syntax.Body.Write(textWriter, context);
+                ((BlockSyntax)syntax.Body).Write(textWriter, context);
             }
             else
             {

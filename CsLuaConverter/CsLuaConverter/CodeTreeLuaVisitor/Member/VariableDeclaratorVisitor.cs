@@ -3,9 +3,11 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using SyntaxNodeExtensions = CsLuaConverter.SyntaxExtensions.SyntaxNodeExtensions;
 
     public class VariableDeclaratorVisitor : BaseVisitor
     {
@@ -26,31 +28,14 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            textWriter.Write(this.name);
-            this.valueVisitor?.Visit(textWriter, context);
+            //textWriter.Write(this.name);
+            //this.valueVisitor?.Visit(textWriter, context);
+            (this.Branch.SyntaxNode as VariableDeclaratorSyntax).Write(textWriter, context);
         }
 
         public string GetName()
         {
             return this.name;
-        }
-
-        public static void WriteDefaultValue(VariableDeclaratorSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            textWriter.Write(syntax.Identifier.Text);
-
-            if (syntax.Initializer != null)
-            {
-                EqualsValueClauseVisitor.Visit(syntax.Initializer, textWriter, context);
-                textWriter.WriteLine(",");
-            }
-            else
-            {
-                var symbol = (IFieldSymbol)context.SemanticModel.GetDeclaredSymbol(syntax);
-                textWriter.Write(" = _M.DV(");
-                context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
-                textWriter.WriteLine("),");
-            }
         }
     }
 }

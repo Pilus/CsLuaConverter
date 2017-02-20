@@ -22,7 +22,8 @@
             .Case<FieldDeclarationSyntax>(Write)
             .Case<PropertyDeclarationSyntax>(Write)
             .Case<IndexerDeclarationSyntax>(Write)
-            .Case<MethodDeclarationSyntax>(MethodExtensions.Write);
+            .Case<MethodDeclarationSyntax>(MethodExtensions.Write)
+            .Case<ClassDeclarationSyntax>(ClassExtensions.Write);
 
         /*
         BaseFieldDeclarationSyntax
@@ -179,7 +180,7 @@
                 return;
             }
 
-            VariableDeclarationVisitor.WriteDefaultValue(syntax.Declaration, textWriter, context);
+            syntax.Declaration.WriteDefaultValue(textWriter, context);
         }
 
         public static void WriteInitializeValue(this FieldDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
