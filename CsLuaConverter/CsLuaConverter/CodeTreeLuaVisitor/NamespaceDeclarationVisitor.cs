@@ -62,13 +62,6 @@
             }
         }
 
-        public void WriteExtensions(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            this.elementVisitors.OfType<ClassDeclarationVisitor>()
-                .ToList()
-                .ForEach(e => e.WriteExtensionMethods(textWriter, context));
-        }
-
         private void CreateNameVisitor()
         {
             this.ExpectKind(0, SyntaxKind.NamespaceKeyword);

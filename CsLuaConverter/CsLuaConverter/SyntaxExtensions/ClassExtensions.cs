@@ -1,6 +1,9 @@
 ﻿namespace CsLuaConverter.SyntaxExtensions
 {
+    using System.Collections.Generic;
     using System.Linq;
+    using CsLuaConverter.CodeTreeLuaVisitor;
+    using CsLuaConverter.CodeTreeLuaVisitor.Elements;
     using CsLuaConverter.CodeTreeLuaVisitor.Member;
     using CsLuaConverter.Context;
     using CsLuaFramework;
@@ -11,14 +14,57 @@
 
     public static class ClassExtensions
     {
-        public static void WriteGenericsMapping(this ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        private static Dictionary<ClassDeclarationSyntax, INamedTypeSymbol> symbolCache = new Dictionary<ClassDeclarationSyntax, INamedTypeSymbol>();
+        public static void Write(this ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = symbolCache.ContainsKey(syntax) ? symbolCache[syntax] : context.SemanticModel.GetDeclaredSymbol(syntax);
+            symbolCache[syntax] = symbol;
+
+            BaseVisitor.TryActionAndWrapException(() =>
+            {
+                switch ((ClassState)(context.PartialElementState.CurrentState ?? 0))
+                {
+                    default:
+                        WriteOpen(syntax, textWriter, context, symbol);
+                        context.PartialElementState.NextState = (int)ClassState.TypeGeneration;
+                        break;
+                    case ClassState.TypeGeneration:
+                        WriteTypeGenerator(syntax, textWriter, context);
+                        context.PartialElementState.NextState = (int)ClassState.WriteStaticValues;
+                        break;
+                    case ClassState.WriteStaticValues:
+                        WriteStaticValues(syntax, textWriter, context);
+                        context.PartialElementState.NextState = (int)ClassState.WriteInitialize;
+                        break;
+                    case ClassState.WriteInitialize:
+                        WriteInitialize(syntax, textWriter, context);
+                        context.PartialElementState.NextState = (int)ClassState.WriteMembers;
+                        break;
+                    case ClassState.WriteMembers:
+                        WriteMembers(syntax, textWriter, context);
+                        context.PartialElementState.NextState = (int)ClassState.Close;
+                        break;
+                    case ClassState.Close:
+                        WriteClose(textWriter, context);
+                        context.PartialElementState.NextState = null;
+                        break;
+                    case ClassState.Footer:
+                        WriteFooter(textWriter, context, symbol);
+                        context.PartialElementState.NextState = null;
+                        break;
+                }
+            },
+                $"In visiting of class {context.SemanticAdaptor.GetFullName(symbol)}. State: {((ClassState)(context.PartialElementState.CurrentState ?? 0))}");
+        }
+
+        private static void WriteGenericsMapping(this ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("local genericsMapping = {");
             syntax.TypeParameterList?.Write(textWriter, context);
             textWriter.WriteLine("};");
         }
 
-        public static void WriteTypeGeneration(ITypeSymbol symbol, IIndentedTextWriterWrapper textWriter, IContext context)
+        private static void WriteTypeGeneration(ITypeSymbol symbol, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var adaptor = context.SemanticAdaptor;
             textWriter.Write(
@@ -30,7 +76,7 @@
             textWriter.WriteLine(");");
         }
 
-        public static void WriteBaseInheritance(ITypeSymbol symbol, IIndentedTextWriterWrapper textWriter, IContext context)
+        private static void WriteBaseInheritance(ITypeSymbol symbol, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             textWriter.Write("local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = ");
 
@@ -39,7 +85,7 @@
             textWriter.WriteLine(".__meta(staticValues);");
         }
 
-        public static void WriteTypePopulation(ITypeSymbol symbol, IIndentedTextWriterWrapper textWriter, IContext context)
+        private static void WriteTypePopulation(ITypeSymbol symbol, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             foreach (var interfaceSymbol in symbol.Interfaces)
             {
@@ -57,7 +103,7 @@
             textWriter.WriteLine("typeObject.implements = implements;");
         }
 
-        public static void WriteTypeGenerator(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        private static void WriteTypeGenerator(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (context.PartialElementState.IsFirst)
             {
@@ -94,23 +140,21 @@
             }
         }
 
-        public static void WriteOpen(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        private static void WriteOpen(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context, INamedTypeSymbol symbol)
         {
             if (context.PartialElementState.IsFirst)
             {
-                var symbol = context.CurrentClass;
-
                 textWriter.WriteLine("[{0}] = function(interactionElement, generics, staticValues)", context.SemanticAdaptor.HasTypeGenerics(symbol) ? context.SemanticAdaptor.GetGenerics(symbol).Length : 0);
                 textWriter.Indent++;
 
                 syntax.WriteGenericsMapping(textWriter, context);
-                ClassExtensions.WriteTypeGeneration(symbol, textWriter, context);
-                ClassExtensions.WriteBaseInheritance(symbol, textWriter, context);
-                ClassExtensions.WriteTypePopulation(symbol, textWriter, context);
+                WriteTypeGeneration(symbol, textWriter, context);
+                WriteBaseInheritance(symbol, textWriter, context);
+                WriteTypePopulation(symbol, textWriter, context);
             }
         }
 
-        public static void WriteStaticValues(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        private static void WriteStaticValues(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (context.PartialElementState.IsFirst)
             {
@@ -135,7 +179,7 @@
             }
         }
 
-        public static void WriteInitialize(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        private static void WriteInitialize(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
 
             if (context.PartialElementState.IsFirst)
@@ -163,21 +207,18 @@
             }
         }
 
-        public static void WriteClose(IIndentedTextWriterWrapper textWriter, IContext context)
+        private static void WriteClose(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             if (context.PartialElementState.IsLast)
             {
                 textWriter.WriteLine("return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;");
                 textWriter.Indent--;
                 textWriter.WriteLine("end,");
-                context.CurrentClass = null;
             }
         }
 
-        public static void WriteFooter(IIndentedTextWriterWrapper textWriter, IContext context)
+        private static void WriteFooter(IIndentedTextWriterWrapper textWriter, IContext context, INamedTypeSymbol symbol)
         {
-            var symbol = context.CurrentClass;
-
             if (!context.PartialElementState.IsFirst || HasCsLuaAddOnAttribute(symbol) != true)
             {
                 return;
@@ -192,6 +233,36 @@
         {
             var attributes = symbol.GetAttributes();
             return attributes!= null && attributes.Any(attribute => attribute.AttributeClass.Name == nameof(CsLuaAddOnAttribute));
+        }
+
+        private static void WriteMembers(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            if (context.PartialElementState.IsFirst)
+            {
+                textWriter.WriteLine("local getMembers = function()");
+                textWriter.Indent++;
+                textWriter.WriteLine("local members = _M.RTEF(getBaseMembers);");
+            }
+
+            if (context.PartialElementState.DefinedConstructorWritten == false && syntax.Members.OfType<ConstructorDeclarationSyntax>().Any())
+            {
+                context.PartialElementState.DefinedConstructorWritten = true;
+            }
+
+            if (context.PartialElementState.DefinedConstructorWritten == false && context.PartialElementState.IsLast)
+            {
+                // TODO: This might cause issues in partial classes where the constructors are placed in the first part.
+                MemberExtensions.WriteEmptyConstructor(textWriter);
+            }
+
+            syntax.Members.Write(MemberExtensions.Write, textWriter, context);
+
+            if (context.PartialElementState.IsLast)
+            {
+                textWriter.WriteLine("return members;");
+                textWriter.Indent--;
+                textWriter.WriteLine("end");
+            }
         }
     }
 }

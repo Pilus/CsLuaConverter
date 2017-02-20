@@ -46,11 +46,6 @@
             this.namespaceVisitor.WriteFooter(textWriter, context);
         }
 
-        public void WriteExtensions(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            this.namespaceVisitor.WriteExtensions(textWriter, context);
-        }
-
         public string[] GetNamespaceName()
         {
             return this.namespaceVisitor.GetNamespaceName();

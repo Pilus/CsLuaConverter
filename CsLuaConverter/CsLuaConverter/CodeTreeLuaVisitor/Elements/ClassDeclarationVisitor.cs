@@ -81,100 +81,11 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            if (this.symbol == null)
-            {
-                this.symbol = context.SemanticModel.GetDeclaredSymbol(this.Syntax);
-            }
+            var syntax = this.Branch.SyntaxNode as ClassDeclarationSyntax;
 
-            context.CurrentClass = this.symbol;
-
-            TryActionAndWrapException(() =>
-            {
-                switch ((ClassState) (context.PartialElementState.CurrentState ?? 0))
-                {
-                    default:
-                        ClassExtensions.WriteOpen(this.Syntax, textWriter, context);
-                        context.PartialElementState.NextState = (int)ClassState.TypeGeneration;
-                        break;
-                    case ClassState.TypeGeneration:
-                        ClassExtensions.WriteTypeGenerator(this.Syntax, textWriter, context);
-                        context.PartialElementState.NextState = (int)ClassState.WriteStaticValues;
-                        break;
-                    case ClassState.WriteStaticValues:
-                        ClassExtensions.WriteStaticValues(this.Syntax, textWriter, context);
-                        context.PartialElementState.NextState = (int)ClassState.WriteInitialize;
-                        break;
-                    case ClassState.WriteInitialize:
-                        ClassExtensions.WriteInitialize(this.Syntax, textWriter, context);
-                        context.PartialElementState.NextState = (int)ClassState.WriteMembers;
-                        break;
-                    case ClassState.WriteMembers:
-                        this.WriteMembers(this.Syntax, textWriter, context);
-                        context.PartialElementState.NextState = (int)ClassState.Close;
-                        break;
-                    case ClassState.Close:
-                        ClassExtensions.WriteClose(textWriter, context);
-                        context.PartialElementState.NextState = null;
-                        break;
-                    case ClassState.Footer:
-                        ClassExtensions.WriteFooter(textWriter, context);
-                        context.PartialElementState.NextState = null;
-                        break;
-                }
-            }, $"In visiting of class {this.name}. State: {((ClassState)(context.PartialElementState.CurrentState ?? 0))}");
+            syntax.Write(textWriter, context);
         }
 
-        private void WriteMembers(ClassDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            if (context.PartialElementState.IsFirst)
-            {
-                textWriter.WriteLine("local getMembers = function()");
-                textWriter.Indent++;
-                textWriter.WriteLine("local members = _M.RTEF(getBaseMembers);");
-            }
-
-            
-            if (context.PartialElementState.DefinedConstructorWritten == false && syntax.Members.OfType<ConstructorDeclarationSyntax>().Any())
-            {
-                context.PartialElementState.DefinedConstructorWritten = true;
-            }
-
-            if (context.PartialElementState.DefinedConstructorWritten == false && context.PartialElementState.IsLast)
-            {
-                // TODO: This might cause issues in partial classes where the constructors are placed in the first part.
-                MemberExtensions.WriteEmptyConstructor(textWriter);
-            }
-
-            syntax.Members.Write(MemberExtensions.Write, textWriter, context);
-
-            if (context.PartialElementState.IsLast)
-            {
-                textWriter.WriteLine("return members;");
-                textWriter.Indent--;
-                textWriter.WriteLine("end");
-            }
-        }
-
-        public void WriteExtensionMethods(IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            var methodsWithSameExtensionTypes =
-                this.methodVisitors.GroupBy(m => m.GetExtensionTypeSymbol(context)).Where(t => t.Key != null).ToArray();
-
-            if (!methodsWithSameExtensionTypes.Any())
-            {
-                return;
-            }
-
-            foreach (var methodsWithSameExtensionType in methodsWithSameExtensionTypes)
-            {
-                var extensionType = methodsWithSameExtensionType.Key;
-                textWriter.Write("_M.RE('");
-                textWriter.Write(context.SemanticAdaptor.GetFullName(extensionType));
-                textWriter.Write("', ");
-            }
-
-            textWriter.WriteLine("");
-        }
 
         public string GetName()
         {

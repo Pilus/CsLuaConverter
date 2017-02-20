@@ -104,7 +104,7 @@
 
 
         [DebuggerNonUserCode]
-        protected static void TryActionAndWrapException(Action action, string wrapperExceptionText)
+        public static void TryActionAndWrapException(Action action, string wrapperExceptionText)
         {
             if (Debugger.IsAttached)
             {
