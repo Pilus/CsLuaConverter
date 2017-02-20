@@ -18,7 +18,11 @@
             {
                 throw new Exception($"Could not find extension method for syntax {syntax.GetType().Name}. Kind: {(syntax as CSharpSyntaxNode)?.Kind().ToString() ?? "null"}.");
             })
-            .Case<ConstructorDeclarationSyntax>(Write);
+            .Case<ConstructorDeclarationSyntax>(Write)
+            .Case<FieldDeclarationSyntax>(Write)
+            .Case<PropertyDeclarationSyntax>(Write)
+            .Case<IndexerDeclarationSyntax>(Write)
+            .Case<MethodDeclarationSyntax>(MethodExtensions.Write);
 
         /*
         BaseFieldDeclarationSyntax
@@ -28,12 +32,12 @@
       x     ConstructorDeclarationSyntax
             ConversionOperatorDeclarationSyntax
             DestructorDeclarationSyntax
-            MethodDeclarationSyntax
+      x     MethodDeclarationSyntax
             OperatorDeclarationSyntax
         BasePropertyDeclarationSyntax
             EventDeclarationSyntax
-            IndexerDeclarationSyntax
-            PropertyDeclarationSyntax
+      x     IndexerDeclarationSyntax
+      x     PropertyDeclarationSyntax
         BaseTypeDeclarationSyntax
             EnumDeclarationSyntax
             TypeDeclarationSyntax
@@ -250,28 +254,6 @@
 
             textWriter.Indent--;
             textWriter.WriteLine("});");
-        }
-
-        public static void Write(this TypeParameterSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            textWriter.Write(syntax.Identifier.Text);
-        }
-
-        public static void Write(this TypeParameterListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
-        {
-            var c = 1;
-            foreach (var visitor in syntax.Parameters)
-            {
-                if (c > 1)
-                {
-                    textWriter.Write(",");
-                }
-
-                textWriter.Write("['");
-                visitor.Write(textWriter, context);
-                textWriter.Write("'] = {0}", c);
-                c++;
-            }
         }
     }
 }
