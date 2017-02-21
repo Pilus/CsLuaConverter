@@ -4,6 +4,7 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Elements;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
@@ -25,21 +26,22 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.usingVisitors.VisitAll(textWriter, context);
+            var syntax = this.Branch.SyntaxNode as NamespaceDeclarationSyntax;
 
             var state = context.PartialElementState;
             var isFirstNamespace = state.IsFirst;
             var isLastNamespace = state.IsLast;
 
+            var members = syntax.Members.Where(member => member.GetNumGenerics(context) == state.NumberOfGenerics).ToArray();
             var elements = this.elementVisitors.Where(v => v.GetNumOfGenerics() == state.NumberOfGenerics).ToArray();
 
             for (var index = 0; index < elements.Length; index++)
             {
-                var elementVisitor = elements[index];
+                var element = elements[index];
 
                 state.IsFirst = isFirstNamespace && index == 0;
                 state.IsLast = isLastNamespace && index == elements.Length - 1;
-                elementVisitor.Visit(textWriter, context);
+                element.Visit(textWriter, context);
             }
         }
 

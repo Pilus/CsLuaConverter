@@ -23,7 +23,8 @@
             .Case<PropertyDeclarationSyntax>(Write)
             .Case<IndexerDeclarationSyntax>(Write)
             .Case<MethodDeclarationSyntax>(MethodExtensions.Write)
-            .Case<ClassDeclarationSyntax>(ClassExtensions.Write);
+            .Case<ClassDeclarationSyntax>(ClassExtensions.Write)
+            .Case<InterfaceDeclarationSyntax>(InterfaceExtensions.Write);
 
         /*
         BaseFieldDeclarationSyntax
@@ -55,6 +56,13 @@
         public static void Write(this MemberDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             TypeSwitch.Write(syntax, textWriter, context);
+        }
+
+        public static int GetNumGenerics(this MemberDeclarationSyntax syntax, IContext context)
+        {
+            var symbol = context.SemanticModel.GetDeclaredSymbol(syntax) as INamedTypeSymbol;
+
+            return symbol?.TypeArguments.Length ?? 0;
         }
 
         public static void WriteEmptyConstructor(IIndentedTextWriterWrapper textWriter)
@@ -255,6 +263,17 @@
 
             textWriter.Indent--;
             textWriter.WriteLine("});");
+        }
+
+        public static void Write(this EnumMemberDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var index = ((EnumDeclarationSyntax) syntax.Parent).Members.IndexOf(syntax);
+            if (index == 0)
+            {
+                textWriter.WriteLine($"__default = \"{syntax.Identifier.Text}\",");
+            }
+
+            textWriter.Write($"[\"{syntax.Identifier.Text}\"] = \"{syntax.Identifier.Text}\"");
         }
     }
 }

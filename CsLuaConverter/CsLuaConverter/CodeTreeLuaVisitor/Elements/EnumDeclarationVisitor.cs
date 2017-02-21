@@ -3,7 +3,7 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
-
+    using CsLuaConverter.SyntaxExtensions;
     using Filters;
     using Member;
     using Microsoft.CodeAnalysis.CSharp;
@@ -25,17 +25,17 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var syntax = this.Branch.SyntaxNode as EnumDeclarationSyntax;
+
+            var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
             textWriter.WriteLine("[0] = _M.EN({");
             textWriter.Indent++;
 
-            this.Members.First().WriteAsDefault(textWriter, context);
-            textWriter.WriteLine(",");
-            this.Members.VisitAll(textWriter, context, () => textWriter.WriteLine(","));
+            syntax.Members.Write(MemberExtensions.Write, textWriter, context, () => textWriter.WriteLine(","));
 
             textWriter.Indent--;
             textWriter.WriteLine("");
-
-            var symbol = context.SemanticModel.GetDeclaredSymbol(this.Branch.SyntaxNode as EnumDeclarationSyntax);
+            
             var namespaceName = context.SemanticAdaptor.GetFullNamespace(symbol);
             var name = context.SemanticAdaptor.GetName(symbol);
 
