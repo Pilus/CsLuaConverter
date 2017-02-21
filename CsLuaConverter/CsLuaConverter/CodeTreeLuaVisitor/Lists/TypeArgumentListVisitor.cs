@@ -3,8 +3,10 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class TypeArgumentListVisitor : BaseVisitor, IListVisitor
     {
@@ -20,19 +22,9 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            textWriter.Write("{");
-            for (int index = 0; index < this.visitors.Length; index++)
-            {
-                var visitor = this.visitors[index];
-                visitor.Visit(textWriter, context);
-                textWriter.Write(".__typeof");
+            var syntax = this.Branch.SyntaxNode as TypeArgumentListSyntax;
 
-                if (index < this.visitors.Length - 1)
-                {
-                    textWriter.Write(", ");
-                }
-            }
-            textWriter.Write("}");
+            syntax.Write(textWriter, context);
         }
 
         public int GetNumElements()

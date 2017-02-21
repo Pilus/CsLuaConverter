@@ -26,7 +26,7 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
-            this.Syntax.Visit(textWriter, context);
+            this.Syntax.Write(textWriter, context);
         }
 
         public bool IsCsLuaAddOnAttribute()

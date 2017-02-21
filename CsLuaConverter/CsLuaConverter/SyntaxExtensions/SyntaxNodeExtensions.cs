@@ -13,8 +13,7 @@
         private static readonly TypeSwitch TypeSwitch = new TypeSwitch(
             (syntax, textWriter, context) =>
                 {
-                    SyntaxVisitorBase<CSharpSyntaxNode>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
-                    //throw new Exception($"Could not find extension method for syntax {syntax.GetType().Name}. Kind: {(syntax as CSharpSyntaxNode)?.Kind().ToString() ?? "null"}.");
+                    throw new Exception($"Could not find extension method for syntax {syntax.GetType().Name}. Kind: {(syntax as CSharpSyntaxNode)?.Kind().ToString() ?? "null"}.");
                 }).Case<ExpressionSyntax>(ExpressionExtensions.Write)
             .Case<AccessorDeclarationSyntax>(Write)
             .Case<ParameterSyntax>(Write)
@@ -174,7 +173,7 @@
             }
         }
 
-        public static void Visit(this AttributeSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        public static void Write(this AttributeSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var symbol = context.SemanticModel.GetSymbolInfo(syntax).Symbol;
             context.TypeReferenceWriter.WriteTypeReference(symbol.ContainingType, textWriter);
@@ -235,6 +234,19 @@
         public static void WriteDefaultValue(this VariableDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             syntax.Variables.Single().WriteDefaultValue(textWriter, context);
+        }
+
+        public static void Write(this TypeArgumentListSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("{");
+
+            syntax.Arguments.Write((argSyntax, argTextWriter, argContext) =>
+            {
+                argSyntax.Write(argTextWriter, argContext);
+                textWriter.Write(".__typeof");
+            }, textWriter, context);
+
+            textWriter.Write("}");
         }
     }
 }
