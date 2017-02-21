@@ -193,6 +193,7 @@
     <Compile Include="AddOnConstruction\TocBuilder.cs" />
     <Compile Include="SyntaxExtensions\ClassExtensions.cs" />
     <Compile Include="SyntaxExtensions\ExpressionExtensions.cs" />
+    <Compile Include="SyntaxExtensions\InterfaceExtensions.cs" />
     <Compile Include="SyntaxExtensions\ListExtensions.cs" />
     <Compile Include="SyntaxExtensions\LoopExtensions.cs" />
     <Compile Include="SyntaxExtensions\MemberExtensions.cs" />
