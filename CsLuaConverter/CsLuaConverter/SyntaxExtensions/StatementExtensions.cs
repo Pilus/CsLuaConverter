@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.SyntaxExtensions
 {
+    using System;
     using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
@@ -10,8 +11,8 @@
         private static readonly TypeSwitch TypeSwitch = new TypeSwitch(
             (syntax, textWriter, context) =>
                 {
-                    SyntaxVisitorBase<MemberAccessExpressionSyntax>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
-                    //throw new Exception($"Could not find extension method for statementSyntax {obj.GetType().Name}.");
+                    //SyntaxVisitorBase<MemberAccessExpressionSyntax>.VisitNode((CSharpSyntaxNode)syntax, textWriter, context);
+                    throw new Exception($"Could not find extension method for statementSyntax {syntax.GetType().Name}.");
                 })
             .Case<BlockSyntax>(Write)
             .Case<ExpressionStatementSyntax>(Write)

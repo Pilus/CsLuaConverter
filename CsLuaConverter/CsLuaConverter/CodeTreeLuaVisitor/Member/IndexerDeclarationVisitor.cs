@@ -2,7 +2,6 @@
 {
     using System;
     using System.Linq;
-    using Accessor;
     using CodeTree;
     using CsLuaConverter.Context;
     using CsLuaConverter.SyntaxExtensions;
@@ -14,7 +13,6 @@
     {
         private readonly Scope scope;
         private readonly ParameterVisitor indexerParameter;
-        private readonly AccessorListVisitor accessorList;
 
         public IndexerDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -33,7 +31,6 @@
             this.indexerParameter = (ParameterVisitor)BaseVisitor.CreateVisitor(parameterElement);
 
             this.ExpectKind(totalNodes - 1, SyntaxKind.AccessorList);
-            this.accessorList = (AccessorListVisitor)this.CreateVisitor(totalNodes - 1);
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)

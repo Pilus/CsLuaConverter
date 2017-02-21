@@ -2,7 +2,6 @@
 {
     using System;
     using System.Linq;
-    using Accessor;
     using CodeTree;
     using CsLuaConverter.Context;
     using CsLuaConverter.SyntaxExtensions;
@@ -15,7 +14,6 @@
         private readonly string name;
         private readonly Scope scope;
         private readonly bool isStatic;
-        private readonly AccessorListVisitor accessorList;
 
         public PropertyDeclarationVisitor(CodeTreeBranch branch) : base(branch)
         {
@@ -31,8 +29,6 @@
 
             this.ExpectKind(totalNodes - 2, SyntaxKind.IdentifierToken);
             this.name = ((CodeTreeLeaf) this.Branch.Nodes[totalNodes - 2]).Text;
-
-            this.accessorList = (AccessorListVisitor) this.CreateVisitor(totalNodes - 1);
         }
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)

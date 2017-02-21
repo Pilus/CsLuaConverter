@@ -108,7 +108,6 @@
     <Compile Include="AddOnConstruction\CodeFile.cs" />
     <Compile Include="AnalyzedProjectInfo.cs" />
     <Compile Include="Analyzer.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Accessor\IAccessor.cs" />
     <Compile Include="CodeTreeLuaVisitor\ArgumentVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Attribute\AttributeListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Attribute\AttributeVisitor.cs" />
@@ -129,11 +128,9 @@
     <Compile Include="CodeTreeLuaVisitor\Member\ConstructorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\EqualsValueClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\FieldDeclarationVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Constraint\TypeParameterConstraintClauseVisitor.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="IIndentedTextWriterWrapper.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Accessor\AccessorListVisitor.cs" />
     <Compile Include="IndentedTextWriterWrapper.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\BaseListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\ParameterListVisitor.cs" />
