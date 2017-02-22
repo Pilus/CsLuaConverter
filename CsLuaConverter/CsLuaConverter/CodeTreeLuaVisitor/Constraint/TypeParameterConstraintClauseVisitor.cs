@@ -2,7 +2,8 @@
 {
     using System.Linq;
     using CodeTree;
-    using CsLuaConverter.Context;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;
 

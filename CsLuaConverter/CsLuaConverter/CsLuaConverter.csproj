@@ -117,22 +117,16 @@
     <Compile Include="CodeTreeLuaVisitor\Constraint\ConstructorConstraintVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Constraint\IConstraint.cs" />
     <Compile Include="CodeTreeLuaVisitor\Constraint\TypeConstraintVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Elements\InterfaceState.cs" />
     <Compile Include="CodeTreeLuaVisitor\SyntaxVisitorBase.cs" />
-    <Compile Include="CodeTreeLuaVisitor\TypeReferenceWriter.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\BaseConstructorInitializerVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\EnumMemberDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\IndexerDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\ThisConstructorInitializerVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\TypeSymbolSemanticAdaptor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\ConstructorDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\EqualsValueClauseVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Member\FieldDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Constraint\TypeParameterConstraintClauseVisitor.cs" />
     <Compile Include="Converter.cs" />
-    <Compile Include="DocumentContent.cs" />
-    <Compile Include="IIndentedTextWriterWrapper.cs" />
-    <Compile Include="IndentedTextWriterWrapper.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\BaseListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\ParameterListVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\TypeParameterListVisitor.cs" />
@@ -147,7 +141,6 @@
     <Compile Include="CodeTreeLuaVisitor\Elements\ClassDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\CodeTreeVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\CompilationUnitVisitor.cs" />
-    <Compile Include="CodeTreeLuaVisitor\Elements\ClassState.cs" />
     <Compile Include="CodeTreeLuaVisitor\Elements\EnumDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Elements\IElementVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Elements\InterfaceDeclarationVisitor.cs" />
@@ -161,13 +154,6 @@
     <Compile Include="CodeTreeLuaVisitor\IVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\NamespaceDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Name\QualifiedNameVisitor.cs" />
-    <Compile Include="MethodSignature\ITypeReferenceWriter.cs" />
-    <Compile Include="MethodSignature\ISemanticAdaptor.cs" />
-    <Compile Include="MethodSignature\SignatureComponent.cs" />
-    <Compile Include="MethodSignature\SignatureComposer.cs" />
-    <Compile Include="MethodSignature\SignatureWriter.cs" />
-    <Compile Include="Namespace.cs" />
-    <Compile Include="Context\PartialElementState.cs" />
     <Compile Include="CodeTreeLuaVisitor\UsingDirectiveVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\VisitorException.cs" />
     <Compile Include="CodeTree\CodeTreeBranch.cs" />
@@ -179,11 +165,7 @@
     <Compile Include="AddOnConstruction\LuaAddOn.cs" />
     <Compile Include="ISyntaxAnalyser.cs" />
     <Compile Include="LuaFileWriter.cs" />
-    <Compile Include="NamespaceConstructor.cs" />
-    <Compile Include="NamespaceMember.cs" />
     <Compile Include="ProjectType.cs" />
-    <Compile Include="Context\IContext.cs" />
-    <Compile Include="Context\Context.cs" />
     <Compile Include="AddOnConstruction\ResourceFile.cs" />
     <Compile Include="ProjectAnalysis\ProjectAnalyser.cs" />
     <Compile Include="AddOnConstruction\ProjectInfo.cs" />
@@ -194,21 +176,6 @@
     <Compile Include="CsLuaMetaReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="AddOnConstruction\TocBuilder.cs" />
-    <Compile Include="SyntaxExtensions\ClassExtensions.cs" />
-    <Compile Include="SyntaxExtensions\ExpressionExtensions.cs" />
-    <Compile Include="SyntaxExtensions\InterfaceExtensions.cs" />
-    <Compile Include="SyntaxExtensions\ListExtensions.cs" />
-    <Compile Include="SyntaxExtensions\LoopExtensions.cs" />
-    <Compile Include="SyntaxExtensions\MemberExtensions.cs" />
-    <Compile Include="SyntaxExtensions\MethodExtensions.cs" />
-    <Compile Include="SyntaxExtensions\SwitchExtensions.cs" />
-    <Compile Include="SyntaxExtensions\SyntaxNodeExtensions.cs" />
-    <Compile Include="SyntaxExtensions\NameExtensions.cs" />
-    <Compile Include="SyntaxExtensions\StatementExtensions.cs" />
-    <Compile Include="SyntaxExtensions\TryCatchExtensions.cs" />
-    <Compile Include="SyntaxExtensions\TypeExtensions.cs" />
-    <Compile Include="SyntaxExtensions\TypeSwitch.cs" />
-    <Compile Include="WrappingException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -287,6 +254,10 @@
     <ProjectReference Include="..\CsLuaFramework\CsLuaFramework.csproj">
       <Project>{3ec1fd14-1402-4adc-bbd0-07cf30e3a654}</Project>
       <Name>CsLuaFramework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CsLuaSyntaxTranslator\CsLuaSyntaxTranslator.csproj">
+      <Project>{3eb1c967-47bc-42c6-8c7c-15e365e7a5af}</Project>
+      <Name>CsLuaSyntaxTranslator</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

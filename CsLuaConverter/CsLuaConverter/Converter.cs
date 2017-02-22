@@ -8,6 +8,8 @@
     using System.Threading.Tasks;
 
     using CsLuaConverter.CodeTreeLuaVisitor;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.MSBuild;
 
@@ -47,7 +49,7 @@
 
         private void ConvertSolution(Solution solution, string wowPath)
         {
-            var context = new Context.Context();
+            var context = new Context();
             var namespaceConstructor = new NamespaceConstructor(context);
 
             var solutionHandler = new SolutionHandler(namespaceConstructor);

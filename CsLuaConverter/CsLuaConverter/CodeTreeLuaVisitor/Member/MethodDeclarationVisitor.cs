@@ -6,8 +6,9 @@
     using Attribute;
     using CodeTree;
     using Constraint;
-    using CsLuaConverter.Context;
-    using CsLuaConverter.SyntaxExtensions;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
+    using CsLuaSyntaxTranslator.SyntaxExtensions;
     using Filters;
     using Lists;
 

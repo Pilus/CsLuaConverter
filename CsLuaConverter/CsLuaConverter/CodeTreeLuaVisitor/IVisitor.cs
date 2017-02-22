@@ -1,6 +1,7 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
-    using CsLuaConverter.Context;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
 
     public interface IVisitor
     {

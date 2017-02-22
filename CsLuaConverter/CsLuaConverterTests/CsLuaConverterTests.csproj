@@ -112,6 +112,10 @@
       <Project>{e1d96749-5bf9-4b04-81a1-9d4b3b1f6bf4}</Project>
       <Name>CsLuaConverter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CsLuaSyntaxTranslator\CsLuaSyntaxTranslator.csproj">
+      <Project>{3eb1c967-47bc-42c6-8c7c-15e365e7a5af}</Project>
+      <Name>CsLuaSyntaxTranslator</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

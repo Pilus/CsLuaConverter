@@ -3,8 +3,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using CodeTree;
-    using CsLuaConverter.Context;
-    using CsLuaConverter.SyntaxExtensions;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
+    using CsLuaSyntaxTranslator.SyntaxExtensions;
     using Elements;
     using Filters;
     using Microsoft.CodeAnalysis.CSharp;

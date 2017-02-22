@@ -1,8 +1,9 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Elements
 {
     using CodeTree;
-    using CsLuaConverter.Context;
-    using CsLuaConverter.SyntaxExtensions;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
+    using CsLuaSyntaxTranslator.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class ClassDeclarationVisitor : SyntaxVisitorBase<ClassDeclarationSyntax>, IElementVisitor
@@ -22,7 +23,7 @@
         {
             var syntax = this.Branch.SyntaxNode as ClassDeclarationSyntax;
 
-            syntax.Write(textWriter, context);
+            ClassExtensions.Write(syntax, textWriter, context);
         }
 
 

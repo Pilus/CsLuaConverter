@@ -6,7 +6,6 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.CodeTreeLuaVisitor.Attribute;
-    using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 

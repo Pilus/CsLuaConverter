@@ -1,8 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
     using CodeTree;
-    using CsLuaConverter.Context;
-
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class UsingDirectiveVisitor : SyntaxVisitorBase<UsingDirectiveSyntax>

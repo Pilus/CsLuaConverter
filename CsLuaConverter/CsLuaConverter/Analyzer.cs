@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using CodeTree;
     using CodeTreeLuaVisitor;
+    using CsLuaSyntaxTranslator;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
     using ProjectInfo = ProjectAnalysis.ProjectInfo;

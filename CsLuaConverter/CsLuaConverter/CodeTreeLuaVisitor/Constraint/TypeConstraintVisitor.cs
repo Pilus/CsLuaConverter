@@ -1,7 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Constraint
 {
     using CodeTree;
-    using CsLuaConverter.Context;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
 
     public class TypeConstraintVisitor : BaseVisitor, IConstraint
     {

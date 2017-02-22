@@ -4,14 +4,15 @@
 
     using Attribute;
     using CodeTree;
-    using CsLuaConverter.Context;
-    using CsLuaConverter.SyntaxExtensions;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
+    using CsLuaSyntaxTranslator.SyntaxExtensions;
     using Filters;
     using Lists;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-    using SyntaxNodeExtensions = CsLuaConverter.SyntaxExtensions.SyntaxNodeExtensions;
+    using SyntaxNodeExtensions = CsLuaSyntaxTranslator.SyntaxExtensions.SyntaxNodeExtensions;
 
     public class InterfaceDeclarationVisitor : BaseVisitor, IElementVisitor
     {
@@ -40,7 +41,7 @@
         {
             var syntax = this.Branch.SyntaxNode as InterfaceDeclarationSyntax;
 
-            syntax.Write(textWriter, context);
+            InterfaceExtensions.Write(syntax, textWriter, context);
         }
 
         public string GetName()

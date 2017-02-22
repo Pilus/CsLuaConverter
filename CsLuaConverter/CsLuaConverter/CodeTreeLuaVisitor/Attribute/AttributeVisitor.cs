@@ -2,9 +2,10 @@
 {
     using System.Linq;
     using CodeTree;
-    using CsLuaConverter.Context;
-    using CsLuaConverter.SyntaxExtensions;
     using CsLuaFramework.Attributes;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
+    using CsLuaSyntaxTranslator.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 

@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using AddOnConstruction;
+    using CsLuaSyntaxTranslator;
     using Microsoft.CodeAnalysis;
     using ProjectAnalysis;
     using ReferenceAnalysis;

@@ -1,7 +1,8 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor.Member
 {
     using CodeTree;
-    using CsLuaConverter.Context;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
     using Microsoft.CodeAnalysis.CSharp;
 
     public class EnumMemberDeclarationVisitor : BaseVisitor

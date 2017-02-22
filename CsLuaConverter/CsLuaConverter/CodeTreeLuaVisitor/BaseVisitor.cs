@@ -5,7 +5,8 @@
     using System.Reflection;
     using CodeTree;
     using System.Linq;
-    using CsLuaConverter.Context;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
     using Filters;
 
     using Microsoft.CodeAnalysis.CSharp;

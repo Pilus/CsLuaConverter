@@ -2,11 +2,12 @@
 {
     using System.Linq;
     using CodeTree;
-    using CsLuaConverter.Context;
-    using CsLuaConverter.SyntaxExtensions;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
+    using CsLuaSyntaxTranslator.SyntaxExtensions;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-    using NameExtensions = CsLuaConverter.SyntaxExtensions.NameExtensions;
+    using NameExtensions = CsLuaSyntaxTranslator.SyntaxExtensions.NameExtensions;
 
     public class IdentifierNameVisitor : BaseVisitor, INameVisitor
     {
