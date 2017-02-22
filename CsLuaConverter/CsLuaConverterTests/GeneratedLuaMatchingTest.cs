@@ -6,7 +6,6 @@ namespace CsLuaConverterTests
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using CsLuaConverter;
-    using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaSyntaxTranslator;
     using CsLuaSyntaxTranslator.Context;
     using CsLuaSyntaxTranslator.MethodSignature;
