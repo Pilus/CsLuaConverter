@@ -1,4 +1,4 @@
-﻿namespace CsLuaConverter.ProjectAnalysis
+﻿namespace CsLuaConverter.AddOnConstruction
 {
     using System.Collections.Generic;
     using CsLuaFramework.Attributes;

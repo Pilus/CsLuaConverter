@@ -584,7 +584,7 @@
                         (INamedTypeSymbol)
                         ModelExtensions.GetSymbolInfo(
                             context.SemanticModel,
-                            (argListSyntax.Parent as ObjectCreationExpressionSyntax).Type).Symbol;
+                            ((ObjectCreationExpressionSyntax) argListSyntax.Parent).Type).Symbol;
 
                     if (namedTypeSymbol.TypeKind == TypeKind.Delegate)
                     {

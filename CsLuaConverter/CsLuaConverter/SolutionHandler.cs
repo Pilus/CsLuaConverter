@@ -7,6 +7,7 @@
     using Microsoft.CodeAnalysis;
     using ProjectAnalysis;
     using ReferenceAnalysis;
+    using ProjectInfo = CsLuaConverter.AddOnConstruction.ProjectInfo;
 
     internal class SolutionHandler
     {
@@ -38,7 +39,7 @@
             return structurer.StructureAddOns(analyzedProjects);
         }
 
-        private Namespace[] GetNamespaces(ProjectAnalysis.ProjectInfo projectInfo)
+        private Namespace[] GetNamespaces(ProjectInfo projectInfo)
         {
             if (!projectInfo.IsCsLua())
             {

@@ -3,6 +3,7 @@ namespace CsLuaConverter
 {
     using System.Collections.Generic;
     using System.Linq;
+    using CsLuaConverter.AddOnConstruction;
     using CsLuaSyntaxTranslator;
     using ProjectAnalysis;
 
