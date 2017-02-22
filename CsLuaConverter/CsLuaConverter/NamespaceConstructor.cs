@@ -40,8 +40,9 @@
                 Name = namespaceName,
                 WritingAction = (textWriter) =>
                 {
-                    this.WriteNamespaceMemberGroups(FilterNamespaceMember(membersByFullName, namespaceName), textWriter);
-                    this.WriteFooter(membersByFullName.Select(g => g.First()), textWriter);
+                    var memberGroups = FilterNamespaceMember(membersByFullName, namespaceName).ToArray();
+                    this.WriteNamespaceMemberGroups(memberGroups, textWriter);
+                    this.WriteFooter(memberGroups.Select(g => g.First()), textWriter);
                 }
             });
         }

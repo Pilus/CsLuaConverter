@@ -9,11 +9,11 @@
 
     internal class SolutionHandler
     {
-        private readonly ISyntaxAnalyser syntaxAnalyzer;
+        private readonly NamespaceConstructor namespaceConstructor;
 
-        public SolutionHandler(ISyntaxAnalyser syntaxAnalyzer)
+        public SolutionHandler(NamespaceConstructor namespaceConstructor)
         {
-            this.syntaxAnalyzer = syntaxAnalyzer;
+            this.namespaceConstructor = namespaceConstructor;
         }
 
         public IEnumerable<IDeployableAddOn> GenerateAddOnsFromSolution(Solution solution)
@@ -28,13 +28,23 @@
                     new AnalyzedProjectInfo()
                         {
                             Info = project,
-                            Namespaces = this.syntaxAnalyzer.GetNamespaces(project).ToArray()
+                            Namespaces = this.GetNamespaces(project)
                         }).ToList();
 
             ReferenceAnalyzer.PopulateAndAnalyseReferences(analyzedProjects);
 
             var structurer = new AddOnConstructor();
             return structurer.StructureAddOns(analyzedProjects);
+        }
+
+        private Namespace[] GetNamespaces(ProjectAnalysis.ProjectInfo projectInfo)
+        {
+            if (!projectInfo.IsCsLua())
+            {
+                return null;
+            }
+
+            return this.namespaceConstructor.GetNamespacesFromProject(projectInfo.Project).ToArray();
         }
 
     }
