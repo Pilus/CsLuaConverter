@@ -27,21 +27,7 @@
         {
             var syntax = this.Branch.SyntaxNode as EnumDeclarationSyntax;
 
-            var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
-            textWriter.WriteLine("[0] = _M.EN({");
-            textWriter.Indent++;
-
-            syntax.Members.Write(MemberExtensions.Write, textWriter, context, () => textWriter.WriteLine(","));
-
-            textWriter.Indent--;
-            textWriter.WriteLine("");
-            
-            var namespaceName = context.SemanticAdaptor.GetFullNamespace(symbol);
-            var name = context.SemanticAdaptor.GetName(symbol);
-
-            textWriter.Write($"}},'{name}','{namespaceName}',");
-            context.SignatureWriter.WriteSignature(symbol, textWriter);
-            textWriter.WriteLine("),");
+            syntax.Write(textWriter, context);
         }
 
         public string GetName()

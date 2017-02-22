@@ -24,7 +24,9 @@
             .Case<IndexerDeclarationSyntax>(Write)
             .Case<MethodDeclarationSyntax>(MethodExtensions.Write)
             .Case<ClassDeclarationSyntax>(ClassExtensions.Write)
-            .Case<InterfaceDeclarationSyntax>(InterfaceExtensions.Write);
+            .Case<InterfaceDeclarationSyntax>(InterfaceExtensions.Write)
+            .Case<EnumDeclarationSyntax>(Write)
+            .Case<NamespaceDeclarationSyntax>(Write);
 
         /*
         BaseFieldDeclarationSyntax
@@ -41,13 +43,13 @@
       x     IndexerDeclarationSyntax
       x     PropertyDeclarationSyntax
         BaseTypeDeclarationSyntax
-            EnumDeclarationSyntax
+      x     EnumDeclarationSyntax
             TypeDeclarationSyntax
-                ClassDeclarationSyntax
-                InterfaceDeclarationSyntax
+      x         ClassDeclarationSyntax
+      x         InterfaceDeclarationSyntax
                 StructDeclarationSyntax
         DelegateDeclarationSyntax
-        EnumMemberDeclarationSyntax
+      x EnumMemberDeclarationSyntax
         GlobalStatementSyntax
         IncompleteMemberSyntax
         NamespaceDeclarationSyntax
@@ -274,6 +276,41 @@
             }
 
             textWriter.Write($"[\"{syntax.Identifier.Text}\"] = \"{syntax.Identifier.Text}\"");
+        }
+
+        public static void Write(this EnumDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
+            textWriter.WriteLine("[0] = _M.EN({");
+            textWriter.Indent++;
+
+            syntax.Members.Write(Write, textWriter, context, () => textWriter.WriteLine(","));
+
+            textWriter.Indent--;
+            textWriter.WriteLine("");
+
+            var namespaceName = context.SemanticAdaptor.GetFullNamespace(symbol);
+            var name = context.SemanticAdaptor.GetName(symbol);
+
+            textWriter.Write($"}},'{name}','{namespaceName}',");
+            context.SignatureWriter.WriteSignature(symbol, textWriter);
+            textWriter.WriteLine("),");
+        }
+
+        public static void Write(this NamespaceDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            var state = context.PartialElementState;
+            var isFirstNamespace = state.IsFirst;
+            var isLastNamespace = state.IsLast;
+
+            var members = syntax.Members.Where(member => member.GetNumGenerics(context) == state.NumberOfGenerics).ToArray();
+
+            for (var index = 0; index < members.Length; index++)
+            {
+                state.IsFirst = isFirstNamespace && index == 0;
+                state.IsLast = isLastNamespace && index == members.Length - 1;
+                members[index].Write(textWriter, context);
+            }
         }
     }
 }

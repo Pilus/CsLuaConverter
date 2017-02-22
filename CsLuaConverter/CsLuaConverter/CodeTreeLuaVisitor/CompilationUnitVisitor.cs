@@ -3,10 +3,12 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Filters;
 
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     public class CompilationUnitVisitor : BaseVisitor
     {
@@ -30,13 +32,14 @@
 
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
+            var syntax = this.Branch.SyntaxNode as CompilationUnitSyntax;
+
             TryActionAndWrapException(
                 () =>
                     {
                         context.SemanticModel = this.semanticModel;
 
-                        this.usings.VisitAll(textWriter, context);
-                        this.namespaceVisitor.Visit(textWriter, context);
+                        syntax.Members.Write(MemberExtensions.Write, textWriter, context, () => {});
                     },
                 $"In document {this.Branch.DocumentName}");
         }

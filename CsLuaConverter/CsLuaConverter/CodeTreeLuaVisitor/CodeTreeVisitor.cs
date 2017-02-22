@@ -20,7 +20,7 @@
         public IEnumerable<Namespace> CreateNamespaceBasedVisitorActions(Tuple<CodeTreeBranch, SemanticModel>[] treeRoots)
         {
             BaseVisitor.LockVisitorCreation = false;
-            treeRoots = treeRoots.SelectMany(SeperateCodeElements).ToArray();
+            //treeRoots = treeRoots.SelectMany(SeperateCodeElements).ToArray();
             var visitors = treeRoots.Select(tree => new CompilationUnitVisitor(tree.Item1, tree.Item2)).ToArray();
             //BaseVisitor.LockVisitorCreation = true;
 
@@ -120,7 +120,7 @@
 
             foreach (var visitor in visitors)
             {
-                var numberOfGenericsSet = visitor.GetNumGenericsOfElement();
+                var numberOfGenericsSet = visitor.GetNumGenericsOfElement().Distinct();
                 foreach (var i in numberOfGenericsSet)
                 {
                     if (!visitorsByNumGenerics.ContainsKey(i))

@@ -28,21 +28,7 @@
         {
             var syntax = this.Branch.SyntaxNode as NamespaceDeclarationSyntax;
 
-            var state = context.PartialElementState;
-            var isFirstNamespace = state.IsFirst;
-            var isLastNamespace = state.IsLast;
-
-            var members = syntax.Members.Where(member => member.GetNumGenerics(context) == state.NumberOfGenerics).ToArray();
-            var elements = this.elementVisitors.Where(v => v.GetNumOfGenerics() == state.NumberOfGenerics).ToArray();
-
-            for (var index = 0; index < elements.Length; index++)
-            {
-                var element = elements[index];
-
-                state.IsFirst = isFirstNamespace && index == 0;
-                state.IsLast = isLastNamespace && index == elements.Length - 1;
-                element.Visit(textWriter, context);
-            }
+            syntax.Write(textWriter, context);
         }
 
         public void WriteFooter(IIndentedTextWriterWrapper textWriter, IContext context)
