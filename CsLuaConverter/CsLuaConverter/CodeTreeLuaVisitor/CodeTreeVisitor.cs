@@ -5,6 +5,7 @@
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
+    using CsLuaConverter.SyntaxExtensions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
 
@@ -45,68 +46,7 @@
                 }
             })});
         }
-
-        private static Tuple<CodeTreeBranch, SemanticModel>[] SeperateCodeElements(Tuple<CodeTreeBranch, SemanticModel> pair)
-        {
-            var numElements = CountNumOfElements(pair.Item1);
-
-            if (numElements < 2)
-            {
-                return new []{ pair };
-            }
-
-            var newTrees = new List<Tuple<CodeTreeBranch, SemanticModel>>();
-
-            for (var i = 0; i < numElements; i++)
-            {
-                var clone = (CodeTreeBranch)pair.Item1.Clone();
-                FilterElements(clone, i);
-                newTrees.Add(new Tuple<CodeTreeBranch, SemanticModel>(clone, pair.Item2));
-            }
-
-            return newTrees.ToArray();
-        }
-
-        private static bool IsCodeElement(CodeTreeNode t)
-        {
-            return t.Kind == SyntaxKind.ClassDeclaration || t.Kind == SyntaxKind.InterfaceDeclaration ||
-            t.Kind == SyntaxKind.EnumDeclaration || t.Kind == SyntaxKind.StructDeclaration;
-        }
-
-        private static void FilterElements(CodeTreeBranch branch, int indexToKeep)
-        {
-            switch (branch.Kind)
-            {
-                case SyntaxKind.CompilationUnit:
-                    branch.Nodes.OfType<CodeTreeBranch>()
-                            .Where(t => t.Kind == SyntaxKind.NamespaceDeclaration)
-                            .ToList().ForEach(ns => FilterElements(ns, indexToKeep));
-                    break;
-                case SyntaxKind.NamespaceDeclaration:
-                    var elementToKeep = branch.Nodes.OfType<CodeTreeBranch>().Where(IsCodeElement).Skip(indexToKeep).First();
-                    branch.Nodes =
-                        branch.Nodes.Where(n => n is CodeTreeLeaf || !IsCodeElement(n) || n == elementToKeep).ToArray();
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-        private static int CountNumOfElements(CodeTreeBranch tree)
-        {
-            switch (tree.Kind)
-            {
-                case SyntaxKind.CompilationUnit:
-                    return
-                        tree.Nodes.OfType<CodeTreeBranch>()
-                            .Where(t => t.Kind == SyntaxKind.NamespaceDeclaration)
-                            .Sum(CountNumOfElements);
-                case SyntaxKind.NamespaceDeclaration:
-                    return tree.Nodes.OfType<CodeTreeBranch>().Count(IsCodeElement);
-                default:
-                    throw new NotImplementedException();
-            }
-        }
+        
 
         private void VisitFilesWithSameElementName(CompilationUnitVisitor[] visitors, IIndentedTextWriterWrapper textWriter)
         {
@@ -116,7 +56,7 @@
             textWriter.WriteLine($"_M.ATN('{fullNamespace}','{name}', _M.NE({{");
             textWriter.Indent++;
 
-            var visitorsByNumGenerics = new Dictionary<int, List<CompilationUnitVisitor>>();
+            var visitorsByNumGenerics = new Dictionary<int, List<DocumentContent>>();
 
             foreach (var visitor in visitors)
             {
@@ -125,30 +65,23 @@
                 {
                     if (!visitorsByNumGenerics.ContainsKey(i))
                     {
-                        visitorsByNumGenerics[i] = new List<CompilationUnitVisitor>();
+                        visitorsByNumGenerics[i] = new List<DocumentContent>();
                     }
 
-                    visitorsByNumGenerics[i].Add(visitor);
+                    visitorsByNumGenerics[i].Add(visitor.AsDocumentContent());
                 }
             }
 
             foreach (var visitorsWithSameNumGenerics in visitorsByNumGenerics.OrderBy(v => v.Key))
             {
-                //var scope = this.context.NameProvider.CloneScope();
-                this.VisitFilesWithSameElementNameAndNumGenerics(visitorsWithSameNumGenerics.Value.ToArray(), textWriter, visitorsWithSameNumGenerics.Key);
-                //this.context.NameProvider.SetScope(scope);
+                this.WriteContentsWithSameElementNameAndNumGenerics(visitorsWithSameNumGenerics.Value.ToArray(), textWriter, visitorsWithSameNumGenerics.Key);
             }
 
             textWriter.Indent--;
             textWriter.WriteLine("}));");
-            /*
-            foreach (var visitor in visitors)
-            {
-                visitor.WriteExtensions(textWriter, this.context);
-            } */
         }
 
-        private void VisitFilesWithSameElementNameAndNumGenerics(CompilationUnitVisitor[] visitors, IIndentedTextWriterWrapper textWriter, int numOfGenerics)
+        private void WriteContentsWithSameElementNameAndNumGenerics(DocumentContent[] contents, IIndentedTextWriterWrapper textWriter, int numOfGenerics)
         {
             var state = this.context.PartialElementState;
             state.CurrentState = null;
@@ -157,12 +90,15 @@
             state.NumberOfGenerics = numOfGenerics;
             while (true)
             {
-                for (int index = 0; index < visitors.Length; index++)
+                for (int index = 0; index < contents.Length; index++)
                 {
-                    var visitor = visitors[index];
+                    var content = contents[index];
                     state.IsFirst = index == 0;
-                    state.IsLast = index == visitors.Length - 1;
-                    visitor.Visit(textWriter, this.context);
+                    state.IsLast = index == contents.Length - 1;
+
+                    this.context.SemanticModel = content.SemanticModel;
+                    //this.context.DocumentPath = content.Path;
+                    content.Syntax.Write(textWriter, this.context);
                 }
 
                 if (state.NextState == null)
@@ -172,37 +108,6 @@
 
                 state.CurrentState = state.NextState;
             }
-        }
-
-        /*
-        private void Visit(CompilationUnitVisitor visitor, CompilationUnitVisitor previousVisitor, CompilationUnitVisitor nextVisitor, IIndentedTextWriterWrapper textWriter)
-        {
-            var previousName = previousVisitor?.GetElementName();
-
-            var name = visitor.GetElementName();
-            if (previousName != name)
-            {
-                textWriter.WriteLine($"{name} = _M.NE({{");
-            }
-
-            visitor.Visit(textWriter, this.context);
-
-            var nextName = nextVisitor?.GetElementName();
-            if (nextName != name)
-            {
-                textWriter.WriteLine("}),");
-            }
-        } */
-
-        private static string[] RemoveCommonStartSequence(string[] array, string[] comparedArray)
-        {
-            var i = 0;
-            while (array.Length > i && comparedArray.Length > i && array[i] == comparedArray[i])
-            {
-                i++;
-            }
-
-            return array.Skip(i).ToArray();
         }
     }
 }

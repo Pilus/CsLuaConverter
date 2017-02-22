@@ -82,5 +82,10 @@
 
             throw new Exception($"String missmatch. Line {this.currentLine}, char {this.currentOffset}. \nExpected '{expectedString}', \nGot          '{actualString}'.");
         }
+
+        public bool EndOfExpectedReached()
+        {
+            return this.currentLine == this.comparingLines.Length;
+        }
     }
 }

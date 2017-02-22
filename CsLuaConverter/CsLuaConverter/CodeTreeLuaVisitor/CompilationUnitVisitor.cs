@@ -1,5 +1,6 @@
 ﻿namespace CsLuaConverter.CodeTreeLuaVisitor
 {
+    using System;
     using System.Linq;
     using CodeTree;
     using CsLuaConverter.Context;
@@ -33,15 +34,15 @@
         public override void Visit(IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var syntax = this.Branch.SyntaxNode as CompilationUnitSyntax;
+            context.SemanticModel = this.semanticModel;
+            //context.DocumentPath = this.Branch.DocumentName;
 
-            TryActionAndWrapException(
-                () =>
-                    {
-                        context.SemanticModel = this.semanticModel;
+            syntax.Write(textWriter, context);
+        }
 
-                        syntax.Members.Write(MemberExtensions.Write, textWriter, context, () => {});
-                    },
-                $"In document {this.Branch.DocumentName}");
+        public DocumentContent AsDocumentContent()
+        {
+            return new DocumentContent(this.Branch.SyntaxNode as CompilationUnitSyntax, this.Branch.DocumentName, this.semanticModel);
         }
 
         public void WriteFooter(IIndentedTextWriterWrapper textWriter, IContext context)

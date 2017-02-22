@@ -1,8 +1,10 @@
 ﻿namespace CsLuaConverter.SyntaxExtensions
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using CsLuaConverter.CodeTree;
+    using CsLuaConverter.CodeTreeLuaVisitor;
     using CsLuaConverter.CodeTreeLuaVisitor.Member;
     using CsLuaConverter.Context;
     using Microsoft.CodeAnalysis;
@@ -297,6 +299,29 @@
             textWriter.WriteLine("),");
         }
 
+        public static IEnumerable<BaseTypeDeclarationSyntax> GetBaseTypeMembers(this CompilationUnitSyntax syntax)
+        {
+            return syntax.Members.SelectMany(GetBaseTypeMembers);
+        }
+
+        private static IEnumerable<BaseTypeDeclarationSyntax> GetBaseTypeMembers(MemberDeclarationSyntax syntax)
+        {
+            if (syntax is NamespaceDeclarationSyntax)
+            {
+                return ((NamespaceDeclarationSyntax) syntax).Members.OfType<BaseTypeDeclarationSyntax>();
+            }
+
+            if (syntax is BaseTypeDeclarationSyntax)
+            {
+                return new BaseTypeDeclarationSyntax[] {(BaseTypeDeclarationSyntax) syntax};
+            }
+
+            return new BaseTypeDeclarationSyntax[] {};
+        }
+
+
+        // Methods below this should not be needed later on.
+
         public static void Write(this NamespaceDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var state = context.PartialElementState;
@@ -311,6 +336,46 @@
                 state.IsLast = isLastNamespace && index == members.Length - 1;
                 members[index].Write(textWriter, context);
             }
+        }
+
+        public static void Write(this CompilationUnitSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            BaseVisitor.TryActionAndWrapException(
+                () =>
+                {
+                    syntax.Members.Write(Write, textWriter, context, () => { });
+                },
+                $"In document x");
+        }
+        
+
+        public static IEnumerable<string> GetFullNamesOfContent(CompilationUnitSyntax syntax)
+        {
+            return syntax.Members.SelectMany(GetFullNamesOfContent);
+        }
+
+        private static IEnumerable<string> GetFullNamesOfContent(MemberDeclarationSyntax syntax)
+        {
+            if (syntax is NamespaceDeclarationSyntax)
+            {
+                return GetFullNamesOfContent((NamespaceDeclarationSyntax)syntax);
+            }
+
+            if (syntax is BaseTypeDeclarationSyntax)
+            {
+                return new []
+                {
+                    ((BaseTypeDeclarationSyntax) syntax).Identifier.Text
+                };
+            }
+
+            return new string[] {};
+        }
+
+        private static IEnumerable<string> GetFullNamesOfContent(NamespaceDeclarationSyntax syntax)
+        {
+            var ns = syntax.Name.GetText();
+            return syntax.Members.SelectMany(GetFullNamesOfContent).Select(name => ns + "." + name);
         }
     }
 }

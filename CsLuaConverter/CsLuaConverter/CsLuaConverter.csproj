@@ -130,6 +130,7 @@
     <Compile Include="CodeTreeLuaVisitor\Member\FieldDeclarationVisitor.cs" />
     <Compile Include="CodeTreeLuaVisitor\Constraint\TypeParameterConstraintClauseVisitor.cs" />
     <Compile Include="Converter.cs" />
+    <Compile Include="DocumentContent.cs" />
     <Compile Include="IIndentedTextWriterWrapper.cs" />
     <Compile Include="IndentedTextWriterWrapper.cs" />
     <Compile Include="CodeTreeLuaVisitor\Lists\BaseListVisitor.cs" />
@@ -178,6 +179,8 @@
     <Compile Include="AddOnConstruction\LuaAddOn.cs" />
     <Compile Include="ISyntaxAnalyser.cs" />
     <Compile Include="LuaFileWriter.cs" />
+    <Compile Include="NamespaceConstructor.cs" />
+    <Compile Include="NamespaceMember.cs" />
     <Compile Include="ProjectType.cs" />
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Context\Context.cs" />

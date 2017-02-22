@@ -8,7 +8,7 @@
     using CodeTree;
     using CodeTreeLuaVisitor;
     using Microsoft.CodeAnalysis;
-
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using ProjectInfo = ProjectAnalysis.ProjectInfo;
 
     public class Analyzer : ISyntaxAnalyser
@@ -71,14 +71,14 @@
         }
 
         
-        private static SyntaxNode GetSyntaxTreeRoot(Document doc)
+        private static CompilationUnitSyntax GetSyntaxTreeRoot(Document doc)
         {
             Task<SyntaxTree> task = doc.GetSyntaxTreeAsync();
             task.Wait();
             SyntaxTree tree = task.Result;
             Task<SyntaxNode> rootTask = tree.GetRootAsync();
             rootTask.Wait();
-            return rootTask.Result;
+            return (CompilationUnitSyntax)rootTask.Result;
         }
     }
 }

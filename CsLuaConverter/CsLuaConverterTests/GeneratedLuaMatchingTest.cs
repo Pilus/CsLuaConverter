@@ -28,21 +28,21 @@ namespace CsLuaConverterTests
             var solution = solutionTask.Result;
             var project = solution.Projects.Single(p => p.Name.Equals("CsLuaTest"));
 
-            var providers = new EmptyContext();
-            providers.PartialElementState = new PartialElementState();
-            providers.SemanticAdaptor = new TypeSymbolSemanticAdaptor();
-            providers.TypeReferenceWriter = new TypeReferenceWriter<ITypeSymbol>(providers.SemanticAdaptor);
-            providers.SignatureWriter = new SignatureWriter<ITypeSymbol>(new SignatureComposer<ITypeSymbol>(providers.SemanticAdaptor), providers.TypeReferenceWriter);
-            var analyzer = new Analyzer(new CodeTreeVisitor(providers));
+            var context = new EmptyContext();
+            context.PartialElementState = new PartialElementState();
+            context.SemanticAdaptor = new TypeSymbolSemanticAdaptor();
+            context.TypeReferenceWriter = new TypeReferenceWriter<ITypeSymbol>(context.SemanticAdaptor);
+            context.SignatureWriter = new SignatureWriter<ITypeSymbol>(new SignatureComposer<ITypeSymbol>(context.SemanticAdaptor), context.TypeReferenceWriter);
 
-            var namespaces = analyzer.GetNamespaces(project).ToArray();
+            var namespaceConstructor = new NamespaceConstructor(context);
+            var namespaces = namespaceConstructor.GetNamespacesFromProject(project);
+
             var comparingTextWriter = new ComparingTextWriter(CsLuaCompiled);
             namespaces.First().WritingAction(new IndentedTextWriterWrapper(comparingTextWriter));
+            Assert.IsTrue(comparingTextWriter.EndOfExpectedReached(), "The whole expected output have not been written.");
         }
 
         // Starting expected compiled string @ line 100 to make it easier to see its internal line number
-
-
 
 
 
