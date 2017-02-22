@@ -1,7 +1,7 @@
 ﻿namespace CsLuaConverterTests
 {
-    using CsLuaConverter.Context;
-    using CsLuaConverter.MethodSignature;
+    using CsLuaSyntaxTranslator.Context;
+    using CsLuaSyntaxTranslator.MethodSignature;
     using Microsoft.CodeAnalysis;
 
     public class EmptyContext : IContext
@@ -15,7 +15,5 @@
         public ISemanticAdaptor<ITypeSymbol> SemanticAdaptor { get; set; }
 
         public SemanticModel SemanticModel { get; set; }
-
-        public INamedTypeSymbol CurrentClass { get; set; }
     }
 }

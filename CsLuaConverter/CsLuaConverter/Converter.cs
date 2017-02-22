@@ -6,8 +6,8 @@
     using System.Linq;
     using System.Reflection;
     using System.Threading.Tasks;
-
-    using CsLuaConverter.CodeTreeLuaVisitor;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.MSBuild;
 
@@ -47,13 +47,10 @@
 
         private void ConvertSolution(Solution solution, string wowPath)
         {
-            var context = new Context.Context();
+            var context = new Context();
+            var namespaceConstructor = new NamespaceConstructor(context);
 
-            var treeVisitor = new CodeTreeVisitor(context);
-
-            ISyntaxAnalyser analyzer = new Analyzer(treeVisitor);
-
-            var solutionHandler = new SolutionHandler(analyzer);
+            var solutionHandler = new SolutionHandler(namespaceConstructor);
             var addOns = solutionHandler.GenerateAddOnsFromSolution(solution);
 
             foreach (var addon in addOns)

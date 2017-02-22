@@ -6,9 +6,9 @@ namespace CsLuaConverterTests
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using CsLuaConverter;
-    using CsLuaConverter.CodeTreeLuaVisitor;
-    using CsLuaConverter.Context;
-    using CsLuaConverter.MethodSignature;
+    using CsLuaSyntaxTranslator;
+    using CsLuaSyntaxTranslator.Context;
+    using CsLuaSyntaxTranslator.MethodSignature;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.MSBuild;
 
@@ -28,19 +28,22 @@ namespace CsLuaConverterTests
             var solution = solutionTask.Result;
             var project = solution.Projects.Single(p => p.Name.Equals("CsLuaTest"));
 
-            var providers = new EmptyContext();
-            providers.PartialElementState = new PartialElementState();
-            providers.SemanticAdaptor = new TypeSymbolSemanticAdaptor();
-            providers.TypeReferenceWriter = new TypeReferenceWriter<ITypeSymbol>(providers.SemanticAdaptor);
-            providers.SignatureWriter = new SignatureWriter<ITypeSymbol>(new SignatureComposer<ITypeSymbol>(providers.SemanticAdaptor), providers.TypeReferenceWriter);
-            var analyzer = new Analyzer(new CodeTreeVisitor(providers));
+            var context = new EmptyContext();
+            context.PartialElementState = new PartialElementState();
+            context.SemanticAdaptor = new TypeSymbolSemanticAdaptor();
+            context.TypeReferenceWriter = new TypeReferenceWriter<ITypeSymbol>(context.SemanticAdaptor);
+            context.SignatureWriter = new SignatureWriter<ITypeSymbol>(new SignatureComposer<ITypeSymbol>(context.SemanticAdaptor), context.TypeReferenceWriter);
 
-            var namespaces = analyzer.GetNamespaces(project).ToArray();
+            var namespaceConstructor = new NamespaceConstructor(context);
+            var namespaces = namespaceConstructor.GetNamespacesFromProject(project);
+
             var comparingTextWriter = new ComparingTextWriter(CsLuaCompiled);
             namespaces.First().WritingAction(new IndentedTextWriterWrapper(comparingTextWriter));
+            Assert.IsTrue(comparingTextWriter.EndOfExpectedReached(), "The whole expected output have not been written.");
         }
 
         // Starting expected compiled string @ line 100 to make it easier to see its internal line number
+
 
 
 
@@ -131,18 +134,6 @@ namespace CsLuaConverterTests
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
-            _M.IM(members, '', {
-                level = typeObject.Level,
-                memberType = 'Cstor',
-                static = true,
-                numMethodGenerics = 0,
-                signatureHash = 0,
-                scope = 'Public',
-                func = function(element)
-                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
-                    (element % _M.DOT_LVL(typeObject.Level)).Tests = System.Collections.Generic.Dictionary[{System.String.__typeof, System.Action.__typeof}]._C_0_0();
-                end,
-            });
             _M.IM(members, 'Name', {
                 level = typeObject.Level,
                 memberType = 'Field',
@@ -186,6 +177,18 @@ namespace CsLuaConverterTests
                 static = false,
                 returnType = System.Collections.Generic.Dictionary[{System.String.__typeof, System.Action.__typeof}].__typeof;
             });
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                scope = 'Public',
+                func = function(element)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).Tests = System.Collections.Generic.Dictionary[{System.String.__typeof, System.Action.__typeof}]._C_0_0();
+                end,
+            });
             _M.IM(members, 'PerformTests', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -204,21 +207,21 @@ namespace CsLuaConverterTests
                                     (element % _M.DOT_LVL(typeObject.Level)).TestCount = (element % _M.DOT_LVL(typeObject.Level)).TestCount + 1;
                                     ((element % _M.DOT_LVL(typeObject.Level)).ResetOutput_M_0_0 % _M.DOT)();
                                     (test % _M.DOT)();
-                                    ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName  +_M.Add+  "" Success"");
+                                    ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName +_M.Add+ "" Success"");
                                 end,
                                 {
                                     {
                                         type = CsLuaTest.TestIgnoredException.__typeof,
                                         func = function(ex)
                                             (element % _M.DOT_LVL(typeObject.Level)).IgnoreCount = (element % _M.DOT_LVL(typeObject.Level)).IgnoreCount + 1;
-                                            ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName  +_M.Add+  "" Ignored"");
+                                            ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName +_M.Add+ "" Ignored"");
                                         end,
                                     },
                                     {
                                         type = System.Exception.__typeof,
                                         func = function(ex)
                                             (element % _M.DOT_LVL(typeObject.Level)).FailCount = (element % _M.DOT_LVL(typeObject.Level)).FailCount + 1;
-                                            ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName  +_M.Add+  "" Failed"");
+                                            ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(testName +_M.Add+ "" Failed"");
                                             (lineWriter % _M.DOT).indent = (lineWriter % _M.DOT).indent + 1;
                                             for _,errorLine in ((((ex % _M.DOT).Message % _M.DOT).Split_M_0_10374 % _M.DOT)('\n') % _M.DOT).GetEnumerator() do
                                                 ((lineWriter % _M.DOT).WriteLine_M_0_8736 % _M.DOT)(errorLine);
@@ -404,7 +407,7 @@ _M.ATN('CsLuaTest','IndentedLineWriter', _M.NE({
                 numMethodGenerics = 0,
                 signatureHash = 8736,
                 func = function(element, line)
-                    ((Lua.Core % _M.DOT).print % _M.DOT)(((Lua.Strings % _M.DOT).strrep % _M.DOT)((element % _M.DOT_LVL(typeObject.Level)).indentChar, (element % _M.DOT_LVL(typeObject.Level)).indent)  +_M.Add+  line);
+                    ((Lua.Core % _M.DOT).print % _M.DOT)(((Lua.Strings % _M.DOT).strrep % _M.DOT)((element % _M.DOT_LVL(typeObject.Level)).indentChar, (element % _M.DOT_LVL(typeObject.Level)).indent) +_M.Add+ line);
                 end
             });
             return members;
@@ -2287,6 +2290,12 @@ _M.ATN('CsLuaTest.Constructors','Class1', _M.NE({
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, 'Value', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = false,
+            });
             _M.IM(members, '', {
                 level = typeObject.Level,
                 memberType = 'Cstor',
@@ -2308,7 +2317,7 @@ _M.ATN('CsLuaTest.Constructors','Class1', _M.NE({
                 scope = 'Public',
                 func = function(element, val)
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
-                    (element % _M.DOT_LVL(typeObject.Level)).Value = ""str""  +_M.Add+  val;
+                    (element % _M.DOT_LVL(typeObject.Level)).Value = ""str"" +_M.Add+ val;
                 end,
             });
             _M.IM(members, '', {
@@ -2320,7 +2329,7 @@ _M.ATN('CsLuaTest.Constructors','Class1', _M.NE({
                 scope = 'Public',
                 func = function(element, val)
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
-                    (element % _M.DOT_LVL(typeObject.Level)).Value = ""int""  +_M.Add+  val;
+                    (element % _M.DOT_LVL(typeObject.Level)).Value = ""int"" +_M.Add+ val;
                 end,
             });
             _M.IM(members, '', {
@@ -2332,14 +2341,8 @@ _M.ATN('CsLuaTest.Constructors','Class1', _M.NE({
                 scope = 'Public',
                 func = function(element, val)
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
-                    (element % _M.DOT_LVL(typeObject.Level)).Value = ""object""  +_M.Add+  val;
+                    (element % _M.DOT_LVL(typeObject.Level)).Value = ""object"" +_M.Add+ val;
                 end,
-            });
-            _M.IM(members, 'Value', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Public',
-                static = false,
             });
             return members;
         end
@@ -2370,6 +2373,12 @@ _M.ATN('CsLuaTest.Constructors','Class2', _M.NE({
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, 'Result', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = false,
+            });
             _M.IM(members, '', {
                 level = typeObject.Level,
                 memberType = 'Cstor',
@@ -2391,14 +2400,8 @@ _M.ATN('CsLuaTest.Constructors','Class2', _M.NE({
                 scope = 'Public',
                 func = function(element, s1, s2)
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
-                    (element % _M.DOT_LVL(typeObject.Level)).Result = (element % _M.DOT_LVL(typeObject.Level)).Result +_M.Add+ s1  +_M.Add+  s2;
+                    (element % _M.DOT_LVL(typeObject.Level)).Result = (element % _M.DOT_LVL(typeObject.Level)).Result +_M.Add+ s1 +_M.Add+ s2;
                 end,
-            });
-            _M.IM(members, 'Result', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Public',
-                static = false,
             });
             return members;
         end
@@ -2429,6 +2432,12 @@ _M.ATN('CsLuaTest.Constructors','Class3', _M.NE({
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, 'Str', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = false,
+            });
             _M.IM(members, '', {
                 level = typeObject.Level,
                 memberType = 'Cstor',
@@ -2451,12 +2460,6 @@ _M.ATN('CsLuaTest.Constructors','Class3', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
                     (element % _M.DOT_LVL(typeObject.Level)).Str = additional;
                 end,
-            });
-            _M.IM(members, 'Str', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Public',
-                static = false,
             });
             return members;
         end
@@ -2928,7 +2931,7 @@ _M.ATN('CsLuaTest.Expressions','ExpressionsTests', _M.NE({
                 numMethodGenerics = 0,
                 signatureHash = 0,
                 func = function(element)
-                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(5, 2  +_M.Add+  3);
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(5, 2 +_M.Add+ 3);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(-1, 2 - 3);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(6, 2 * 3);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(5, 10 / 2);
@@ -3023,6 +3026,12 @@ _M.ATN('CsLuaTest.General','ACommonName', _M.NE({
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, 'Value', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = false,
+            });
             _M.IM(members, '', {
                 level = typeObject.Level,
                 memberType = 'Cstor',
@@ -3034,12 +3043,6 @@ _M.ATN('CsLuaTest.General','ACommonName', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
                     (element % _M.DOT_LVL(typeObject.Level)).Value = value;
                 end,
-            });
-            _M.IM(members, 'Value', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Public',
-                static = false,
             });
             return members;
         end
@@ -3116,6 +3119,12 @@ _M.ATN('CsLuaTest.General','ClassAmb', _M.NE({
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, 'ambValue', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Private',
+                static = false,
+            });
             _M.IM(members, '', {
                 level = typeObject.Level,
                 memberType = 'Cstor',
@@ -3127,12 +3136,6 @@ _M.ATN('CsLuaTest.General','ClassAmb', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
                     (element % _M.DOT_LVL(typeObject.Level)).ambValue = ambValue;
                 end,
-            });
-            _M.IM(members, 'ambValue', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Private',
-                static = false,
             });
             _M.IM(members, 'GetAmbValue', {
                 level = typeObject.Level,
@@ -3186,6 +3189,13 @@ _M.ATN('CsLuaTest.General','ClassInitializerAndCstor', _M.NE({
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, 'Value',{
+                level = typeObject.Level,
+                memberType = 'AutoProperty',
+                scope = 'Public',
+                static = false,
+                returnType = System.String.__typeof;
+            });
             _M.IM(members, '', {
                 level = typeObject.Level,
                 memberType = 'Cstor',
@@ -3197,13 +3207,6 @@ _M.ATN('CsLuaTest.General','ClassInitializerAndCstor', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
                     (element % _M.DOT_LVL(typeObject.Level)).Value = value;
                 end,
-            });
-            _M.IM(members, 'Value',{
-                level = typeObject.Level,
-                memberType = 'AutoProperty',
-                scope = 'Public',
-                static = false,
-                returnType = System.String.__typeof;
             });
             return members;
         end
@@ -3317,11 +3320,11 @@ _M.ATN('CsLuaTest.General','ClassWithIndexer', _M.NE({
                 level = typeObject.Level,
                 memberType = 'Indexer',
                 scope = 'Public',
-                get = function(element,index)
-                    return ""GetAtIndex""  +_M.Add+  index;
+                get = function(element, index)
+                    return ""GetAtIndex"" +_M.Add+ index;
                 end,
-                set = function(element,index , value)
-                    (element % _M.DOT_LVL(typeObject.Level)).Set = ""SetAtIndex""  +_M.Add+  index  +_M.Add+  ""Is""  +_M.Add+  value;
+                set = function(element, index, value)
+                    (element % _M.DOT_LVL(typeObject.Level)).Set = ""SetAtIndex"" +_M.Add+ index +_M.Add+ ""Is"" +_M.Add+ value;
                 end,
             });
             return members;
@@ -3397,7 +3400,7 @@ _M.ATN('CsLuaTest.General','ClassWithProperty', _M.NE({
                 scope = 'Public',
                 static = false,
                 returnType = System.String.__typeof;
-                set = function(element , value)
+                set = function(element, value)
                     (CsLuaTest.BaseTest % _M.DOT).Output = value;
                 end,
             });
@@ -3407,11 +3410,11 @@ _M.ATN('CsLuaTest.General','ClassWithProperty', _M.NE({
                 scope = 'Public',
                 static = false,
                 returnType = System.String.__typeof;
+                set = function(element, value)
+                    (CsLuaTest.BaseTest % _M.DOT).Output = value;
+                end,
                 get = function(element)
                     return (CsLuaTest.BaseTest % _M.DOT).Output;
-                end,
-                set = function(element , value)
-                    (CsLuaTest.BaseTest % _M.DOT).Output = value;
                 end,
             });
             _M.IM(members, 'ACommonName',{
@@ -3439,7 +3442,7 @@ _M.ATN('CsLuaTest.General','ClassWithProperty', _M.NE({
                 func = function(element, a, b)
                     (element % _M.DOT_LVL(typeObject.Level)).ACommonName = a;
                     local obj = CsLuaTest.General.ACommonName._C_0_8736(b);
-                    return (element % _M.DOT_LVL(typeObject.Level)).ACommonName  +_M.Add+  (obj % _M.DOT).Value;
+                    return (element % _M.DOT_LVL(typeObject.Level)).ACommonName +_M.Add+ (obj % _M.DOT).Value;
                 end
             });
             return members;
@@ -3871,7 +3874,7 @@ _M.ATN('CsLuaTest.General','NonStaticClass', _M.NE({
                 signatureHash = 57882,
                 returnType = function() return System.Int32.__typeof end,
                 func = function(element, other)
-                    return (other % _M.DOT).Value  +_M.Add+  (element % _M.DOT_LVL(typeObject.Level)).Value;
+                    return (other % _M.DOT).Value +_M.Add+ (element % _M.DOT_LVL(typeObject.Level)).Value;
                 end
             });
             _M.IM(members, 'StaticMethod', {
@@ -3925,6 +3928,12 @@ _M.ATN('CsLuaTest.General','Partial', _M.NE({
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, 'InnerValue', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = false,
+            });
             _M.IM(members, '', {
                 level = typeObject.Level,
                 memberType = 'Cstor',
@@ -3936,12 +3945,6 @@ _M.ATN('CsLuaTest.General','Partial', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
                     (element % _M.DOT_LVL(typeObject.Level)).InnerValue = ""CstorA"";
                 end,
-            });
-            _M.IM(members, 'InnerValue', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Public',
-                static = false,
             });
             _M.IM(members, 'MethodA', {
                 level = typeObject.Level,
@@ -4082,6 +4085,12 @@ _M.ATN('CsLuaTest.Generics','ClassA', _M.NE({
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, 'value', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Private',
+                static = false,
+            });
             _M.IM(members, '', {
                 level = typeObject.Level,
                 memberType = 'Cstor',
@@ -4093,12 +4102,6 @@ _M.ATN('CsLuaTest.Generics','ClassA', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
                     (element % _M.DOT_LVL(typeObject.Level)).value = value;
                 end,
-            });
-            _M.IM(members, 'value', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Private',
-                static = false,
             });
             _M.IM(members, 'ToString', {
                 level = typeObject.Level,
@@ -4142,6 +4145,12 @@ _M.ATN('CsLuaTest.Generics','ClassUsingGenericsInMethods', _M.NE({
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, 'inner', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Private',
+                static = false,
+            });
             _M.IM(members, '', {
                 level = typeObject.Level,
                 memberType = 'Cstor',
@@ -4153,12 +4162,6 @@ _M.ATN('CsLuaTest.Generics','ClassUsingGenericsInMethods', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
                     (element % _M.DOT_LVL(typeObject.Level)).inner = CsLuaTest.Generics.MethodsWithGeneric[{generics[genericsMapping['T']], System.Int32.__typeof}]._C_0_0();
                 end,
-            });
-            _M.IM(members, 'inner', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Private',
-                static = false,
             });
             _M.IM(members, 'UseClassGenericAsMethodGeneric', {
                 level = typeObject.Level,
@@ -4837,7 +4840,7 @@ _M.ATN('CsLuaTest.Generics','MethodsWithGeneric', _M.NE({
                 returnType = function() return System.String.__typeof end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, obj, obj2)
-                    return ((obj % _M.DOT).ToString_M_0_0 % _M.DOT)()  +_M.Add+  ((obj2 % _M.DOT).ToString_M_0_0 % _M.DOT)()  +_M.Add+  ""A"";
+                    return ((obj % _M.DOT).ToString_M_0_0 % _M.DOT)() +_M.Add+ ((obj2 % _M.DOT).ToString_M_0_0 % _M.DOT)() +_M.Add+ ""A"";
                 end
             });
             local methodGenericsMapping = {['T3'] = 1};
@@ -4852,7 +4855,7 @@ _M.ATN('CsLuaTest.Generics','MethodsWithGeneric', _M.NE({
                 returnType = function() return System.String.__typeof end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, obj, obj2)
-                    return ((obj % _M.DOT).ToString_M_0_0 % _M.DOT)()  +_M.Add+  ((obj2 % _M.DOT).ToString_M_0_0 % _M.DOT)()  +_M.Add+  ""B"";
+                    return ((obj % _M.DOT).ToString_M_0_0 % _M.DOT)() +_M.Add+ ((obj2 % _M.DOT).ToString_M_0_0 % _M.DOT)() +_M.Add+ ""B"";
                 end
             });
             local methodGenericsMapping = {['T3'] = 1};
@@ -5206,7 +5209,7 @@ _M.ATN('CsLuaTest.Interfaces','ClassWithMethod', _M.NE({
                 signatureHash = 8736,
                 returnType = function() return System.String.__typeof end,
                 func = function(element, input)
-                    return input  +_M.Add+  ""X"";
+                    return input +_M.Add+ ""X"";
                 end
             });
             return members;
@@ -5568,7 +5571,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                             {
                                 type = System.Exception.__typeof,
                                 func = function(ex)
-                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got ""  +_M.Add+  (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got "" +_M.Add+ (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
                                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(""Value cannot be null.\nParameter name: source"", (ex % _M.DOT).Message);
                                 end,
                             },
@@ -5596,7 +5599,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                             {
                                 type = System.Exception.__typeof,
                                 func = function(ex)
-                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got ""  +_M.Add+  (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got "" +_M.Add+ (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
                                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(""Value cannot be null.\nParameter name: predicate"", (ex % _M.DOT).Message);
                                 end,
                             },
@@ -5637,7 +5640,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                             {
                                 type = System.Exception.__typeof,
                                 func = function(ex)
-                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got ""  +_M.Add+  (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got "" +_M.Add+ (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
                                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(""Value cannot be null.\nParameter name: source"", (ex % _M.DOT).Message);
                                 end,
                             },
@@ -5665,7 +5668,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                             {
                                 type = System.Exception.__typeof,
                                 func = function(ex)
-                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got ""  +_M.Add+  (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got "" +_M.Add+ (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
                                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(""Value cannot be null.\nParameter name: predicate"", (ex % _M.DOT).Message);
                                 end,
                             },
@@ -6455,7 +6458,7 @@ _M.ATN('CsLuaTest.Override','X1', _M.NE({
                 override = true,
                 returnType = function() return System.String.__typeof end,
                 func = function(element)
-                    return ((element % _M.DOT_LVL(typeObject.Level - 1, true)).Test_M_0_0 % _M.DOT)()  +_M.Add+  ""x"";
+                    return ((element % _M.DOT_LVL(typeObject.Level - 1, true)).Test_M_0_0 % _M.DOT)() +_M.Add+ ""x"";
                 end
             });
             _M.IM(members, 'DoTest2', {
@@ -6820,7 +6823,7 @@ _M.ATN('CsLuaTest.Params','ClassWithParams', _M.NE({
                 returnType = function() return System.String.__typeof end,
                 func = function(element, firstParam, ...)
                     local args = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = firstParam, ...});
-                    return ""Method3_object""  +_M.Add+  (args % _M.DOT).Length;
+                    return ""Method3_object"" +_M.Add+ (args % _M.DOT).Length;
                 end
             });
             _M.IM(members, 'Method3', {
@@ -6834,7 +6837,7 @@ _M.ATN('CsLuaTest.Params','ClassWithParams', _M.NE({
                 returnType = function() return System.String.__typeof end,
                 func = function(element, firstParam, ...)
                     local args = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = firstParam, ...});
-                    return ""Method3_int""  +_M.Add+  (args % _M.DOT).Length;
+                    return ""Method3_int"" +_M.Add+ (args % _M.DOT).Length;
                 end
             });
             _M.IM(members, 'Method3', {
@@ -6848,7 +6851,7 @@ _M.ATN('CsLuaTest.Params','ClassWithParams', _M.NE({
                 returnType = function() return System.String.__typeof end,
                 func = function(element, firstParam, ...)
                     local args = (System.Array[{System.String.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = firstParam, ...});
-                    return ""Method3_string""  +_M.Add+  (args % _M.DOT).Length;
+                    return ""Method3_string"" +_M.Add+ (args % _M.DOT).Length;
                 end
             });
             _M.IM(members, 'MethodExpectingAction', {
@@ -7028,6 +7031,18 @@ _M.ATN('CsLuaTest.Serialization','ClassWithNativeObjects', _M.NE({
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, 'AString', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = false,
+            });
+            _M.IM(members, 'ANumber', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = false,
+            });
             _M.IM(members, '', {
                 level = typeObject.Level,
                 memberType = 'Cstor',
@@ -7040,18 +7055,6 @@ _M.ATN('CsLuaTest.Serialization','ClassWithNativeObjects', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level)).AString = ""TheString"";
                     (element % _M.DOT_LVL(typeObject.Level)).ANumber = 10;
                 end,
-            });
-            _M.IM(members, 'AString', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Public',
-                static = false,
-            });
-            _M.IM(members, 'ANumber', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Public',
-                static = false,
             });
             return members;
         end
@@ -7378,14 +7381,14 @@ _M.ATN('CsLuaTest.Statements','StatementsTests', _M.NE({
                     local c1 = 0;
                     local i = -3;
                     while (i < 5) do
-                        c1 = c1  +_M.Add+  1;
+                        c1 = c1 +_M.Add+ 1;
                     i = i + 1;
                     end
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(8, c1);
                     local c2 = 0;
                     local i = 10;
                     while (i > 0) do
-                        c2 = c2  +_M.Add+  1;
+                        c2 = c2 +_M.Add+ 1;
                     i = i - 2;
                     end
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(5, c2);
@@ -7396,7 +7399,7 @@ _M.ATN('CsLuaTest.Statements','StatementsTests', _M.NE({
                         13
                     });
                     while ((i % _M.DOT).Count > 0) do
-                        c3 = c3  +_M.Add+  1;
+                        c3 = c3 +_M.Add+ 1;
                     ((i % _M.DOT).RemoveAt_M_0_3926 % _M.DOT)(0);
                     end
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(3, c3);
@@ -7598,50 +7601,6 @@ _M.ATN('CsLuaTest.Static','StaticClass', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
                 end,
             });
-            _M.IM(members, 'Variable', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Public',
-                static = true,
-            });
-            _M.IM(members, 'VariableWithDefault', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Public',
-                static = true,
-            });
-            _M.IM(members, 'backingField', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Private',
-                static = true,
-            });
-            _M.IM(members, 'Field', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Public',
-                static = true,
-            });
-            _M.IM(members, 'AutoProperty',{
-                level = typeObject.Level,
-                memberType = 'AutoProperty',
-                scope = 'Public',
-                static = true,
-                returnType = System.Int32.__typeof;
-            });
-            _M.IM(members, 'PropertyWithGetSet',{
-                level = typeObject.Level,
-                memberType = 'Property',
-                scope = 'Public',
-                static = true,
-                returnType = System.Int32.__typeof;
-                get = function(element)
-                    return (element % _M.DOT_LVL(typeObject.Level)).backingField;
-                end,
-                set = function(element , value)
-                    (element % _M.DOT_LVL(typeObject.Level)).backingField = value * 2;
-                end,
-            });
             _M.IM(members, 'Method', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -7663,6 +7622,12 @@ _M.ATN('CsLuaTest.Static','StaticClass', _M.NE({
                 func = function(element, x)
                     (CsLuaTest.BaseTest % _M.DOT).Output = ""StaticMethodString"";
                 end
+            });
+            _M.IM(members, 'Variable', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = true,
             });
             _M.IM(members, 'GetFromInternal_Variable', {
                 level = typeObject.Level,
@@ -7687,6 +7652,12 @@ _M.ATN('CsLuaTest.Static','StaticClass', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level)).Variable = value;
                 end
             });
+            _M.IM(members, 'VariableWithDefault', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = true,
+            });
             _M.IM(members, 'GetFromInternal_VariableWithDefault', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -7698,6 +7669,38 @@ _M.ATN('CsLuaTest.Static','StaticClass', _M.NE({
                 func = function(element)
                     return (element % _M.DOT_LVL(typeObject.Level)).VariableWithDefault;
                 end
+            });
+            _M.IM(members, 'AutoProperty',{
+                level = typeObject.Level,
+                memberType = 'AutoProperty',
+                scope = 'Public',
+                static = true,
+                returnType = System.Int32.__typeof;
+            });
+            _M.IM(members, 'backingField', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Private',
+                static = true,
+            });
+            _M.IM(members, 'PropertyWithGetSet',{
+                level = typeObject.Level,
+                memberType = 'Property',
+                scope = 'Public',
+                static = true,
+                returnType = System.Int32.__typeof;
+                get = function(element)
+                    return (element % _M.DOT_LVL(typeObject.Level)).backingField;
+                end,
+                set = function(element, value)
+                    (element % _M.DOT_LVL(typeObject.Level)).backingField = value * 2;
+                end,
+            });
+            _M.IM(members, 'Field', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Public',
+                static = true,
             });
             return members;
         end

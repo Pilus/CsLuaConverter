@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Text.RegularExpressions;
     using AddOnConstruction;
+    using CsLuaSyntaxTranslator;
 
     static class LuaFileWriter
     {

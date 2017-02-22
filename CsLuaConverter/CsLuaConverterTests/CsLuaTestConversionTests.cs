@@ -57,6 +57,7 @@
 
         private async Task RunCsLuaTestsAsync()
         {
+            Console.WriteLine($"Running cslua test in {this.testAddOnLocationPath}");
             var result = await this.RunCmdAsync($"{this.testAddOnLocationPath}\\CsLuaTest", "lua .\\Run.lua");
             var match = this.resultRegex.Match(result);
             if (!match.Success)

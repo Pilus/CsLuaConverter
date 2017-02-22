@@ -7,6 +7,7 @@
     using System.Reflection;
     using CsLuaFramework.Attributes;
     using Microsoft.CodeAnalysis;
+    using ProjectInfo = CsLuaConverter.AddOnConstruction.ProjectInfo;
 
     public static class ProjectAnalyser
     {
