@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsLuaFramework">
-      <HintPath>..\..\CsLuaConverter\CsLuaFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -61,6 +58,10 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CsLuaFramework\CsLuaFramework.csproj">
+      <Project>{3ec1fd14-1402-4adc-bbd0-07cf30e3a654}</Project>
+      <Name>CsLuaFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CsLuaSyntaxTranslatorClient\CsLuaSyntaxTranslatorClient.csproj">
       <Project>{7592c1c1-8d39-4d75-9d17-82823b7a5dfd}</Project>
       <Name>CsLuaSyntaxTranslatorClient</Name>
