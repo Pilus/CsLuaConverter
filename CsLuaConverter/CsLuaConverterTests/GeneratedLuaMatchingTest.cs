@@ -4,13 +4,8 @@ namespace CsLuaConverterTests
     using System.IO;
     using System.Linq;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using CsLuaConverter;
     using CsLuaSyntaxTranslator;
-    using CsLuaSyntaxTranslator.Context;
-    using CsLuaSyntaxTranslator.MethodSignature;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.MSBuild;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class GeneratedLuaMatchingTest
@@ -20,22 +15,12 @@ namespace CsLuaConverterTests
         [TestMethod]
         public void CsLuaMatchesEarlierVersionsOutput()
         {
-            var csLuaTestProjectPath = this.testOutputFolder + "\\..\\..\\..\\..\\CsLuaProjects\\CsLuaTest.sln";
+            var root = this.testOutputFolder.Substring(0, testOutputFolder.IndexOf(@"\CsLuaConverter\CsLuaConverter"));
+            var csLuaTestProjectPath = root + "\\CsLuaConverter\\CsLuaProjects\\CsLuaTest\\CsLuaTest.csproj";
             var fileInfo = new FileInfo(csLuaTestProjectPath);
-            var workspace = MSBuildWorkspace.Create();
-            var solutionTask = workspace.OpenSolutionAsync(fileInfo.FullName);
-            solutionTask.Wait();
-            var solution = solutionTask.Result;
-            var project = solution.Projects.Single(p => p.Name.Equals("CsLuaTest"));
 
-            var context = new EmptyContext();
-            context.PartialElementState = new PartialElementState();
-            context.SemanticAdaptor = new TypeSymbolSemanticAdaptor();
-            context.TypeReferenceWriter = new TypeReferenceWriter<ITypeSymbol>(context.SemanticAdaptor);
-            context.SignatureWriter = new SignatureWriter<ITypeSymbol>(new SignatureComposer<ITypeSymbol>(context.SemanticAdaptor), context.TypeReferenceWriter);
-
-            var namespaceConstructor = new NamespaceConstructor(context);
-            var namespaces = namespaceConstructor.GetNamespacesFromProject(project);
+            var namespaceConstructor = new NamespaceConstructor();
+            var namespaces = namespaceConstructor.GetNamespacesFromProject(fileInfo.FullName);
 
             var comparingTextWriter = new ComparingTextWriter(CsLuaCompiled);
             namespaces.First().WritingAction(new IndentedTextWriterWrapper(comparingTextWriter));
@@ -43,6 +28,12 @@ namespace CsLuaConverterTests
         }
 
         // Starting expected compiled string @ line 100 to make it easier to see its internal line number
+
+
+
+
+
+
 
 
 

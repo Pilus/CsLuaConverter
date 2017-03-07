@@ -6,7 +6,7 @@
     using CsLuaSyntaxTranslator.SyntaxExtensions;
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
-
+    using Microsoft.CodeAnalysis.MSBuild;
     public class NamespaceConstructor
     {
         private readonly IContext context;
@@ -14,6 +14,20 @@
         public NamespaceConstructor(IContext context)
         {
             this.context = context;
+        }
+
+        public NamespaceConstructor()
+        {
+            this.context = new Context.Context();
+        }
+
+        public IEnumerable<Namespace> GetNamespacesFromProject(string projectPath)
+        {
+            var workspace = MSBuildWorkspace.Create();
+
+            var task = workspace.OpenProjectAsync(projectPath);
+            task.Wait();
+            return this.GetNamespacesFromProject(task.Result);
         }
 
         public IEnumerable<Namespace> GetNamespacesFromProject(Project project)

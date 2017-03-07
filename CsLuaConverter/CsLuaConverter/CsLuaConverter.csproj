@@ -203,6 +203,10 @@
       <Project>{3eb1c967-47bc-42c6-8c7c-15e365e7a5af}</Project>
       <Name>CsLuaSyntaxTranslator</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SystemZZZ\SystemZZZ.csproj">
+      <Project>{b9d22c3a-1c29-418a-8b85-4e752fcf482f}</Project>
+      <Name>SystemZZZ</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Lua\Meta\Extensions.lua" />
