@@ -1,18 +1,18 @@
 ﻿
 
 $solutionPath = $args[0] + "SystemZZZ\SytemZZZ.csproj";
+$solutionPath = $args[0] + "CsLuaTest\CsLuaTest.csproj"
 $outDir = $args[0] + "SystemZZZ\" + $args[1];
 
 echo "Starting translating C# implementation to lua";
+$client = "$outDir\CsLuaSyntaxTranslatorClient.exe";
+$targetFile = "$solutionDir\..\..\CsLuaConverter\CsLuaConverter\Lua\System\SystemImplementation.lua";
 
-# Load needed dlls
-[System.Reflection.Assembly]::LoadFile($outDir + "CsLuaSyntaxTranslator.dll");
-[System.Reflection.Assembly]::LoadFile($outDir + "Microsoft.CodeAnalysis.Workspaces.dll");
-[System.Reflection.Assembly]::LoadFile($outDir + "Microsoft.CodeAnalysis.dll");
-
-echo "Solution path: $solutionPath";
-$namespaceConstructor = new-object CsLuaSyntaxTranslator.NamespaceConstructor;
-$namespaceAction = $namespaceConstructor.GetNamespacesFromProject($solutionDir);
+& $client $solutionPath $targetFile
+if ( $LASTEXITCODE -ne 0)
+{
+    exit $LASTEXITCODE;
+}
 
 # $csLuaConverter = "$solutionDir..\CsLuaConverter\CsLuaConverter.exe";
 # $outDir = "$solutionDir\Out"

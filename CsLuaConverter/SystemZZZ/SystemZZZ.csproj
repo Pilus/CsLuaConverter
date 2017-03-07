@@ -60,9 +60,9 @@
     <None Include="AfterBuild.ps1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CsLuaSyntaxTranslator\CsLuaSyntaxTranslator.csproj">
-      <Project>{3eb1c967-47bc-42c6-8c7c-15e365e7a5af}</Project>
-      <Name>CsLuaSyntaxTranslator</Name>
+    <ProjectReference Include="..\CsLuaSyntaxTranslatorClient\CsLuaSyntaxTranslatorClient.csproj">
+      <Project>{7592c1c1-8d39-4d75-9d17-82823b7a5dfd}</Project>
+      <Name>CsLuaSyntaxTranslatorClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

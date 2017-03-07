@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsLuaConverter", "CsLuaConverter\CsLuaConverter.csproj", "{E1D96749-5BF9-4B04-81A1-9D4B3B1F6BF4}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemZZZ", "SystemZZZ\SystemZZZ.csproj", "{B9D22C3A-1C29-418A-8B85-4E752FCF482F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemTests", "SystemTests\SystemTests.csproj", "{4A1D4D50-115A-4D85-B1E8-AD34296A4CBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsLuaSyntaxTranslatorClient", "CsLuaSyntaxTranslatorClient\CsLuaSyntaxTranslatorClient.csproj", "{7592C1C1-8D39-4D75-9D17-82823B7A5DFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{4A1D4D50-115A-4D85-B1E8-AD34296A4CBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A1D4D50-115A-4D85-B1E8-AD34296A4CBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A1D4D50-115A-4D85-B1E8-AD34296A4CBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7592C1C1-8D39-4D75-9D17-82823B7A5DFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7592C1C1-8D39-4D75-9D17-82823B7A5DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7592C1C1-8D39-4D75-9D17-82823B7A5DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7592C1C1-8D39-4D75-9D17-82823B7A5DFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
