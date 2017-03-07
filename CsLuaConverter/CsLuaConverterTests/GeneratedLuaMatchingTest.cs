@@ -5551,6 +5551,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""WhereWithIndexWithNoPredicateThrows""] = (element % _M.DOT_LVL(typeObject.Level)).WhereWithIndexWithNoPredicateThrows;
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""WhereWithIndexReturnsExpectedCollection""] = (element % _M.DOT_LVL(typeObject.Level)).WhereWithIndexReturnsExpectedCollection;
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestCountAndAny""] = (element % _M.DOT_LVL(typeObject.Level)).TestCountAndAny;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestAnyWithPredicate""] = (element % _M.DOT_LVL(typeObject.Level)).TestAnyWithPredicate;
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestSelect""] = (element % _M.DOT_LVL(typeObject.Level)).TestSelect;
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestSelectWithIndex""] = (element % _M.DOT_LVL(typeObject.Level)).TestSelectWithIndex;
                 end,
@@ -5716,6 +5717,19 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, ((System.Linq.Enumerable % _M.DOT).Count_M_1_66128[{System.String.__typeof}] % _M.DOT)(enumerable2));
                     ((list % _M.DOT).Add_M_0_8736 % _M.DOT)(""c"");
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(3, ((System.Linq.Enumerable % _M.DOT).Count_M_1_66128[{System.String.__typeof}] % _M.DOT)(enumerable2));
+                end
+            });
+            _M.IM(members, 'TestAnyWithPredicate', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, ((System.Linq.Enumerable % _M.DOT).Any_M_1_93993440[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v) return v < 8 end)));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(false, ((System.Linq.Enumerable % _M.DOT).Any_M_1_93993440[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v) return v > 80 end)));
                 end
             });
             _M.IM(members, 'TestSelect', {

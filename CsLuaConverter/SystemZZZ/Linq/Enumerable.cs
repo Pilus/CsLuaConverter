@@ -19,7 +19,18 @@
             }
             return false;
         }
-        public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) { throw new NotImplementedException(); }
+        public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) {
+            if (source == null) throw Error.ArgumentNull("source");
+            if (predicate == null) throw Error.ArgumentNull("predicate");
+            /* LUA
+            for _,v in (source % _M.DOT).GetEnumerator() do
+                if ((predicate % _M.DOT)(v)) then
+                    return true;
+                end
+            end
+            return false; */
+            throw new ReplaceWithLuaBlock();
+        }
         public static IEnumerable<TSource> AsEnumerable<TSource>(this IEnumerable<TSource> source) { throw new NotImplementedException(); }
         public static decimal? Average<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal?> selector) { throw new NotImplementedException(); }
         public static decimal Average<TSource>(this IEnumerable<TSource> source, Func<TSource, decimal> selector) { throw new NotImplementedException(); }

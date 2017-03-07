@@ -17,6 +17,7 @@
             this.Tests["WhereWithIndexReturnsExpectedCollection"] = WhereWithIndexReturnsExpectedCollection;
 
             this.Tests["TestCountAndAny"] = TestCountAndAny;
+            this.Tests["TestAnyWithPredicate"] = TestAnyWithPredicate; 
             this.Tests["TestSelect"] = TestSelect;
             this.Tests["TestSelectWithIndex"] = TestSelectWithIndex;
             //this.Tests["TestUnion"] = TestUnion;
@@ -125,6 +126,13 @@
             Assert(2, enumerable2.Count());
             list.Add("c");
             Assert(3, enumerable2.Count());
+        }
+
+        private static void TestAnyWithPredicate()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            Assert(true, a.Any(v => v < 8));
+            Assert(false, a.Any(v => v > 80));
         }
 
         private static void TestSelect()

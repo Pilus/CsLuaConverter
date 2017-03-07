@@ -562,7 +562,19 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return System.Boolean.__typeof end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
-                    _M.Throw(System.NotImplementedException._C_0_0());
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    if (predicate == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("predicate"));
+                    end
+                    
+            for _,v in (source % _M.DOT).GetEnumerator() do
+                if ((predicate % _M.DOT)(v)) then
+                    return true;
+                end
+            end
+            return false; 
                 end
             });
             methodGenericsMapping = {['TSource'] = 1};
