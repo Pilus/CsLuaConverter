@@ -8,13 +8,13 @@ namespace SystemTests
     public class ArgumentNullExceptionTests
     {
         [TestMethod]
-        public void TestARgumentNullExceptionWithEmptyCstor()
+        public void TestArgumentNullExceptionWithEmptyCstor()
         {
             var referenceException = new ArgumentNullException();
             var exceptionUnderTest = new SystemZZZ.ArgumentNullException();
 
             Assert.AreEqual(referenceException.Message, exceptionUnderTest.Message);
-            Assert.AreEqual(referenceException.ToString(), exceptionUnderTest.ToString());
+            Assert.AreEqual(referenceException.ToString(), exceptionUnderTest.ToString().Replace("ZZZ", ""));
         }
     }
 }

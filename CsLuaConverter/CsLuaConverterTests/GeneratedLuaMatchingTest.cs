@@ -4,13 +4,8 @@ namespace CsLuaConverterTests
     using System.IO;
     using System.Linq;
 
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using CsLuaConverter;
     using CsLuaSyntaxTranslator;
-    using CsLuaSyntaxTranslator.Context;
-    using CsLuaSyntaxTranslator.MethodSignature;
-    using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.MSBuild;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class GeneratedLuaMatchingTest
@@ -20,7 +15,8 @@ namespace CsLuaConverterTests
         [TestMethod]
         public void CsLuaMatchesEarlierVersionsOutput()
         {
-            var csLuaTestProjectPath = this.testOutputFolder + "\\..\\..\\..\\..\\CsLuaProjects\\CsLuaTest\\CsLuaTest.csproj";
+            var root = this.testOutputFolder.Substring(0, testOutputFolder.IndexOf(@"\CsLuaConverter\CsLuaConverter"));
+            var csLuaTestProjectPath = root + "\\CsLuaConverter\\CsLuaProjects\\CsLuaTest\\CsLuaTest.csproj";
             var fileInfo = new FileInfo(csLuaTestProjectPath);
 
             var namespaceConstructor = new NamespaceConstructor();

@@ -15,10 +15,16 @@ D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\obj\Deb
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemTests.dll.config
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemTests.dll
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemTests.pdb
-D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemZZZ.dll
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\CsLuaFramework.dll
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemZZZ.pdb
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemZZZ.dll.config
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\obj\Debug\SystemTests.dll
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\obj\Debug\SystemTests.pdb
+D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml

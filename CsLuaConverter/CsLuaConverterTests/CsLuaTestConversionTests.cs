@@ -15,6 +15,7 @@
         private readonly Regex resultRegex = new Regex(@"(\d+)\ttests run\.\t(\d+)\tfailed\.\t(\d+)\tsucceded\.");
         private readonly string testAddOnLocationPath = Path.GetTempPath() + "CsLua";
         private readonly string testOutputFolder = Directory.GetCurrentDirectory();
+        private readonly string root = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().IndexOf(@"\CsLuaConverter\CsLuaConverter")) + "\\CsLuaConverter";
 
         [TestMethod]
         public async Task CsLuaTestShouldConvertAndRunWithoutErrors()
@@ -28,15 +29,15 @@
 
         private void CopyCsLuaFileFromOutputToTestsOutput()
         {
-            var conveterOutFolder = new FileInfo(this.testOutputFolder + "\\..\\..\\..\\..\\CsLuaProjects\\CsLuaConverter").FullName;
-            File.Copy(conveterOutFolder + "\\CsLua.lua", this.testOutputFolder + "\\CsLua.lua", true);
+            var converterOutFolder = new FileInfo(this.root + "\\CsLuaProjects\\CsLuaConverter").FullName;
+            File.Copy(converterOutFolder + "\\CsLua.lua", this.testOutputFolder + "\\CsLua.lua", true);
         }
 
         private async Task ConvertCsLuaTestAsync()
         {
             var converter = new Converter();
 
-            var csLuaTestProjectPath = this.testOutputFolder + "\\..\\..\\..\\..\\CsLuaProjects\\CsLuaTest.sln";
+            var csLuaTestProjectPath = this.root + "\\CsLuaProjects\\CsLuaTest.sln";
             var fileInfo = new FileInfo(csLuaTestProjectPath);
 
             await converter.ConvertAsync(fileInfo.FullName, this.testAddOnLocationPath);
