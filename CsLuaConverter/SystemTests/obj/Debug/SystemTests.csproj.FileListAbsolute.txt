@@ -21,13 +21,3 @@ D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Deb
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\obj\Debug\SystemTests.csprojResolveAssemblyReference.cache
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\obj\Debug\SystemTests.dll
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\obj\Debug\SystemTests.pdb
-C:\Users\chwarnec\Documents\Github\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemTests.dll
-C:\Users\chwarnec\Documents\Github\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemTests.pdb
-C:\Users\chwarnec\Documents\Github\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
-C:\Users\chwarnec\Documents\Github\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemZZZ.dll
-C:\Users\chwarnec\Documents\Github\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\CsLuaFramework.dll
-C:\Users\chwarnec\Documents\Github\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemZZZ.pdb
-C:\Users\chwarnec\Documents\Github\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
-C:\Users\chwarnec\Documents\Github\CsLuaConverter\CsLuaConverter\SystemTests\obj\Debug\SystemTests.csprojResolveAssemblyReference.cache
-C:\Users\chwarnec\Documents\Github\CsLuaConverter\CsLuaConverter\SystemTests\obj\Debug\SystemTests.dll
-C:\Users\chwarnec\Documents\Github\CsLuaConverter\CsLuaConverter\SystemTests\obj\Debug\SystemTests.pdb

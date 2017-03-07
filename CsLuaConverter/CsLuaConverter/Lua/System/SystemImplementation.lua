@@ -1,4 +1,3 @@
--- This file have generated from a C# namespace.
 _M.ATN('System','ArgumentException', _M.NE({
     [0] = function(interactionElement, generics, staticValues)
         local genericsMapping = {};
@@ -27,6 +26,12 @@ _M.ATN('System','ArgumentException', _M.NE({
         end
         local getMembers = function()
             local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, 'm_paramName', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Private',
+                static = false,
+            });
             _M.IM(members, '', {
                 level = typeObject.Level,
                 memberType = 'Cstor',
@@ -84,12 +89,6 @@ _M.ATN('System','ArgumentException', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level)).m_paramName = paramName;
                 end,
             });
-            _M.IM(members, 'm_paramName', {
-                level = typeObject.Level,
-                memberType = 'Field',
-                scope = 'Private',
-                static = false,
-            });
             _M.IM(members, 'Message',{
                 level = typeObject.Level,
                 memberType = 'Property',
@@ -99,8 +98,8 @@ _M.ATN('System','ArgumentException', _M.NE({
                 get = function(element)
                     local s = (element % _M.DOT_LVL(typeObject.Level - 1, true)).Message;
                     if (not(((System.String % _M.DOT).IsNullOrEmpty_M_0_8736 % _M.DOT)((element % _M.DOT_LVL(typeObject.Level)).m_paramName))) then
-                        local resourcestring = "Parameter name: "  +_M.Add+  (element % _M.DOT_LVL(typeObject.Level)).m_paramName;
-                        return s  +_M.Add+  "\n"  +_M.Add+  resourcestring;
+                        local resourcestring = "Parameter name: " +_M.Add+ (element % _M.DOT_LVL(typeObject.Level)).m_paramName;
+                        return s +_M.Add+ "\n" +_M.Add+ resourcestring;
                     else
                     return s;
                     end
