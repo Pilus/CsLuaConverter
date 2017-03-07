@@ -11,13 +11,14 @@ D:\World of Warcraft\Interface\CsLuaConverter\CsLuaProjects\CsImplementation\Sys
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaProjects\CsImplementation\SystemTests\obj\Debug\SystemTests.csprojResolveAssemblyReference.cache
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaProjects\CsImplementation\SystemTests\obj\Debug\SystemTests.dll
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaProjects\CsImplementation\SystemTests\obj\Debug\SystemTests.pdb
+D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\obj\Debug\SystemTests.csprojResolveAssemblyReference.cache
+D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemTests.dll.config
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemTests.dll
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemTests.pdb
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemZZZ.dll
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\CsLuaFramework.dll
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemZZZ.pdb
-D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
-D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\obj\Debug\SystemTests.csprojResolveAssemblyReference.cache
+D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\bin\Debug\SystemZZZ.dll.config
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\obj\Debug\SystemTests.dll
 D:\World of Warcraft\Interface\CsLuaConverter\CsLuaConverter\SystemTests\obj\Debug\SystemTests.pdb
