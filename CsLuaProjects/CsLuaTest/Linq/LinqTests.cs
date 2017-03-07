@@ -18,6 +18,7 @@
 
             this.Tests["TestCountAndAny"] = TestCountAndAny;
             this.Tests["TestSelect"] = TestSelect;
+            this.Tests["TestSelectWithIndex"] = TestSelectWithIndex;
             //this.Tests["TestUnion"] = TestUnion;
             //this.Tests["TestOrderBy"] = TestOrderBy;
             //this.Tests["TestOfLinqOfType"] = TestOfLinqOfType;
@@ -132,9 +133,31 @@
 
             var l1 = a.Select(v => v.ToString()).ToList();
             Assert(true, l1 is List<string>);
+            Assert(6, l1.Count);
+            Assert("2", l1[0]);
+            Assert("4", l1[1]);
+            Assert("8", l1[2]);
+            Assert("16", l1[3]);
+            Assert("32", l1[4]);
+            Assert("64", l1[5]);
 
             var l2 = a.Select(ToFloat).ToList();
             Assert(true, l2 is List<float>);
+        }
+
+        private static void TestSelectWithIndex()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+
+            var l1 = a.Select((v, i) => (v+i).ToString()).ToList();
+            Assert(true, l1 is List<string>);
+            Assert(6, l1.Count);
+            Assert("2", l1[0]);
+            Assert("5", l1[1]);
+            Assert("10", l1[2]);
+            Assert("19", l1[3]);
+            Assert("36", l1[4]);
+            Assert("69", l1[5]);
         }
 
         private static void TestUnion()

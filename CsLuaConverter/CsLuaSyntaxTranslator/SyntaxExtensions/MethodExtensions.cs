@@ -145,10 +145,10 @@ namespace CsLuaSyntaxTranslator.SyntaxExtensions
                 return;
             }
 
-            textWriter.Write("local methodGenericsMapping = {");
+            textWriter.Write("methodGenericsMapping = {");
             syntax.TypeParameterList.Write(textWriter, context);
             textWriter.WriteLine("};");
-            textWriter.WriteLine("local methodGenerics = _M.MG(methodGenericsMapping);");
+            textWriter.WriteLine("methodGenerics = _M.MG(methodGenericsMapping);");
         }
 
         private static void WriteParamVariableInit(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)

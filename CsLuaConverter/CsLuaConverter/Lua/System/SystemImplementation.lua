@@ -469,9 +469,1922 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
                 end,
             });
-            local methodGenericsMapping = {['TSource'] = 1};
-            local methodGenerics = _M.MG(methodGenericsMapping);
-            _M.IM(members, 'Where', {
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Aggregate', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 118148,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, func)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TAccumulate'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Aggregate', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 152831,
+                returnType = function() return methodGenerics[methodGenericsMapping['TAccumulate']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, seed, func)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TAccumulate'] = 2,['TResult'] = 3};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Aggregate', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 3,
+                signatureHash = 213521,
+                returnType = function() return methodGenerics[methodGenericsMapping['TResult']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, seed, func, resultSelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'All', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93993440,
+                returnType = function() return System.Boolean.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Any', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return System.Boolean.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    for _,value in (source % _M.DOT).GetEnumerator() do
+                        return true;
+                    end
+                    return false;
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Any', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93993440,
+                returnType = function() return System.Boolean.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'AsEnumerable', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 1470632578952,
+                returnType = function() return System.Nullable[{System.Decimal.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93166322,
+                returnType = function() return System.Decimal.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 129809264,
+                returnType = function() return System.Double.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 2050726752672,
+                returnType = function() return System.Nullable[{System.Double.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 132652768,
+                returnType = function() return System.Double.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 2095648428864,
+                returnType = function() return System.Nullable[{System.Double.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 281242384,
+                returnType = function() return System.Single.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 280448848,
+                returnType = function() return System.Double.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 4430530900704,
+                returnType = function() return System.Nullable[{System.Double.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 394453520,
+                returnType = function() return System.Decimal.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 6231576708960,
+                returnType = function() return System.Nullable[{System.Decimal.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 30711110,
+                returnType = function() return System.Double.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 483965139776,
+                returnType = function() return System.Nullable[{System.Double.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 31382168,
+                returnType = function() return System.Double.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 494566514060,
+                returnType = function() return System.Nullable[{System.Double.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66448850,
+                returnType = function() return System.Single.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 1048549956296,
+                returnType = function() return System.Nullable[{System.Single.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66261578,
+                returnType = function() return System.Double.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 1045591433240,
+                returnType = function() return System.Nullable[{System.Double.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Average', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 4443067182432,
+                returnType = function() return System.Nullable[{System.Single.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TResult'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Cast', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 33064,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Concat', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 165320,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, first, second)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Contains', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66131,
+                returnType = function() return System.Boolean.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, value)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Contains', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 532101,
+                returnType = function() return System.Boolean.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, value, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Count', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93993440,
+                returnType = function() return System.Int32.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Count', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return System.Int32.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    local count = 0;
+                    for _,value in (source % _M.DOT).GetEnumerator() do
+                        count = count + 1;
+                    end
+                    return count;
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'DefaultIfEmpty', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'DefaultIfEmpty', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66131,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, defaultValue)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Distinct', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 345710,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Distinct', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ElementAt', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 72017,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, index)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ElementAtOrDefault', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 72017,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, index)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TResult'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Empty', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 0,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Except', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 165320,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, first, second)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Except', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 631290,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, first, second, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'First', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93993440,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'First', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'FirstOrDefault', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93993440,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'FirstOrDefault', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'GroupBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 92138,
+                returnType = function() return System.Collections.Generic.IEnumerable[{System.Linq.IGrouping[{methodGenerics[methodGenericsMapping['TKey']], methodGenerics[methodGenericsMapping['TSource']]}].__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'GroupBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 558108,
+                returnType = function() return System.Collections.Generic.IEnumerable[{System.Linq.IGrouping[{methodGenerics[methodGenericsMapping['TKey']], methodGenerics[methodGenericsMapping['TSource']]}].__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TResult'] = 3};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'GroupBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 3,
+                signatureHash = 860147468,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, resultSelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3,['TResult'] = 4};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'GroupBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 4,
+                signatureHash = 1204212950,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, elementSelector, resultSelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TResult'] = 3};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'GroupBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 3,
+                signatureHash = 860799826,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, resultSelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3,['TResult'] = 4};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'GroupBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 4,
+                signatureHash = 1205238084,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, elementSelector, resultSelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'GroupBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 3,
+                signatureHash = 787846,
+                returnType = function() return System.Collections.Generic.IEnumerable[{System.Linq.IGrouping[{methodGenerics[methodGenericsMapping['TKey']], methodGenerics[methodGenericsMapping['TElement']]}].__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, elementSelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'GroupBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 3,
+                signatureHash = 135488,
+                returnType = function() return System.Collections.Generic.IEnumerable[{System.Linq.IGrouping[{methodGenerics[methodGenericsMapping['TKey']], methodGenerics[methodGenericsMapping['TElement']]}].__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, elementSelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TOuter'] = 1,['TInner'] = 2,['TKey'] = 3,['TResult'] = 4};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'GroupJoin', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 4,
+                signatureHash = 1892391086,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, outer, inner, outerKeySelector, innerKeySelector, resultSelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TOuter'] = 1,['TInner'] = 2,['TKey'] = 3,['TResult'] = 4};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'GroupJoin', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 4,
+                signatureHash = 1893602608,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, outer, inner, outerKeySelector, innerKeySelector, resultSelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Intersect', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 165320,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, first, second)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Intersect', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 631290,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, first, second, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TOuter'] = 1,['TInner'] = 2,['TKey'] = 3,['TResult'] = 4};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Join', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 4,
+                signatureHash = 460100,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, outer, inner, outerKeySelector, innerKeySelector, resultSelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TOuter'] = 1,['TInner'] = 2,['TKey'] = 3,['TResult'] = 4};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Join', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 4,
+                signatureHash = 1671622,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, outer, inner, outerKeySelector, innerKeySelector, resultSelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Last', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93993440,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Last', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'LastOrDefault', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93993440,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'LastOrDefault', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'LongCount', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93993440,
+                returnType = function() return System.Int64.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'LongCount', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return System.Int64.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 280448848,
+                returnType = function() return System.Double.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 394453520,
+                returnType = function() return System.Decimal.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 6231576708960,
+                returnType = function() return System.Nullable[{System.Decimal.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93166322,
+                returnType = function() return System.Decimal.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 1045591433240,
+                returnType = function() return System.Nullable[{System.Double.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 129809264,
+                returnType = function() return System.Int32.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66261578,
+                returnType = function() return System.Double.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 1048549956296,
+                returnType = function() return System.Nullable[{System.Single.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 2050726752672,
+                returnType = function() return System.Nullable[{System.Int32.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 132652768,
+                returnType = function() return System.Int64.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66448850,
+                returnType = function() return System.Single.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 494566514060,
+                returnType = function() return System.Nullable[{System.Int64.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 31382168,
+                returnType = function() return System.Int64.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 483965139776,
+                returnType = function() return System.Nullable[{System.Int32.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 30711110,
+                returnType = function() return System.Int32.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 4443067182432,
+                returnType = function() return System.Nullable[{System.Single.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 4430530900704,
+                returnType = function() return System.Nullable[{System.Double.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 2095648428864,
+                returnType = function() return System.Nullable[{System.Int64.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 281242384,
+                returnType = function() return System.Single.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 92138,
+                returnType = function() return methodGenerics[methodGenericsMapping['TResult']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Max', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 1470632578952,
+                returnType = function() return System.Nullable[{System.Decimal.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 2050726752672,
+                returnType = function() return System.Nullable[{System.Int32.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 132652768,
+                returnType = function() return System.Int64.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 2095648428864,
+                returnType = function() return System.Nullable[{System.Int64.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 281242384,
+                returnType = function() return System.Single.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 4443067182432,
+                returnType = function() return System.Nullable[{System.Single.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 280448848,
+                returnType = function() return System.Double.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 4430530900704,
+                returnType = function() return System.Nullable[{System.Double.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 394453520,
+                returnType = function() return System.Decimal.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 6231576708960,
+                returnType = function() return System.Nullable[{System.Decimal.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 30711110,
+                returnType = function() return System.Int32.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 483965139776,
+                returnType = function() return System.Nullable[{System.Int32.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 31382168,
+                returnType = function() return System.Int64.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 494566514060,
+                returnType = function() return System.Nullable[{System.Int64.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66448850,
+                returnType = function() return System.Single.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 1048549956296,
+                returnType = function() return System.Nullable[{System.Single.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66261578,
+                returnType = function() return System.Double.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 1045591433240,
+                returnType = function() return System.Nullable[{System.Double.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93166322,
+                returnType = function() return System.Decimal.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 129809264,
+                returnType = function() return System.Int32.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 1470632578952,
+                returnType = function() return System.Nullable[{System.Decimal.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Min', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 92138,
+                returnType = function() return methodGenerics[methodGenericsMapping['TResult']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TResult'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'OfType', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 33064,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'OrderBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 198508,
+                returnType = function() return System.Linq.IOrderedEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'OrderBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 92138,
+                returnType = function() return System.Linq.IOrderedEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'OrderByDescending', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 198508,
+                returnType = function() return System.Linq.IOrderedEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'OrderByDescending', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 92138,
+                returnType = function() return System.Linq.IOrderedEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Range', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 9815,
+                returnType = function() return System.Collections.Generic.IEnumerable[{System.Int32.__typeof}].__typeof end,
+                func = function(element, start, count)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TResult'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Repeat', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 5891,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, element, count)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Reverse', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Select', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 92138,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    if (selector == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("selector"));
+                    end
+                    
+            local enumerator = (source % _M.DOT).GetEnumerator();
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+                local key, value = enumerator(_, prevKey);
+                if (key == nil) then
+                    return nil;
+                end
+                return key, (selector %_M.DOT)(value);
+            end); 
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Select', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 30737120,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    if (selector == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("selector"));
+                    end
+                    
+            local enumerator = (source % _M.DOT).GetEnumerator();
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+                local key, value = enumerator(_, prevKey);
+                if (key == nil) then
+                    return nil;
+                end
+                return key, (selector %_M.DOT)(value, key);
+            end); 
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'SelectMany', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 516073316,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TCollection'] = 2,['TResult'] = 3};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'SelectMany', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 3,
+                signatureHash = 516160016,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, collectionSelector, resultSelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TCollection'] = 2,['TResult'] = 3};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'SelectMany', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 3,
+                signatureHash = 890792450,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, collectionSelector, resultSelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'SelectMany', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 890705750,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'SequenceEqual', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 631290,
+                returnType = function() return System.Boolean.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, first, second, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'SequenceEqual', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 165320,
+                returnType = function() return System.Boolean.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, first, second)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Single', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93993440,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Single', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'SingleOrDefault', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'SingleOrDefault', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93993440,
+                returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Skip', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 72017,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, count)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'SkipWhile', {
                 level = typeObject.Level,
                 memberType = 'Method',
                 scope = 'Public',
@@ -481,27 +2394,593 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'SkipWhile', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 187239290,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 483965139776,
+                returnType = function() return System.Nullable[{System.Int32.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93166322,
+                returnType = function() return System.Decimal.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 1470632578952,
+                returnType = function() return System.Nullable[{System.Decimal.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 129809264,
+                returnType = function() return System.Int32.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 2050726752672,
+                returnType = function() return System.Nullable[{System.Int32.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 132652768,
+                returnType = function() return System.Int64.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 2095648428864,
+                returnType = function() return System.Nullable[{System.Int64.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 281242384,
+                returnType = function() return System.Single.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 4443067182432,
+                returnType = function() return System.Nullable[{System.Single.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 4430530900704,
+                returnType = function() return System.Nullable[{System.Double.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 280448848,
+                returnType = function() return System.Double.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 6231576708960,
+                returnType = function() return System.Nullable[{System.Decimal.__typeof}].__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 30711110,
+                returnType = function() return System.Int32.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 31382168,
+                returnType = function() return System.Int64.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 494566514060,
+                returnType = function() return System.Nullable[{System.Int64.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66448850,
+                returnType = function() return System.Single.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 1048549956296,
+                returnType = function() return System.Nullable[{System.Single.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66261578,
+                returnType = function() return System.Double.__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 1045591433240,
+                returnType = function() return System.Nullable[{System.Double.__typeof}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            _M.IM(members, 'Sum', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 394453520,
+                returnType = function() return System.Decimal.__typeof end,
+                func = function(element, source)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Take', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 72017,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, count)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'TakeWhile', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 93993440,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'TakeWhile', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 187239290,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ThenBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 232526,
+                returnType = function() return System.Linq.IOrderedEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ThenBy', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 338896,
+                returnType = function() return System.Linq.IOrderedEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ThenByDescending', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 232526,
+                returnType = function() return System.Linq.IOrderedEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ThenByDescending', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 338896,
+                returnType = function() return System.Linq.IOrderedEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ToArray', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return System.Array[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
                     if (source == nil) then
                     _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
                     end
-                    if (predicate == nil) then
-                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("predicate"));
+                    local array = (System.Array[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_0() % _M.DOT).__Initialize({});
+                    local c = 0;
+                    for _,element in (source % _M.DOT).GetEnumerator() do
+                        (array % _M.DOT)[c] = element;
+                        c = c + 1;
                     end
-                    
-            local enumerator = (source % _M.DOT).GetEnumerator();
-            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
-                while (true) do
-                    local key, value = enumerator(_, prevKey);
-                    if (key == nil) or (predicate % _M.DOT)(value) == true then
-                        return key, value;
-                    end
-                    prevKey = key;
-                end
-            end); 
+                    return array;
                 end
             });
-            local methodGenericsMapping = {['TSource'] = 1};
-            local methodGenerics = _M.MG(methodGenericsMapping);
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ToDictionary', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 3,
+                signatureHash = 787846,
+                returnType = function() return System.Collections.Generic.Dictionary[{methodGenerics[methodGenericsMapping['TKey']], methodGenerics[methodGenericsMapping['TElement']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, elementSelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ToDictionary', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 3,
+                signatureHash = 135488,
+                returnType = function() return System.Collections.Generic.Dictionary[{methodGenerics[methodGenericsMapping['TKey']], methodGenerics[methodGenericsMapping['TElement']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, elementSelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ToDictionary', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 558108,
+                returnType = function() return System.Collections.Generic.Dictionary[{methodGenerics[methodGenericsMapping['TKey']], methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ToDictionary', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 92138,
+                returnType = function() return System.Collections.Generic.Dictionary[{methodGenerics[methodGenericsMapping['TKey']], methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ToList', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 66128,
+                returnType = function() return System.Collections.Generic.List[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source)
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    return System.Collections.Generic.List[{methodGenerics[methodGenericsMapping['TSource']]}]['_C_0_'..(66128*methodGenerics[methodGenericsMapping['TSource']].signatureHash)](source);
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ToLookup', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 92138,
+                returnType = function() return System.Linq.ILookup[{methodGenerics[methodGenericsMapping['TKey']], methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ToLookup', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 3,
+                signatureHash = 135488,
+                returnType = function() return System.Linq.ILookup[{methodGenerics[methodGenericsMapping['TKey']], methodGenerics[methodGenericsMapping['TElement']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, elementSelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ToLookup', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 3,
+                signatureHash = 787846,
+                returnType = function() return System.Linq.ILookup[{methodGenerics[methodGenericsMapping['TKey']], methodGenerics[methodGenericsMapping['TElement']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, elementSelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ToLookup', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 2,
+                signatureHash = 558108,
+                returnType = function() return System.Linq.ILookup[{methodGenerics[methodGenericsMapping['TKey']], methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, source, keySelector, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Union', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 631290,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, first, second, comparer)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Union', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 165320,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, first, second)
+                    _M.Throw(System.NotImplementedException._C_0_0());
+                end
+            });
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Where', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -531,118 +3010,50 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
             end); 
                 end
             });
-            local methodGenericsMapping = {['TSource'] = 1};
-            local methodGenerics = _M.MG(methodGenericsMapping);
-            _M.IM(members, 'ToArray', {
+            methodGenericsMapping = {['TSource'] = 1};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Where', {
                 level = typeObject.Level,
                 memberType = 'Method',
                 scope = 'Public',
                 static = true,
                 numMethodGenerics = 1,
-                signatureHash = 66128,
-                returnType = function() return System.Array[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                signatureHash = 93993440,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
                 generics = methodGenericsMapping,
-                func = function(element, methodGenericsMapping, methodGenerics, source)
+                func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
                     if (source == nil) then
                     _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
                     end
-                    local array = (System.Array[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_0() % _M.DOT).__Initialize({});
-                    local c = 0;
-                    for _,element in (source % _M.DOT).GetEnumerator() do
-                        (array % _M.DOT)[c] = element;
-                        c = c + 1;
-                    end
-                    return array;
-                end
-            });
-            local methodGenericsMapping = {['TSource'] = 1};
-            local methodGenerics = _M.MG(methodGenericsMapping);
-            _M.IM(members, 'Any', {
-                level = typeObject.Level,
-                memberType = 'Method',
-                scope = 'Public',
-                static = true,
-                numMethodGenerics = 1,
-                signatureHash = 66128,
-                returnType = function() return System.Boolean.__typeof end,
-                generics = methodGenericsMapping,
-                func = function(element, methodGenericsMapping, methodGenerics, source)
-                    if (source == nil) then
-                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
-                    end
-                    for _,value in (source % _M.DOT).GetEnumerator() do
-                        return true;
-                    end
-                    return false;
-                end
-            });
-            local methodGenericsMapping = {['TSource'] = 1};
-            local methodGenerics = _M.MG(methodGenericsMapping);
-            _M.IM(members, 'Count', {
-                level = typeObject.Level,
-                memberType = 'Method',
-                scope = 'Public',
-                static = true,
-                numMethodGenerics = 1,
-                signatureHash = 66128,
-                returnType = function() return System.Int32.__typeof end,
-                generics = methodGenericsMapping,
-                func = function(element, methodGenericsMapping, methodGenerics, source)
-                    if (source == nil) then
-                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
-                    end
-                    local count = 0;
-                    for _,value in (source % _M.DOT).GetEnumerator() do
-                        count = count + 1;
-                    end
-                    return count;
-                end
-            });
-            local methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
-            local methodGenerics = _M.MG(methodGenericsMapping);
-            _M.IM(members, 'Select', {
-                level = typeObject.Level,
-                memberType = 'Method',
-                scope = 'Public',
-                static = true,
-                numMethodGenerics = 2,
-                signatureHash = 92138,
-                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
-                generics = methodGenericsMapping,
-                func = function(element, methodGenericsMapping, methodGenerics, source, selector)
-                    if (source == nil) then
-                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
-                    end
-                    if (selector == nil) then
-                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("selector"));
+                    if (predicate == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("predicate"));
                     end
                     
             local enumerator = (source % _M.DOT).GetEnumerator();
             return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
-                local key, value = enumerator(_, prevKey);
-                if (key == nil) then
-                    return nil;
+                while (true) do
+                    local key, value = enumerator(_, prevKey);
+                    if (key == nil) or (predicate % _M.DOT)(value) == true then
+                        return key, value;
+                    end
+                    prevKey = key;
                 end
-                return key, (selector %_M.DOT)(value);
             end); 
                 end
             });
-            local methodGenericsMapping = {['TSource'] = 1};
-            local methodGenerics = _M.MG(methodGenericsMapping);
-            _M.IM(members, 'ToList', {
+            methodGenericsMapping = {['TFirst'] = 1,['TSecond'] = 2,['TResult'] = 3};
+            methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'Zip', {
                 level = typeObject.Level,
                 memberType = 'Method',
                 scope = 'Public',
                 static = true,
-                numMethodGenerics = 1,
-                signatureHash = 66128,
-                returnType = function() return System.Collections.Generic.List[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
+                numMethodGenerics = 3,
+                signatureHash = 252020,
+                returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
                 generics = methodGenericsMapping,
-                func = function(element, methodGenericsMapping, methodGenerics, source)
-                    if (source == nil) then
-                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
-                    end
-                    return System.Collections.Generic.List[{methodGenerics[methodGenericsMapping['TSource']]}]['_C_0_'..(66128*methodGenerics[methodGenericsMapping['TSource']].signatureHash)](source);
+                func = function(element, methodGenericsMapping, methodGenerics, first, second, resultSelector)
+                    _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
             return members;
