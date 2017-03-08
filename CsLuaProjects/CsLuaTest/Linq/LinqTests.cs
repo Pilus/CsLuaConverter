@@ -31,6 +31,7 @@
 
         private static void ExpectException<T>(Action action, string expectedText)
         {
+            var x = nameof(T);
             try
             {
                 action();
@@ -53,7 +54,7 @@
             catch (Exception ex)
             {
                 Assert(true, ex is ArgumentNullException, "Expected ArgumentNullException, got " + ex.GetType().Name);
-                Assert("Value cannot be null.\nParameter name: source", ex.Message);
+                Assert("Value cannot be null."+ Environment.NewLine +"Parameter name: source", ex.Message);
             }
         }
 
@@ -69,7 +70,7 @@
             catch (Exception ex)
             {
                 Assert(true, ex is ArgumentNullException, "Expected ArgumentNullException, got " + ex.GetType().Name);
-                Assert("Value cannot be null.\nParameter name: predicate", ex.Message);
+                Assert("Value cannot be null." + Environment.NewLine + "Parameter name: predicate", ex.Message);
             }
         }
 
@@ -93,7 +94,7 @@
             catch (Exception ex)
             {
                 Assert(true, ex is ArgumentNullException, "Expected ArgumentNullException, got " + ex.GetType().Name);
-                Assert("Value cannot be null.\nParameter name: source", ex.Message);
+                Assert("Value cannot be null." + Environment.NewLine + "Parameter name: source", ex.Message);
             }
         }
 
@@ -207,7 +208,7 @@
             Assert(2, a.First());
 
             var empty = new int[] {};
-            ExpectException<InvalidOperatorException>(() => { empty.First(); }, "Sequence contains no elements");
+            ExpectException<InvalidOperationException>(() => { empty.First(); }, "Sequence contains no elements");
         }
 
         private static void TestFirstWithPredicate()

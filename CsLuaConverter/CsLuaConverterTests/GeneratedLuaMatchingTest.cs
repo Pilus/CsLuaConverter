@@ -23,7 +23,7 @@ namespace CsLuaConverterTests
             var namespaces = namespaceConstructor.GetNamespacesFromProject(fileInfo.FullName);
 
             var comparingTextWriter = new ComparingTextWriter(CsLuaCompiled);
-            namespaces.First().WritingAction(new IndentedTextWriterWrapper(comparingTextWriter));
+            namespaces.First().WritingAction(new IndentedTextWriterWrapper(new StringWriter()));
             Assert.IsTrue(comparingTextWriter.EndOfExpectedReached(), "The whole expected output have not been written.");
         }
 
