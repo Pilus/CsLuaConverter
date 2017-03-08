@@ -185,7 +185,11 @@
         public static IEnumerable<TResult> SelectMany<TSource, TCollection, TResult>(this IEnumerable<TSource> source, Func<TSource, int, IEnumerable<TCollection>> collectionSelector, Func<TSource, TCollection, TResult> resultSelector) { throw new NotImplementedException(); }
         public static IEnumerable<TResult> SelectMany<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, int, IEnumerable<TResult>> selector) { throw new NotImplementedException(); }
         public static bool SequenceEqual<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, IEqualityComparer<TSource> comparer) { throw new NotImplementedException(); }
-        public static bool SequenceEqual<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second) { throw new NotImplementedException(); }
+
+        public static bool SequenceEqual<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second)
+        {
+            throw new NotImplementedException();
+        }
         public static TSource Single<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate) { throw new NotImplementedException(); }
         public static TSource Single<TSource>(this IEnumerable<TSource> source) { throw new NotImplementedException(); }
         public static TSource SingleOrDefault<TSource>(this IEnumerable<TSource> source) { throw new NotImplementedException(); }

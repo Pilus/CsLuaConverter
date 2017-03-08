@@ -21,8 +21,26 @@
             this.Tests["TestSelect"] = TestSelect;
             this.Tests["TestSelectWithIndex"] = TestSelectWithIndex;
             this.Tests["TestUnion"] = TestUnion;
-            //this.Tests["TestOrderBy"] = TestOrderBy;
+            this.Tests["TestFirst"] = TestFirst;
+            this.Tests["TestFirstWithPredicate"] = TestFirstWithPredicate;
+            this.Tests["TestLast"] = TestLast;
+            this.Tests["TestLastWithPredicate"] = TestLastWithPredicate;
+            //this.Tests["TestOrderBy"] = TestOrderBy; 
             //this.Tests["TestOfLinqOfType"] = TestOfLinqOfType;
+        }
+
+        private static void ExpectException<T>(Action action, string expectedText)
+        {
+            try
+            {
+                action();
+                throw new Exception("Expected to throw exception. No exception thrown.");
+            }
+            catch (Exception ex)
+            {
+                Assert(true, ex is T, "Expected " + nameof(T) +", got " + ex.GetType().Name);
+                Assert(expectedText, ex.Message);
+            }
         }
 
         private static void WhereWithNoSourceThrows()
@@ -181,6 +199,33 @@
             Assert(7, result[3]);
             Assert(9, result[4]);
             Assert(11, result[5]);
+        }
+
+        private static void TestFirst()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            Assert(2, a.First());
+
+            var empty = new int[] {};
+            ExpectException<InvalidOperatorException>(() => { empty.First(); }, "Sequence contains no elements");
+        }
+
+        private static void TestFirstWithPredicate()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            Assert(16, a.First(v => v >= 10));
+        }
+
+        private static void TestLast()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            Assert(64, a.Last());
+        }
+
+        private static void TestLastWithPredicate()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            Assert(8, a.Last(v => v < 10));
         }
 
         private static void TestOrderBy()

@@ -654,8 +654,8 @@ _M.ATN('CsLuaTest.ActionsFunctions','ClassWithMethods', _M.NE({
                     return ((value % _M.DOT).ToString_M_0_0 % _M.DOT)();
                 end
             });
-            methodGenericsMapping = {['T'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'MethodWithReturnAndGeneric', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -765,8 +765,8 @@ _M.ATN('CsLuaTest.ActionsFunctions','StaticClass', _M.NE({
                     return ""float"";
                 end
             });
-            methodGenericsMapping = {['T'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ReturnInput', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -4177,8 +4177,8 @@ _M.ATN('CsLuaTest.Generics','ClassUsingGenericsInMethods', _M.NE({
                     return list == returnValue;
                 end
             });
-            methodGenericsMapping = {['T3'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T3'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'UseMethodGenericAsMethodGeneric', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -4209,8 +4209,8 @@ _M.ATN('CsLuaTest.Generics','ClassUsingGenericsInMethods', _M.NE({
                     return ((value % _M.DOT).Equals_M_0_8572 % _M.DOT)(correctValue);
                 end
             });
-            methodGenericsMapping = {['T3'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T3'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'MethodWithGenericAndLambda', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -4798,8 +4798,8 @@ _M.ATN('CsLuaTest.Generics','MethodsWithGeneric', _M.NE({
                     (CsLuaTest.BaseTest % _M.DOT).Output = (CsLuaTest.BaseTest % _M.DOT).Output +_M.Add+ ""GenericMethodT2"";
                 end
             });
-            methodGenericsMapping = {['T3'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T3'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GenericReturnType', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -4813,8 +4813,8 @@ _M.ATN('CsLuaTest.Generics','MethodsWithGeneric', _M.NE({
                     return value;
                 end
             });
-            methodGenericsMapping = {['T3'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T3'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GenericAtMethod', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -4828,8 +4828,8 @@ _M.ATN('CsLuaTest.Generics','MethodsWithGeneric', _M.NE({
                     return ((obj % _M.DOT).ToString_M_0_0 % _M.DOT)();
                 end
             });
-            methodGenericsMapping = {['T3'] = 1,['T4'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T3'] = 1,['T4'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GenericAtAmbMethod', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -4843,8 +4843,8 @@ _M.ATN('CsLuaTest.Generics','MethodsWithGeneric', _M.NE({
                     return ((obj % _M.DOT).ToString_M_0_0 % _M.DOT)() +_M.Add+ ((obj2 % _M.DOT).ToString_M_0_0 % _M.DOT)() +_M.Add+ ""A"";
                 end
             });
-            methodGenericsMapping = {['T3'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T3'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GenericAtAmbMethod', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -4858,8 +4858,8 @@ _M.ATN('CsLuaTest.Generics','MethodsWithGeneric', _M.NE({
                     return ((obj % _M.DOT).ToString_M_0_0 % _M.DOT)() +_M.Add+ ((obj2 % _M.DOT).ToString_M_0_0 % _M.DOT)() +_M.Add+ ""B"";
                 end
             });
-            methodGenericsMapping = {['T3'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T3'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'StaticMethodWithGenerics', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -4873,8 +4873,8 @@ _M.ATN('CsLuaTest.Generics','MethodsWithGeneric', _M.NE({
                     return (((value % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name;
                 end
             });
-            methodGenericsMapping = {['T3'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T3'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'MethodWithGenericAsObjectGenericInArg', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -5133,8 +5133,8 @@ _M.ATN('CsLuaTest.Interfaces','ClassA', _M.NE({
                 func = function(element, arg)
                 end
             });
-            methodGenericsMapping = {['T3'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T3'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'MethodWithGenericInReturn', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -5148,8 +5148,8 @@ _M.ATN('CsLuaTest.Interfaces','ClassA', _M.NE({
                     return arg;
                 end
             });
-            methodGenericsMapping = {['T4'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T4'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'MethodWithGenericInArg', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -5414,8 +5414,8 @@ _M.ATN('CsLuaTest.Interfaces','InterfaceWithGenerics', _M.NE({
                 numMethodGenerics = 0,
                 signatureHash = (2*generics[genericsMapping['T']].signatureHash),
             });
-            methodGenericsMapping = {['T3'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T3'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'MethodWithGenericInArg', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -5425,8 +5425,8 @@ _M.ATN('CsLuaTest.Interfaces','InterfaceWithGenerics', _M.NE({
                 signatureHash = 2,
                 generics = methodGenericsMapping,
             });
-            methodGenericsMapping = {['T2'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T2'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'MethodWithGenericInReturn', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -5554,6 +5554,11 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestAnyWithPredicate""] = (element % _M.DOT_LVL(typeObject.Level)).TestAnyWithPredicate;
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestSelect""] = (element % _M.DOT_LVL(typeObject.Level)).TestSelect;
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestSelectWithIndex""] = (element % _M.DOT_LVL(typeObject.Level)).TestSelectWithIndex;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestUnion""] = (element % _M.DOT_LVL(typeObject.Level)).TestUnion;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestFirst""] = (element % _M.DOT_LVL(typeObject.Level)).TestFirst;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestFirstWithPredicate""] = (element % _M.DOT_LVL(typeObject.Level)).TestFirstWithPredicate;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestLast""] = (element % _M.DOT_LVL(typeObject.Level)).TestLast;
+                    ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestLastWithPredicate""] = (element % _M.DOT_LVL(typeObject.Level)).TestLastWithPredicate;
                 end,
             });
             _M.IM(members, 'WhereWithNoSourceThrows', {
@@ -5792,6 +5797,21 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(7, (result % _M.DOT)[3]);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(9, (result % _M.DOT)[4]);
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(11, (result % _M.DOT)[5]);
+                end
+            });
+            _M.IM(members, 'TestFirstAndLast', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, ((System.Linq.Enumerable % _M.DOT).First_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(a));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(16, ((System.Linq.Enumerable % _M.DOT).First_M_1_93993440[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v) return v >= 10 end)));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(64, ((System.Linq.Enumerable % _M.DOT).Last_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(a));
+                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(8, ((System.Linq.Enumerable % _M.DOT).Last_M_1_93993440[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v) return v < 10 end)));
                 end
             });
             _M.IM(members, 'TestOrderBy', {
@@ -8412,8 +8432,8 @@ _M.ATN('CsLuaTest.Type','GenericTypeTestClass', _M.NE({
                     return (generics[genericsMapping['T1']] % _M.DOT).Name;
                 end
             });
-            methodGenericsMapping = {['T2'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['T2'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GetMethodGenericsName', {
                 level = typeObject.Level,
                 memberType = 'Method',
