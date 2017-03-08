@@ -262,7 +262,19 @@
             IIndentedTextWriterWrapper textWriter,
             IContext context)
         {
-            var symbol = (IMethodSymbol)ModelExtensions.GetSymbolInfo(context.SemanticModel, syntax).Symbol;
+            var symbolInfo = ModelExtensions.GetSymbolInfo(context.SemanticModel, syntax);
+            var symbol = (IMethodSymbol)symbolInfo.Symbol;
+
+            if (symbol == null)
+            {
+                if (symbolInfo.CandidateSymbols.Any())
+                {
+                    throw new Exception($"Could not find symbol to InvocationExpressionSyntax. Candidates was available but not choosen. Reason: {symbolInfo.CandidateReason}.");
+                }
+
+                TryWriteNameOfOrTypeOf(syntax, textWriter, context);
+                return;
+            }
 
             if (symbol.IsExtensionMethod && symbol.MethodKind == MethodKind.ReducedExtension)
             {
@@ -331,6 +343,34 @@
             textWriter.Write(" % _M.DOT)");
 
             syntax.ArgumentList.Write(textWriter, context);
+        }
+
+        private static void TryWriteNameOfOrTypeOf(
+            this InvocationExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context)
+        {
+            switch (syntax.Expression.ToFullString())
+            {
+                case "nameof":
+                    var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(syntax.ArgumentList.Arguments.Single().Expression).Symbol;
+                    
+                    if (context.SemanticAdaptor.IsGenericType(symbol))
+                    {
+                        context.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
+                        textWriter.Write(".name");
+                    }
+                    else
+                    {
+                        textWriter.Write($"\"{context.SemanticAdaptor.GetName(symbol)}\"");
+                    }
+                    
+                    break;
+                case "typeof":
+                    break;
+                default:
+                    throw new Exception("No symbol found for invocation expression.");
+            }
         }
 
         private static void WriteAsExtensionMethodCall(

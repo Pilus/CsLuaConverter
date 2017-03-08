@@ -70,53 +70,6 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
                 return nil;
             end,
         },
-        { -- TSource Last(System.Collections.Generic.IEnumerable`1<TSource>)
-            name = "Last",
-            numMethodGenerics = 0,
-            signatureHash = 0,
-            func = function(source)
-                local enumerator = (source % _M.DOT).GetEnumerator();
-                local key, value = enumerator(nil, nil);
-                local lastKey, lastValue = nil, nil;
-
-                while (key) do
-                    lastKey = key;
-                    lastValue = value;
-                    key, value = enumerator(_, key);
-                end
-
-                if (lastKey == nil) then
-                    NoElements();
-                end
-
-                return lastValue;
-            end,
-        },
-        { -- TSource Last(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,System.Boolean>)
-            name = "Last",
-            numMethodGenerics = 0,
-            signatureHash = 62611272+(6936*generics[genericsMapping['TSource']].signatureHash),
-            func = function(source, predicate)
-                local enumerator = (source % _M.DOT).GetEnumerator();
-                local key, value = enumerator(nil, nil);
-                local lastKey, lastValue = nil, nil;
-
-                while (key) do
-                    if ((predicate % _M.DOT)(value) == true) then
-                        lastKey = key;
-                        lastValue = value;
-                    end
-
-                    key, value = enumerator(_, key);
-                end
-
-                if (lastKey == nil) then
-                    NoElements();
-                end
-
-                return lastValue;
-            end,
-        },
         { -- TSource LastOrDefault(System.Collections.Generic.IEnumerable`1<TSource>)
             name = "LastOrDefault",
             numMethodGenerics = 0,

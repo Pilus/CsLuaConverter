@@ -208,25 +208,32 @@
             Assert(2, a.First());
 
             var empty = new int[] {};
-            ExpectException<InvalidOperationException>(() => { empty.First(); }, "Sequence contains no elements");
+            LinqTests.ExpectException<InvalidOperationException>(() => { empty.First(); }, "Sequence contains no elements");
         }
 
         private static void TestFirstWithPredicate()
         {
             var a = new int[] { 2, 4, 8, 16, 32, 64 };
             Assert(16, a.First(v => v >= 10));
+
+            LinqTests.ExpectException<InvalidOperationException>(() => { a.First(v => v > 100); }, "Sequence contains no elements");
         }
 
         private static void TestLast()
         {
             var a = new int[] { 2, 4, 8, 16, 32, 64 };
             Assert(64, a.Last());
+
+            var empty = new int[] { };
+            LinqTests.ExpectException<InvalidOperationException>(() => { empty.Last(); }, "Sequence contains no elements");
         }
 
         private static void TestLastWithPredicate()
         {
             var a = new int[] { 2, 4, 8, 16, 32, 64 };
             Assert(8, a.Last(v => v < 10));
+
+            LinqTests.ExpectException<InvalidOperationException>(() => { a.Last(v => v > 100); }, "Sequence contains no elements");
         }
 
         private static void TestOrderBy()

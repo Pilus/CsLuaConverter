@@ -23,7 +23,7 @@ namespace CsLuaConverterTests
             var namespaces = namespaceConstructor.GetNamespacesFromProject(fileInfo.FullName);
 
             var comparingTextWriter = new ComparingTextWriter(CsLuaCompiled);
-            namespaces.First().WritingAction(new IndentedTextWriterWrapper(new StringWriter()));
+            namespaces.First().WritingAction(new IndentedTextWriterWrapper(comparingTextWriter));
             Assert.IsTrue(comparingTextWriter.EndOfExpectedReached(), "The whole expected output have not been written.");
         }
 
@@ -5561,6 +5561,36 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                     ((element % _M.DOT_LVL(typeObject.Level)).Tests % _M.DOT)[""TestLastWithPredicate""] = (element % _M.DOT_LVL(typeObject.Level)).TestLastWithPredicate;
                 end,
             });
+            local methodGenericsMapping = {['T'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
+            _M.IM(members, 'ExpectException', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 1,
+                signatureHash = 21890,
+                generics = methodGenericsMapping,
+                func = function(element, methodGenericsMapping, methodGenerics, action, expectedText)
+                    local x = methodGenerics[methodGenericsMapping['T']].name;
+                    _M.Try(
+                        function()
+                            (action % _M.DOT)();
+                            _M.Throw(System.Exception._C_0_8736(""Expected to throw exception. No exception thrown.""));
+                        end,
+                        {
+                            {
+                                type = System.Exception.__typeof,
+                                func = function(ex)
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, methodGenerics[methodGenericsMapping['T']].__is(ex), ""Expected "" +_M.Add+ methodGenerics[methodGenericsMapping['T']].name +_M.Add+ "", got "" +_M.Add+ (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(expectedText, (ex % _M.DOT).Message);
+                                end,
+                            },
+                        },
+                        nil
+                    );
+                end
+            });
             _M.IM(members, 'WhereWithNoSourceThrows', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -5579,7 +5609,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                                 type = System.Exception.__typeof,
                                 func = function(ex)
                                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got "" +_M.Add+ (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
-                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(""Value cannot be null.\nParameter name: source"", (ex % _M.DOT).Message);
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(""Value cannot be null."" +_M.Add+ (System.Environment % _M.DOT).NewLine +_M.Add+ ""Parameter name: source"", (ex % _M.DOT).Message);
                                 end,
                             },
                         },
@@ -5607,7 +5637,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                                 type = System.Exception.__typeof,
                                 func = function(ex)
                                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got "" +_M.Add+ (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
-                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(""Value cannot be null.\nParameter name: predicate"", (ex % _M.DOT).Message);
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(""Value cannot be null."" +_M.Add+ (System.Environment % _M.DOT).NewLine +_M.Add+ ""Parameter name: predicate"", (ex % _M.DOT).Message);
                                 end,
                             },
                         },
@@ -5648,7 +5678,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                                 type = System.Exception.__typeof,
                                 func = function(ex)
                                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(true, System.ArgumentNullException.__is(ex), ""Expected ArgumentNullException, got "" +_M.Add+ (((ex % _M.DOT).GetType_M_0_0 % _M.DOT)() % _M.DOT).Name);
-                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(""Value cannot be null.\nParameter name: source"", (ex % _M.DOT).Message);
+                                    ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(""Value cannot be null."" +_M.Add+ (System.Environment % _M.DOT).NewLine +_M.Add+ ""Parameter name: source"", (ex % _M.DOT).Message);
                                 end,
                             },
                         },
@@ -5799,7 +5829,7 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(11, (result % _M.DOT)[5]);
                 end
             });
-            _M.IM(members, 'TestFirstAndLast', {
+            _M.IM(members, 'TestFirst', {
                 level = typeObject.Level,
                 memberType = 'Method',
                 scope = 'Private',
@@ -5809,9 +5839,56 @@ _M.ATN('CsLuaTest.Linq','LinqTests', _M.NE({
                 func = function(element)
                     local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(2, ((System.Linq.Enumerable % _M.DOT).First_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(a));
+                    local empty = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({});
+                    ((CsLuaTest.Linq.LinqTests % _M.DOT).ExpectException_M_1_21890[{System.InvalidOperationException.__typeof}] % _M.DOT)(System.Action._C_0_16704(function()
+                        ((System.Linq.Enumerable % _M.DOT).First_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(empty);
+                    end), ""Sequence contains no elements"");
+                end
+            });
+            _M.IM(members, 'TestFirstWithPredicate', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(16, ((System.Linq.Enumerable % _M.DOT).First_M_1_93993440[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v) return v >= 10 end)));
+                    ((CsLuaTest.Linq.LinqTests % _M.DOT).ExpectException_M_1_21890[{System.InvalidOperationException.__typeof}] % _M.DOT)(System.Action._C_0_16704(function()
+                        ((System.Linq.Enumerable % _M.DOT).First_M_1_93993440[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v) return v > 100 end));
+                    end), ""Sequence contains no elements"");
+                end
+            });
+            _M.IM(members, 'TestLast', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(64, ((System.Linq.Enumerable % _M.DOT).Last_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(a));
+                    local empty = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({});
+                    ((CsLuaTest.Linq.LinqTests % _M.DOT).ExpectException_M_1_21890[{System.InvalidOperationException.__typeof}] % _M.DOT)(System.Action._C_0_16704(function()
+                        ((System.Linq.Enumerable % _M.DOT).Last_M_1_66128[{System.Int32.__typeof}] % _M.DOT)(empty);
+                    end), ""Sequence contains no elements"");
+                end
+            });
+            _M.IM(members, 'TestLastWithPredicate', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                func = function(element)
+                    local a = (System.Array[{System.Int32.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = 2, 4, 8, 16, 32, 64});
                     ((element % _M.DOT_LVL(typeObject.Level)).Assert_M_0_43270 % _M.DOT)(8, ((System.Linq.Enumerable % _M.DOT).Last_M_1_93993440[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v) return v < 10 end)));
+                    ((CsLuaTest.Linq.LinqTests % _M.DOT).ExpectException_M_1_21890[{System.InvalidOperationException.__typeof}] % _M.DOT)(System.Action._C_0_16704(function()
+                        ((System.Linq.Enumerable % _M.DOT).Last_M_1_93993440[{System.Int32.__typeof}] % _M.DOT)(a, System.Func[{System.Int32.__typeof, System.Boolean.__typeof}]._C_0_16704(function(v) return v > 100 end));
+                    end), ""Sequence contains no elements"");
                 end
             });
             _M.IM(members, 'TestOrderBy', {
