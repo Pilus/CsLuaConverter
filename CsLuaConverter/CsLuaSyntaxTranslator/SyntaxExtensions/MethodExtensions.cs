@@ -12,7 +12,6 @@ namespace CsLuaSyntaxTranslator.SyntaxExtensions
         public static void Write(this MethodDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
-
             WriteMethodGenericsMapping(syntax, textWriter, context);
             WriteMethodMember(syntax, textWriter, context, symbol);
         }
@@ -145,10 +144,10 @@ namespace CsLuaSyntaxTranslator.SyntaxExtensions
                 return;
             }
 
-            textWriter.Write("methodGenericsMapping = {");
+            textWriter.Write("local methodGenericsMapping = {");
             syntax.TypeParameterList.Write(textWriter, context);
             textWriter.WriteLine("};");
-            textWriter.WriteLine("methodGenerics = _M.MG(methodGenericsMapping);");
+            textWriter.WriteLine("local methodGenerics = _M.MG(methodGenericsMapping);");
         }
 
         private static void WriteParamVariableInit(IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)

@@ -245,7 +245,47 @@
         public static System.Linq.ILookup<TKey, TElement> ToLookup<TSource, TKey, TElement>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) { throw new NotImplementedException(); }
         public static System.Linq.ILookup<TKey, TSource> ToLookup<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) { throw new NotImplementedException(); }
         public static IEnumerable<TSource> Union<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, IEqualityComparer<TSource> comparer) { throw new NotImplementedException(); }
-        public static IEnumerable<TSource> Union<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second) { throw new NotImplementedException(); }
+
+        public static IEnumerable<TSource> Union<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second)
+        {
+            if (first == null) throw Error.ArgumentNull("first");
+            if (second == null) throw Error.ArgumentNull("second");
+            /* LUA
+            local firstSource = (first % _M.DOT).GetEnumerator();
+            local secondSource = (second % _M.DOT).GetEnumerator();
+            local currentSource, returned;
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_8786(function(_, prevKey)
+                if prevKey == nil then
+                    currentSource = firstSource;
+                    returned = {};
+                end
+                    
+                while (true) do
+                    local key, value = currentSource(_, prevKey);
+                    if (key == nil) then
+                        if currentSource == firstSource then
+                            currentSource = secondSource;
+                        else
+                            return nil, nil;
+                        end
+                    else
+                        if (currentSource == firstSource) then
+                            table.insert(returned, value);
+                            return key, value;
+                        else
+                            if not(tContains(returned, value)) then
+                                return key, value;
+                            end
+                            prevKey = key;
+                        end
+                    end
+
+                    prevKey = key;
+                end
+            end);
+            */
+            throw new ReplaceWithLuaBlock();
+        }
         public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, int, bool> predicate) {
             if (source == null) throw Error.ArgumentNull("source");
             if (predicate == null) throw Error.ArgumentNull("predicate");

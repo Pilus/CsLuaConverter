@@ -1,49 +1,4 @@
 ﻿
-System.Linq = {};
---[[
-System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, staticValues)
-    local implements = {
-        System.Collections.IEnumerable.__typeof,
-        System.Collections.Generic.IEnumerable[generics].__typeof,
-    };
-    
-    local baseTypeObject, members = System.Object.__meta(staticValues);
-    local typeObject = System.Type('Iterator','System.Linq', baseTypeObject,#(generics),generics,implements,interactionElement,'Class',8425);
-
-    _M.IM(members,'GetEnumerator',{
-        level = typeObject.Level,
-        memberType = 'Method',
-        scope = 'Public',
-        types = {},
-        numMethodGenerics = 0,
-        signatureHash = 0,
-        func = function(element)
-            return element[typeObject.level]["Enumerator"];
-        end,
-    });
-
-    _M.IM(members, '', {
-        level = typeObject.Level,
-        memberType = 'Cstor',
-        static = true,
-        numMethodGenerics = 0,
-        signatureHash = 2*Lua.Function.__typeof.signatureHash,
-        scope = 'Public',
-        func = function(element, enumerator)
-            element[typeObject.level]["Enumerator"] = enumerator; 
-        end,
-    });
-
-    local objectGenerator = function() 
-        return {
-            [1] = {},
-            [2] = {}, 
-            ["type"] = typeObject,
-            __metaType = _M.MetaTypes.ClassObject,
-        }; 
-    end
-    return "Class", typeObject, members, constructors, objectGenerator, implements, nil;
-end}); --]]
 
 local NoElements = function()
     _M.Throw(System.InvalidOperationException._C_0_8736("Sequence contains no elements"));

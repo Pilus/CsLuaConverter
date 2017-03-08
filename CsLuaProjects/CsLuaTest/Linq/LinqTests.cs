@@ -20,7 +20,7 @@
             this.Tests["TestAnyWithPredicate"] = TestAnyWithPredicate; 
             this.Tests["TestSelect"] = TestSelect;
             this.Tests["TestSelectWithIndex"] = TestSelectWithIndex;
-            //this.Tests["TestUnion"] = TestUnion;
+            this.Tests["TestUnion"] = TestUnion;
             //this.Tests["TestOrderBy"] = TestOrderBy;
             //this.Tests["TestOfLinqOfType"] = TestOfLinqOfType;
         }

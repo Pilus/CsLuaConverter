@@ -469,8 +469,9 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
                 end,
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            if true then
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Aggregate', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -484,8 +485,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TAccumulate'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TAccumulate'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Aggregate', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -499,8 +500,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TAccumulate'] = 2,['TResult'] = 3};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TAccumulate'] = 2,['TResult'] = 3};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Aggregate', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -514,8 +515,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'All', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -529,8 +530,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Any', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -550,8 +551,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     return false;
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Any', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -577,8 +578,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
             return false; 
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'AsEnumerable', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -592,8 +593,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Average', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -607,8 +608,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Average', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -730,8 +731,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Average', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -745,8 +746,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Average', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -760,8 +761,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Average', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -775,8 +776,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Average', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -790,8 +791,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Average', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -805,8 +806,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Average', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -820,8 +821,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Average', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -835,8 +836,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Average', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -862,8 +863,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TResult'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TResult'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Cast', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -877,8 +878,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Concat', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -892,8 +893,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Contains', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -907,8 +908,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Contains', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -922,8 +923,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Count', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -937,8 +938,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Count', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -959,8 +960,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     return count;
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'DefaultIfEmpty', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -974,8 +975,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'DefaultIfEmpty', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -989,8 +990,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Distinct', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1004,8 +1005,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Distinct', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1019,8 +1020,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ElementAt', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1034,8 +1035,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ElementAtOrDefault', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1049,8 +1050,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TResult'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TResult'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Empty', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1064,8 +1065,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Except', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1079,8 +1080,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Except', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1094,8 +1095,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'First', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1109,8 +1110,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'First', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1124,8 +1125,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'FirstOrDefault', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1139,8 +1140,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'FirstOrDefault', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1154,8 +1155,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GroupBy', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1169,8 +1170,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GroupBy', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1184,8 +1185,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TResult'] = 3};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TResult'] = 3};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GroupBy', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1199,8 +1200,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3,['TResult'] = 4};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3,['TResult'] = 4};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GroupBy', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1214,8 +1215,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TResult'] = 3};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TResult'] = 3};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GroupBy', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1229,8 +1230,10 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3,['TResult'] = 4};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            end
+            if true then
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3,['TResult'] = 4};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GroupBy', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1244,8 +1247,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GroupBy', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1259,8 +1262,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GroupBy', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1274,8 +1277,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TOuter'] = 1,['TInner'] = 2,['TKey'] = 3,['TResult'] = 4};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TOuter'] = 1,['TInner'] = 2,['TKey'] = 3,['TResult'] = 4};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GroupJoin', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1289,8 +1292,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TOuter'] = 1,['TInner'] = 2,['TKey'] = 3,['TResult'] = 4};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TOuter'] = 1,['TInner'] = 2,['TKey'] = 3,['TResult'] = 4};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'GroupJoin', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1304,8 +1307,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Intersect', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1319,8 +1322,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Intersect', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1334,8 +1337,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TOuter'] = 1,['TInner'] = 2,['TKey'] = 3,['TResult'] = 4};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TOuter'] = 1,['TInner'] = 2,['TKey'] = 3,['TResult'] = 4};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Join', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1349,8 +1352,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TOuter'] = 1,['TInner'] = 2,['TKey'] = 3,['TResult'] = 4};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TOuter'] = 1,['TInner'] = 2,['TKey'] = 3,['TResult'] = 4};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Join', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1364,8 +1367,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Last', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1379,8 +1382,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Last', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1394,8 +1397,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'LastOrDefault', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1409,8 +1412,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'LastOrDefault', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1424,8 +1427,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'LongCount', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1439,8 +1442,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'LongCount', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1490,8 +1493,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Max', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1505,8 +1508,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Max', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1520,8 +1523,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Max', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1547,8 +1550,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Max', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1562,8 +1565,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Max', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1601,8 +1604,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Max', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1616,8 +1619,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Max', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1631,8 +1634,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Max', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1646,8 +1649,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Max', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1661,8 +1664,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Max', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1724,8 +1727,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Max', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1739,8 +1742,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Max', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1862,8 +1865,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Min', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1877,8 +1880,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Min', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1892,8 +1895,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Min', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1907,8 +1910,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Min', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1922,8 +1925,10 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            end
+            if true then
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Min', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1937,8 +1942,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Min', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1952,8 +1957,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Min', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1967,8 +1972,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Min', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1982,8 +1987,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Min', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -1997,8 +2002,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Min', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2024,8 +2029,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Min', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2039,8 +2044,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Min', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2054,8 +2059,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TResult'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TResult'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'OfType', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2069,8 +2074,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'OrderBy', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2084,8 +2089,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'OrderBy', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2099,8 +2104,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'OrderByDescending', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2114,8 +2119,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'OrderByDescending', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2141,8 +2146,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TResult'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TResult'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Repeat', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2156,8 +2161,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Reverse', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2171,8 +2176,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Select', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2200,8 +2205,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
             end); 
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Select', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2229,8 +2234,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
             end); 
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'SelectMany', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2244,8 +2249,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TCollection'] = 2,['TResult'] = 3};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TCollection'] = 2,['TResult'] = 3};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'SelectMany', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2259,8 +2264,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TCollection'] = 2,['TResult'] = 3};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TCollection'] = 2,['TResult'] = 3};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'SelectMany', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2274,8 +2279,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TResult'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'SelectMany', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2289,8 +2294,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'SequenceEqual', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2304,8 +2309,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'SequenceEqual', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2319,8 +2324,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Single', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2334,8 +2339,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Single', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2349,8 +2354,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'SingleOrDefault', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2364,8 +2369,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'SingleOrDefault', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2379,8 +2384,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Skip', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2394,8 +2399,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'SkipWhile', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2409,8 +2414,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'SkipWhile', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2424,8 +2429,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Sum', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2439,8 +2444,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Sum', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2454,8 +2459,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Sum', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2577,8 +2582,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Sum', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2592,8 +2597,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Sum', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2607,8 +2612,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Sum', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2622,8 +2627,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Sum', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2637,8 +2642,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Sum', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2652,8 +2657,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Sum', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2667,8 +2672,10 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            end
+            if true then
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Sum', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2694,8 +2701,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Take', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2709,8 +2716,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'TakeWhile', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2724,8 +2731,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'TakeWhile', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2739,8 +2746,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ThenBy', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2754,8 +2761,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ThenBy', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2769,8 +2776,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ThenByDescending', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2784,8 +2791,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ThenByDescending', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2799,8 +2806,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ToArray', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2823,8 +2830,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     return array;
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ToDictionary', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2838,8 +2845,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ToDictionary', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2853,8 +2860,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ToDictionary', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2868,8 +2875,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ToDictionary', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2883,8 +2890,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ToList', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2901,8 +2908,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     return System.Collections.Generic.List[{methodGenerics[methodGenericsMapping['TSource']]}]['_C_0_'..(66128*methodGenerics[methodGenericsMapping['TSource']].signatureHash)](source);
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ToLookup', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2916,8 +2923,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ToLookup', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2931,8 +2938,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2,['TElement'] = 3};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ToLookup', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2946,8 +2953,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'ToLookup', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2961,8 +2968,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Union', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2976,8 +2983,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Union', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -2988,11 +2995,50 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, first, second)
-                    _M.Throw(System.NotImplementedException._C_0_0());
+                    if (first == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("first"));
+                    end
+                    if (second == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("second"));
+                    end
+                    
+            local firstSource = (first % _M.DOT).GetEnumerator();
+            local secondSource = (second % _M.DOT).GetEnumerator();
+            local currentSource, returned;
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_8786(function(_, prevKey)
+                if prevKey == nil then
+                    currentSource = firstSource;
+                    returned = {};
+                end
+                    
+                while (true) do
+                    local key, value = currentSource(_, prevKey);
+                    if (key == nil) then
+                        if currentSource == firstSource then
+                            currentSource = secondSource;
+                        else
+                            return nil, nil;
+                        end
+                    else
+                        if (currentSource == firstSource) then
+                            table.insert(returned, value);
+                            return key, value;
+                        else
+                            if not(tContains(returned, value)) then
+                                return key, value;
+                            end
+                            prevKey = key;
+                        end
+                    end
+
+                    prevKey = key;
+                end
+            end);
+            
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Where', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -3022,8 +3068,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
             end); 
                 end
             });
-            methodGenericsMapping = {['TSource'] = 1};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TSource'] = 1};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Where', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -3053,8 +3099,8 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
             end); 
                 end
             });
-            methodGenericsMapping = {['TFirst'] = 1,['TSecond'] = 2,['TResult'] = 3};
-            methodGenerics = _M.MG(methodGenericsMapping);
+            local methodGenericsMapping = {['TFirst'] = 1,['TSecond'] = 2,['TResult'] = 3};
+            local methodGenerics = _M.MG(methodGenericsMapping);
             _M.IM(members, 'Zip', {
                 level = typeObject.Level,
                 memberType = 'Method',
@@ -3068,6 +3114,7 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     _M.Throw(System.NotImplementedException._C_0_0());
                 end
             });
+            end
             return members;
         end
         return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
