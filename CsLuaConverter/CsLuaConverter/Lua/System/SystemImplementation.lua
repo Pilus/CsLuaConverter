@@ -2191,7 +2191,7 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     end
                     
             local enumerator = (source % _M.DOT).GetEnumerator();
-            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_8786(function(_, prevKey)
                 local key, value = enumerator(_, prevKey);
                 if (key == nil) then
                     return nil;
@@ -2220,7 +2220,7 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     end
                     
             local enumerator = (source % _M.DOT).GetEnumerator();
-            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_8786(function(_, prevKey)
                 local key, value = enumerator(_, prevKey);
                 if (key == nil) then
                     return nil;
@@ -3011,7 +3011,7 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     end
                     
             local enumerator = (source % _M.DOT).GetEnumerator();
-            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_8786(function(_, prevKey)
                 while (true) do
                     local key, value = enumerator(_, prevKey);
                     if (key == nil) or (predicate % _M.DOT)(value, key) == true then
@@ -3042,7 +3042,7 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                     end
                     
             local enumerator = (source % _M.DOT).GetEnumerator();
-            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_8786(function(_, prevKey)
                 while (true) do
                     local key, value = enumerator(_, prevKey);
                     if (key == nil) or (predicate % _M.DOT)(value) == true then
@@ -3334,6 +3334,79 @@ _M.ATN('System.Linq','Error', _M.NE({
                 func = function(element, str, firstParam, ...)
                     local args = (System.Array[{System.Object.__typeof}]._C_0_0() % _M.DOT).__Initialize({[0] = firstParam, ...});
                     return ((System.String % _M.DOT).Format_M_0_47310 % _M.DOT)(str, args);
+                end
+            });
+            return members;
+        end
+        return 'Class', typeObject, getMembers, constructors, elementGenerator, nil, initialize;
+    end,
+}));
+_M.ATN('System.Linq','Iterator', _M.NE({
+    [1] = function(interactionElement, generics, staticValues)
+        local genericsMapping = {['T'] = 1};
+        local typeObject = System.Type('Iterator','System.Linq', nil, 1, generics, nil, interactionElement, 'Class', (16850*generics[genericsMapping['T']].signatureHash));
+        local baseTypeObject, getBaseMembers, baseConstructors, baseElementGenerator, implements, baseInitialize = System.Object.__meta(staticValues);
+        table.insert(implements, System.Collections.IEnumerable.__typeof);
+        table.insert(implements, System.Collections.Generic.IEnumerable[{generics[genericsMapping['T']]}].__typeof);
+        typeObject.baseType = baseTypeObject;
+        typeObject.level = baseTypeObject.level + 1;
+        typeObject.implements = implements;
+        local elementGenerator = function()
+            local element = baseElementGenerator();
+            element.type = typeObject;
+            element[typeObject.Level] = {
+                enumerator = _M.DV(System.Collections.Generic.IEnumerator[{generics[genericsMapping['T']]}].__typeof),
+            };
+            return element;
+        end
+        staticValues[typeObject.Level] = {
+        };
+        local initialize = function(element, values)
+            if baseInitialize then baseInitialize(element, values); end
+            if not(values.enumerator == nil) then element[typeObject.Level].enumerator = values.enumerator; end
+        end
+        local getMembers = function()
+            local members = _M.RTEF(getBaseMembers);
+            _M.IM(members, 'enumerator', {
+                level = typeObject.Level,
+                memberType = 'Field',
+                scope = 'Private',
+                static = false,
+            });
+            _M.IM(members, '', {
+                level = typeObject.Level,
+                memberType = 'Cstor',
+                static = true,
+                numMethodGenerics = 0,
+                signatureHash = 8786,
+                scope = 'Public',
+                func = function(element, enumerator)
+                    (element % _M.DOT_LVL(typeObject.Level - 1))._C_0_0();
+                    (element % _M.DOT_LVL(typeObject.Level)).enumerator = enumerator;
+                end,
+            });
+            _M.IM(members, 'GetEnumerator', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Public',
+                static = false,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                returnType = function() return System.Collections.Generic.IEnumerator[{generics[genericsMapping['T']]}].__typeof end,
+                func = function(element)
+                    return (element % _M.DOT_LVL(typeObject.Level)).enumerator;
+                end
+            });
+            _M.IM(members, 'System.Collections.IEnumerable.GetEnumerator', {
+                level = typeObject.Level,
+                memberType = 'Method',
+                scope = 'Private',
+                static = false,
+                numMethodGenerics = 0,
+                signatureHash = 0,
+                returnType = function() return System.Collections.IEnumerator.__typeof end,
+                func = function(element)
+                    return (element % _M.DOT_LVL(typeObject.Level)).enumerator;
                 end
             });
             return members;

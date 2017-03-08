@@ -1,5 +1,6 @@
 ﻿
 System.Linq = {};
+--[[
 System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, staticValues)
     local implements = {
         System.Collections.IEnumerable.__typeof,
@@ -20,26 +21,6 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
             return element[typeObject.level]["Enumerator"];
         end,
     });
-
-    _M.IM(members,'ToList',{
-        level = typeObject.Level,
-        memberType = 'Method',
-        scope = 'Public',
-        numMethodGenerics = 0,
-        types = {},
-        signatureHash = 0,
-        func = function(element)
-            return System.Collections.Generic.List[generics]["_C_0_" .. (2*Lua.Function.__typeof.signatureHash)](element[typeObject.level]["Enumerator"]);
-        end,
-    });
-
-    --[[
-    local constructors = {
-        {
-            types = {Lua.Function.__typeof},
-            func = function(element, enumerator) element[typeObject.level]["Enumerator"] = enumerator; end,
-        }
-    }; --]]
 
     _M.IM(members, '', {
         level = typeObject.Level,
@@ -62,7 +43,7 @@ System.Linq.Iterator = _M.NE({[1] = function(interactionElement, generics, stati
         }; 
     end
     return "Class", typeObject, members, constructors, objectGenerator, implements, nil;
-end});
+end}); --]]
 
 local NoElements = function()
     _M.Throw(System.InvalidOperationException._C_0_8736("Sequence contains no elements"));

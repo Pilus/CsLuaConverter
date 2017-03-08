@@ -157,7 +157,7 @@
             if (selector == null) throw Error.ArgumentNull("selector");
             /* LUA
             local enumerator = (source % _M.DOT).GetEnumerator();
-            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_8786(function(_, prevKey)
                 local key, value = enumerator(_, prevKey);
                 if (key == nil) then
                     return nil;
@@ -171,7 +171,7 @@
             if (selector == null) throw Error.ArgumentNull("selector");
             /* LUA
             local enumerator = (source % _M.DOT).GetEnumerator();
-            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_8786(function(_, prevKey)
                 local key, value = enumerator(_, prevKey);
                 if (key == nil) then
                     return nil;
@@ -251,7 +251,7 @@
             if (predicate == null) throw Error.ArgumentNull("predicate");
             /* LUA
             local enumerator = (source % _M.DOT).GetEnumerator();
-            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_8786(function(_, prevKey)
                 while (true) do
                     local key, value = enumerator(_, prevKey);
                     if (key == nil) or (predicate % _M.DOT)(value, key) == true then
@@ -267,7 +267,7 @@
             if (predicate == null) throw Error.ArgumentNull("predicate");
             /* LUA
             local enumerator = (source % _M.DOT).GetEnumerator();
-            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_16704(function(_, prevKey)
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_8786(function(_, prevKey)
                 while (true) do
                     local key, value = enumerator(_, prevKey);
                     if (key == nil) or (predicate % _M.DOT)(value) == true then
