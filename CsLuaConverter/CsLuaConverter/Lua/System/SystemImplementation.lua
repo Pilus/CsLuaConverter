@@ -2163,7 +2163,22 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return System.Collections.Generic.IEnumerable[{methodGenerics[methodGenericsMapping['TResult']]}].__typeof end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, source)
-                    _M.Throw(System.NotImplementedException._C_0_0());
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    
+            local type = methodGenerics[1];
+            local enumerator = (source % _M.DOT).GetEnumerator();
+            return System.Linq.Iterator[{System.Object.__typeof}]._C_0_8786(function(_, prevKey)
+                while (true) do
+                    local key, value = enumerator(_, prevKey);
+                    if (key == nil) or (type %_M.DOT).IsInstanceOfType(value) == true then
+                        return key, value;
+                    end
+                    prevKey = key;
+                end
+            end);
+            
                 end
             });
             local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
@@ -2193,7 +2208,42 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return System.Linq.IOrderedEnumerable[{methodGenerics[methodGenericsMapping['TSource']]}].__typeof end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, source, keySelector)
-                    _M.Throw(System.NotImplementedException._C_0_0());
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    if (keySelector == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("keySelector"));
+                    end
+                    
+            local enumerator = (source % _M.DOT).GetEnumerator();
+            local ordered;
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_8786(function(_, prevKey)
+                if prevKey == nil then
+                    ordered  = {};
+                    local key, value = nil, nil;
+                    while (true) do
+                        key, value = enumerator(_, key);
+                        if (key == nil) then
+                            break;
+                        else
+                            table.insert(ordered, {
+                                sortValue = (keySelector %_M.DOT)(value),
+                                value = value
+                            });
+                        end
+                    end
+                     
+                    table.sort(ordered, function(a,b) return a.sortValue < b.sortValue; end);
+                end
+
+                local key = (prevKey or -1) + 1;
+                if (ordered[key + 1] == nil) then
+                    return nil, nil;
+                end
+
+                return key, ordered[key + 1].value;
+            end);
+            
                 end
             });
             local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};

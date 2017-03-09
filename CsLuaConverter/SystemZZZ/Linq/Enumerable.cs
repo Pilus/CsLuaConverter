@@ -574,7 +574,21 @@
         }
         public static IEnumerable<TResult> OfType<TResult>(this System.Collections.IEnumerable source)
         {
-            throw new NotImplementedException();
+            if (source == null) throw Error.ArgumentNull("source");
+            /* LUA
+            local type = methodGenerics[1];
+            local enumerator = (source % _M.DOT).GetEnumerator();
+            return System.Linq.Iterator[{System.Object.__typeof}]._C_0_8786(function(_, prevKey)
+                while (true) do
+                    local key, value = enumerator(_, prevKey);
+                    if (key == nil) or (type %_M.DOT).IsInstanceOfType(value) == true then
+                        return key, value;
+                    end
+                    prevKey = key;
+                end
+            end);
+            */
+            throw new ReplaceWithLuaBlock();
         }
         public static System.Linq.IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
         {
@@ -582,7 +596,40 @@
         }
         public static System.Linq.IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
-            throw new NotImplementedException();
+            if (source == null) throw Error.ArgumentNull("source");
+            if (keySelector == null) throw Error.ArgumentNull("keySelector");
+
+            /* LUA
+            local enumerator = (source % _M.DOT).GetEnumerator();
+            local ordered;
+            return System.Linq.Iterator[{methodGenerics[methodGenericsMapping['TSource']]}]._C_0_8786(function(_, prevKey)
+                if prevKey == nil then
+                    ordered  = {};
+                    local key, value = nil, nil;
+                    while (true) do
+                        key, value = enumerator(_, key);
+                        if (key == nil) then
+                            break;
+                        else
+                            table.insert(ordered, {
+                                sortValue = (keySelector %_M.DOT)(value),
+                                value = value
+                            });
+                        end
+                    end
+                     
+                    table.sort(ordered, function(a,b) return a.sortValue < b.sortValue; end);
+                end
+
+                local key = (prevKey or -1) + 1;
+                if (ordered[key + 1] == nil) then
+                    return nil, nil;
+                end
+
+                return key, ordered[key + 1].value;
+            end);
+            */
+            throw new ReplaceWithLuaBlock();
         }
         public static System.Linq.IOrderedEnumerable<TSource> OrderByDescending<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, IComparer<TKey> comparer)
         {

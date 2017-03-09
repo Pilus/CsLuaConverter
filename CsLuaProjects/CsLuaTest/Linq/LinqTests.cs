@@ -31,8 +31,8 @@
             this.Tests["TestLastOrDefault"] = TestLastOrDefault;
             this.Tests["TestLastOrDefaultWithPredicate"] = TestLastOrDefaultWithPredicate;
 
-            //this.Tests["TestOrderBy"] = TestOrderBy; 
-            //this.Tests["TestOfLinqOfType"] = TestOfLinqOfType;
+            this.Tests["TestOrderBy"] = TestOrderBy; 
+            this.Tests["TestOfLinqOfType"] = TestOfLinqOfType;
         }
 
         private static void ExpectException<T>(Action action, string expectedText)
