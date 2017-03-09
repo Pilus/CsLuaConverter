@@ -39,7 +39,7 @@
             }
             catch (Exception ex)
             {
-                Assert(true, ex is T, "Expected " + nameof(T) +", got " + ex.GetType().Name);
+                Assert(true, ex is T, "Expected " + nameof(T) +", got " + ex.GetType().Name + " Msg: " + ex.Message);
                 Assert(expectedText, ex.Message);
             }
         }
@@ -110,7 +110,7 @@
             catch (Exception ex)
             {
                 Assert(true, ex is ArgumentNullException, "Expected ArgumentNullException, got " + ex.GetType().Name);
-                Assert("Value cannot be null.\nParameter name: predicate", ex.Message);
+                Assert("Value cannot be null." + Environment.NewLine + "Parameter name: predicate", ex.Message);
             }
         }
 
@@ -216,7 +216,7 @@
             var a = new int[] { 2, 4, 8, 16, 32, 64 };
             Assert(16, a.First(v => v >= 10));
 
-            LinqTests.ExpectException<InvalidOperationException>(() => { a.First(v => v > 100); }, "Sequence contains no elements");
+            LinqTests.ExpectException<InvalidOperationException>(() => { a.First(v => v > 100); }, "Sequence contains no matching element");
         }
 
         private static void TestLast()
@@ -233,7 +233,7 @@
             var a = new int[] { 2, 4, 8, 16, 32, 64 };
             Assert(8, a.Last(v => v < 10));
 
-            LinqTests.ExpectException<InvalidOperationException>(() => { a.Last(v => v > 100); }, "Sequence contains no elements");
+            LinqTests.ExpectException<InvalidOperationException>(() => { a.Last(v => v > 100); }, "Sequence contains no matching element");
         }
 
         private static void TestOrderBy()

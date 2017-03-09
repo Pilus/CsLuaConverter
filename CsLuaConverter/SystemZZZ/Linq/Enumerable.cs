@@ -200,12 +200,15 @@
         {
             if (source == null) throw Error.ArgumentNull("source");
             if (predicate == null) throw Error.ArgumentNull("predicate");
-            foreach (var value in Where(source, predicate))
+            foreach (var value in source)
             {
-                return value;
+                if (predicate(value))
+                {
+                    return value;
+                }
             }
 
-            throw Error.NoElements();
+            throw Error.NoMatch();
         }
         public static TSource First<TSource>(this IEnumerable<TSource> source)
         {
@@ -285,49 +288,45 @@
         {
             if (source == null) throw Error.ArgumentNull("source");
             if (predicate == null) throw Error.ArgumentNull("predicate");
-            /* LUA
-            local enumerator = (source % _M.DOT).GetEnumerator();
-            local key, value = enumerator(nil, nil);
-            local lastKey, lastValue = nil, nil;
 
-            while (key) do
-                if ((predicate % _M.DOT)(value) == true) then
-                    lastKey = key;
+            object lastValue = null;
+            var any = false;
+
+            foreach (var value in source)
+            {
+                if (predicate(value))
+                { 
                     lastValue = value;
-                end
+                    any = true;
+                }
+            }
 
-                key, value = enumerator(_, key);
-            end
+            if (any == false)
+            {
+                throw Error.NoMatch();
+            }
 
-            if (lastKey == nil) then
-                NoElements();
-            end
-
-            return lastValue;
-            */
-            throw new ReplaceWithLuaBlock();
+            return (TSource)lastValue;
         }
         public static TSource Last<TSource>(this IEnumerable<TSource> source)
         {
             if (source == null) throw Error.ArgumentNull("source");
-            /* LUA
-            local enumerator = (source % _M.DOT).GetEnumerator();
-            local key, value = enumerator(nil, nil);
-            local lastKey, lastValue = nil, nil;
 
-            while (key) do
-                lastKey = key;
+            object lastValue = null;
+            var any = false;
+
+            foreach (var value in source)
+            {
                 lastValue = value;
-                key, value = enumerator(_, key);
-            end
+                any = true;
+            }
 
-            if (lastKey == nil) then
-                NoElements();
-            end
+            if (any == false)
+            {
+                throw Error.NoElements();
+            }
 
-            return lastValue;
-            */
-            throw new ReplaceWithLuaBlock();
+            return (TSource)lastValue;
         }
         public static TSource LastOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {

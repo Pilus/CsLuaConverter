@@ -12,38 +12,6 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
     local genericsMapping = {['TSource'] = 1, ['TFirst'] = 1, ['TOuter'] = 1};
 
     return {
-        { -- TSource First(System.Collections.Generic.IEnumerable`1<TSource>)
-            name = "First",
-            numMethodGenerics = 0,
-            signatureHash = 0,
-            func = function(source)
-                local enumerator = (source % _M.DOT).GetEnumerator();
-                local key, value = enumerator(nil, nil);
-
-                if (key == nil) then
-                    NoElements();
-                end
-
-                return value;
-            end,
-        },
-        { -- TSource First(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,System.Boolean>)
-            name = "First",
-            numMethodGenerics = 0,
-            signatureHash = 62611272+(6936*generics[genericsMapping['TSource']].signatureHash),
-            func = function(source, predicate)
-                local enumerator = (source % _M.DOT).GetEnumerator();
-                local key, value = enumerator(nil, nil);
-                while (key) do
-                    if ((predicate % _M.DOT)(value) == true) then
-                        return value;
-                    end
-                    key, value = enumerator(nil, key);
-                end
-
-                NoMatch();
-            end,
-        },
         { -- TSource FirstOrDefault(System.Collections.Generic.IEnumerable`1<TSource>)
             name = "FirstOrDefault",
             numMethodGenerics = 0,
@@ -105,23 +73,6 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
                 end
 
                 return lastValue;
-            end,
-        },
-        { -- System.Collections.Generic.IEnumerable`1<TSource> Where(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,System.Boolean>)
-            name = "Where",
-            numMethodGenerics = 0,
-            signatureHash = 62611272+(6936*generics[genericsMapping['TSource']].signatureHash),
-            func = function(source, predicate)
-                local enumerator = (source % _M.DOT).GetEnumerator();
-                return System.Linq.Iterator[generics]._C_0_16704(function(_, prevKey)
-                    while (true) do
-                        local key, value = enumerator(_, prevKey);
-                        if (key == nil) or (predicate % _M.DOT)(value) == true then
-                            return key, value;
-                        end
-                        prevKey = key;
-                    end
-                end);
             end,
         },
         { -- System.Collections.Generic.IEnumerable`1<TResult> Select(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,TResult>)
