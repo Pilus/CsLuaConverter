@@ -708,19 +708,115 @@
         }
         public static TSource Single<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            throw new NotImplementedException();
+            if (source == null) throw Error.ArgumentNull("source");
+            if (predicate == null) throw Error.ArgumentNull("predicate");
+
+            var first = true;
+            object singleValue = null;
+            foreach (var value in source)
+            {
+                if (predicate(value))
+                {
+                    if (first)
+                    {
+                        singleValue = value;
+                        first = false;
+                    }
+                    else
+                    {
+                        throw Error.MoreThanOneMatch();
+                    }
+                }
+            }
+            
+            if (first)
+            {
+                throw Error.NoMatch();
+            }
+
+            return (TSource)singleValue;
         }
         public static TSource Single<TSource>(this IEnumerable<TSource> source)
         {
-            throw new NotImplementedException();
+            if (source == null) throw Error.ArgumentNull("source");
+
+            var first = true;
+            object singleValue = null;
+            foreach (var value in source)
+            {
+                if (first)
+                {
+                    singleValue = value;
+                    first = false;
+                }
+                else
+                {
+                    throw Error.MoreThanOneElement();
+                }
+            }
+
+            if (first)
+            {
+                throw Error.NoElements();
+            }
+
+            return (TSource)singleValue;
         }
         public static TSource SingleOrDefault<TSource>(this IEnumerable<TSource> source)
         {
-            throw new NotImplementedException();
+            if (source == null) throw Error.ArgumentNull("source");
+
+            var first = true;
+            object singleValue = null;
+            foreach (var value in source)
+            {
+                if (first)
+                {
+                    singleValue = value;
+                    first = false;
+                }
+                else
+                {
+                    throw Error.MoreThanOneElement();
+                }
+            }
+
+            if (first)
+            {
+                return default(TSource);
+            }
+
+            return (TSource)singleValue;
         }
         public static TSource SingleOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            throw new NotImplementedException();
+            if (source == null) throw Error.ArgumentNull("source");
+            if (predicate == null) throw Error.ArgumentNull("predicate");
+
+            var first = true;
+            object singleValue = null;
+            foreach (var value in source)
+            {
+                if (predicate(value))
+                {
+                    if (first)
+                    {
+                        singleValue = value;
+                        first = false;
+                    }
+                    else
+                    {
+                        throw Error.MoreThanOneMatch();
+                    }
+                }
+            }
+
+            if (first)
+            {
+                return default(TSource);
+            }
+
+            return (TSource)singleValue;
         }
         public static IEnumerable<TSource> Skip<TSource>(this IEnumerable<TSource> source, int count)
         {

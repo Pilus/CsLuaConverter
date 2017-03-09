@@ -2478,7 +2478,28 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
-                    _M.Throw(System.NotImplementedException._C_0_0());
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    if (predicate == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("predicate"));
+                    end
+                    local first = true;
+                    local singleValue = nil;
+                    for _,value in (source % _M.DOT).GetEnumerator() do
+                        if ((predicate % _M.DOT)(value)) then
+                            if (first) then
+                                singleValue = value;
+                                first = false;
+                            else
+                                _M.Throw(((System.Linq.Error % _M.DOT).MoreThanOneMatch_M_0_0 % _M.DOT)());
+                            end
+                        end
+                    end
+                    if (first) then
+                        _M.Throw(((System.Linq.Error % _M.DOT).NoMatch_M_0_0 % _M.DOT)());
+                    end
+                    return singleValue;
                 end
             });
             local methodGenericsMapping = {['TSource'] = 1};
@@ -2493,7 +2514,23 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, source)
-                    _M.Throw(System.NotImplementedException._C_0_0());
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    local first = true;
+                    local singleValue = nil;
+                    for _,value in (source % _M.DOT).GetEnumerator() do
+                        if (first) then
+                            singleValue = value;
+                            first = false;
+                        else
+                            _M.Throw(((System.Linq.Error % _M.DOT).MoreThanOneElement_M_0_0 % _M.DOT)());
+                        end
+                    end
+                    if (first) then
+                        _M.Throw(((System.Linq.Error % _M.DOT).NoElements_M_0_0 % _M.DOT)());
+                    end
+                    return singleValue;
                 end
             });
             local methodGenericsMapping = {['TSource'] = 1};
@@ -2508,7 +2545,23 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, source)
-                    _M.Throw(System.NotImplementedException._C_0_0());
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    local first = true;
+                    local singleValue = nil;
+                    for _,value in (source % _M.DOT).GetEnumerator() do
+                        if (first) then
+                            singleValue = value;
+                            first = false;
+                        else
+                            _M.Throw(((System.Linq.Error % _M.DOT).MoreThanOneElement_M_0_0 % _M.DOT)());
+                        end
+                    end
+                    if (first) then
+                        return _M.DV(methodGenerics[methodGenericsMapping['TSource']]);
+                    end
+                    return singleValue;
                 end
             });
             local methodGenericsMapping = {['TSource'] = 1};
@@ -2523,7 +2576,28 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
-                    _M.Throw(System.NotImplementedException._C_0_0());
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    if (predicate == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("predicate"));
+                    end
+                    local first = true;
+                    local singleValue = nil;
+                    for _,value in (source % _M.DOT).GetEnumerator() do
+                        if ((predicate % _M.DOT)(value)) then
+                            if (first) then
+                                singleValue = value;
+                                first = false;
+                            else
+                                _M.Throw(((System.Linq.Error % _M.DOT).MoreThanOneMatch_M_0_0 % _M.DOT)());
+                            end
+                        end
+                    end
+                    if (first) then
+                        return _M.DV(methodGenerics[methodGenericsMapping['TSource']]);
+                    end
+                    return singleValue;
                 end
             });
             local methodGenericsMapping = {['TSource'] = 1};

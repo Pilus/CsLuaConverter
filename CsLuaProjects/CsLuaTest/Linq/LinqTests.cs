@@ -31,6 +31,11 @@
             this.Tests["TestLastOrDefault"] = TestLastOrDefault;
             this.Tests["TestLastOrDefaultWithPredicate"] = TestLastOrDefaultWithPredicate;
 
+            this.Tests["TestSingle"] = TestSingle;
+            this.Tests["TestSingleWithPredicate"] = TestSingleWithPredicate;
+            this.Tests["TestSingleOrDefault"] = TestSingleOrDefault;
+            this.Tests["TestSingleOrDefaultWithPredicate"] = TestSingleOrDefaultWithPredicate;
+
             this.Tests["TestOrderBy"] = TestOrderBy; 
             this.Tests["TestOfLinqOfType"] = TestOfLinqOfType;
         }
@@ -318,6 +323,55 @@
         private static float ToFloat(int value)
         {
             return value;
+        }
+
+
+        private static void TestSingle()
+        {
+            var a = new int[] { 64 };
+            Assert(64, a.Single());
+
+            var b = new int[] { 32, 64 };
+            LinqTests.ExpectException<InvalidOperationException>(() => { b.Single(); }, "Sequence contains more than one element");
+
+            var empty = new int[] { };
+            LinqTests.ExpectException<InvalidOperationException>(() => { empty.Single(); }, "Sequence contains no elements");
+        }
+
+        private static void TestSingleWithPredicate()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            Assert(2, a.Single(v => v < 3));
+
+            LinqTests.ExpectException<InvalidOperationException>(() => { a.Single(v => v < 10); }, "Sequence contains more than one matching element");
+            LinqTests.ExpectException<InvalidOperationException>(() => { a.Single(v => v > 100); }, "Sequence contains no matching element");
+        }
+
+        private static void TestSingleOrDefault()
+        {
+            var a = new int[] { 64 };
+            Assert(64, a.SingleOrDefault());
+
+            var b = new int[] { 32, 64 };
+            LinqTests.ExpectException<InvalidOperationException>(() => { b.SingleOrDefault(); }, "Sequence contains more than one element");
+
+            var empty = new int[] { };
+            Assert(0, empty.SingleOrDefault());
+
+            var emptyStrings = new string[] { };
+            Assert(null, emptyStrings.SingleOrDefault());
+        }
+
+        private static void TestSingleOrDefaultWithPredicate()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            Assert(2, a.SingleOrDefault(v => v < 3));
+
+            LinqTests.ExpectException<InvalidOperationException>(() => { a.SingleOrDefault(v => v < 10); }, "Sequence contains more than one matching element");
+            Assert(0, a.SingleOrDefault(v => v > 100));
+            
+            var empty = new string[] { "abc" };
+            Assert(null, empty.SingleOrDefault(v => v.Length > 4));
         }
     }
 }
