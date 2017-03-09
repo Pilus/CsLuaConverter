@@ -12,69 +12,7 @@ _M.RE("System.Collections.Generic.IEnumerable", 1, function(generics)
     local genericsMapping = {['TSource'] = 1, ['TFirst'] = 1, ['TOuter'] = 1};
 
     return {
-        { -- TSource FirstOrDefault(System.Collections.Generic.IEnumerable`1<TSource>)
-            name = "FirstOrDefault",
-            numMethodGenerics = 0,
-            signatureHash = 0,
-            func = function(source)
-                local enumerator = (source % _M.DOT).GetEnumerator();
-                local key, value = enumerator(nil, nil);
-                return value;
-            end,
-        },
-        { -- TSource FirstOrDefault(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,System.Boolean>)
-            name = "FirstOrDefault",
-            numMethodGenerics = 0,
-            signatureHash = 62611272+(6936*generics[genericsMapping['TSource']].signatureHash),
-            func = function(source, predicate)
-                local enumerator = (source % _M.DOT).GetEnumerator();
-                local key, value = enumerator(nil, nil);
-                while (key) do
-                    if ((predicate % _M.DOT)(value) == true) then
-                        return value;
-                    end
-                    key, value = enumerator(nil, key);
-                end
-                return nil;
-            end,
-        },
-        { -- TSource LastOrDefault(System.Collections.Generic.IEnumerable`1<TSource>)
-            name = "LastOrDefault",
-            numMethodGenerics = 0,
-            signatureHash = 0,
-            func = function(source)
-                local enumerator = (source % _M.DOT).GetEnumerator();
-                local key, value = enumerator(nil, nil);
-                local lastValue = nil;
-
-                while (key) do
-                    lastValue = value;
-                    key, value = enumerator(_, key);
-                end
-
-                return lastValue;
-            end,
-        },
-        { -- TSource LastOrDefault(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,System.Boolean>)
-            name = "LastOrDefault",
-            numMethodGenerics = 0,
-            signatureHash = 62611272+(6936*generics[genericsMapping['TSource']].signatureHash),
-            func = function(source, predicate)
-                local enumerator = (source % _M.DOT).GetEnumerator();
-                local key, value = enumerator(nil, nil);
-                local lastValue = nil;
-
-                while (key) do
-                    if ((predicate % _M.DOT)(value) == true) then
-                        lastValue = value;
-                    end
-
-                    key, value = enumerator(_, key);
-                end
-
-                return lastValue;
-            end,
-        },
+        
         { -- System.Collections.Generic.IEnumerable`1<TResult> Select(System.Collections.Generic.IEnumerable`1<TSource>, System.Func`2<TSource,TResult>)
             name = "Select",
             numMethodGenerics = 1,

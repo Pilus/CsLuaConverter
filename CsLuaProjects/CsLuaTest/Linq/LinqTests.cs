@@ -21,10 +21,16 @@
             this.Tests["TestSelect"] = TestSelect;
             this.Tests["TestSelectWithIndex"] = TestSelectWithIndex;
             this.Tests["TestUnion"] = TestUnion;
+
             this.Tests["TestFirst"] = TestFirst;
             this.Tests["TestFirstWithPredicate"] = TestFirstWithPredicate;
+            this.Tests["TestFirstOrDefault"] = TestFirstOrDefault;
+            this.Tests["TestFirstOrDefaultWithPredicate"] = TestFirstOrDefaultWithPredicate;
             this.Tests["TestLast"] = TestLast;
             this.Tests["TestLastWithPredicate"] = TestLastWithPredicate;
+            this.Tests["TestLastOrDefault"] = TestLastOrDefault;
+            this.Tests["TestLastOrDefaultWithPredicate"] = TestLastOrDefaultWithPredicate;
+
             //this.Tests["TestOrderBy"] = TestOrderBy; 
             //this.Tests["TestOfLinqOfType"] = TestOfLinqOfType;
         }
@@ -219,6 +225,28 @@
             LinqTests.ExpectException<InvalidOperationException>(() => { a.First(v => v > 100); }, "Sequence contains no matching element");
         }
 
+        private static void TestFirstOrDefault()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            Assert(2, a.FirstOrDefault());
+
+            var empty = new int[] { };
+            Assert(0, empty.FirstOrDefault());
+
+            var empty2 = new string[] { };
+            Assert(null, empty2.FirstOrDefault());
+        }
+
+        private static void TestFirstOrDefaultWithPredicate()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            Assert(16, a.FirstOrDefault(v => v >= 10));
+            Assert(0, a.FirstOrDefault(v => v > 100));
+
+            var b = new [] { "abc" };
+            Assert(null, b.FirstOrDefault(s => s.Length > 5));
+        }
+
         private static void TestLast()
         {
             var a = new int[] { 2, 4, 8, 16, 32, 64 };
@@ -234,6 +262,28 @@
             Assert(8, a.Last(v => v < 10));
 
             LinqTests.ExpectException<InvalidOperationException>(() => { a.Last(v => v > 100); }, "Sequence contains no matching element");
+        }
+
+        private static void TestLastOrDefault()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            Assert(64, a.LastOrDefault());
+
+            var empty = new int[] { };
+            Assert(0, empty.LastOrDefault());
+
+            var empty2 = new string[] { };
+            Assert(null, empty2.LastOrDefault());
+        }
+
+        private static void TestLastOrDefaultWithPredicate()
+        {
+            var a = new int[] { 2, 4, 8, 16, 32, 64 };
+            Assert(8, a.LastOrDefault(v => v < 10));
+            Assert(0, a.LastOrDefault(v => v > 100));
+
+            var b = new[] { "abc" };
+            Assert(null, b.LastOrDefault(s => s.Length > 5));
         }
 
         private static void TestOrderBy()

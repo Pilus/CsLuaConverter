@@ -222,11 +222,27 @@
         }
         public static TSource FirstOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            throw new NotImplementedException();
+            if (source == null) throw Error.ArgumentNull("source");
+            if (predicate == null) throw Error.ArgumentNull("predicate");
+            foreach (var value in source)
+            {
+                if (predicate(value))
+                {
+                    return value;
+                }
+            }
+
+            return default(TSource);
         }
         public static TSource FirstOrDefault<TSource>(this IEnumerable<TSource> source)
         {
-            throw new NotImplementedException();
+            if (source == null) throw Error.ArgumentNull("source");
+            foreach (var value in source)
+            {
+                return value;
+            }
+
+            return default(TSource);
         }
         public static IEnumerable<System.Linq.IGrouping<TKey, TSource>> GroupBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
@@ -330,11 +346,47 @@
         }
         public static TSource LastOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            throw new NotImplementedException();
+            if (source == null) throw Error.ArgumentNull("source");
+            if (predicate == null) throw Error.ArgumentNull("predicate");
+
+            object lastValue = null;
+            var any = false;
+
+            foreach (var value in source)
+            {
+                if (predicate(value))
+                {
+                    lastValue = value;
+                    any = true;
+                }
+            }
+
+            if (any == false)
+            {
+                return default(TSource);
+            }
+
+            return (TSource)lastValue;
         }
         public static TSource LastOrDefault<TSource>(this IEnumerable<TSource> source)
         {
-            throw new NotImplementedException();
+            if (source == null) throw Error.ArgumentNull("source");
+
+            object lastValue = null;
+            var any = false;
+
+            foreach (var value in source)
+            {
+                lastValue = value;
+                any = true;
+            }
+
+            if (any == false)
+            {
+                return default(TSource);
+            }
+
+            return (TSource)lastValue;
         }
         public static long LongCount<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {

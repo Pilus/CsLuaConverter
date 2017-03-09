@@ -1154,7 +1154,18 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
-                    _M.Throw(System.NotImplementedException._C_0_0());
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    if (predicate == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("predicate"));
+                    end
+                    for _,value in (source % _M.DOT).GetEnumerator() do
+                        if ((predicate % _M.DOT)(value)) then
+                            return value;
+                        end
+                    end
+                    return _M.DV(methodGenerics[methodGenericsMapping['TSource']]);
                 end
             });
             local methodGenericsMapping = {['TSource'] = 1};
@@ -1169,7 +1180,13 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, source)
-                    _M.Throw(System.NotImplementedException._C_0_0());
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    for _,value in (source % _M.DOT).GetEnumerator() do
+                        return value;
+                    end
+                    return _M.DV(methodGenerics[methodGenericsMapping['TSource']]);
                 end
             });
             local methodGenericsMapping = {['TSource'] = 1,['TKey'] = 2};
@@ -1455,7 +1472,24 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, source, predicate)
-                    _M.Throw(System.NotImplementedException._C_0_0());
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    if (predicate == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("predicate"));
+                    end
+                    local lastValue = nil;
+                    local any = false;
+                    for _,value in (source % _M.DOT).GetEnumerator() do
+                        if ((predicate % _M.DOT)(value)) then
+                            lastValue = value;
+                            any = true;
+                        end
+                    end
+                    if (any == false) then
+                        return _M.DV(methodGenerics[methodGenericsMapping['TSource']]);
+                    end
+                    return lastValue;
                 end
             });
             local methodGenericsMapping = {['TSource'] = 1};
@@ -1470,7 +1504,19 @@ _M.ATN('System.Linq','Enumerable', _M.NE({
                 returnType = function() return methodGenerics[methodGenericsMapping['TSource']] end,
                 generics = methodGenericsMapping,
                 func = function(element, methodGenericsMapping, methodGenerics, source)
-                    _M.Throw(System.NotImplementedException._C_0_0());
+                    if (source == nil) then
+                    _M.Throw(((System.Linq.Error % _M.DOT).ArgumentNull_M_0_8736 % _M.DOT)("source"));
+                    end
+                    local lastValue = nil;
+                    local any = false;
+                    for _,value in (source % _M.DOT).GetEnumerator() do
+                        lastValue = value;
+                        any = true;
+                    end
+                    if (any == false) then
+                        return _M.DV(methodGenerics[methodGenericsMapping['TSource']]);
+                    end
+                    return lastValue;
                 end
             });
             local methodGenericsMapping = {['TSource'] = 1};

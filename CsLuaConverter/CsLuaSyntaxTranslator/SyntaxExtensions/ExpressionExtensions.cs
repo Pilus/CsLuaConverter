@@ -38,7 +38,8 @@
             .Case<ThisExpressionSyntax>(Write)
             .Case<MemberBindingExpressionSyntax>(Write)
             .Case<TypeOfExpressionSyntax>(Write)
-            .Case<ElementAccessExpressionSyntax>(Write);
+            .Case<ElementAccessExpressionSyntax>(Write)
+            .Case<DefaultExpressionSyntax>(Write);
 
         /*
         AnonymousFunctionExpressionSyntax
@@ -46,7 +47,6 @@
         AssignmentExpressionSyntax
         AwaitExpressionSyntax
         CheckedExpressionSyntax
-        DefaultExpressionSyntax
         ElementBindingExpressionSyntax
         ImplicitElementAccessSyntax
         InstanceExpressionSyntax
@@ -850,6 +850,14 @@
             syntax.Expression.Write(textWriter, context);
             textWriter.Write(" % _M.DOT)");
             syntax.ArgumentList.Write(textWriter, context);
+        }
+
+        public static void Write(this DefaultExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("_M.DV(");
+            var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(syntax.Type).Symbol;
+            context.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
+            textWriter.Write(")");
         }
     }
 }
