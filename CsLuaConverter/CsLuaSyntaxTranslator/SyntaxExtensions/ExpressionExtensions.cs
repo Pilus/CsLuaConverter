@@ -213,15 +213,25 @@
             else
             {
                 // Special case for missing symbol. Roslyn issue 3825. https://github.com/dotnet/roslyn/issues/3825
-                var namedTypeSymbol = (INamedTypeSymbol)context.SemanticModel.GetSymbolInfo(syntax.Type).Symbol;
+                var namedTypeSymbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(syntax.Type).Symbol;
                 context.TypeReferenceWriter.WriteInteractionElementReference(namedTypeSymbol, textWriter);
 
-                if (namedTypeSymbol.TypeKind != TypeKind.Delegate)
+                if (namedTypeSymbol.TypeKind == TypeKind.Delegate)
                 {
-                    throw new Exception($"Could not guess constructor for {namedTypeSymbol}.");
+                    parameterTypes = new ITypeSymbol[] { namedTypeSymbol };
                 }
-
-                parameterTypes = new ITypeSymbol[] { namedTypeSymbol };
+                else
+                {
+                    if (syntax.ArgumentList.Arguments.Count == 0)
+                    {
+                        parameterTypes = new ITypeSymbol[] { };
+                    }
+                    else
+                    {
+                        throw new Exception($"Could not guess constructor for {namedTypeSymbol}.");
+                    }
+                }
+                
             }
 
             var signatureWiter = textWriter.CreateTextWriterAtSameIndent();
@@ -246,7 +256,14 @@
                 textWriter.Write("]");
             }
 
-            syntax.ArgumentList.Write(textWriter, context);
+            if (syntax.ArgumentList != null)
+            {
+                syntax.ArgumentList.Write(textWriter, context);
+            }
+            else
+            {
+                textWriter.Write("()");
+            }
 
             if (syntax.Initializer != null)
             {
@@ -353,16 +370,22 @@
             switch (syntax.Expression.ToFullString())
             {
                 case "nameof":
-                    var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(syntax.ArgumentList.Arguments.Single().Expression).Symbol;
-                    
-                    if (context.SemanticAdaptor.IsGenericType(symbol))
+                    var symbol = context.SemanticModel.GetSymbolInfo(syntax.ArgumentList.Arguments.Single().Expression).Symbol;
+
+                    var typeSymbol = symbol as ITypeSymbol;
+                    if (typeSymbol == null)
                     {
-                        context.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
+                        typeSymbol = ((IParameterSymbol)symbol).Type;
+                    }
+
+                    if (context.SemanticAdaptor.IsGenericType(typeSymbol))
+                    {
+                        context.TypeReferenceWriter.WriteTypeReference(typeSymbol, textWriter);
                         textWriter.Write(".name");
                     }
                     else
                     {
-                        textWriter.Write($"\"{context.SemanticAdaptor.GetName(symbol)}\"");
+                        textWriter.Write($"\"{context.SemanticAdaptor.GetName(typeSymbol)}\"");
                     }
                     
                     break;
@@ -593,7 +616,7 @@
 
         private static ITypeSymbol GetSymbolForParentUsingTheLambda(LambdaExpressionSyntax syntax, IContext context)
         {
-            var argListSyntax = syntax.Ancestors().OfType<ArgumentListSyntax>().First();
+            var argListSyntax = syntax.Ancestors().OfType<ArgumentListSyntax>().FirstOrDefault();
 
             if (argListSyntax != null)
             {
@@ -615,8 +638,6 @@
 
                     if (symbol != null)
                     {
-                        throw new NotImplementedException();
-                        // Note: not verified code path
                         return symbol.Parameters[argNum].Type;
                     }
 
@@ -640,6 +661,24 @@
             }
             else
             {
+                var assignment = syntax.Parent as AssignmentExpressionSyntax;
+                if (assignment != null)
+                {
+                    var s = context.SemanticModel.GetSymbolInfo(assignment.Left).Symbol;
+                    var propertySymbol = s as IPropertySymbol;
+                    if (propertySymbol != null)
+                    {
+                        return propertySymbol.Type;
+                    }
+
+                    var fieldSymbol = s as IFieldSymbol;
+                    if (fieldSymbol != null)
+                    {
+                        return fieldSymbol.Type;
+                    }
+
+                    throw new NotImplementedException();
+                }
                 throw new NotImplementedException();
             }
         }

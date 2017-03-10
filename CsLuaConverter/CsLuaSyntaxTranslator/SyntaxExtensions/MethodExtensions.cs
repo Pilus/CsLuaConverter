@@ -6,14 +6,31 @@ namespace CsLuaSyntaxTranslator.SyntaxExtensions
     using Microsoft.CodeAnalysis;
     using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.CodeAnalysis.CSharp.Syntax;
+    using System;
+    using System.Diagnostics;
 
     public static class MethodExtensions
     {
         public static void Write(this MethodDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
         {
             var symbol = context.SemanticModel.GetDeclaredSymbol(syntax);
-            WriteMethodGenericsMapping(syntax, textWriter, context);
-            WriteMethodMember(syntax, textWriter, context, symbol);
+
+            if (Debugger.IsAttached) {
+                WriteMethodGenericsMapping(syntax, textWriter, context);
+                WriteMethodMember(syntax, textWriter, context, symbol);
+            }
+            else
+            {
+                try
+                {
+                    WriteMethodGenericsMapping(syntax, textWriter, context);
+                    WriteMethodMember(syntax, textWriter, context, symbol);
+                }
+                catch (Exception ex)
+                {
+                    throw new WrappingException("In method " + symbol.Name, ex);
+                }
+            }
         }
 
         private static void WriteMethodMember(MethodDeclarationSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context, IMethodSymbol symbol)

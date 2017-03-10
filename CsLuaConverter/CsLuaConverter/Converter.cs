@@ -15,7 +15,7 @@
     {
         public async Task ConvertAsync(string solutionPath, string wowPath)
         {
-            Console.WriteLine("Started CsToLua converter.");
+            Console.WriteLine($"Started CsToLua converter. Solution: {solutionPath}. WowPath: {wowPath}.");
 
             var stopWatch = new Stopwatch();
             stopWatch.Start();
@@ -30,8 +30,8 @@
 
         public void Convert(string solutionPath, string wowPath)
         {
-            Console.WriteLine("Started CsToLua converter.");
-
+            Console.WriteLine($"Started CsToLua converter. Solution: {solutionPath}. WowPath: {wowPath}.");
+            
             var stopWatch = new Stopwatch();
             stopWatch.Start();
             var solutionTask = this.GetSolutionAsync(solutionPath);
