@@ -211,14 +211,14 @@
             textWriter.Indent++;
             textWriter.WriteLine("level = typeObject.Level,");
             textWriter.WriteLine("memberType = '{0}',",
-                syntax.AccessorList.IsAutoProperty() ? "AutoProperty" : "Property");
+                syntax.AccessorList?.IsAutoProperty() ?? true ? "AutoProperty" : "Property");
             textWriter.WriteLine("scope = '{0}',", symbol.DeclaredAccessibility);
             textWriter.WriteLine("static = {0},", symbol.IsStatic.ToString().ToLower());
             textWriter.Write("returnType = ");
             context.TypeReferenceWriter.WriteTypeReference(symbol.Type, textWriter);
             textWriter.WriteLine(";");
 
-            syntax.AccessorList.Write(textWriter, context);
+            syntax.AccessorList?.Write(textWriter, context);
             textWriter.Indent--;
             textWriter.WriteLine("});");
         }

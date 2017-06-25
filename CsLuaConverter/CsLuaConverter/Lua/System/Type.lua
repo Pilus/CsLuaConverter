@@ -138,6 +138,10 @@ local meta = {
             return self.name == "Array" and self.namespace == "System";
         elseif index == "type" then
             return typeType;
+        elseif index == "__is" then
+            return function(value) 
+                return type(value) == "table" and (value % _M.DOT).GetType() == self; 
+            end
         elseif index == "GetGenericArguments" then
             return function()
                 local t = {};

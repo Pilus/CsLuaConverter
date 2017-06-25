@@ -252,7 +252,25 @@
                 MemberExtensions.WriteEmptyConstructor(textWriter);
             }
 
-            syntax.Members.Write(MemberExtensions.Write, textWriter, context);
+            if (syntax.Members.Count < 50)
+            {
+                syntax.Members.Write(MemberExtensions.Write, textWriter, context);
+            }
+            else
+            {
+                textWriter.WriteLine("if true then");
+                var i = 0;
+                syntax.Members.Write(MemberExtensions.Write, textWriter, context, () =>
+                {
+                    if (i%50 == 0 && i > 0)
+                    {
+                        textWriter.WriteLine("end");
+                        textWriter.WriteLine("if true then");
+                    }
+                    i++;
+                });
+                textWriter.WriteLine("end");
+            }
 
             if (context.PartialElementState.IsLast)
             {

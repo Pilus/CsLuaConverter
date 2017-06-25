@@ -154,7 +154,17 @@ namespace Lua
         /// <returns>The substring.</returns>
         public static string strsub(string str, int index, int endIndex)
         {
-            return str.Substring(index, endIndex);
+            if (index > endIndex)
+            {
+                return string.Empty;
+            }
+
+            if (index > 0)
+            {
+                index--;
+            }
+
+            return str.Substring(index, endIndex - index);
         }
 
         /// <summary>

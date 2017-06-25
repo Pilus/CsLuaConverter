@@ -16,7 +16,7 @@
             Assembly assembly;
             try
             {
-                assembly = Assembly.LoadFile(project.OutputFilePath);
+                assembly = Assembly.LoadFrom(project.OutputFilePath);
             }
             catch (FileNotFoundException exception)
             {

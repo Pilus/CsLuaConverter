@@ -38,7 +38,8 @@
             .Case<ThisExpressionSyntax>(Write)
             .Case<MemberBindingExpressionSyntax>(Write)
             .Case<TypeOfExpressionSyntax>(Write)
-            .Case<ElementAccessExpressionSyntax>(Write);
+            .Case<ElementAccessExpressionSyntax>(Write)
+            .Case<DefaultExpressionSyntax>(Write);
 
         /*
         AnonymousFunctionExpressionSyntax
@@ -46,7 +47,6 @@
         AssignmentExpressionSyntax
         AwaitExpressionSyntax
         CheckedExpressionSyntax
-        DefaultExpressionSyntax
         ElementBindingExpressionSyntax
         ImplicitElementAccessSyntax
         InstanceExpressionSyntax
@@ -213,15 +213,25 @@
             else
             {
                 // Special case for missing symbol. Roslyn issue 3825. https://github.com/dotnet/roslyn/issues/3825
-                var namedTypeSymbol = (INamedTypeSymbol)context.SemanticModel.GetSymbolInfo(syntax.Type).Symbol;
+                var namedTypeSymbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(syntax.Type).Symbol;
                 context.TypeReferenceWriter.WriteInteractionElementReference(namedTypeSymbol, textWriter);
 
-                if (namedTypeSymbol.TypeKind != TypeKind.Delegate)
+                if (namedTypeSymbol.TypeKind == TypeKind.Delegate)
                 {
-                    throw new Exception($"Could not guess constructor for {namedTypeSymbol}.");
+                    parameterTypes = new ITypeSymbol[] { namedTypeSymbol };
                 }
-
-                parameterTypes = new ITypeSymbol[] { namedTypeSymbol };
+                else
+                {
+                    if (syntax.ArgumentList.Arguments.Count == 0)
+                    {
+                        parameterTypes = new ITypeSymbol[] { };
+                    }
+                    else
+                    {
+                        throw new Exception($"Could not guess constructor for {namedTypeSymbol}.");
+                    }
+                }
+                
             }
 
             var signatureWiter = textWriter.CreateTextWriterAtSameIndent();
@@ -246,7 +256,14 @@
                 textWriter.Write("]");
             }
 
-            syntax.ArgumentList.Write(textWriter, context);
+            if (syntax.ArgumentList != null)
+            {
+                syntax.ArgumentList.Write(textWriter, context);
+            }
+            else
+            {
+                textWriter.Write("()");
+            }
 
             if (syntax.Initializer != null)
             {
@@ -262,7 +279,19 @@
             IIndentedTextWriterWrapper textWriter,
             IContext context)
         {
-            var symbol = (IMethodSymbol)ModelExtensions.GetSymbolInfo(context.SemanticModel, syntax).Symbol;
+            var symbolInfo = ModelExtensions.GetSymbolInfo(context.SemanticModel, syntax);
+            var symbol = (IMethodSymbol)symbolInfo.Symbol;
+
+            if (symbol == null)
+            {
+                if (symbolInfo.CandidateSymbols.Any())
+                {
+                    throw new Exception($"Could not find symbol to InvocationExpressionSyntax. Candidates was available but not choosen. Reason: {symbolInfo.CandidateReason}.");
+                }
+
+                TryWriteNameOfOrTypeOf(syntax, textWriter, context);
+                return;
+            }
 
             if (symbol.IsExtensionMethod && symbol.MethodKind == MethodKind.ReducedExtension)
             {
@@ -331,6 +360,40 @@
             textWriter.Write(" % _M.DOT)");
 
             syntax.ArgumentList.Write(textWriter, context);
+        }
+
+        private static void TryWriteNameOfOrTypeOf(
+            this InvocationExpressionSyntax syntax,
+            IIndentedTextWriterWrapper textWriter,
+            IContext context)
+        {
+            switch (syntax.Expression.ToFullString())
+            {
+                case "nameof":
+                    var symbol = context.SemanticModel.GetSymbolInfo(syntax.ArgumentList.Arguments.Single().Expression).Symbol;
+
+                    var typeSymbol = symbol as ITypeSymbol;
+                    if (typeSymbol == null)
+                    {
+                        typeSymbol = ((IParameterSymbol)symbol).Type;
+                    }
+
+                    if (context.SemanticAdaptor.IsGenericType(typeSymbol))
+                    {
+                        context.TypeReferenceWriter.WriteTypeReference(typeSymbol, textWriter);
+                        textWriter.Write(".name");
+                    }
+                    else
+                    {
+                        textWriter.Write($"\"{context.SemanticAdaptor.GetName(typeSymbol)}\"");
+                    }
+                    
+                    break;
+                case "typeof":
+                    break;
+                default:
+                    throw new Exception("No symbol found for invocation expression.");
+            }
         }
 
         private static void WriteAsExtensionMethodCall(
@@ -553,7 +616,7 @@
 
         private static ITypeSymbol GetSymbolForParentUsingTheLambda(LambdaExpressionSyntax syntax, IContext context)
         {
-            var argListSyntax = syntax.Ancestors().OfType<ArgumentListSyntax>().First();
+            var argListSyntax = syntax.Ancestors().OfType<ArgumentListSyntax>().FirstOrDefault();
 
             if (argListSyntax != null)
             {
@@ -575,8 +638,6 @@
 
                     if (symbol != null)
                     {
-                        throw new NotImplementedException();
-                        // Note: not verified code path
                         return symbol.Parameters[argNum].Type;
                     }
 
@@ -600,6 +661,24 @@
             }
             else
             {
+                var assignment = syntax.Parent as AssignmentExpressionSyntax;
+                if (assignment != null)
+                {
+                    var s = context.SemanticModel.GetSymbolInfo(assignment.Left).Symbol;
+                    var propertySymbol = s as IPropertySymbol;
+                    if (propertySymbol != null)
+                    {
+                        return propertySymbol.Type;
+                    }
+
+                    var fieldSymbol = s as IFieldSymbol;
+                    if (fieldSymbol != null)
+                    {
+                        return fieldSymbol.Type;
+                    }
+
+                    throw new NotImplementedException();
+                }
                 throw new NotImplementedException();
             }
         }
@@ -810,6 +889,14 @@
             syntax.Expression.Write(textWriter, context);
             textWriter.Write(" % _M.DOT)");
             syntax.ArgumentList.Write(textWriter, context);
+        }
+
+        public static void Write(this DefaultExpressionSyntax syntax, IIndentedTextWriterWrapper textWriter, IContext context)
+        {
+            textWriter.Write("_M.DV(");
+            var symbol = (ITypeSymbol)context.SemanticModel.GetSymbolInfo(syntax.Type).Symbol;
+            context.TypeReferenceWriter.WriteTypeReference(symbol, textWriter);
+            textWriter.Write(")");
         }
     }
 }

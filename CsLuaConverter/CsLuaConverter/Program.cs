@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics;
     using System.Globalization;
+    using System.IO;
 
     internal class Program
     {
@@ -12,7 +13,7 @@
 
             if (Debugger.IsAttached)
             {
-                converter.Convert(args[0], args[1]);
+                converter.Convert(Path.GetFullPath(args[0]), Path.GetFullPath(args[1]));
                 
                 return 0;
             }
@@ -20,7 +21,7 @@
             { 
                 try
                 {
-                    converter.ConvertAsync(args[0], args[1]).Wait();
+                    converter.ConvertAsync(Path.GetFullPath(args[0]), Path.GetFullPath(args[1])).Wait();
                     return 0;
                 }
                 catch (AggregateException exception)
