@@ -43,7 +43,7 @@
 
             var membersByFullName = allTypeMembers.GroupBy(member => member.GetFullName()).OrderBy(pair => pair.Key).ToArray();
 
-            var uniqueNamespaces = membersByFullName.Select(pair => pair.Key.Split('.').First()).Distinct().ToArray();
+            var uniqueNamespaces = GetCommonNamespaces(membersByFullName.Select(memberGroup => memberGroup.Key).ToArray());
 
             return uniqueNamespaces.Select(namespaceName => new Namespace()
             {
@@ -55,6 +55,50 @@
                     this.WriteFooter(memberGroups.Select(g => g.First()), textWriter);
                 }
             });
+        }
+
+        private static string[] GetCommonNamespaces(string[] fullMemberNames)
+        {
+            var commonNamespaces = new List<string[]>();
+            foreach (var fullMemberName in fullMemberNames)
+            {
+                var namespaceSplit = fullMemberName.Split('.');
+                var found = false;
+                for (var index = 0; index < commonNamespaces.Count; index++)
+                {
+                    var commonNamespace = commonNamespaces[index];
+                    var matchCount = MatchCount(commonNamespace, namespaceSplit);
+                    if (matchCount >= commonNamespace.Length)
+                    {
+                        found = true;
+                        break;
+                    }
+                    else if (matchCount > 0)
+                    {
+                        commonNamespaces[index] = commonNamespace.Take(matchCount).ToArray();
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found == false)
+                {
+                    commonNamespaces.Add(namespaceSplit.Take(fullMemberName.Length - 1).ToArray());
+                }
+            }
+            
+            return commonNamespaces.Select(str => string.Join(".", str)).ToArray();
+        }
+
+        private static int MatchCount(string[] a, string[] b)
+        {
+            var index = 0;
+            while (index < a.Length && index < b.Length && a[index] == b[index])
+            {
+                index++;
+            }
+
+            return index;
         }
 
         private static IEnumerable<IGrouping<string, NamespaceMember>> FilterNamespaceMember(IEnumerable<IGrouping<string, NamespaceMember>> pairs, string namespaceName)
