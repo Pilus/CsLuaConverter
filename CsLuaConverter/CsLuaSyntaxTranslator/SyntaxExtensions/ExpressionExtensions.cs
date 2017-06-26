@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using CsLuaSyntaxTranslator.Context;
     using Microsoft.CodeAnalysis;
@@ -787,8 +788,22 @@
         {
             textWriter.Write("_M.CA(");
             syntax.Expression.Write(textWriter, context);
-            textWriter.Write(",function(obj) return (obj % _M.DOT)");
-            syntax.WhenNotNull.Write(textWriter, context);
+            textWriter.Write(",function(obj) return ");
+            var stringWriter = new StringWriter();
+            var newTextWriter = new IndentedTextWriterWrapper(stringWriter);
+            syntax.WhenNotNull.Write(newTextWriter, context);
+
+            if (stringWriter.ToString().StartsWith("("))
+            {
+                textWriter.Write("((obj % _M.DOT)");
+                textWriter.Write(newTextWriter.ToString().Substring(1));
+            }
+            else
+            {
+                textWriter.Write("(obj % _M.DOT)");
+                textWriter.AppendTextWriter(newTextWriter);
+            }
+
             textWriter.Write("; end)");
         }
 
